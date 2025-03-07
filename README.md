@@ -1,4 +1,4 @@
-# Stuff
+# Playground
 
 A personal playground for various experiments. Here I work on whatever I happen
 to be in the mood for at the time. No expectation of ever finishing anything.
