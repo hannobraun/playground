@@ -3,12 +3,6 @@
 A personal playground for various experiments. Here I work on whatever I happen
 to be in the mood for at the time. No expectation of ever finishing anything.
 
-## Note on VS Code configuration
-
-I've set `"rust-analyzer.check.allTargets": false`, because of a `no_std`
-project. Once all `no_std` projects have been archived or moved out of the
-repository, it might be a good idea to remove that again.
-
 ## License
 
 This project is open source, licensed under the terms of the
