@@ -33,10 +33,9 @@ function love.update(dt)
 
     local field_next = empty_field()
 
-    for i = 1, field_width, 1 do
+    for x = 1, field_width, 1 do
         for j = 1, field_height, 1 do
-            if field[i][j] then
-                local x = i
+            if field[x][j] then
                 local y = j
 
                 local y_offset = 0
