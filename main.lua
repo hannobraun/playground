@@ -8,7 +8,7 @@ local block_size_inner = block_size - 2 * block_offset
 local field = {}
 
 function love.load()
-    init_empty_field()
+    field = init_empty_field()
     field[5][field_height] = true
 end
 
@@ -36,11 +36,15 @@ function love.draw()
 end
 
 function init_empty_field()
+    local empty_field = {}
+
     for i = 1, field_width, 1 do
-        field[i] = {}
+        empty_field[i] = {}
 
         for j = 1, field_height, 1 do
-            field[i][j] = false
+            empty_field[i][j] = false
         end
     end
+
+    return empty_field
 end
