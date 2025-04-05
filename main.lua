@@ -34,13 +34,11 @@ function love.update(dt)
     local field_next = empty_field()
 
     for x = 1, field_width, 1 do
-        for j = 1, field_height, 1 do
-            if field[x][j] then
-                local y = j
-
+        for y = 1, field_height, 1 do
+            if field[x][y] then
                 local y_offset = 0
 
-                if drop_ready and j < field_height then
+                if drop_ready and y < field_height then
                     y_offset = 1
                 end
 
