@@ -126,5 +126,9 @@ function spawn_block()
     local x = 5
     local y = 1
 
+    if field[x][y] then
+        love.event.quit()
+    end
+
     field[x][y] = { control = true }
 end
