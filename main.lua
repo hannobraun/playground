@@ -6,6 +6,7 @@ local block_offset = 1
 local block_size_inner = block_size - 2 * block_offset
 
 local field = {}
+local dt_acc = 0
 
 function love.load()
     field = empty_field()
@@ -16,6 +17,37 @@ function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
     end
+end
+
+function love.update(dt)
+    dt_acc = dt_acc + dt
+
+    if dt_acc >= 1 then
+        dt_acc = dt_acc - 1
+    else
+        return
+    end
+
+    local field_next = empty_field()
+
+    for i = 1, field_width, 1 do
+        for j = 1, field_height, 1 do
+            if field[i][j] then
+                local x = i
+                local y
+
+                if j < field_height then
+                    y = j + 1
+                else
+                    y = j
+                end
+
+                field_next[x][y] = true
+            end
+        end
+    end
+
+    field = field_next
 end
 
 function love.draw()
