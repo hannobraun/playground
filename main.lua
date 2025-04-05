@@ -25,11 +25,13 @@ function love.draw()
             local x = (i - 1) * block_size
             local y = block_size * field_height - j * block_size
             
-            love.graphics.rectangle(
-                "fill",
-                x, y,
-                block_size_inner, block_size_inner
-            )
+            if field[i][j] then
+                love.graphics.rectangle(
+                    "fill",
+                    x, y,
+                    block_size_inner, block_size_inner
+                )
+            end
         end
     end
 end
