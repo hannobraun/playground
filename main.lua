@@ -22,7 +22,7 @@ function love.draw()
     for i = 1, field_width, 1 do
         for j = 1, field_height, 1 do
             local x = (i - 1) * block_size
-            local y = block_size * field_height - j * block_size
+            local y = (j - 1) * block_size
             
             if field[i][j] then
                 love.graphics.rectangle(
