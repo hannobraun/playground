@@ -24,10 +24,11 @@ end
 function love.update(dt)
     dt_acc = dt_acc + dt
 
+    local drop_ready = false
+
     if dt_acc >= drop_tick_s then
+        drop_ready = true
         dt_acc = dt_acc - drop_tick_s
-    else
-        return
     end
 
     local field_next = empty_field()
@@ -38,7 +39,7 @@ function love.update(dt)
                 local x = i
                 local y = j
 
-                if j < field_height then
+                if drop_ready and j < field_height then
                     y = j + 1
                 end
 
