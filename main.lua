@@ -10,6 +10,9 @@ local drop_tick_s = 0.25
 local field = {}
 local dt_acc = 0
 
+local move_left = false
+local move_right = false
+
 function love.load()
     field = empty_field()
     field[5][1] = true
@@ -19,13 +22,20 @@ function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
     end
+
+    move_left = key == "left" or key == "a"
+    move_right = key == "right" or key == "d"
 end
 
 function love.update(dt)
     dt_acc = dt_acc + dt
 
+    local input_ready = false
     local drop_ready = false
 
+    if dt_acc >= 0.1 then
+        input_ready = true
+    end
     if dt_acc >= drop_tick_s then
         drop_ready = true
         dt_acc = dt_acc - drop_tick_s
@@ -39,6 +49,14 @@ function love.update(dt)
                 local x_offset = 0
                 local y_offset = 0
 
+                if input_ready and move_left and x > 1 then
+                    x_offset = -1
+                    move_left = false
+                end
+                if input_ready and move_right and x < field_width then
+                    x_offset = 1
+                    move_right = false
+                end
                 if drop_ready and y < field_height then
                     y_offset = 1
                 end
