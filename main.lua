@@ -9,7 +9,7 @@ local field = {}
 
 function love.load()
     field = empty_field()
-    field[5][field_height] = true
+    field[5][1] = true
 end
 
 function love.keypressed(key)
