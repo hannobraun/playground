@@ -62,6 +62,8 @@ function love.update(dt)
                 if drop_ready then
                     if y < field_height then
                         y_offset = 1
+                    else
+                        field[x][y].control = false
                     end
                 end
 
