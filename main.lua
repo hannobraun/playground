@@ -15,7 +15,7 @@ local move_right = false
 
 function love.load()
     field = empty_field()
-    field[5][1] = { control = true }
+    spawn_block()
 end
 
 function love.keypressed(key)
@@ -104,4 +104,8 @@ function empty_field()
     end
 
     return empty_field
+end
+
+function spawn_block()
+    field[5][1] = { control = true }
 end
