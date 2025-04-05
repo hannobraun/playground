@@ -61,7 +61,7 @@ function love.update(dt)
                     y_offset = 1
                 end
 
-                field_next[x + x_offset][y + y_offset] = true
+                field_next[x + x_offset][y + y_offset] = field[x][y]
             end
         end
     end
