@@ -15,7 +15,7 @@ local move_right = false
 
 function love.load()
     field = empty_field()
-    field[5][1] = true
+    field[5][1] = {}
 end
 
 function love.keypressed(key)
@@ -93,7 +93,7 @@ function empty_field()
         empty_field[i] = {}
 
         for j = 1, field_height, 1 do
-            empty_field[i][j] = false
+            empty_field[i][j] = nil
         end
     end
 
