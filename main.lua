@@ -60,7 +60,7 @@ function love.update(dt)
                     end
                 end
                 if drop_ready then
-                    if y < field_height and field[x][y + 1] == nil then
+                    if y < field_height and distance_to_floor(x, y) > 0 then
                         y_offset = 1
                     else
                         field[x][y].control = false
@@ -131,4 +131,18 @@ function spawn_block()
     end
 
     field[x][y] = { control = true }
+end
+
+function distance_to_floor(x, y)
+    local distance = 0
+
+    for i = y + 1, field_height, 1 do
+        if field[x][i] then
+            break
+        else
+            distance = distance + 1
+        end
+    end
+
+    return distance
 end
