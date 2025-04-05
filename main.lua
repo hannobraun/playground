@@ -59,8 +59,10 @@ function love.update(dt)
                         move_right = false
                     end
                 end
-                if drop_ready and y < field_height then
-                    y_offset = 1
+                if drop_ready then
+                    if y < field_height then
+                        y_offset = 1
+                    end
                 end
 
                 field_next[x + x_offset][y + y_offset] = field[x][y]
