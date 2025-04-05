@@ -49,13 +49,15 @@ function love.update(dt)
                 local x_offset = 0
                 local y_offset = 0
 
-                if input_ready and move_left and x > 1 then
-                    x_offset = -1
-                    move_left = false
-                end
-                if input_ready and move_right and x < field_width then
-                    x_offset = 1
-                    move_right = false
+                if input_ready then
+                    if move_left and x > 1 then
+                        x_offset = -1
+                        move_left = false
+                    end
+                    if move_right and x < field_width then
+                        x_offset = 1
+                        move_right = false
+                    end
                 end
                 if drop_ready and y < field_height then
                     y_offset = 1
