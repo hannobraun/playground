@@ -5,7 +5,7 @@ local block_size = 32
 local block_offset = 1
 local block_size_inner = block_size - 2 * block_offset
 
-local drop_tick_s = 1
+local drop_tick_s = 0.25
 
 local field = {}
 local dt_acc = 0
