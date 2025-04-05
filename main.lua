@@ -5,6 +5,8 @@ local block_size = 32
 local block_offset = 1
 local block_size_inner = block_size - 2 * block_offset
 
+local drop_tick_s = 1
+
 local field = {}
 local dt_acc = 0
 
@@ -22,8 +24,8 @@ end
 function love.update(dt)
     dt_acc = dt_acc + dt
 
-    if dt_acc >= 1 then
-        dt_acc = dt_acc - 1
+    if dt_acc >= drop_tick_s then
+        dt_acc = dt_acc - drop_tick_s
     else
         return
     end
