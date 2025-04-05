@@ -12,6 +12,7 @@ local dt_acc = 0
 
 local move_left = false
 local move_right = false
+local drop_now = false
 
 function love.load()
     field = empty_field()
@@ -25,6 +26,8 @@ function love.keypressed(key)
 
     move_left = key == "left" or key == "a"
     move_right = key == "right" or key == "d"
+
+    drop_now = key == "space" or key == "down"
 end
 
 function love.update(dt)
@@ -60,7 +63,11 @@ function love.update(dt)
                     end
                 end
                 if drop_ready then
-                    if y < field_height and distance_to_floor(x, y) > 0 then
+                    if drop_now then
+                        y_offset = distance_to_floor(x, y)
+                        field[x][y].control = false
+                        drop_now = false
+                    elseif y < field_height and distance_to_floor(x, y) > 0 then
                         y_offset = 1
                     else
                         field[x][y].control = false
