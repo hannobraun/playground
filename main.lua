@@ -15,7 +15,7 @@ local move_right = false
 
 function love.load()
     field = empty_field()
-    field[5][1] = {}
+    field[5][1] = { control = true }
 end
 
 function love.keypressed(key)
@@ -49,7 +49,7 @@ function love.update(dt)
                 local x_offset = 0
                 local y_offset = 0
 
-                if input_ready then
+                if input_ready and field[x][y].control then
                     if move_left and x > 1 then
                         x_offset = -1
                         move_left = false
