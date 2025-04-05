@@ -73,6 +73,22 @@ function love.update(dt)
     end
 
     field = field_next
+
+    local controlled_blocks_exist = false
+    for x = 1, field_width, 1 do
+        for y = 1, field_height, 1 do
+            local block = field[x][y]
+
+            if block then
+                controlled_blocks_exist =
+                    controlled_blocks_exist or block.control
+            end
+        end
+    end
+
+    if not controlled_blocks_exist then
+        spawn_block()
+    end
 end
 
 function love.draw()
