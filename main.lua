@@ -5,6 +5,20 @@ local block_size = 32
 local block_offset = 1
 local block_size_inner = block_size - 2 * block_offset
 
+local field = {}
+
+function love.load()
+    for i = 1, field_width, 1 do
+        field[i] = {}
+
+        for j = 1, field_height, 1 do
+            field[i][j] = false
+        end
+    end
+
+    field[5][field_height] = true
+end
+
 function love.draw()
     for i = 1, field_width, 1 do
         for j = 1, field_height, 1 do
