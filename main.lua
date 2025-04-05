@@ -123,5 +123,8 @@ function empty_field()
 end
 
 function spawn_block()
-    field[5][1] = { control = true }
+    local x = 5
+    local y = 1
+
+    field[x][y] = { control = true }
 end
