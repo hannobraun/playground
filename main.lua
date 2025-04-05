@@ -36,13 +36,14 @@ function love.update(dt)
     for x = 1, field_width, 1 do
         for y = 1, field_height, 1 do
             if field[x][y] then
+                local x_offset = 0
                 local y_offset = 0
 
                 if drop_ready and y < field_height then
                     y_offset = 1
                 end
 
-                field_next[x][y + y_offset] = true
+                field_next[x + x_offset][y + y_offset] = true
             end
         end
     end
