@@ -36,12 +36,10 @@ function love.update(dt)
         for j = 1, field_height, 1 do
             if field[i][j] then
                 local x = i
-                local y
+                local y = j
 
                 if j < field_height then
                     y = j + 1
-                else
-                    y = j
                 end
 
                 field_next[x][y] = true
