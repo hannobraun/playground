@@ -19,6 +19,12 @@ function love.load()
     field[5][field_height] = true
 end
 
+function love.keypressed(key)
+    if key == "escape" then
+        love.event.quit()
+    end
+end
+
 function love.draw()
     for i = 1, field_width, 1 do
         for j = 1, field_height, 1 do
