@@ -34,6 +34,7 @@ function Field.init()
     return field
 end
 
+
 local field = Field.init()
 local acc = 0
 
