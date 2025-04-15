@@ -16,9 +16,11 @@ end
 function love.load()
     for x = 0, field.size_x - 1 do
         for y = 0, field.size_y - 1 do
-            field[field.index(x, y)] = true
+            field[field.index(x, y)] = false
         end
     end
+
+    field[field.index(5, 0)] = true
 end
 
 function love.keypressed(key)
