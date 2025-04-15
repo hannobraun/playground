@@ -1,8 +1,8 @@
 local lick = require "lick"
 
-local cell_size = 32;
+local cell_size = 32
 
-local block_size = 30;
+local block_size = 30
 local block_offset = (cell_size - block_size) / 2
 
 function love.draw()
