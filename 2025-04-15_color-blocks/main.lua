@@ -3,11 +3,12 @@ local lick = require "lick"
 local field = {
     size_x = 10,
     size_y = 16,
+
+    border = 1,
 }
 
-local field_border = 1
 local field_margin = 1
-local field_offset = field_border + field_margin
+local field_offset = field.border + field_margin
 
 local cell_size = 32
 
@@ -45,8 +46,8 @@ function draw_border()
     love.graphics.setColor(bg_r, bg_g, bg_b, bg_a)
     love.graphics.rectangle(
         "fill",
-        field_border, field_border,
-        border_size_x - field_border * 2, border_size_y - field_border * 2
+        field.border, field.border,
+        border_size_x - field.border * 2, border_size_y - field.border * 2
     )
     love.graphics.setColor(fg_r, fg_g, fg_b, fg_a)
 end
