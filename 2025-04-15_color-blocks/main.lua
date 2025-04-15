@@ -29,6 +29,7 @@ function Field.new()
 end
 
 local field = Field.new()
+local acc = 0
 
 
 function love.load()
@@ -41,7 +42,16 @@ function love.keypressed(key)
     end
 end
 
-function love.update()
+function love.update(dt)
+    local tick = 0.2
+
+    acc = acc + dt
+    if acc >= tick then
+        acc = acc - tick
+    else
+        return
+    end
+
     local next = Field.new()
 
     for x = 0, field.size_x - 1 do
