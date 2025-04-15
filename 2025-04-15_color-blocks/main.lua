@@ -28,6 +28,10 @@ end
 
 
 function love.draw()
+    draw()
+end
+
+function draw()
     draw_border()
 
     for i = 0, Field.size_x - 1 do
