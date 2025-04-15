@@ -26,9 +26,22 @@ function draw_border()
     local border_size_x = field_size_x * cell_size
     local border_size_y = field_size_y * cell_size
 
+    local bg_r, bg_g, bg_b, bg_a = love.graphics.getBackgroundColor()
+    local fg_r, fg_g, fg_b, fg_a = love.graphics.getColor()
+
+    local border_strength = 1
+
     love.graphics.rectangle(
-        "line",
+        "fill",
         0, 0,
         border_size_x, border_size_y
     )
+
+    love.graphics.setColor(bg_r, bg_g, bg_b, bg_a)
+    love.graphics.rectangle(
+        "fill",
+        border_strength, border_strength,
+        border_size_x - border_strength * 2, border_size_y - border_strength * 2
+    )
+    love.graphics.setColor(fg_r, fg_g, fg_b, fg_a)
 end
