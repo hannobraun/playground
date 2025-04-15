@@ -12,15 +12,19 @@ function field.index(x, y)
     return y * field.size_y + x
 end
 
+function field:set(x, y)
+    self[self.index(x, y)] = true
+end
+
 
 function love.load()
     for x = 0, field.size_x - 1 do
         for y = 0, field.size_y - 1 do
-            field[field.index(x, y)] = false
+            field:set(x, y)
         end
     end
 
-    field[field.index(5, 0)] = true
+    field:set(5, 0)
 end
 
 function love.keypressed(key)
