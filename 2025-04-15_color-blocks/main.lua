@@ -9,11 +9,7 @@ function love.draw()
     local block_size = 30
     local block_offset = (cell_size - block_size) / 2
 
-    love.graphics.rectangle(
-        "line",
-        0, 0,
-        field_size_x * cell_size, field_size_y * cell_size        
-    )
+    draw_border()
 
     for i = 0, field_size_x - 1 do
         for j = 0, field_size_y - 1 do
@@ -24,4 +20,12 @@ function love.draw()
             )
         end
     end
+end
+
+function draw_border()
+    love.graphics.rectangle(
+        "line",
+        0, 0,
+        field_size_x * cell_size, field_size_y * cell_size        
+    )
 end
