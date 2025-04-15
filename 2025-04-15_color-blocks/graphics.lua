@@ -47,7 +47,7 @@ local function draw_border()
     love.graphics.setColor(fg_r, fg_g, fg_b, fg_a)
 end
 
-function draw()
+local function draw()
     draw_border()
 
     for i = 0, Field.size_x - 1 do
