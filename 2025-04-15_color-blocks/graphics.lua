@@ -47,12 +47,12 @@ end
 local function draw(field)
     draw_border(field)
 
-    for i = 0, field.size_x - 1 do
+    for x = 0, field.size_x - 1 do
         for j = 0, field.size_y - 1 do
-            if field[field.index(i, j)] then
+            if field[field.index(x, j)] then
                 love.graphics.rectangle(
                     "fill",
-                    Field:offset() + i * Cell.size + Block:offset(),
+                    Field:offset() + x * Cell.size + Block:offset(),
                     Field:offset() + j * Cell.size + Block:offset(),
                     Block.size, Block.size
                 )
