@@ -12,6 +12,10 @@ function field.index(x, y)
     return y * field.size_y + x
 end
 
+function field:get(x, y)
+    return self[self.index(x, y)]
+end
+
 function field:set(x, y)
     self[self.index(x, y)] = true
 end

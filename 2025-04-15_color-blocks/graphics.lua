@@ -49,7 +49,7 @@ local function draw(field)
 
     for x = 0, field.size_x - 1 do
         for y = 0, field.size_y - 1 do
-            if field[field.index(x, y)] then
+            if field:get(x, y) then
                 love.graphics.rectangle(
                     "fill",
                     Field:offset() + x * Cell.size + Block:offset(),
