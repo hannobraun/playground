@@ -28,13 +28,15 @@ function Field.new()
     return field
 end
 
-local field = Field.new()
+function Field.init()
+    local field = Field.new()
+    field:set(5, 0)
+    return field
+end
+
+local field = Field.init()
 local acc = 0
 
-
-function love.load()
-    field:set(5, 0)
-end
 
 function love.keypressed(key)
     if key == "escape" then
