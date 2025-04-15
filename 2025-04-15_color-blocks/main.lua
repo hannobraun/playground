@@ -41,6 +41,20 @@ function love.keypressed(key)
     end
 end
 
+function love.update()
+    local next = Field.new()
+
+    for x = 0, field.size_x - 1 do
+        for y = 0, field.size_y - 1 do
+            if field:get(x, y) then
+                next:set(x, y + 1)
+            end
+        end
+    end
+
+    field = next
+end
+
 function love.draw()
     graphics.draw(field)
 end
