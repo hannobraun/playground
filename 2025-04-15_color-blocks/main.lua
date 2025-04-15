@@ -2,6 +2,8 @@ local lick = require "lick"
 
 local field_size_x = 10
 local field_size_y = 16
+
+local field_border = 1
 local field_margin = 2
 
 local cell_size = 32
@@ -31,8 +33,6 @@ function draw_border()
     local bg_r, bg_g, bg_b, bg_a = love.graphics.getBackgroundColor()
     local fg_r, fg_g, fg_b, fg_a = love.graphics.getColor()
 
-    local border_strength = 1
-
     love.graphics.rectangle(
         "fill",
         0, 0,
@@ -42,8 +42,8 @@ function draw_border()
     love.graphics.setColor(bg_r, bg_g, bg_b, bg_a)
     love.graphics.rectangle(
         "fill",
-        border_strength, border_strength,
-        border_size_x - border_strength * 2, border_size_y - border_strength * 2
+        field_border, field_border,
+        border_size_x - field_border * 2, border_size_y - field_border * 2
     )
     love.graphics.setColor(fg_r, fg_g, fg_b, fg_a)
 end
