@@ -23,9 +23,12 @@ function love.draw()
 end
 
 function draw_border()
+    local border_size_x = field_size_x * cell_size
+    local border_size_y = field_size_y * cell_size
+
     love.graphics.rectangle(
         "line",
         0, 0,
-        field_size_x * cell_size, field_size_y * cell_size        
+        border_size_x, border_size_y
     )
 end
