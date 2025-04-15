@@ -15,7 +15,8 @@ function love.draw()
         for j = 0, field_size_y - 1 do
             love.graphics.rectangle(
                 "fill",
-                i * cell_size + block_offset, j * cell_size + block_offset,
+                i * cell_size + block_offset,
+                j * cell_size + block_offset,
                 block_size, block_size
             )
         end
