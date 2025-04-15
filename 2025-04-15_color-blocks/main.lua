@@ -6,6 +6,8 @@ local graphics = require "graphics"
 local field = {
     size_x = 10,
     size_y = 16,
+
+    cells = {}
 }
 
 function field.index(x, y)
@@ -13,11 +15,11 @@ function field.index(x, y)
 end
 
 function field:get(x, y)
-    return self[self.index(x, y)]
+    return self.cells[self.index(x, y)]
 end
 
 function field:set(x, y)
-    self[self.index(x, y)] = true
+    self.cells[self.index(x, y)] = true
 end
 
 
