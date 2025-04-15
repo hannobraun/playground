@@ -1,7 +1,4 @@
 local Field = {
-    size_x = 10,
-    size_y = 16,
-
     border = 1,
     margin = 1,
 }
@@ -25,9 +22,9 @@ function Block:offset()
 end
 
 
-local function draw_border()
-    local border_size_x = Field.size_x * Cell.size + Field:offset() * 2
-    local border_size_y = Field.size_y * Cell.size + Field:offset() * 2
+local function draw_border(field)
+    local border_size_x = field.size_x * Cell.size + Field:offset() * 2
+    local border_size_y = field.size_y * Cell.size + Field:offset() * 2
 
     local bg_r, bg_g, bg_b, bg_a = love.graphics.getBackgroundColor()
     local fg_r, fg_g, fg_b, fg_a = love.graphics.getColor()
@@ -47,11 +44,11 @@ local function draw_border()
     love.graphics.setColor(fg_r, fg_g, fg_b, fg_a)
 end
 
-local function draw()
-    draw_border()
+local function draw(field)
+    draw_border(field)
 
-    for i = 0, Field.size_x - 1 do
-        for j = 0, Field.size_y - 1 do
+    for i = 0, field.size_x - 1 do
+        for j = 0, field.size_y - 1 do
             love.graphics.rectangle(
                 "fill",
                 Field:offset() + i * Cell.size + Block:offset(),
