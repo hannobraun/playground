@@ -9,8 +9,8 @@ function love.draw()
     local block_size = 30
     local block_offset = (cell_size - block_size) / 2
 
-    for i = 1, field_size_x, 1 do
-        for j = 1, field_size_y, 1 do
+    for i = 1, field_size_x do
+        for j = 1, field_size_y do
             love.graphics.rectangle(
                 "fill",
                 i * cell_size + block_offset, j * cell_size + block_offset,
