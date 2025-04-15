@@ -1,5 +1,9 @@
 local lick = require "lick"
 
 function love.draw()
-    love.graphics.rectangle("fill", 0, 0, 32, 32)
+    for i = 1, 10, 1 do
+        for j = 1, 16, 1 do
+            love.graphics.rectangle("fill", i * 32, j * 32, 32, 32)
+        end
+    end
 end
