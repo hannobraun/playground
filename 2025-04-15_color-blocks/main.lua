@@ -1,6 +1,7 @@
 local lick = require "lick"
 
 local cell_size = 32;
+local block_size = 30;
 
 function love.draw()
     for i = 1, 10, 1 do
@@ -8,7 +9,7 @@ function love.draw()
             love.graphics.rectangle(
                 "fill",
                 i * cell_size, j * cell_size,
-                cell_size, cell_size
+                block_size, block_size
             )
         end
     end
