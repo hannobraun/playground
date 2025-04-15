@@ -3,24 +3,32 @@ local lick = require "lick"
 local graphics = require "graphics"
 
 
-local field = {
-    size_x = 10,
-    size_y = 16,
+local Field = {}
 
-    cells = {}
-}
+function Field.new()
+    local field = {
+        size_x = 10,
+        size_y = 16,
+    
+        cells = {}
+    }
+    
+    function field.index(x, y)
+        return y * field.size_y + x
+    end
+    
+    function field:get(x, y)
+        return self.cells[self.index(x, y)]
+    end
+    
+    function field:set(x, y)
+        self.cells[self.index(x, y)] = true
+    end
 
-function field.index(x, y)
-    return y * field.size_y + x
+    return field
 end
 
-function field:get(x, y)
-    return self.cells[self.index(x, y)]
-end
-
-function field:set(x, y)
-    self.cells[self.index(x, y)] = true
-end
+local field = Field.new()
 
 
 function love.load()
