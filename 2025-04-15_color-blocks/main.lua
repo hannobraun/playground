@@ -43,6 +43,9 @@ function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
     end
+    if key == "r" then
+        field = Field.init()
+    end
 end
 
 function love.update(dt)
