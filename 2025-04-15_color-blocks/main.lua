@@ -8,7 +8,7 @@ local Field = {
     margin = 1,
 }
 
-function Field.offset(self)
+function Field:offset()
     return self.border + self.margin
 end
 
