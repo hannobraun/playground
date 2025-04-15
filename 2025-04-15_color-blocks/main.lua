@@ -18,9 +18,13 @@ local Cell = {
 }
 
 
+local Block = {
+    size = 30
+}
+
+
 function love.draw()
-    local block_size = 30
-    local block_offset = (Cell.size - block_size) / 2
+    local block_offset = (Cell.size - Block.size) / 2
 
     draw_border()
 
@@ -30,7 +34,7 @@ function love.draw()
                 "fill",
                 Field:offset() + i * Cell.size + block_offset,
                 Field:offset() + j * Cell.size + block_offset,
-                block_size, block_size
+                Block.size, Block.size
             )
         end
     end
