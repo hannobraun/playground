@@ -22,18 +22,20 @@ local Block = {
     size = 30
 }
 
+function Block:offset()
+    return (Cell.size - self.size) / 2
+end
+
 
 function love.draw()
-    local block_offset = (Cell.size - Block.size) / 2
-
     draw_border()
 
     for i = 0, Field.size_x - 1 do
         for j = 0, Field.size_y - 1 do
             love.graphics.rectangle(
                 "fill",
-                Field:offset() + i * Cell.size + block_offset,
-                Field:offset() + j * Cell.size + block_offset,
+                Field:offset() + i * Cell.size + Block:offset(),
+                Field:offset() + j * Cell.size + Block:offset(),
                 Block.size, Block.size
             )
         end
