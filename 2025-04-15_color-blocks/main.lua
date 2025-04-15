@@ -13,11 +13,14 @@ function Field.offset(self)
 end
 
 
-local cell_size = 32
+local Cell = {
+    size = 32,
+}
+
 
 function love.draw()
     local block_size = 30
-    local block_offset = (cell_size - block_size) / 2
+    local block_offset = (Cell.size - block_size) / 2
 
     draw_border()
 
@@ -25,8 +28,8 @@ function love.draw()
         for j = 0, Field.size_y - 1 do
             love.graphics.rectangle(
                 "fill",
-                Field:offset() + i * cell_size + block_offset,
-                Field:offset() + j * cell_size + block_offset,
+                Field:offset() + i * Cell.size + block_offset,
+                Field:offset() + j * Cell.size + block_offset,
                 block_size, block_size
             )
         end
@@ -34,8 +37,8 @@ function love.draw()
 end
 
 function draw_border()
-    local border_size_x = Field.size_x * cell_size + Field:offset() * 2
-    local border_size_y = Field.size_y * cell_size + Field:offset() * 2
+    local border_size_x = Field.size_x * Cell.size + Field:offset() * 2
+    local border_size_y = Field.size_y * Cell.size + Field:offset() * 2
 
     local bg_r, bg_g, bg_b, bg_a = love.graphics.getBackgroundColor()
     local fg_r, fg_g, fg_b, fg_a = love.graphics.getColor()
