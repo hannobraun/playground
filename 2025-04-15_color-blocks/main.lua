@@ -5,10 +5,10 @@ local field = {
     size_y = 16,
 
     border = 1,
+    margin = 1,
 }
 
-local field_margin = 1
-local field_offset = field.border + field_margin
+local field_offset = field.border + field.margin
 
 local cell_size = 32
 
