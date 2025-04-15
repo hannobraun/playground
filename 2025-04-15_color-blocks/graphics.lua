@@ -25,7 +25,7 @@ function Block:offset()
 end
 
 
-function draw_border()
+local function draw_border()
     local border_size_x = Field.size_x * Cell.size + Field:offset() * 2
     local border_size_y = Field.size_y * Cell.size + Field:offset() * 2
 
