@@ -61,3 +61,8 @@ function draw()
         end
     end
 end
+
+
+return {
+    draw = draw,
+}
