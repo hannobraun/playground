@@ -18,12 +18,6 @@ end
 
 
 function love.load()
-    for x = 0, field.size_x - 1 do
-        for y = 0, field.size_y - 1 do
-            field:set(x, y, false)
-        end
-    end
-
     field:set(5, 0, true)
 end
 
