@@ -1,12 +1,14 @@
 local lick = require "lick"
 
 function love.draw()
+    local field_size_x = 10
+
     local cell_size = 32
 
     local block_size = 30
     local block_offset = (cell_size - block_size) / 2
 
-    for i = 1, 10, 1 do
+    for i = 1, field_size_x, 1 do
         for j = 1, 16, 1 do
             love.graphics.rectangle(
                 "fill",
