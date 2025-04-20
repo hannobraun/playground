@@ -6,6 +6,8 @@ const TICK = 0.2
 var field_size
 
 var pos = Vector2(0, 0)
+var vel = Vector2(1, 0)
+
 var acc = 0
 
 func _ready():
@@ -16,7 +18,7 @@ func _process(delta):
 	acc += delta
 
 	while acc >= TICK:
-		pos += Vector2(1, 0)
+		pos += vel
 		acc -= TICK
 
 	if pos.x < 0:
