@@ -15,14 +15,15 @@ func _ready():
 	pos = field_size / 2
 
 func _input(event: InputEvent):
-	if event.keycode == KEY_UP:
-		vel = Vector2(0, -1)
-	if event.keycode == KEY_LEFT:
-		vel = Vector2(-1, 0)
-	if event.keycode == KEY_DOWN:
-		vel = Vector2(0, 1)
-	if event.keycode == KEY_RIGHT:
-		vel = Vector2(1, 0)
+	if event is InputEventKey:
+		if event.keycode == KEY_UP:
+			vel = Vector2(0, -1)
+		if event.keycode == KEY_LEFT:
+			vel = Vector2(-1, 0)
+		if event.keycode == KEY_DOWN:
+			vel = Vector2(0, 1)
+		if event.keycode == KEY_RIGHT:
+			vel = Vector2(1, 0)
 
 func _process(delta):
 	acc += delta
