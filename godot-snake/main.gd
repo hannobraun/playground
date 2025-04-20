@@ -3,11 +3,13 @@ extends Node2D
 const TILE_SIZE = Vector2(32, 32)
 const TICK = 0.2
 
+var field_size
+
 var pos = Vector2(0, 0)
 var acc = 0
 
 func _ready():
-	var field_size = get_viewport().get_visible_rect().size / TILE_SIZE
+	field_size = get_viewport().get_visible_rect().size / TILE_SIZE
 	pos = field_size / 2
 
 func _draw():
