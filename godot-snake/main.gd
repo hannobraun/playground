@@ -14,6 +14,16 @@ func _ready():
 	field_size = get_viewport().get_visible_rect().size / TILE_SIZE
 	pos = field_size / 2
 
+func _input(event: InputEvent):
+	if event.keycode == KEY_UP:
+		vel = Vector2(0, -1)
+	if event.keycode == KEY_LEFT:
+		vel = Vector2(-1, 0)
+	if event.keycode == KEY_DOWN:
+		vel = Vector2(0, 1)
+	if event.keycode == KEY_RIGHT:
+		vel = Vector2(1, 0)
+
 func _process(delta):
 	acc += delta
 
