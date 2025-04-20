@@ -26,4 +26,13 @@ func _process(delta):
 		pos += Vector2(1, 0)
 		acc -= TICK
 
+	if pos.x < 0:
+		pos.x = field_size.x - 1
+	if pos.y < 0:
+		pos.y = field_size.y - 1
+	if pos.x >= field_size.x:
+		pos.x = 0
+	if pos.y >= field_size.y:
+		pos.y = 0
+
 	queue_redraw()
