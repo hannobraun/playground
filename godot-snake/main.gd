@@ -1,7 +1,7 @@
 extends Node2D
 
 const TILE_SIZE = Vector2(16, 16)
-const TICK = 0.2
+const TICK = 0.1
 
 var field_size
 
