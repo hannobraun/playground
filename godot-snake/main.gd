@@ -12,13 +12,6 @@ func _ready():
 	field_size = get_viewport().get_visible_rect().size / TILE_SIZE
 	pos = field_size / 2
 
-func _draw():
-	draw_rect(
-		Rect2(pos * TILE_SIZE, TILE_SIZE),
-		Color(1, 1, 1, 1),
-		true,
-	)
-
 func _process(delta):
 	acc += delta
 
@@ -36,3 +29,10 @@ func _process(delta):
 		pos.y = 0
 
 	queue_redraw()
+
+func _draw():
+	draw_rect(
+		Rect2(pos * TILE_SIZE, TILE_SIZE),
+		Color(1, 1, 1, 1),
+		true,
+	)
