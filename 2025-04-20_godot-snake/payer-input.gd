@@ -9,6 +9,9 @@ const RIGHT = Vector2(1, 0)
 var _direction = RIGHT
 var events = Array()
 
+func direction():
+	return _direction
+
 func on_new_direction(new_direction):
 	if new_direction == null:
 		return

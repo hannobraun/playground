@@ -8,7 +8,7 @@ var field_size
 var input = PlayerInput.new()
 
 var pos = Vector2(0, 0)
-var vel = input._direction
+var vel = input.direction()
 
 var time_acc = 0
 
