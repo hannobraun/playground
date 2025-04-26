@@ -9,7 +9,7 @@ const RIGHT = Vector2(1, 0)
 var _direction = RIGHT
 var events = Array()
 
-func on_direction(new_direction):
+func on_new_direction(new_direction):
 	if new_direction == null:
 		return
 		

@@ -19,13 +19,13 @@ func _ready():
 func _input(event: InputEvent):
 	if event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_UP:
-			input.on_direction(PlayerInput.UP)
+			input.on_new_direction(PlayerInput.UP)
 		if event.keycode == KEY_LEFT:
-			input.on_direction(PlayerInput.LEFT)
+			input.on_new_direction(PlayerInput.LEFT)
 		if event.keycode == KEY_DOWN:
-			input.on_direction(PlayerInput.DOWN)
+			input.on_new_direction(PlayerInput.DOWN)
 		if event.keycode == KEY_RIGHT:
-			input.on_direction(PlayerInput.RIGHT)
+			input.on_new_direction(PlayerInput.RIGHT)
 
 func _process(delta):
 	time_acc += delta
