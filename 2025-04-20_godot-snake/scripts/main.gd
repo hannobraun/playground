@@ -1,7 +1,5 @@
 extends Node2D
 
-const TICK = 0.1
-
 var field
 var input
 var snake
@@ -30,9 +28,9 @@ func _input(event: InputEvent):
 func _process(delta):
 	time_acc += delta
 
-	while time_acc >= TICK:
+	while time_acc >= Ticker.TICK:
 		snake.update(field, input)
-		time_acc -= TICK
+		time_acc -= Ticker.TICK
 
 	queue_redraw()
 
