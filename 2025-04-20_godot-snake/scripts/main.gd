@@ -9,9 +9,8 @@ var snake
 var time_acc = 0
 
 func _ready():
-	field = Field.new()
+	field = Field.new(get_viewport().get_visible_rect().size)
 	input = PlayerInput.new()
-	field.size = get_viewport().get_visible_rect().size / field.TILE_SIZE
 	snake = Snake.new(input)
 	snake.position = field.size / 2
 
