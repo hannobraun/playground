@@ -32,8 +32,7 @@ func _process(delta):
 	time_acc += delta
 
 	while time_acc >= TICK:
-		snake.velocity = input.direction()
-		snake.position += snake.velocity
+		snake.update(input)
 		time_acc -= TICK
 
 	if snake.position.x < 0:
