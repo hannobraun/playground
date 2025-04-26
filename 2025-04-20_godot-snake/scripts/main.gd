@@ -11,8 +11,7 @@ var time_acc = 0
 func _ready():
 	field = Field.new(get_viewport().get_visible_rect().size)
 	input = PlayerInput.new()
-	snake = Snake.new(input)
-	snake.position = field.size / 2
+	snake = Snake.new(field, input)
 
 func _input(event: InputEvent):
 	if event is InputEventKey and event.is_pressed():

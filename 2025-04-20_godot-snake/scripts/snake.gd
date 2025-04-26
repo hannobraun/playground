@@ -4,7 +4,8 @@ class_name Snake
 var position
 var velocity
 
-func _init(input):
+func _init(field, input):
+	position = field.size / 2
 	velocity = input.direction()
 
 func update(input):
