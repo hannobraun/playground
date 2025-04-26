@@ -34,14 +34,7 @@ func _process(delta):
 		snake.update(input)
 		time_acc -= TICK
 
-	if snake.position.x < 0:
-		snake.position.x = field.size.x - 1
-	if snake.position.y < 0:
-		snake.position.y = field.size.y - 1
-	if snake.position.x >= field.size.x:
-		snake.position.x = 0
-	if snake.position.y >= field.size.y:
-		snake.position.y = 0
+	snake.position = field.normalize_position(snake.position)
 
 	queue_redraw()
 
