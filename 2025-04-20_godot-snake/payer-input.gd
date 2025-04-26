@@ -7,11 +7,11 @@ const DOWN = Vector2(0, 1)
 const RIGHT = Vector2(1, 0)
 
 var _direction = RIGHT
-var events = Array()
+var _events = Array()
 
 func direction():
-	if not events.is_empty():
-		_direction = events.pop_front()
+	if not _events.is_empty():
+		_direction = _events.pop_front()
 
 	return _direction
 
@@ -24,12 +24,12 @@ func on_new_direction(new_direction):
 	var not_reversing_direction
 	var not_duplicating_event
 	
-	if events.is_empty():
+	if _events.is_empty():
 		not_reversing_direction = new_direction != opposite
 		not_duplicating_event = new_direction != _direction
 	else:
-		not_reversing_direction = events.back() != opposite
-		not_duplicating_event = not events.has(new_direction)
+		not_reversing_direction = _events.back() != opposite
+		not_duplicating_event = not _events.has(new_direction)
 	
 	if not_reversing_direction and not_duplicating_event:
-		events.push_back(new_direction)
+		_events.push_back(new_direction)
