@@ -13,7 +13,7 @@ var field_size
 var pos = Vector2(0, 0)
 var vel = RIGHT
 
-var acc = 0
+var time_acc = 0
 
 func _ready():
 	field_size = get_viewport().get_visible_rect().size / TILE_SIZE
@@ -31,11 +31,11 @@ func _input(event: InputEvent):
 			vel = RIGHT
 
 func _process(delta):
-	acc += delta
+	time_acc += delta
 
-	while acc >= TICK:
+	while time_acc >= TICK:
 		pos += vel
-		acc -= TICK
+		time_acc -= TICK
 
 	if pos.x < 0:
 		pos.x = field_size.x - 1
