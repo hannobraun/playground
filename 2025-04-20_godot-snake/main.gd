@@ -11,7 +11,7 @@ const RIGHT = Vector2(1, 0)
 var field_size
 
 var pos = Vector2(0, 0)
-var vel = Vector2(1, 0)
+var vel = RIGHT
 
 var acc = 0
 
