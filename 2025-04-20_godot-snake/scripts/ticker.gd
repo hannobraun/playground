@@ -3,15 +3,15 @@ class_name Ticker
 
 const TICK = 0.1
 
-var time_acc = 0
+var _accumulated_time = 0
 
 func on_update(delta):
-	time_acc += delta
+	_accumulated_time += delta
 
 func tick():
-	var should_tick = time_acc >= TICK
+	var should_tick = _accumulated_time >= TICK
 	
 	if should_tick:
-		time_acc -= TICK
+		_accumulated_time -= TICK
 
 	return should_tick
