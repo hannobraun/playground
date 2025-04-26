@@ -3,6 +3,11 @@ extends Node2D
 const TILE_SIZE = Vector2(16, 16)
 const TICK = 0.1
 
+const UP = Vector2(0, -1)
+const LEFT = Vector2(-1, 0)
+const DOWN = Vector2(0, 1)
+const RIGHT = Vector2(1, 0)
+
 var field_size
 
 var pos = Vector2(0, 0)
@@ -15,11 +20,6 @@ func _ready():
 	pos = field_size / 2
 
 func _input(event: InputEvent):
-	const UP = Vector2(0, -1)
-	const LEFT = Vector2(-1, 0)
-	const DOWN = Vector2(0, 1)
-	const RIGHT = Vector2(1, 0)
-	
 	if event is InputEventKey:
 		if event.keycode == KEY_UP and vel != DOWN:
 			vel = UP
