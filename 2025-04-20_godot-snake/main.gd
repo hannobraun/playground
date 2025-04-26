@@ -13,6 +13,8 @@ var field_size
 var pos = Vector2(0, 0)
 var vel = RIGHT
 
+var input_events = Array()
+
 var time_acc = 0
 
 func _ready():
@@ -36,7 +38,7 @@ func _input(event: InputEvent):
 			var opposite = dir * -1
 			
 			if vel != opposite:
-				vel = dir
+				input_events.push_back(dir)
 
 func _process(delta):
 	time_acc += delta
@@ -44,6 +46,9 @@ func _process(delta):
 	while time_acc >= TICK:
 		pos += vel
 		time_acc -= TICK
+
+	if not input_events.is_empty():
+		vel = input_events.pop_front()
 
 	if pos.x < 0:
 		pos.x = field_size.x - 1
