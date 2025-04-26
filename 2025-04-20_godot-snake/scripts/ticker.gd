@@ -9,9 +9,9 @@ func on_update(delta):
 	time_acc += delta
 
 func tick():
-	var tick = time_acc >= TICK
+	var should_tick = time_acc >= TICK
 	
-	if tick:
+	if should_tick:
 		time_acc -= TICK
 
-	return tick
+	return should_tick
