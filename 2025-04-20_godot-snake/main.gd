@@ -8,7 +8,7 @@ var field_size
 var input = PlayerInput.new()
 
 var pos = Vector2(0, 0)
-var vel = input.direction
+var vel = input._direction
 
 var time_acc = 0
 
@@ -32,8 +32,8 @@ func _process(delta):
 
 	while time_acc >= TICK:
 		if not input.events.is_empty():
-			input.direction = input.events.pop_front()
-			vel = input.direction
+			input._direction = input.events.pop_front()
+			vel = input._direction
 
 		pos += vel
 		time_acc -= TICK
