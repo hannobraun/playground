@@ -22,7 +22,7 @@ func _ready():
 	pos = field_size / 2
 
 func _input(event: InputEvent):
-	if event is InputEventKey:
+	if event is InputEventKey and event.is_pressed():
 		var dir
 
 		if event.keycode == KEY_UP:
