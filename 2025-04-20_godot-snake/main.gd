@@ -52,7 +52,8 @@ func _process(delta):
 		pos += vel
 		
 		if not input.events.is_empty():
-			vel = input.events.pop_front()
+			input.direction = input.events.pop_front()
+			vel = input.direction
 
 		time_acc -= TICK
 
