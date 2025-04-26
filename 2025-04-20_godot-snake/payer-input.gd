@@ -10,6 +10,9 @@ var _direction = RIGHT
 var events = Array()
 
 func direction():
+	if not events.is_empty():
+		_direction = events.pop_front()
+
 	return _direction
 
 func on_new_direction(new_direction):

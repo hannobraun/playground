@@ -31,10 +31,7 @@ func _process(delta):
 	time_acc += delta
 
 	while time_acc >= TICK:
-		if not input.events.is_empty():
-			input._direction = input.events.pop_front()
-			vel = input._direction
-
+		vel = input.direction()
 		pos += vel
 		time_acc -= TICK
 
