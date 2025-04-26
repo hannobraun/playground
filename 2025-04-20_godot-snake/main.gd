@@ -18,6 +18,9 @@ func _ready():
 
 func _input(event: InputEvent):
 	if event is InputEventKey and event.is_pressed():
+		if event.keycode == KEY_ESCAPE:
+			get_tree().quit()
+			
 		if event.keycode == KEY_UP:
 			input.on_new_direction(PlayerInput.UP)
 		if event.keycode == KEY_LEFT:
