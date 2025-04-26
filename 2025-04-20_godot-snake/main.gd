@@ -37,7 +37,7 @@ func _input(event: InputEvent):
 		if dir != null:
 			var opposite = dir * -1
 			
-			if vel != opposite:
+			if vel != opposite and input_events.back() != opposite:
 				input_events.push_back(dir)
 
 func _process(delta):
