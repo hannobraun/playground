@@ -4,7 +4,7 @@ var field
 var input
 var snake
 
-var time_acc = 0
+var ticker = Ticker.new()
 
 func _ready():
 	field = Field.new(get_viewport().get_visible_rect().size)
@@ -26,11 +26,11 @@ func _input(event: InputEvent):
 			input.on_new_direction(PlayerInput.RIGHT)
 
 func _process(delta):
-	time_acc += delta
+	ticker.time_acc += delta
 
-	while time_acc >= Ticker.TICK:
+	while ticker.time_acc >= Ticker.TICK:
 		snake.update(field, input)
-		time_acc -= Ticker.TICK
+		ticker.time_acc -= Ticker.TICK
 
 	queue_redraw()
 
