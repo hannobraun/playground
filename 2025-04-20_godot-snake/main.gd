@@ -21,13 +21,13 @@ func _input(event: InputEvent):
 	const RIGHT = Vector2(1, 0)
 	
 	if event is InputEventKey:
-		if event.keycode == KEY_UP:
+		if event.keycode == KEY_UP and vel != DOWN:
 			vel = UP
-		if event.keycode == KEY_LEFT:
+		if event.keycode == KEY_LEFT and vel != RIGHT:
 			vel = LEFT
-		if event.keycode == KEY_DOWN:
+		if event.keycode == KEY_DOWN and vel != UP:
 			vel = DOWN
-		if event.keycode == KEY_RIGHT:
+		if event.keycode == KEY_RIGHT and vel != LEFT:
 			vel = RIGHT
 
 func _process(delta):
