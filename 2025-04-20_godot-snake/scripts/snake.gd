@@ -1,6 +1,7 @@
 extends RefCounted
 class_name Snake
 
+var length = 3
 var positions = Array()
 var velocity
 
@@ -19,3 +20,6 @@ func update(field, input):
 		var next_previous_position = positions[i]
 		positions[i] = previous_position
 		previous_position = next_previous_position
+
+	if positions.size() < length:
+		positions.push_back(positions.back() - velocity)
