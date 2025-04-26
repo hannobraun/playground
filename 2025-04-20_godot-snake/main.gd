@@ -38,12 +38,16 @@ func _input(event: InputEvent):
 			var opposite = dir * -1
 			
 			var not_reversing_direction
+			var not_duplicating_event
+			
 			if input_events.is_empty():
 				not_reversing_direction = vel != opposite
+				not_duplicating_event = vel != dir
 			else:
 				not_reversing_direction = input_events.back() != opposite
+				not_duplicating_event = not input_events.has(dir)
 			
-			if not_reversing_direction:
+			if not_reversing_direction and not_duplicating_event:
 				input_events.push_back(dir)
 
 func _process(delta):
