@@ -26,7 +26,7 @@ func _input(event: InputEvent):
 			input.on_new_direction(PlayerInput.RIGHT)
 
 func _process(delta):
-	ticker.time_acc += delta
+	ticker.on_update(delta)
 
 	while ticker.time_acc >= Ticker.TICK:
 		snake.update(field, input)
