@@ -3,8 +3,6 @@ extends Node2D
 const TILE_SIZE = Vector2(16, 16)
 const TICK = 0.1
 
-var input_events = Array()
-
 var field_size
 
 var input = PlayerInput.new()
@@ -37,15 +35,15 @@ func _input(event: InputEvent):
 			var not_reversing_direction
 			var not_duplicating_event
 			
-			if input_events.is_empty():
+			if input.events.is_empty():
 				not_reversing_direction = vel != opposite
 				not_duplicating_event = vel != dir
 			else:
-				not_reversing_direction = input_events.back() != opposite
-				not_duplicating_event = not input_events.has(dir)
+				not_reversing_direction = input.events.back() != opposite
+				not_duplicating_event = not input.events.has(dir)
 			
 			if not_reversing_direction and not_duplicating_event:
-				input_events.push_back(dir)
+				input.events.push_back(dir)
 
 func _process(delta):
 	time_acc += delta
@@ -53,8 +51,8 @@ func _process(delta):
 	while time_acc >= TICK:
 		pos += vel
 		
-		if not input_events.is_empty():
-			vel = input_events.pop_front()
+		if not input.events.is_empty():
+			vel = input.events.pop_front()
 
 		time_acc -= TICK
 
