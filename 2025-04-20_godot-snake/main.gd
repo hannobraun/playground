@@ -8,12 +8,12 @@ const LEFT = Vector2(-1, 0)
 const DOWN = Vector2(0, 1)
 const RIGHT = Vector2(1, 0)
 
+var input_events = Array()
+
 var field_size
 
 var pos = Vector2(0, 0)
 var vel = RIGHT
-
-var input_events = Array()
 
 var time_acc = 0
 
