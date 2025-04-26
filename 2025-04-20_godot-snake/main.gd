@@ -36,6 +36,7 @@ func _input(event: InputEvent):
 		
 		if dir != null:
 			var opposite = dir * -1
+			
 			var not_reversing_direction = (
 				vel != opposite
 				and input_events.back() != opposite
