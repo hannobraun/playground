@@ -12,7 +12,7 @@ var time_acc = 0
 
 func _ready():
 	field_size = get_viewport().get_visible_rect().size / TILE_SIZE
-	snake.pos = field_size / 2
+	snake.position = field_size / 2
 
 func _input(event: InputEvent):
 	if event is InputEventKey and event.is_pressed():
@@ -33,23 +33,23 @@ func _process(delta):
 
 	while time_acc >= TICK:
 		snake.vel = input.direction()
-		snake.pos += snake.vel
+		snake.position += snake.vel
 		time_acc -= TICK
 
-	if snake.pos.x < 0:
-		snake.pos.x = field_size.x - 1
-	if snake.pos.y < 0:
-		snake.pos.y = field_size.y - 1
-	if snake.pos.x >= field_size.x:
-		snake.pos.x = 0
-	if snake.pos.y >= field_size.y:
-		snake.pos.y = 0
+	if snake.position.x < 0:
+		snake.position.x = field_size.x - 1
+	if snake.position.y < 0:
+		snake.position.y = field_size.y - 1
+	if snake.position.x >= field_size.x:
+		snake.position.x = 0
+	if snake.position.y >= field_size.y:
+		snake.position.y = 0
 
 	queue_redraw()
 
 func _draw():
 	draw_rect(
-		Rect2(snake.pos * TILE_SIZE, TILE_SIZE),
+		Rect2(snake.position * TILE_SIZE, TILE_SIZE),
 		Color(1, 1, 1, 1),
 		true,
 	)
