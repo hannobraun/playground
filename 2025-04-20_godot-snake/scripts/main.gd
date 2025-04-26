@@ -31,10 +31,8 @@ func _process(delta):
 	time_acc += delta
 
 	while time_acc >= TICK:
-		snake.update(input)
+		snake.update(field, input)
 		time_acc -= TICK
-
-	snake.position = field.normalize_position(snake.position)
 
 	queue_redraw()
 
