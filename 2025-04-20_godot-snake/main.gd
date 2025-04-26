@@ -37,10 +37,11 @@ func _input(event: InputEvent):
 		if dir != null:
 			var opposite = dir * -1
 			
-			var not_reversing_direction = (
-				vel != opposite
-				and input_events.back() != opposite
-			)
+			var not_reversing_direction
+			if input_events.is_empty():
+				not_reversing_direction = vel != opposite
+			else:
+				not_reversing_direction = input_events.back() != opposite
 			
 			if not_reversing_direction:
 				input_events.push_back(dir)
