@@ -34,8 +34,9 @@ func _process(delta):
 	queue_redraw()
 
 func _draw():
-	draw_rect(
-		Rect2(snake.position * field.TILE_SIZE, field.TILE_SIZE),
-		Color(1, 1, 1, 1),
-		true,
-	)
+	for position in snake.positions:
+		draw_rect(
+			Rect2(position * field.TILE_SIZE, field.TILE_SIZE),
+			Color(1, 1, 1, 1),
+			true,
+		)
