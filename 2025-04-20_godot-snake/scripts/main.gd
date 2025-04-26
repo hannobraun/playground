@@ -3,16 +3,15 @@ extends Node2D
 const TILE_SIZE = Vector2(16, 16)
 const TICK = 0.1
 
-var field_size
-
+var field = Field.new()
 var input = PlayerInput.new()
 var snake = Snake.new(input)
 
 var time_acc = 0
 
 func _ready():
-	field_size = get_viewport().get_visible_rect().size / TILE_SIZE
-	snake.position = field_size / 2
+	field.field_size = get_viewport().get_visible_rect().size / TILE_SIZE
+	snake.position = field.field_size / 2
 
 func _input(event: InputEvent):
 	if event is InputEventKey and event.is_pressed():
@@ -36,12 +35,12 @@ func _process(delta):
 		time_acc -= TICK
 
 	if snake.position.x < 0:
-		snake.position.x = field_size.x - 1
+		snake.position.x = field.field_size.x - 1
 	if snake.position.y < 0:
-		snake.position.y = field_size.y - 1
-	if snake.position.x >= field_size.x:
+		snake.position.y = field.field_size.y - 1
+	if snake.position.x >= field.field_size.x:
 		snake.position.x = 0
-	if snake.position.y >= field_size.y:
+	if snake.position.y >= field.field_size.y:
 		snake.position.y = 0
 
 	queue_redraw()
