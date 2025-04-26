@@ -1,6 +1,5 @@
 extends Node2D
 
-const TILE_SIZE = Vector2(16, 16)
 const TICK = 0.1
 
 var field
@@ -12,7 +11,7 @@ var time_acc = 0
 func _ready():
 	field = Field.new()
 	input = PlayerInput.new()
-	field.size = get_viewport().get_visible_rect().size / TILE_SIZE
+	field.size = get_viewport().get_visible_rect().size / field.TILE_SIZE
 	snake = Snake.new(input)
 	snake.position = field.size / 2
 
@@ -50,7 +49,7 @@ func _process(delta):
 
 func _draw():
 	draw_rect(
-		Rect2(snake.position * TILE_SIZE, TILE_SIZE),
+		Rect2(snake.position * field.TILE_SIZE, field.TILE_SIZE),
 		Color(1, 1, 1, 1),
 		true,
 	)
