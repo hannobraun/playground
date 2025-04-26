@@ -3,17 +3,12 @@ extends Node2D
 const TILE_SIZE = Vector2(16, 16)
 const TICK = 0.1
 
-const UP = Vector2(0, -1)
-const LEFT = Vector2(-1, 0)
-const DOWN = Vector2(0, 1)
-const RIGHT = Vector2(1, 0)
-
 var input_events = Array()
 
 var field_size
 
 var pos = Vector2(0, 0)
-var vel = RIGHT
+var vel = PlayerInput.RIGHT
 
 var time_acc = 0
 
@@ -26,13 +21,13 @@ func _input(event: InputEvent):
 		var dir
 
 		if event.keycode == KEY_UP:
-			dir = UP
+			dir = PlayerInput.UP
 		if event.keycode == KEY_LEFT:
-			dir = LEFT
+			dir = PlayerInput.LEFT
 		if event.keycode == KEY_DOWN:
-			dir = DOWN
+			dir = PlayerInput.DOWN
 		if event.keycode == KEY_RIGHT:
-			dir = RIGHT
+			dir = PlayerInput.RIGHT
 		
 		if dir != null:
 			var opposite = dir * -1
