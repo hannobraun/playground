@@ -3,14 +3,17 @@ extends Node2D
 const TILE_SIZE = Vector2(16, 16)
 const TICK = 0.1
 
-var field = Field.new()
-var input = PlayerInput.new()
-var snake = Snake.new(input)
+var field
+var input
+var snake
 
 var time_acc = 0
 
 func _ready():
+	field = Field.new()
+	input = PlayerInput.new()
 	field.size = get_viewport().get_visible_rect().size / TILE_SIZE
+	snake = Snake.new(input)
 	snake.position = field.size / 2
 
 func _input(event: InputEvent):
