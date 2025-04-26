@@ -8,3 +8,22 @@ const RIGHT = Vector2(1, 0)
 
 var direction = RIGHT
 var events = Array()
+
+func on_direction(new_direction):
+	if new_direction == null:
+		return
+		
+	var opposite = direction * -1
+	
+	var not_reversing_direction
+	var not_duplicating_event
+	
+	if events.is_empty():
+		not_reversing_direction = new_direction != opposite
+		not_duplicating_event = new_direction != direction
+	else:
+		not_reversing_direction = events.back() != opposite
+		not_duplicating_event = not events.has(new_direction)
+	
+	if not_reversing_direction and not_duplicating_event:
+		events.push_back(new_direction)

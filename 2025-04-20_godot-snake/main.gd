@@ -29,21 +29,7 @@ func _input(event: InputEvent):
 		if event.keycode == KEY_RIGHT:
 			new_direction = PlayerInput.RIGHT
 		
-		if new_direction != null:
-			var opposite = new_direction * -1
-			
-			var not_reversing_direction
-			var not_duplicating_event
-			
-			if input.events.is_empty():
-				not_reversing_direction = vel != opposite
-				not_duplicating_event = vel != new_direction
-			else:
-				not_reversing_direction = input.events.back() != opposite
-				not_duplicating_event = not input.events.has(new_direction)
-			
-			if not_reversing_direction and not_duplicating_event:
-				input.events.push_back(new_direction)
+		input.on_direction(new_direction)
 
 func _process(delta):
 	time_acc += delta
