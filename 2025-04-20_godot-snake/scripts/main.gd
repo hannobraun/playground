@@ -28,9 +28,8 @@ func _input(event: InputEvent):
 func _process(delta):
 	ticker.on_update(delta)
 
-	while ticker.time_acc >= Ticker.TICK:
+	while ticker.tick():
 		snake.update(field, input)
-		ticker.time_acc -= Ticker.TICK
 
 	queue_redraw()
 
