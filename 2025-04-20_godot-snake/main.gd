@@ -23,17 +23,20 @@ func _input(event: InputEvent):
 	if event is InputEventKey:
 		var dir
 
-		if event.keycode == KEY_UP and vel != DOWN:
+		if event.keycode == KEY_UP:
 			dir = UP
-		if event.keycode == KEY_LEFT and vel != RIGHT:
+		if event.keycode == KEY_LEFT:
 			dir = LEFT
-		if event.keycode == KEY_DOWN and vel != UP:
+		if event.keycode == KEY_DOWN:
 			dir = DOWN
-		if event.keycode == KEY_RIGHT and vel != LEFT:
+		if event.keycode == KEY_RIGHT:
 			dir = RIGHT
 		
 		if dir != null:
-			vel = dir
+			var opposite = dir * -1
+			
+			if vel != opposite:
+				vel = dir
 
 func _process(delta):
 	time_acc += delta
