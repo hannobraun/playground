@@ -11,10 +11,11 @@ func _init(field, input):
 func update(field, input):
 	velocity = input.direction()
 	
-	for i in range(positions.size()):
-		var position = positions[i]
-		
-		position += velocity
-		position = field.normalize_position(position)
-		
-		positions[i] = position
+	var previous_position = positions[0]
+	positions[0] = positions[0] + velocity
+	positions[0] = field.normalize_position(positions[0])
+	
+	for i in range(1, positions.size()):
+		var next_previous_position = positions[i]
+		positions[i] = previous_position
+		previous_position = next_previous_position
