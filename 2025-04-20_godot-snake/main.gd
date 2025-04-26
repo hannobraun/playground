@@ -50,10 +50,11 @@ func _process(delta):
 
 	while time_acc >= TICK:
 		pos += vel
-		time_acc -= TICK
+		
+		if not input_events.is_empty():
+			vel = input_events.pop_front()
 
-	if not input_events.is_empty():
-		vel = input_events.pop_front()
+		time_acc -= TICK
 
 	if pos.x < 0:
 		pos.x = field_size.x - 1
