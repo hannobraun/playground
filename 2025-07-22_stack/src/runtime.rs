@@ -1,8 +1,8 @@
 use wasmtime::{Engine, Instance, Module, Store};
 
-pub fn execute(module: &[u8]) -> anyhow::Result<()> {
+pub fn execute(code: &[u8]) -> anyhow::Result<()> {
     let engine = Engine::default();
-    let module = Module::new(&engine, module)?;
+    let module = Module::new(&engine, code)?;
     let mut store = Store::new(&engine, ());
     let instance = Instance::new(&mut store, &module, &[])?;
 
