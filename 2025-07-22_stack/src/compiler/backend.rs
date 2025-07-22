@@ -1,6 +1,6 @@
 use crate::compiler::frontend::Program;
 
-pub fn generate(_: Program) -> anyhow::Result<Vec<u8>> {
+pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
     let mut code = Vec::new();
 
     let magic = b"\0asm";
@@ -113,8 +113,8 @@ pub fn generate(_: Program) -> anyhow::Result<Vec<u8>> {
             let code = {
                 let number_of_locals = 0;
                 let instruction_i32 = 0x41;
-                let n = 42;
                 let end = 0x0b;
+                let n = program.value.into();
 
                 let mut code = Vec::new();
                 leb128::write::unsigned(&mut code, number_of_locals)?;
