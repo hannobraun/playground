@@ -1,4 +1,9 @@
-use std::{fs, path::Path, process::Command};
+use std::{
+    fs::{self, File},
+    io::Read,
+    path::Path,
+    process::Command,
+};
 
 use wasmtime::{Engine, Instance, Module, Store};
 
@@ -23,8 +28,11 @@ fn main() -> anyhow::Result<()> {
         &reference_module,
     )?;
 
+    let mut module = Vec::new();
+    File::open(reference_module)?.read_to_end(&mut module)?;
+
     let engine = Engine::default();
-    let module = Module::from_file(&engine, reference_module)?;
+    let module = Module::new(&engine, module)?;
     let mut store = Store::new(&engine, ());
     let instance = Instance::new(&mut store, &module, &[])?;
 
