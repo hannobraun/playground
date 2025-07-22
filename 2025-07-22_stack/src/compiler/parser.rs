@@ -1,12 +1,30 @@
-pub fn parse() -> anyhow::Result<Program> {
+use std::collections::VecDeque;
+
+use crate::compiler::tokenizer::Token;
+
+pub fn parse(mut tokens: VecDeque<Token>) -> anyhow::Result<Program> {
     let mut program = Program {
         functions: Vec::new(),
     };
 
-    program.functions.push(Function {
-        name: "start".to_string(),
-        body: Expression::Literal { value: 42 },
-    });
+    while let Some(token) = tokens.pop_front() {
+        let Token::Fun = token else {
+            anyhow::bail!("Expected `fun` token.");
+        };
+
+        let Some(Token::Identifier { value: name }) = tokens.pop_front() else {
+            anyhow::bail!("Expected identifier.");
+        };
+
+        let Some(Token::Literal { value: body }) = tokens.pop_front() else {
+            anyhow::bail!("Expected expression.");
+        };
+
+        program.functions.push(Function {
+            name: name.to_string(),
+            body: Expression::Literal { value: body },
+        })
+    }
 
     Ok(program)
 }
