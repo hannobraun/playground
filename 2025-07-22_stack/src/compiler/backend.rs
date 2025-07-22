@@ -2,7 +2,10 @@ use crate::compiler::frontend::{Expression, Program};
 
 pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
     let number_of_functions = program.number_of_functions().into();
-    let function = Function { index: 0 };
+    let function = Function {
+        index: 0,
+        name: program.function.name.as_bytes().to_vec(),
+    };
 
     let mut code = Vec::new();
 
@@ -60,7 +63,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let export_section = 7;
 
         let data = {
-            let name = program.function.name.as_bytes();
+            let name = &function.name;
 
             let Ok(size_of_name) = name.len().try_into() else {
                 anyhow::bail!(
@@ -169,4 +172,5 @@ fn generate_function(
 
 pub struct Function {
     pub index: u32,
+    pub name: Vec<u8>,
 }
