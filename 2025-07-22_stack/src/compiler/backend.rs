@@ -156,7 +156,7 @@ fn generate_function(
 
 fn generate_function_export(
     function: &Function,
-    data: &mut Vec<u8>,
+    output: &mut Vec<u8>,
 ) -> anyhow::Result<()> {
     let Ok(size_of_name) = function.name.len().try_into() else {
         anyhow::bail!("Function section length doesn't fit into `u32`.");
@@ -167,10 +167,10 @@ fn generate_function_export(
     let function_index = 0x00;
     let index_of_function = 0;
 
-    leb128::write::unsigned(data, size_of_name)?;
-    data.extend(&function.name);
-    data.extend([function_index]);
-    leb128::write::unsigned(data, index_of_function)?;
+    leb128::write::unsigned(output, size_of_name)?;
+    output.extend(&function.name);
+    output.extend([function_index]);
+    leb128::write::unsigned(output, index_of_function)?;
 
     Ok(())
 }
