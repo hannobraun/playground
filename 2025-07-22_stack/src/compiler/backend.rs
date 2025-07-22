@@ -69,7 +69,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let export_section = 7;
 
         let data = {
-            let number_of_exports = program.number_of_functions().into();
+            let number_of_functions = program.number_of_functions().into();
 
             let name = program.function.name.as_bytes();
 
@@ -85,7 +85,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
             let index_of_function = 0;
 
             let mut data = Vec::new();
-            leb128::write::unsigned(&mut data, number_of_exports)?;
+            leb128::write::unsigned(&mut data, number_of_functions)?;
             leb128::write::unsigned(&mut data, size_of_name)?;
             data.extend(name);
             data.extend([function_index]);
