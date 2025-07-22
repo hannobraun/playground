@@ -4,7 +4,7 @@ pub fn parse() -> anyhow::Result<Program> {
     };
 
     program.functions.push(Function {
-        name: "start",
+        name: "start".to_string(),
         body: Expression::Literal { value: 42 },
     });
 
@@ -23,7 +23,7 @@ impl Program {
 }
 
 pub struct Function {
-    pub name: &'static str,
+    pub name: String,
     pub body: Expression,
 }
 
