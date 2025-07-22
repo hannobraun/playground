@@ -1,10 +1,10 @@
-pub fn parse() -> Program {
-    Program {
+pub fn parse() -> anyhow::Result<Program> {
+    Ok(Program {
         functions: vec![Function {
             name: "start",
             body: Expression::Literal { value: 42 },
         }],
-    }
+    })
 }
 
 pub struct Program {
