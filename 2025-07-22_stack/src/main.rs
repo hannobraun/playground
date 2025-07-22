@@ -1,5 +1,7 @@
 use std::{fs, path::Path, process::Command};
 
+use wasmtime::{Engine, Instance, Module, Store};
+
 fn main() -> anyhow::Result<()> {
     let status = Command::new("cargo")
         .arg("build")
@@ -20,6 +22,18 @@ fn main() -> anyhow::Result<()> {
         "target/wasm32v1-none/release/wasm_reference.wasm",
         &reference_module,
     )?;
+
+    let engine = Engine::default();
+    let module = Module::from_file(&engine, reference_module)?;
+    let mut store = Store::new(&engine, ());
+    let instance = Instance::new(&mut store, &module, &[])?;
+
+    let start = instance.get_typed_func::<(), i32>(&mut store, "start")?;
+    let result = start.call(&mut store, ())?;
+
+    if result != 42 {
+        anyhow::bail!("Unexpected result: {result}");
+    }
 
     Ok(())
 }
