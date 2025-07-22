@@ -71,7 +71,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let data = {
             let number_of_exports = 1;
 
-            let name = b"start";
+            let name = program.function.as_bytes();
 
             let Ok(size_of_name) = name.len().try_into() else {
                 anyhow::bail!(
