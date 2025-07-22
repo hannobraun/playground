@@ -39,6 +39,7 @@ fn main() -> anyhow::Result<()> {
     let start = instance.get_typed_func::<(), i32>(&mut store, "start")?;
     let result = start.call(&mut store, ())?;
 
+    println!();
     if result != 42 {
         anyhow::bail!("Unexpected result: {result}");
     }
