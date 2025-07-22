@@ -40,7 +40,9 @@ fn main() -> anyhow::Result<()> {
     let result = start.call(&mut store, ())?;
 
     println!();
-    if result != 42 {
+    if result == 42 {
+        println!("✅ `start` returned {result}");
+    } else {
         anyhow::bail!("Unexpected result: {result}");
     }
 
