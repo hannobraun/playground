@@ -1,10 +1,14 @@
 pub fn parse() -> anyhow::Result<Program> {
-    Ok(Program {
-        functions: vec![Function {
-            name: "start",
-            body: Expression::Literal { value: 42 },
-        }],
-    })
+    let mut program = Program {
+        functions: Vec::new(),
+    };
+
+    program.functions.push(Function {
+        name: "start",
+        body: Expression::Literal { value: 42 },
+    });
+
+    Ok(program)
 }
 
 pub struct Program {
