@@ -18,7 +18,7 @@ fn main() -> anyhow::Result<()> {
     fs::create_dir_all(output)?;
     fs::copy(
         "target/wasm32v1-none/release/wasm_reference.wasm",
-        reference_module,
+        &reference_module,
     )?;
 
     Ok(())
