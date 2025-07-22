@@ -63,9 +63,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let export_section = 7;
 
         let data = {
-            let name = &function.name;
-
-            let Ok(size_of_name) = name.len().try_into() else {
+            let Ok(size_of_name) = function.name.len().try_into() else {
                 anyhow::bail!(
                     "Function section length doesn't fit into `u32`."
                 );
@@ -79,7 +77,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
             let mut data = Vec::new();
             leb128::write::unsigned(&mut data, number_of_functions)?;
             leb128::write::unsigned(&mut data, size_of_name)?;
-            data.extend(name);
+            data.extend(&function.name);
             data.extend([function_index]);
             leb128::write::unsigned(&mut data, index_of_function)?;
 
