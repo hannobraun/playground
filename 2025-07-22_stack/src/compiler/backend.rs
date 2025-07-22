@@ -40,7 +40,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let data = {
             let mut data = Vec::new();
             leb128::write::unsigned(&mut data, number_of_functions)?;
-            generate_function(function, &mut data)?;
+            generate_function(&function, &mut data)?;
 
             data
         };
@@ -158,7 +158,7 @@ fn generate_function_type(output: &mut Vec<u8>) -> anyhow::Result<()> {
 }
 
 fn generate_function(
-    function: Function,
+    function: &Function,
     output: &mut Vec<u8>,
 ) -> anyhow::Result<()> {
     let type_index = function.index.into();
