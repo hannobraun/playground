@@ -1,6 +1,4 @@
-pub fn tokenize() -> Vec<Token> {
-    let code = "fun start 42";
-
+pub fn tokenize(code: &str) -> Vec<Token> {
     let mut tokens = Vec::new();
 
     for token in code.split_whitespace() {
