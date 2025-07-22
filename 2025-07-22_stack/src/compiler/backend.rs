@@ -173,15 +173,15 @@ fn generate_function_export(
 
 fn compile_expression(
     expression: &Expression,
-    code: &mut Vec<u8>,
+    output: &mut Vec<u8>,
 ) -> anyhow::Result<()> {
     let instruction_i32 = 0x41;
 
     let Expression::Literal { value } = expression;
     let n = (*value).into();
 
-    code.extend([instruction_i32]);
-    leb128::write::signed(code, n)?;
+    output.extend([instruction_i32]);
+    leb128::write::signed(output, n)?;
 
     Ok(())
 }
