@@ -2,11 +2,11 @@ use crate::compiler::frontend::{Expression, Program};
 
 pub fn compile_program(program: Program) -> anyhow::Result<Vec<u8>> {
     let number_of_functions = program.number_of_functions().into();
-    let function = Function {
+    let functions = vec![Function {
         index: 0,
         name: program.function.name.as_bytes().to_vec(),
         body: program.function.body,
-    };
+    }];
 
     let mut code = Vec::new();
 
@@ -44,7 +44,9 @@ pub fn compile_program(program: Program) -> anyhow::Result<Vec<u8>> {
         let data = {
             let mut data = Vec::new();
             leb128::write::unsigned(&mut data, number_of_functions)?;
-            generate_function(&function, &mut data)?;
+            for function in &functions {
+                generate_function(function, &mut data)?;
+            }
 
             data
         };
@@ -66,7 +68,9 @@ pub fn compile_program(program: Program) -> anyhow::Result<Vec<u8>> {
         let data = {
             let mut data = Vec::new();
             leb128::write::unsigned(&mut data, number_of_functions)?;
-            generate_function_export(&function, &mut data)?;
+            for function in &functions {
+                generate_function_export(function, &mut data)?;
+            }
 
             data
         };
@@ -88,7 +92,9 @@ pub fn compile_program(program: Program) -> anyhow::Result<Vec<u8>> {
         let data = {
             let mut data = Vec::new();
             leb128::write::unsigned(&mut data, number_of_functions)?;
-            compile_function_body(&function.body, &mut data)?;
+            for function in &functions {
+                compile_function_body(&function.body, &mut data)?;
+            }
 
             data
         };
