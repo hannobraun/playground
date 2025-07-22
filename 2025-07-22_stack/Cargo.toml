@@ -1,3 +1,6 @@
+[workspace]
+members = ["wasm-reference"]
+
 [package]
 name = "stack"
 edition = "2024"
