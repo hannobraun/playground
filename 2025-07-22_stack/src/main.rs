@@ -13,11 +13,12 @@ fn main() -> anyhow::Result<()> {
     }
 
     let output = Path::new("output");
+    let reference_module = output.join("reference.wasm");
 
     fs::create_dir_all(output)?;
     fs::copy(
         "target/wasm32v1-none/release/wasm_reference.wasm",
-        output.join("reference.wasm"),
+        reference_module,
     )?;
 
     Ok(())
