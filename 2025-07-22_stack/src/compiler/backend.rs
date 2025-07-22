@@ -159,10 +159,10 @@ fn generate_function_type(output: &mut Vec<u8>) -> anyhow::Result<()> {
 
 fn generate_function(
     function: Function,
-    data: &mut Vec<u8>,
+    output: &mut Vec<u8>,
 ) -> anyhow::Result<()> {
     let type_index = function.index.into();
-    leb128::write::unsigned(data, type_index)?;
+    leb128::write::unsigned(output, type_index)?;
 
     Ok(())
 }
