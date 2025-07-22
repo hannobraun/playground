@@ -5,6 +5,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
     let function = Function {
         index: 0,
         name: program.function.name.as_bytes().to_vec(),
+        body: program.function.body,
     };
 
     let mut code = Vec::new();
@@ -90,7 +91,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
                 let instruction_i32 = 0x41;
                 let end = 0x0b;
 
-                let Expression::Literal { value } = program.function.body;
+                let Expression::Literal { value } = function.body;
                 let n = value.into();
 
                 let mut code = Vec::new();
@@ -178,4 +179,5 @@ fn generate_function_export(
 pub struct Function {
     pub index: u32,
     pub name: Vec<u8>,
+    pub body: Expression,
 }
