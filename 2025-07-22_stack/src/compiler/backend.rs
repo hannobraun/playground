@@ -1,7 +1,7 @@
 use crate::compiler::parser::{Expression, Program};
 
 pub fn compile_program(program: Program) -> anyhow::Result<Vec<u8>> {
-    let number_of_functions = program.number_of_functions().into();
+    let number_of_functions = program.number_of_functions()?.into();
 
     let functions = (0..)
         .zip(program.functions)

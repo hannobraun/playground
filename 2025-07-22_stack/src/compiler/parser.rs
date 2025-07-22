@@ -12,12 +12,9 @@ pub struct Program {
 }
 
 impl Program {
-    pub fn number_of_functions(&self) -> u32 {
-        let Ok(len) = self.functions.len().try_into() else {
-            panic!("Number of functions can not be represented by `u32`.");
-        };
-
-        len
+    pub fn number_of_functions(&self) -> anyhow::Result<u32> {
+        let len = self.functions.len().try_into()?;
+        Ok(len)
     }
 }
 
