@@ -1,4 +1,6 @@
-pub fn generate() -> anyhow::Result<Vec<u8>> {
+use crate::compiler::frontend::Program;
+
+pub fn generate(_: Program) -> anyhow::Result<Vec<u8>> {
     let mut code = Vec::new();
 
     let magic = b"\0asm";
