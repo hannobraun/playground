@@ -2,11 +2,15 @@ use crate::compiler::parser::{Expression, Program};
 
 pub fn compile_program(program: Program) -> anyhow::Result<Vec<u8>> {
     let number_of_functions = program.number_of_functions().into();
-    let functions = vec![Function {
-        index: 0,
-        name: program.function.name.as_bytes().to_vec(),
-        body: program.function.body,
-    }];
+
+    let functions = (0..)
+        .zip(program.functions)
+        .map(|(index, function)| Function {
+            index,
+            name: function.name.as_bytes().to_vec(),
+            body: function.body,
+        })
+        .collect::<Vec<_>>();
 
     let mut code = Vec::new();
 

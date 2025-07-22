@@ -1,19 +1,23 @@
 pub fn parse() -> Program {
     Program {
-        function: Function {
+        functions: vec![Function {
             name: "start",
             body: Expression::Literal { value: 42 },
-        },
+        }],
     }
 }
 
 pub struct Program {
-    pub function: Function,
+    pub functions: Vec<Function>,
 }
 
 impl Program {
     pub fn number_of_functions(&self) -> u32 {
-        1
+        let Ok(len) = self.functions.len().try_into() else {
+            panic!("Number of functions can not be represented by `u32`.");
+        };
+
+        len
     }
 }
 
