@@ -71,7 +71,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let data = {
             let number_of_exports = 1;
 
-            let name = program.function.as_bytes();
+            let name = program.function.name.as_bytes();
 
             let Ok(size_of_name) = name.len().try_into() else {
                 anyhow::bail!(
@@ -114,7 +114,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
                 let number_of_locals = 0;
                 let instruction_i32 = 0x41;
                 let end = 0x0b;
-                let n = program.value.into();
+                let n = program.function.value.into();
 
                 let mut code = Vec::new();
                 leb128::write::unsigned(&mut code, number_of_locals)?;
