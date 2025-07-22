@@ -63,23 +63,9 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let export_section = 7;
 
         let data = {
-            let Ok(size_of_name) = function.name.len().try_into() else {
-                anyhow::bail!(
-                    "Function section length doesn't fit into `u32`."
-                );
-            };
-            let size_of_name: u32 = size_of_name;
-            let size_of_name: u64 = size_of_name.into();
-
-            let function_index = 0x00;
-            let index_of_function = 0;
-
             let mut data = Vec::new();
             leb128::write::unsigned(&mut data, number_of_functions)?;
-            leb128::write::unsigned(&mut data, size_of_name)?;
-            data.extend(&function.name);
-            data.extend([function_index]);
-            leb128::write::unsigned(&mut data, index_of_function)?;
+            generate_function_export(&function, &mut data)?;
 
             data
         };
@@ -164,6 +150,27 @@ fn generate_function(
 ) -> anyhow::Result<()> {
     let type_index = function.index.into();
     leb128::write::unsigned(output, type_index)?;
+
+    Ok(())
+}
+
+fn generate_function_export(
+    function: &Function,
+    data: &mut Vec<u8>,
+) -> anyhow::Result<()> {
+    let Ok(size_of_name) = function.name.len().try_into() else {
+        anyhow::bail!("Function section length doesn't fit into `u32`.");
+    };
+    let size_of_name: u32 = size_of_name;
+    let size_of_name: u64 = size_of_name.into();
+
+    let function_index = 0x00;
+    let index_of_function = 0;
+
+    leb128::write::unsigned(data, size_of_name)?;
+    data.extend(&function.name);
+    data.extend([function_index]);
+    leb128::write::unsigned(data, index_of_function)?;
 
     Ok(())
 }
