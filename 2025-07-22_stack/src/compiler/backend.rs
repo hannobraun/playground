@@ -13,7 +13,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let type_section = 1;
 
         let data = {
-            let number_of_types = 1;
+            let number_of_types = program.number_of_functions().into();
             let function_type = 0x60;
             let number_of_parameters = 0;
             let number_of_results = 1;
@@ -44,7 +44,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let function_section = 3;
 
         let data = {
-            let number_of_functions = 1;
+            let number_of_functions = program.number_of_functions().into();
             let type_index = 0;
 
             let mut data = Vec::new();
@@ -69,7 +69,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let export_section = 7;
 
         let data = {
-            let number_of_exports = 1;
+            let number_of_exports = program.number_of_functions().into();
 
             let name = program.function.name.as_bytes();
 
@@ -107,7 +107,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
 
     {
         let code_section = 10;
-        let number_of_functions = 1;
+        let number_of_functions = program.number_of_functions().into();
 
         let data = {
             let code = {
