@@ -2,7 +2,7 @@ pub fn parse() -> Program {
     Program {
         function: Function {
             name: "start",
-            value: 42,
+            body: Expression::Literal { value: 42 },
         },
     }
 }
@@ -19,5 +19,9 @@ impl Program {
 
 pub struct Function {
     pub name: &'static str,
-    pub value: i32,
+    pub body: Expression,
+}
+
+pub enum Expression {
+    Literal { value: i32 },
 }

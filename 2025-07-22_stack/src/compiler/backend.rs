@@ -1,4 +1,4 @@
-use crate::compiler::frontend::Program;
+use crate::compiler::frontend::{Expression, Program};
 
 pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
     let mut code = Vec::new();
@@ -114,7 +114,9 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
                 let number_of_locals = 0;
                 let instruction_i32 = 0x41;
                 let end = 0x0b;
-                let n = program.function.value.into();
+
+                let Expression::Literal { value } = program.function.body;
+                let n = value.into();
 
                 let mut code = Vec::new();
                 leb128::write::unsigned(&mut code, number_of_locals)?;
