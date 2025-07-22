@@ -154,7 +154,7 @@ fn generate_function_export(
 
 fn compile_function_body(
     body: &Expression,
-    data: &mut Vec<u8>,
+    output: &mut Vec<u8>,
 ) -> anyhow::Result<()> {
     let code = {
         let number_of_locals = 0;
@@ -174,8 +174,8 @@ fn compile_function_body(
     let size: u32 = size;
     let size: u64 = size.into();
 
-    leb128::write::unsigned(data, size)?;
-    data.extend(code);
+    leb128::write::unsigned(output, size)?;
+    output.extend(code);
 
     Ok(())
 }
