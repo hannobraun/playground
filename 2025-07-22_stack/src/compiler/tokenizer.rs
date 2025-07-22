@@ -1,11 +1,26 @@
 pub fn tokenize() -> Vec<Token> {
-    vec![
-        Token::Fun,
-        Token::Identifier {
-            value: "start".to_string(),
-        },
-        Token::Literal { value: 42 },
-    ]
+    let code = "fun start 42";
+
+    let mut tokens = Vec::new();
+
+    for token in code.split_whitespace() {
+        let token = match token {
+            "fun" => Token::Fun,
+            word => {
+                if let Ok(value) = word.parse::<i32>() {
+                    Token::Literal { value }
+                } else {
+                    Token::Identifier {
+                        value: word.to_string(),
+                    }
+                }
+            }
+        };
+
+        tokens.push(token);
+    }
+
+    tokens
 }
 
 pub enum Token {
