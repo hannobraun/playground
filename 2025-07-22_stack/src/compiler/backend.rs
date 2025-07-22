@@ -86,17 +86,7 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let code_section = 10;
 
         let data = {
-            let code = {
-                let number_of_locals = 0;
-                let end = 0x0b;
-
-                let mut code = Vec::new();
-                leb128::write::unsigned(&mut code, number_of_locals)?;
-                compile_expression(&function.body, &mut code)?;
-                code.extend([end]);
-
-                code
-            };
+            let code = compile_function_body(&function.body)?;
 
             let Ok(size) = code.len().try_into() else {
                 anyhow::bail!("Code section length doesn't fit into `u32`.");
@@ -169,6 +159,18 @@ fn generate_function_export(
     leb128::write::unsigned(output, index_of_function)?;
 
     Ok(())
+}
+
+fn compile_function_body(body: &Expression) -> anyhow::Result<Vec<u8>> {
+    let number_of_locals = 0;
+    let end = 0x0b;
+
+    let mut code = Vec::new();
+    leb128::write::unsigned(&mut code, number_of_locals)?;
+    compile_expression(body, &mut code)?;
+    code.extend([end]);
+
+    Ok(code)
 }
 
 fn compile_expression(
