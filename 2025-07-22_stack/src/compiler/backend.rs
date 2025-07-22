@@ -148,16 +148,16 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
     Ok(code)
 }
 
-fn generate_function_type(data: &mut Vec<u8>) -> anyhow::Result<()> {
+fn generate_function_type(output: &mut Vec<u8>) -> anyhow::Result<()> {
     let function_type = 0x60;
     let number_of_parameters = 0;
     let number_of_results = 1;
     let type_i32 = 0x7f;
 
-    data.extend([function_type]);
-    leb128::write::unsigned(data, number_of_parameters)?;
-    leb128::write::unsigned(data, number_of_results)?;
-    data.extend([type_i32]);
+    output.extend([function_type]);
+    leb128::write::unsigned(output, number_of_parameters)?;
+    leb128::write::unsigned(output, number_of_results)?;
+    output.extend([type_i32]);
 
     Ok(())
 }
