@@ -1,11 +1,11 @@
 pub fn generate() -> anyhow::Result<Vec<u8>> {
-    let mut module = Vec::new();
+    let mut code = Vec::new();
 
     let magic = b"\0asm";
-    module.extend(magic);
+    code.extend(magic);
 
     let version = [1, 0, 0, 0];
-    module.extend(version);
+    code.extend(version);
 
     {
         let type_section = 1;
@@ -33,9 +33,9 @@ pub fn generate() -> anyhow::Result<Vec<u8>> {
         let size: u32 = size;
         let size: u64 = size.into();
 
-        module.extend([type_section]);
-        leb128::write::unsigned(&mut module, size)?;
-        module.extend(data);
+        code.extend([type_section]);
+        leb128::write::unsigned(&mut code, size)?;
+        code.extend(data);
     }
 
     {
@@ -58,9 +58,9 @@ pub fn generate() -> anyhow::Result<Vec<u8>> {
         let size: u32 = size;
         let size: u64 = size.into();
 
-        module.extend([function_section]);
-        leb128::write::unsigned(&mut module, size)?;
-        module.extend(data);
+        code.extend([function_section]);
+        leb128::write::unsigned(&mut code, size)?;
+        code.extend(data);
     }
 
     {
@@ -98,9 +98,9 @@ pub fn generate() -> anyhow::Result<Vec<u8>> {
         let size: u32 = size;
         let size: u64 = size.into();
 
-        module.extend([export_section]);
-        leb128::write::unsigned(&mut module, size)?;
-        module.extend(data);
+        code.extend([export_section]);
+        leb128::write::unsigned(&mut code, size)?;
+        code.extend(data);
     }
 
     {
@@ -143,10 +143,10 @@ pub fn generate() -> anyhow::Result<Vec<u8>> {
         let size: u32 = size;
         let size: u64 = size.into();
 
-        module.extend([code_section]);
-        leb128::write::unsigned(&mut module, size)?;
-        module.extend(data);
+        code.extend([code_section]);
+        leb128::write::unsigned(&mut code, size)?;
+        code.extend(data);
     }
 
-    Ok(module)
+    Ok(code)
 }
