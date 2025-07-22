@@ -1,6 +1,8 @@
 use crate::compiler::frontend::{Expression, Program};
 
 pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
+    let number_of_functions = program.number_of_functions().into();
+
     let mut code = Vec::new();
 
     let magic = b"\0asm";
@@ -13,8 +15,6 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let type_section = 1;
 
         let data = {
-            let number_of_functions = program.number_of_functions().into();
-
             let mut data = Vec::new();
             leb128::write::unsigned(&mut data, number_of_functions)?;
             generate_function_type(&mut data)?;
@@ -37,7 +37,6 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let function_section = 3;
 
         let data = {
-            let number_of_functions = program.number_of_functions().into();
             let type_index = 0;
 
             let mut data = Vec::new();
@@ -62,8 +61,6 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let export_section = 7;
 
         let data = {
-            let number_of_functions = program.number_of_functions().into();
-
             let name = program.function.name.as_bytes();
 
             let Ok(size_of_name) = name.len().try_into() else {
@@ -100,7 +97,6 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
 
     {
         let code_section = 10;
-        let number_of_functions = program.number_of_functions().into();
 
         let data = {
             let code = {
