@@ -5,3 +5,6 @@ members = ["wasm-reference"]
 name = "stack"
 edition = "2024"
 publish = false
+
+[dependencies]
+anyhow = "*"
