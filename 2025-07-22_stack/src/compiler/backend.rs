@@ -88,16 +88,11 @@ pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
         let data = {
             let code = {
                 let number_of_locals = 0;
-                let instruction_i32 = 0x41;
                 let end = 0x0b;
-
-                let Expression::Literal { value } = function.body;
-                let n = value.into();
 
                 let mut code = Vec::new();
                 leb128::write::unsigned(&mut code, number_of_locals)?;
-                code.extend([instruction_i32]);
-                leb128::write::signed(&mut code, n)?;
+                compile_expression(&function.body, &mut code)?;
                 code.extend([end]);
 
                 code
@@ -172,6 +167,21 @@ fn generate_function_export(
     output.extend(&function.name);
     output.extend([function_index]);
     leb128::write::unsigned(output, index_of_function)?;
+
+    Ok(())
+}
+
+fn compile_expression(
+    expression: &Expression,
+    code: &mut Vec<u8>,
+) -> anyhow::Result<()> {
+    let instruction_i32 = 0x41;
+
+    let Expression::Literal { value } = expression;
+    let n = (*value).into();
+
+    code.extend([instruction_i32]);
+    leb128::write::signed(code, n)?;
 
     Ok(())
 }
