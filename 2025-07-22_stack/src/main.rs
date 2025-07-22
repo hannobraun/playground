@@ -1,4 +1,4 @@
-use wasmtime::{Engine, Instance, Module, Store};
+mod runtime;
 
 fn main() -> anyhow::Result<()> {
     let mut module = Vec::new();
@@ -150,20 +150,7 @@ fn main() -> anyhow::Result<()> {
         module.extend(data);
     }
 
-    let engine = Engine::default();
-    let module = Module::new(&engine, module)?;
-    let mut store = Store::new(&engine, ());
-    let instance = Instance::new(&mut store, &module, &[])?;
-
-    let start = instance.get_typed_func::<(), i32>(&mut store, "start")?;
-    let result = start.call(&mut store, ())?;
-
-    println!();
-    if result == 42 {
-        println!("✅ `start` returned {result}");
-    } else {
-        anyhow::bail!("Unexpected result: {result}");
-    }
+    runtime::execute(&module)?;
 
     Ok(())
 }
