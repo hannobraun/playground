@@ -1,6 +1,6 @@
 use crate::compiler::frontend::{Expression, Program};
 
-pub fn generate(program: Program) -> anyhow::Result<Vec<u8>> {
+pub fn compile_program(program: Program) -> anyhow::Result<Vec<u8>> {
     let number_of_functions = program.number_of_functions().into();
     let function = Function {
         index: 0,
