@@ -441,3 +441,17 @@ By importing modules into a block, we define that block's execution context. The
 The default compile-time context, available in modules, could allow us to emit warnings and errors. The default runtime context would provide stuff like debug output.
 
 There would be a shared subset between both, which includes functions we can expect to be available everywhere. Stuff like `+`.
+
+## Closures
+
+I think it makes sense for all blocks to close over their lexical environment. That would naturally allow runtime functions to use things defined in their compile-time context, like other functions.
+
+This closing over their environment should be simple, only copying bindings. If we allowed references, we'd either open the door for easy but horrible mistakes, require a borrow checker, or require auto-boxing shared bindings.
+
+Implemented naively, this would require functions to be defined in a specific order. A function could only call functions that were defined before it. But I think we can get around that, with a relatively simple rule.
+
+The rule would be, that blocks can access all bindings in their environment, that are available when the block is moved:
+
+- A block passed as an argument is moved then and there. It only can access what was defined before it.
+- A function in a module is moved by the compiler, between evaluation and translation of the module. At that point, the whole module has been evaluated and all bindings are available.
+- The latter case would still work, if modules returned a block as a result, to enable private and public bindings. Then the move would be from the module to the export block, which could be constructed at the very end of the module.
