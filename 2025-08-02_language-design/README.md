@@ -422,3 +422,7 @@ That returned block could reference private bindings via lexical scoping, withou
 ### Types
 
 I want types to be values that are constructed by the compile-time code. But so far, any details are unclear.
+
+### Symbol Syntax
+
+The syntax of symbols is a little too close to what I have in mind for typed number literals. One of those has to change.
