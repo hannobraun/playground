@@ -263,7 +263,7 @@ We can use variants of the `get` and `set` functions that we used for arrays, to
 { 1 => x . 2 => y . } @x get
 # The result is `1`.
 
-{ 1 => x . 2 => y .} @x 3 set
+{ 1 => x . 2 => y . } @x 3 set
 # The result is `{ 3 => x . 2 => y . }`.
 ```
 
