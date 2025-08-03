@@ -15,7 +15,7 @@ This design is written in the form of documentation, because I found that to be 
 
 The language is stack-based, as that makes for a very concise syntax that is easy to work with.
 
-Well, for me, who's going to be stuck with implementing this. You might see it differently. And I might join you in that view, later on, when I'll become a user of the language myself.
+Well, easy to work with for me, who's going to be stuck with implementing this. You might see it differently. And I might join you in that view, later on, when I'll become a user of the language myself.
 
 But let's move on. Here's a basic example.
 
@@ -23,9 +23,9 @@ But let's move on. Here's a basic example.
 1 2 +
 ```
 
-We have three tokens here, all of which refer to functions. All of those intrinsic functions, that are built into the compiler.
+We have three identifiers here, all of which refer to functions. And all of those are intrinsic functions, that are built into the compiler.
 
-`1` and `2` simply return these respective values and put them on the stack. `+` then takes those two values and puts their sum on the stack.
+`1` and `2` simply return these respective values and put them on the stack. `+` then takes those two values from the stack, and puts their sum back on.
 
 Once this is finished, the stack contains the number `3`. Plus whatever was on there in the first place.
 
@@ -33,7 +33,7 @@ This leaves a lot of questions unanswered. Like, what's actually the type of tho
 
 Long-term (and that day, most like, will never come), the answer might be type inference and other magic. But for now, let's not worry about it and prioritize ease of implementation.
 
-There's just one number type, and which one that is is implementation-defined. And I guess relying on anything but positive numbers between 0 and 127 is undefined behavior then.
+There's just one number type, and which one that is, is implementation-defined. I guess that means relying on anything but positive numbers between 0 and 127 is undefined behavior then.
 
 ### Assignment
 
@@ -45,12 +45,14 @@ I don't know about you, but I have a hard time dealing with _just_ a stack. It's
 
 This is the assignment operator (`=>`). After it, you put a whitespace-delimined list of identifiers. You close that list with a period (`.`).
 
-The assignment operator consumes as many values from the stack, as there are identifiers in its list. It assigns names to those values, so they might be accessed later.
+The assignment operator consumes as many values from the stack, as there are identifiers in the list. It assigns names to those values, so they might be accessed later using those names.
 
-Here, we access the names that we assigned above.
+Here's an example of doing just that.
 
 ```
+1 2 => a b .
 a b +
+# The result is `3`.
 ```
 
 ### Stack Manipulation
@@ -72,29 +74,31 @@ We can just implement those using assignment.
 
 ### Formatting
 
-All that the compiler cares about, is that tokens are separated with whitespace. It doesn't care how much whitespace that is, or what kind.
+All that the compiler cares about, is that tokens are separated by whitespace. It doesn't care how much whitespace that is, or what kind.
 
 Here's an assignment example from above:
 
 ```
-1 => a . a a
+1 2 => a b . b a
 ```
 
 It could also be written like this:
 
 ```
-1 => a .
-a a
+1 2 => a b .
+b a
 ```
 
 Or like this:
 
 ```
 1
+2
 =>
 a
+b
 .
-a
+b
 a
 ```
 
@@ -110,33 +114,34 @@ If we put `{` and `}` around some code, we group it into a block.
 
 A block is a value, just like a number. The result of the code above, is to put a block that contains this code on the stack.
 
-We could then assign it a name:
+We could then assign a name to that block.
 
 ```
 { 2 + } => add_two .
 ```
 
-Or we could apply it:
+Or we could apply it, to execute the code it contains.
 
 ```
 1 { 2 + } apply
-# The stack now contains `3`.
+# The result is `3`.
 ```
 
-Or we could combine both:
+Or we could combine both techniques.
 
 ```
 { 2 + } => add_two .
 1 add_two apply
+# The result is `3`.
 ```
 
 Having to write `apply` everywhere is not very convenient. And you might note, that we don't have to do this for intrinsic functions like `1`, `2`, `+`, or `apply` itself.
 
-That's because what we assigned to a name here is not a function. It is, as I said, a block. And blocks are a building block. They can be made into functions, and other things as well.
+That's because what we assigned a name here, is not a function. It is, as I said, a block. And blocks are just the raw material we use to build functions, and other things as well.
 
 ### Functions
 
-So let's do just that. Let's use a block to define a function.
+So let's do just that. Let's use a block to build a function.
 
 ```
 { 2 + } fun => add_two .
@@ -144,12 +149,12 @@ So let's do just that. Let's use a block to define a function.
 
 This is _almost_ what we did above, except that we call the intrinsic function `fun` after defining the block. `fun` consumes a block and returns a function that wraps that block.
 
-Functionts are mostly like blocks, except that when we evaluate them, we don't put a function value on the stack. We apply the function. And evaluating a value is what we do, when we call it by name.
+Functions are mostly like blocks, except that evaluating them doesn't put a function value on the stack. It _applies_ the function. And evaluating a value is what we always do, when we call it by name.
 
 ```
 { 2 + } fun => add_two .
 1 add_two
-# The stack now contains `3`.
+# The result is `3`.
 ```
 
 That's the same as above, except we no longer need that `apply`.
@@ -158,9 +163,9 @@ That's the same as above, except we no longer need that `apply`.
 
 So far, we've only defined functions with implicit parameters. `add_two` consumes an argument, a number, but it doesn't specify that explicitly.
 
-It does so by putting a number on the stack, but then calling a function that takes 2 numbers from the stack. As a result, the whole function consumes one number and returns one number.
+It does so _implicitly_, by putting a number on the stack, but then calling a function that takes 2 numbers from the stack. As a result, the whole function consumes one number and returns another one.
 
-And that's often fine, but sometimes we want named function parameters. And we can already do that!
+And that's often fine. But sometimes we want named parameters. And we can already do that!
 
 ```
 { => n
@@ -169,13 +174,13 @@ And that's often fine, but sometimes we want named function parameters. And we c
   fun => add_two
 ```
 
-This is the first example where we do something new, but don't require a new feature to do it! We just combine things we already had; blocks, functions, and assignments; and we get a function with named parameters.
+This is the first example where we do something new, but don't require a new feature to do it. We just combine things that we already have; blocks, functions, and assignments; and we get a function with named parameters.
 
 Strictly speaking, the parameter is still implicit. Only instead of the `+` consuming more than the function itself provides, we have an assignment that consumes something that the caller needs to supply.
 
 And by putting such an assignment first in a block, we can make the requirements of that block very explicit.
 
-This demonstrates a very important design principle: A minimal set of orthogonal features, that can be combined in interesting ways to build up more interesting constructs.
+This demonstrates a very important design principle: A minimal set of orthogonal features, that can be combined in interesting ways to build up more interesting things.
 
 ### Higher-Order Functions
 
@@ -183,18 +188,10 @@ By wrapping a function call into a block, we can use that function as the argume
 
 ```
 1 2 3 { + } do_twice
-# The stack now contains `6`.
+# The result is `6`.
 ```
 
-Here we pass a block to a function that, presumably, applies that block twice. We could also pass a function instead.
-
-```
-1 2 3 { + } fun do_twice
-```
-
-If `do_twice` calls `apply` on its argument, then that could be defined for functions as well as for blocks. In that case, this would result in the same output.
-
-Or `apply` might only be defined for blocks and not for functions, to avoid redundancy and prevent confusion and/or bad habits. Let's just answer that question with "undefined behavior" and move on.
+Here we pass a block to a function that, presumably, applies that block twice.
 
 ### Arrays
 
@@ -204,7 +201,7 @@ If we put some values between `[` and `]`, that groups them into a single array 
 [ 1 2 3 ]
 ```
 
-And with that, we can write the "multi-addition" above a bit more generally.
+And with that, we can write the previous example more elegantly, and more generally.
 
 ```
 [ 1 2 3 ] { + } fold
@@ -214,37 +211,37 @@ In principle, we could allow arbitrary code between `[` and `]`. As long as that
 
 ```
 1 [ 2 + ]
-# Results in `[ 3 ]`.
+# The result is `[ 3 ]`.
 
-[ { 1 } 3 times ] # results in
-# Results in `[ 1 1 1 ]`.
+[ { 1 } 3 times ]
+# The result is `[ 1 1 1 ]`.
 ```
 
-But there's a catch: This is a compiled language, and one with explicit memory allocation at that. So no auto-boxing shenanigans. Hence these arrays live on the stack, and we must know the size of these arrays at compile-time.
+But there's a catch: This is a compiled language, and one with explicit memory allocation at that. No auto-boxing shenanigans! Hence these arrays live on the stack, and we must know their size at compile-time.
 
-A sufficiently smart compiler could determine that for all of the above. But since we're going to start with a pretty dumb one, let's take the easy way out: Anything but a series of literals is undefined behavior.
+A sufficiently smart compiler could determine that for all of the examples above. But since we're going to start with a pretty dumb one, let's take the easy way out: Anything but a series of literals is undefined behavior.
 
-(There is another option: dynamically sized stack allocations. My language designer instincts tell me that this is going to lead to complexity, and restrictions elsewhere, most likely. Let's avoid it for now.)
+(There is another option: dynamically sized stack allocations. My language designer instincts tell me that this is going to lead to complexity, and restrictions elsewhere, most likely. Let's avoid it.)
 
 To get values out of an array later, we can use the `get` function.
 
 ```
 [ 1 2 3 ] 0 get
-# Results in `1`.
+# The result is `1`.
 ```
 
-Or we can update an array after we created it.
+Or we can update an array after we created it, using `set`.
 
 ```
 [ 1 2 3 ] 0 4 set
-# Results in `[ 4 2 3 ]`.
+# The result is `[ 4 2 3 ]`.
 ```
 
-`get`ing or `set`ing with an index that is out of bounds for the array is undefined behavior.
+`get`ing or `set`ing with an index that is out of bounds for the given array, is undefined behavior.
 
 ### Records
 
-Arrays are pretty good, as far as aggregate data types go. But we need some more of those to have some real fun. Hence, records.
+Arrays are pretty good, as far as aggregate data types go. But we also need composite data types to have some real fun. Hence, records.
 
 ```
 {
@@ -254,47 +251,47 @@ Arrays are pretty good, as far as aggregate data types go. But we need some more
   rec
 ```
 
-Here we have a block, in which we make some assignments. And then we pass that to another intrinsic function, `rec`. It applies the block, just like `apply`, but it doesn't put the block's output on the stack.
+Here we have a block, in which we make some assignments. Then we pass that to another intrinsic function, `rec`. It applies the block, just like `apply`. But it doesn't put the block's result on the stack.
 
-Instead, it takes all the assignments in the block, uses those as the fields in a new record, and puts that record on the stack.
+Instead, it takes all the bindings in the block, uses those as the fields of a new record, then puts that record on the stack.
 
-What happens to the block's result? Well, in this case it doesn't make a difference, because the block has no output. If it had, that would be, you guessed it, undefined behavior.
+What happens to the block's result? Well, in this case it doesn't make a difference, because the block returns nothing. If it did, that would be undefined behavior.
 
 We can use variants of the `get` and `set` functions that we used for arrays, to access the fields of records. We just need a new type of literal for that, the symbol.
 
 ```
 { 1 => x . 2 => y . } :x get
-# Results in `1`.
+# The result is `1`.
 
 { 1 => x . 2 => y .} :x 3 set
-# Results in `{ 3 => x . 2 => y . }`.
+# The result is `{ 3 => x . 2 => y . }`.
 ```
 
 A symbol starts with `:`. What follows must be a valid identifier. If you use `get` or `set` with a symbol that doesn't match a field of the record, that's undefined behavior.
 
 ### The Compiler
 
-As I said above, this is a compiled language. And now it's time to talk about the compiler.
+As I said above, this is a compiled language. And now it's finally time to talk about the compiler.
 
 The compiler is also an interpreter! We could just feed all of the examples we've seen so far into it directly, without any additional structure, and it would run them. If they return a result, it would display that.
 
-But that's not all it does. Because the code it runs is not just any code. It's compile-time code! It takes the results of that code, and then uses those to do the compiling.
+But that's not all it does. Because the code it runs is not just any code. It's compile-time code! It takes what that code defines, then translates that into a WebAssembly module.
 
-What I said above, about not needing any additional structure to run those examples, is not completely true. _We_ don't need to add anything else. But as far as the compiler is concerned, there is some implicit structure here.
+What I said above, about not needing additional structure to run those examples, is not completely true. _We_ don't need to add anything else. But to the compiler, there is some implicit structure here.
 
 To the compiler, the top-level context, where we write all that code that we don't put into blocks, that top-level context is a block too. It's blocks all the way down!
 
-I said above, if that block has a result, the compiler will display that. But that's not all that happens. It then translates that block into a WebAssembly module. All bindings in the block become exported symbols.
+I said above, if that block has a result, the compiler will display that. But that's not all that happens. It then turns all the bindings in that block into exports of the WebAssembly module.
 
 A value is exported as a global. Functions are exported as functions. (And there's going to be a third category of binding, modules. We'll get to those in a moment.)
 
-I hope that this means the compiler can be relatively simple. It tokenizes, it parses, it evaluates, it translates. But that is just dumb infrastructure. There is no intelligence, no decision-making.
+I hope that this means the compiler can be relatively simple. It tokenizes, it parses, it evaluates, it translates. But that is just dumb infrastructure. There is no intelligence there, no decision-making.
 
-Because that's what your program does. The part that's evaluated at compile-time.
+Because that intelligence is what your program provides. The part that's evaluated at compile-time.
 
 ### Modules
 
-I said that the top-level context is implicitly a block. But it's not just any block, and not a singular block that the compiler treats in a special way.
+I said that the top-level context is implicitly a block. But it's not just any block, and also not a unique one that the compiler needs to treat in a special way.
 
 It's another example of a block wrapped in something else. Like a function. Except, this one is more like a function that runs at compile-time. It's a module.
 
@@ -305,34 +302,36 @@ And as with functions, we can use a special intrinsic function to define our own
   { 2 + } fn => add_two .
   { 3 + } fn => add_three .
 }
-  mod => SpecialAddition .
+  mod => ConstAdd .
 ```
 
-Here's a module that defines two functions that each do some special kind of addition. When the compiler encounters this module, it treats it like the top-level module: It looks at its contents and translates those into code.
+Here's a module that defines two functions. When the compiler encounters this module, it treats it like the top-level module: It evaluates it, and translates its bindings into code.
 
-Only, since this is not the top-level module, the bindings in there don't become exported symbols of the WebAssembly module.
-
-They are made available to other code instead. Code that refers to the module via the `SpecialEdition` binding.
+Except, since this is not the top-level module, its bindings don't become exported symbols of the WebAssembly module. They are made available to other code instead.
 
 ### To Be Continued...
 
-That's as far as I made it. Much more left to do, later.
+This is as far as I made it. Much more left to do, later. For example:
+
+- Importing Modules
+- Error Handling
+- Memory Management
 
 
 ## Roadmap
 
-Once the design is a bit more solid, the goal of this section is to extract a few minimal steps that I can start with, that would lead to the best result with the least amount of work.
+Once the design is a bit more solid, the goal of this section is to extract a the first few minimal steps, that I can start with.
 
 
 ## Reference
 
-The introduction above starts with the basics, and builds up from there. It follows a path that maps out what would actually need to be implemented, at a minimum, to make the language useful.
+The introduction above starts with the basics, and builds up from there. It follows a path that maps out what we actually need to implement, at a minimum, to make the language useful.
 
-This reference builds on that, by expanding the concepts already introduced with new capabilities. It's more like a menu of things to implement later, should there ever be time and focus to make that happen.
+This reference builds on that, by expanding the concepts already introduced with new capabilities. It's more like a menu of things to implement later, should there ever be time and focus to do that.
 
 ### Number Literals
 
-Once there are multiple number types, but before the compile has become advanced enough to reach sentience, we can create values of those by specifying the type explicitly.
+Once there are multiple number types, but before the compile has become advanced enough to reach sentience, we can create values of those numbers by specifying the type explicitly.
 
 ```
 1:u32 # 32-bit, unsigned
@@ -341,15 +340,15 @@ Once there are multiple number types, but before the compile has become advanced
 
 ### Arrays
 
-Here's one thing where the introduction is actually a bit too luxurious: Arrays can be replaced with blocks and a built-in function.
+Here's one thing where the introduction is actually a bit too luxurious: Array syntax can be replaced with blocks and a built-in function.
 
 ```
 [ 1 2 3 ]
-# equivalent to
+# is equivalent to
 { 1 2 3 } arr
 ```
 
-Maybe I'll go back later and update the array section in the introduction. But either way, it would make sense to make the nicer array syntax just syntax sugar for the combination of block and `arr`.
+Maybe I'll go back later and update the array section in the introduction. But either way, it would make sense to make the nicer array syntax just sugar for the combination of block and `arr`.
 
 ### Destructuring Assignment
 
