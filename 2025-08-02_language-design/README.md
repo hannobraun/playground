@@ -35,17 +35,17 @@ Long-term (and that day, most like, will never come), the answer might be type i
 
 There's just one number type, and which one that is, is implementation-defined. I guess that means relying on anything but positive numbers between 0 and 127 is undefined behavior then.
 
-### Assignment
+### Bindings
 
-I don't know about you, but I have a hard time dealing with _just_ a stack. It's a skill issue. Others can do it. But implementing assignment is easier than spending a decade or five achieving enlightenment.
+I have a hard time dealing with just a stack. It's a skill issue, I know. But this is my language. And I'd rather implement bindings than spend a decade or five achieving enlightenment.
 
 ```
 1 2 => a b .
 ```
 
-This is the assignment operator (`=>`). After it, you put a whitespace-delimined list of identifiers. You close that list with a period (`.`).
+This is the binding operator (`=>`). After it, you put a whitespace-delimined list of identifiers. You close that list with a period (`.`).
 
-The assignment operator consumes as many values from the stack, as there are identifiers in the list. It assigns names to those values, so they might be accessed later using those names.
+The binding operator consumes as many values from the stack, as there are identifiers in the list. It _binds_ names to those values, creating _bindings_. Those bindings may be accessed later by _calling_ those names.
 
 Here's an example of doing just that.
 
@@ -57,9 +57,9 @@ a b +
 
 ### Stack Manipulation
 
-There's a nice side effect to having the assignment operator: It saves us from having to learn all those stack manipulation operators, that other stack-based languages have.
+There's a nice side effect to having the binding operator: It saves us from having to learn all those stack manipulation operators, that other stack-based languages tend to have.
 
-We can just implement those using assignment.
+We can just implement those using bindings.
 
 ```
 # dup
@@ -76,7 +76,7 @@ We can just implement those using assignment.
 
 All that the compiler cares about, is that tokens are separated by whitespace. It doesn't care how much whitespace that is, or what kind.
 
-Here's an assignment example from above:
+Here's a binding example from above:
 
 ```
 1 2 => a b . b a
@@ -114,7 +114,7 @@ If we put `{` and `}` around some code, we group it into a block.
 
 A block is a value, just like a number. The result of the code above, is to put a block that contains this code on the stack.
 
-We could then assign a name to that block.
+We could then bind a name to that block.
 
 ```
 { 2 + } => add_two .
@@ -137,7 +137,7 @@ Or we could combine both techniques.
 
 Having to write `apply` everywhere is not very convenient. And you might note, that we don't have to do this for intrinsic functions like `1`, `2`, `+`, or `apply` itself.
 
-That's because what we assigned a name here, is not a function. It is, as I said, a block. And blocks are just the raw material we use to build functions, and other things as well.
+That's because what we bound a name to here, is not a function. It is, as I said, a block. And blocks are just the raw material we use to build functions, and other things as well.
 
 ### Functions
 
@@ -147,7 +147,7 @@ So let's do just that. Let's use a block to build a function.
 { 2 + } fun => add_two .
 ```
 
-This is _almost_ what we did above, except that we call the intrinsic function `fun` after defining the block. `fun` consumes a block and returns a function that wraps that block.
+This is almost what we did above, except that we call the intrinsic function `fun` after defining the block. `fun` consumes a block and returns a function that wraps that block.
 
 Functions are mostly like blocks, except that evaluating them doesn't put a function value on the stack. It _applies_ the function. And evaluating a value is what we always do, when we call it by name.
 
@@ -174,11 +174,11 @@ And that's often fine. But sometimes we want named parameters. And we can alread
   fun => add_two
 ```
 
-This is the first example where we do something new, but don't require a new feature to do it. We just combine things that we already have; blocks, functions, and assignments; and we get a function with named parameters.
+This is the first example where we do something new, but don't require a new feature to do it. We just combine things that we already have; blocks, functions, and bindings; and we get a function with named parameters.
 
-Strictly speaking, the parameter is still implicit. Only instead of the `+` consuming more than the function itself provides, we have an assignment that consumes something that the caller needs to supply.
+Strictly speaking, the parameter is still implicit. Only instead of the `+` consuming more than the function itself provides, we have a binding that consumes something that the caller needs to supply.
 
-And by putting such an assignment first in a block, we can make the requirements of that block very explicit.
+And by putting such a binding first in a block, we can make the requirements of that block very explicit.
 
 This demonstrates a very important design principle: A minimal set of orthogonal features, that can be combined in interesting ways to build up more interesting things.
 
@@ -251,7 +251,7 @@ Arrays are pretty good, as far as aggregate data types go. But we also need comp
   rec
 ```
 
-Here we have a block, in which we make some assignments. Then we pass that to another intrinsic function, `rec`. It applies the block, just like `apply`. But it doesn't put the block's result on the stack.
+Here we have a block, in which we create some bindings. Then we pass that to another intrinsic function, `rec`. It applies the block, just like `apply`. But it doesn't put the block's result on the stack.
 
 Instead, it takes all the bindings in the block, uses those as the fields of a new record, then puts that record on the stack.
 
@@ -350,9 +350,9 @@ Here's one thing where the introduction is actually a bit too luxurious: Array s
 
 Maybe I'll go back later and update the array section in the introduction. But either way, it would make sense to make the nicer array syntax just sugar for the combination of block and `arr`.
 
-### Destructuring Assignment
+### Destructuring
 
-The introduction goes with rather simple means for working with arrays and records. A different take on that would be destructuring assignment.
+The introduction goes with rather simple means for working with arrays and records. A different take on that would be destructuring.
 
 ```
 # Define an array for later use.
@@ -390,25 +390,19 @@ And the various forms would be combined.
 1 array 2 vec => a { x ... } b [ c ... ] .
 ```
 
-But the assignment needs to always define exactly how many values from the stack it consumes. If it doesn't, that's undefined behavior.
+But the binding needs to always define exactly how many values from the stack it consumes. If it doesn't, that's undefined behavior.
 
 ```
 1 2 3 => a ...
-# Undefined behavior. Do you expect to assign `a` to `1`? What if more values
+# Undefined behavior. Do you expect to bind `a` to `1`? What if more values
 # were added to the stack earlier? And we know nothing about what the caller of
-# the current function put there.
+# the current function might have put there.
 ```
 
 
 ## Notes and Questions
 
 This is a list of things that I want to change in this document. Some are clear and specific. Others are things that I'm not happy with, but don't have a better solution for yet.
-
-### Assignments and Bindings
-
-Let's be a bit more precise about the nomenclature. And assignment is what the `=>` operator does. It's an action. What results from an assignment, a name assigned to a value, that's a _binding_.
-
-I started making that change in the newer sections, but need to retrofit the older ones too.
 
 ### Private Bindings
 
