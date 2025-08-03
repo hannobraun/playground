@@ -348,7 +348,9 @@ Here's one thing where the introduction is actually a bit too luxurious: Array s
 { 1 2 3 } arr
 ```
 
-Maybe I'll go back later and update the array section in the introduction. But either way, it would make sense to make the nicer array syntax just sugar for the combination of block and `arr`.
+But this syntax sugar actually provides quite a bit of bang for the buck (as I found out, when I tried to go back and update the introduction with the more basic version). And it's not hard to implement.
+
+But it might still make sense to desugar the array syntax to this more basic block-based form, under the hood.
 
 ### Destructuring
 
