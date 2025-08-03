@@ -260,14 +260,14 @@ What happens to the block's result? Well, in this case it doesn't make a differe
 We can use variants of the `get` and `set` functions that we used for arrays, to access the fields of records. We just need a new type of literal for that, the symbol.
 
 ```
-{ 1 => x . 2 => y . } :x get
+{ 1 => x . 2 => y . } @x get
 # The result is `1`.
 
-{ 1 => x . 2 => y .} :x 3 set
+{ 1 => x . 2 => y .} @x 3 set
 # The result is `{ 3 => x . 2 => y . }`.
 ```
 
-A symbol starts with `:`. What follows must be a valid identifier. If you use `get` or `set` with a symbol that doesn't match a field of the record, that's undefined behavior.
+A symbol starts with `@`. What follows must be a valid identifier. If you use `get` or `set` with a symbol that doesn't match a field of the record, that's undefined behavior.
 
 ### The Compiler
 
@@ -415,10 +415,6 @@ That returned block could reference private bindings via lexical scoping, withou
 ### Types
 
 I want types to be values that are constructed by the compile-time code. But so far, the details are unclear.
-
-### Symbol Syntax
-
-The syntax of symbols is a little too close to what I have in mind for typed number literals. One of those has to change.
 
 ### Parameterized Modules
 
