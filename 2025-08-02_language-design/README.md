@@ -434,7 +434,7 @@ The default compile-time context, available in modules, could allow us to emit w
 
 There would be a shared subset between both, which includes functions we can expect to be available everywhere. Stuff like `+`.
 
-## Closures
+### Closures
 
 I think it makes sense for all blocks to close over their lexical environment. That would naturally allow runtime functions to use things defined in their compile-time context, like other functions.
 
