@@ -414,7 +414,7 @@ That returned block could reference private bindings via lexical scoping, withou
 
 ### Types
 
-I want types to be values that are constructed by the compile-time code. But so far, any details are unclear.
+I want types to be values that are constructed by the compile-time code. But so far, the details are unclear.
 
 ### Symbol Syntax
 
