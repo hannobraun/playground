@@ -425,3 +425,19 @@ I want types to be values that are constructed by the compile-time code. But so 
 ### Symbol Syntax
 
 The syntax of symbols is a little too close to what I have in mind for typed number literals. One of those has to change.
+
+### Parameterized Modules
+
+Since modules are built from blocks, just like functions, they can do everything functions can do. Which includes defining parameters.
+
+It might be best to declare this undefined behavior initially. But eventually, this would be very useful. Since modules can be seen as compile-time functions, their compile-time arguments are basically generics.
+
+This is another example of something we get for free by combining our minimal but orthogonal building blocks. This is something that the reference should go into.
+
+### Default Context
+
+By importing modules into a block, we define that block's execution context. There should always be a default context though, with some intrinsic functions. That context should defer between compile- and runtime.
+
+The default compile-time context, available in modules, could allow us to emit warnings and errors. The default runtime context would provide stuff like debug output.
+
+There would be a shared subset between both, which includes functions we can expect to be available everywhere. Stuff like `+`.
