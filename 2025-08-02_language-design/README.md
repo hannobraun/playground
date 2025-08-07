@@ -14,6 +14,16 @@ This design is written in the form of documentation, because I found that to be
 an effective tool to channel my thoughts. **Don't mistake this for actual
 documentation of an actual language.**
 
+## Objectives
+
+I have the following goals in working on this language:
+
+1. Create a minimal language that is usable as a portable assembler.
+2. Explore the potential of stack-based programming for that purpose.
+3. Do 2. without reinventing Forth. I have some of my own ideas.
+4. Explore the unification between runtime and compile-time code.
+5. Learn more about WebAssembly by using it as a compilation target.
+
 ## Introduction
 
 ### Basic Operations
