@@ -141,7 +141,7 @@ We can apply that block, to execute the code it contains.
 # The result is `3`.
 ```
 
-Or we can bind a name to the block, and execute it using that name.
+Or we can bind a name to the block, and apply it via that name.
 
 ```
 { 2 + } => add_two .
@@ -149,8 +149,8 @@ Or we can bind a name to the block, and execute it using that name.
 # The result is `3`.
 ```
 
-By calling a block by name, we apply it automatically. This way, we define
-_functions_.
+By calling a block by name, we apply it automatically, rather than placing the
+block on the stack. This way, we define _functions_.
 
 ### Function Parameters
 
