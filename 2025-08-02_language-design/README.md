@@ -255,32 +255,20 @@ scope.
 If you apply a block in its parent scope (for example calling a higher-order
 function), maybe define it right before that, to avoid any confusion.
 
-### The Compiler
+### Compilation Model
 
-This is a compiled language. And now it's finally time to talk about the
-compiler.
+There is no distinction between code that is executed at runtime (i.e. regular
+old code) and code that only has effects at compile-time (defining functions,
+types, etc.).
 
-The compiler is also an interpreter! We could just feed all of the examples
-we've seen so far into it directly, without any additional structure, and it
-would run them. If they return a result, it would display that.
+There is only code, and it all follows the same rules.
 
-But that's not all it does. Because the code it runs is not just any code. It's
-compile-time code! It takes what that code defines, then translates that into a
-WebAssembly module.
+This means that the compiler is also an interpreter. It directly executes the
+top-level code at compile-time. All examples we've seen so far can be fed
+directly into it.
 
-What I said above, about not needing additional structure to run those examples,
-is not completely true though. _We_ don't need to add anything else. But to the
-compiler, there is some implicit structure here.
-
-To the compiler, the top-level context, where we write all that code that we
-don't put into blocks, that top-level context is a block too. It's blocks all
-the way down!
-
-I said above, if that block has a result, the compiler will display that. But
-that's not all that happens. It then turns all the bindings in that block into
-exports of the WebAssembly module.
-
-A value is exported as a global and functions are exported as functions.
+The compiler treats this top-level code as an implicit block. It translates any
+local bindings of that block into exports of the resulting WebAssembly module.
 
 ### To Be Continued...
 
