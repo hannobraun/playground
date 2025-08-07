@@ -25,15 +25,9 @@ But let's move on. Here's a basic example.
 
 We have three identifiers here, all of which refer to functions. And all of those are intrinsic functions, that are built into the compiler.
 
-`1` and `2` simply return these respective values and put them on the stack. `+` then takes those two values from the stack, and puts their sum back on.
+`1` and `2` simply return these respective values and put them on the stack (all numbers are signed 32-bit integers). `+` then takes those two values from the stack, and puts their sum back on.
 
 Once this is finished, the stack contains the number `3`. Plus whatever was on there in the first place.
-
-This leaves a lot of questions unanswered. Like, what's actually the type of those numbers? What other number types are there? How does the compiler know what code to generate for `+`?
-
-Long-term (and that day, most like, will never come), the answer might be type inference and other magic. But for now, let's not worry about it and prioritize ease of implementation.
-
-There's just one number type, and which one that is, is implementation-defined. I guess that means relying on anything but positive numbers between 0 and 127 is undefined behavior then.
 
 ### Bindings
 
