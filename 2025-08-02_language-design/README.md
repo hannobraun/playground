@@ -229,103 +229,6 @@ argument of a higher-order function.
 
 Here we pass a block to a function that, presumably, applies that block twice.
 
-### Arrays
-
-If we put some values between `[` and `]`, that groups them into a single array
-value, and puts that on the stack.
-
-```
-[ 1 2 3 ]
-```
-
-And with that, we can write the previous example more elegantly, and more
-generally.
-
-```
-[ 1 2 3 ] { + } fold
-```
-
-In principle, we could allow arbitrary code between `[` and `]`. As long as that
-results in zero or more values of the same type, it would make for a valid
-array.
-
-```
-1 [ 2 + ]
-# The result is `[ 3 ]`.
-
-[ { 1 } 3 times ]
-# The result is `[ 1 1 1 ]`.
-```
-
-But there's a catch: This is a compiled language, and one with explicit memory
-allocation at that. No auto-boxing shenanigans! Hence these arrays live on the
-stack, and we must know their size at compile-time.
-
-A sufficiently smart compiler could determine that for all of the examples
-above. But since we're going to start with a pretty dumb one, let's take the
-easy way out: Anything but a series of literals is undefined behavior.
-
-(There is another option: dynamically sized stack allocations. My language
-designer instincts tell me that this is going to lead to complexity, and
-restrictions elsewhere, most likely. Let's avoid it.)
-
-To get values out of an array later, we can use the `get` function.
-
-```
-[ 1 2 3 ] 0 get
-# The result is `1`.
-```
-
-Or we can update an array after we created it, using `set`.
-
-```
-[ 1 2 3 ] 0 4 set
-# The result is `[ 4 2 3 ]`.
-```
-
-`get`ing or `set`ing with an index that is out of bounds for the given array, is
-undefined behavior.
-
-### Records
-
-Arrays are pretty good, as far as aggregate data types go. But we also need
-composite data types to have some real fun. Hence, records.
-
-```
-{
-  1 => a .
-  2 => b .
-}
-  rec
-```
-
-Here we have a block, in which we create some bindings. Then we pass that to
-another intrinsic function, `rec`. It applies the block, just like `apply`. But
-it doesn't put the block's result on the stack.
-
-Instead, it takes all the bindings in the block, uses those as the fields of a
-new record, then puts that record on the stack.
-
-What happens to the block's result? Well, in this case it doesn't make a
-difference, because the block returns nothing. If it did, that would be
-undefined behavior.
-
-We can use variants of the `get` and `set` functions that we used for arrays, to
-access the fields of records. We just need a new type of literal for that, the
-symbol.
-
-```
-{ 1 => x . 2 => y . } @x get
-# The result is `1`.
-
-{ 1 => x . 2 => y . } @x 3 set
-# The result is `{ 3 => x . 2 => y . }`.
-```
-
-A symbol starts with `@`. What follows must be a valid identifier. If you use
-`get` or `set` with a symbol that doesn't match a field of the record, that's
-undefined behavior.
-
 ### The Compiler
 
 As I said above, this is a compiled language. And now it's finally time to talk
@@ -425,6 +328,103 @@ the type explicitly.
 1:u32 # 32-bit, unsigned
 2:s8  # 8-bit, signed
 ```
+
+### Arrays
+
+If we put some values between `[` and `]`, that groups them into a single array
+value, and puts that on the stack.
+
+```
+[ 1 2 3 ]
+```
+
+And with that, we can write the previous example more elegantly, and more
+generally.
+
+```
+[ 1 2 3 ] { + } fold
+```
+
+In principle, we could allow arbitrary code between `[` and `]`. As long as that
+results in zero or more values of the same type, it would make for a valid
+array.
+
+```
+1 [ 2 + ]
+# The result is `[ 3 ]`.
+
+[ { 1 } 3 times ]
+# The result is `[ 1 1 1 ]`.
+```
+
+But there's a catch: This is a compiled language, and one with explicit memory
+allocation at that. No auto-boxing shenanigans! Hence these arrays live on the
+stack, and we must know their size at compile-time.
+
+A sufficiently smart compiler could determine that for all of the examples
+above. But since we're going to start with a pretty dumb one, let's take the
+easy way out: Anything but a series of literals is undefined behavior.
+
+(There is another option: dynamically sized stack allocations. My language
+designer instincts tell me that this is going to lead to complexity, and
+restrictions elsewhere, most likely. Let's avoid it.)
+
+To get values out of an array later, we can use the `get` function.
+
+```
+[ 1 2 3 ] 0 get
+# The result is `1`.
+```
+
+Or we can update an array after we created it, using `set`.
+
+```
+[ 1 2 3 ] 0 4 set
+# The result is `[ 4 2 3 ]`.
+```
+
+`get`ing or `set`ing with an index that is out of bounds for the given array, is
+undefined behavior.
+
+### Records
+
+Arrays are pretty good, as far as aggregate data types go. But we also need
+composite data types to have some real fun. Hence, records.
+
+```
+{
+  1 => a .
+  2 => b .
+}
+  rec
+```
+
+Here we have a block, in which we create some bindings. Then we pass that to
+another intrinsic function, `rec`. It applies the block, just like `apply`. But
+it doesn't put the block's result on the stack.
+
+Instead, it takes all the bindings in the block, uses those as the fields of a
+new record, then puts that record on the stack.
+
+What happens to the block's result? Well, in this case it doesn't make a
+difference, because the block returns nothing. If it did, that would be
+undefined behavior.
+
+We can use variants of the `get` and `set` functions that we used for arrays, to
+access the fields of records. We just need a new type of literal for that, the
+symbol.
+
+```
+{ 1 => x . 2 => y . } @x get
+# The result is `1`.
+
+{ 1 => x . 2 => y . } @x 3 set
+# The result is `{ 3 => x . 2 => y . }`.
+```
+
+A symbol starts with `@`. What follows must be a valid identifier. If you use
+`get` or `set` with a symbol that doesn't match a field of the record, that's
+undefined behavior.
 
 ### Destructuring
 
