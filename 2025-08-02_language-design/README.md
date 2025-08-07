@@ -31,13 +31,13 @@ Once this is finished, the stack contains the number `3`. Plus whatever was on t
 
 ### Bindings
 
-I have a hard time dealing with just a stack. It's a skill issue, I know. But this is my language. And I'd rather implement bindings than spend a decade or five achieving enlightenment.
+I have a hard time dealing with just a stack. It's a skill issue, I know. But this is my language. And I'd rather design and implement bindings than spend a decade or five achieving enlightenment.
 
 ```
 1 2 => a b .
 ```
 
-This is the binding operator (`=>`). After it, you put a whitespace-delimined list of identifiers. You close that list with a period (`.`).
+This is the binding operator (`=>`). After it, you put a whitespace-delimited list of identifiers. You close that list with a period (`.`).
 
 The binding operator consumes as many values from the stack, as there are identifiers in the list. It _binds_ names to those values, creating _bindings_. Those bindings may be accessed later by _calling_ those names.
 
@@ -53,7 +53,7 @@ a b +
 
 There's a nice side effect to having the binding operator: It saves us from having to learn all those stack manipulation operators, that other stack-based languages tend to have.
 
-We can just implement those using bindings.
+We can just implement them using bindings.
 
 ```
 # dup
@@ -143,7 +143,7 @@ So let's do just that. Let's use a block to build a function.
 
 This is almost what we did above, except that we call the intrinsic function `fun` after defining the block. `fun` consumes a block and returns a function that wraps that block.
 
-Functions are mostly like blocks, except that evaluating them doesn't put a function value on the stack. It _applies_ the function. And evaluating a value is what we always do, when we call it by name.
+Functions are mostly like blocks, except that _evaluating_ them doesn't put a function value on the stack. It _applies_ the function. And _evaluating_ a value is what we always do, when we call it by name.
 
 ```
 { 2 + } fun => add_two .
@@ -157,7 +157,7 @@ That's the same as above, except we no longer need that `apply`.
 
 So far, we've only defined functions with implicit parameters. `add_two` consumes an argument, a number, but it doesn't specify that explicitly.
 
-It does so _implicitly_, by putting a number on the stack, but then calling a function that takes 2 numbers from the stack. As a result, the whole function consumes one number and returns another one.
+It does so _implicitly_, by putting a number on the stack, but then calling a function that takes 2 numbers from the stack. As a result, the combined function consumes one number and returns another one.
 
 And that's often fine. But sometimes we want named parameters. And we can already do that!
 
@@ -314,7 +314,7 @@ This is as far as I made it. Much more left to do, later. For example:
 
 ## Roadmap
 
-Once the design is a bit more solid, the goal of this section is to extract a the first few minimal steps, that I can start with.
+Once the design is a bit more solid, the goal of this section is to extract the first few minimal steps, that I can start with.
 
 
 ## Reference
@@ -376,7 +376,7 @@ vec => { x y z } .
 # Access only two, drop the third.
 vec => { x y _ } .
 
-# Acces only one, drop all others.
+# Access only one, drop all others.
 vec => { x ... } .
 ```
 
