@@ -198,6 +198,63 @@ argument of a higher-order function.
 
 Here we pass a block to a function that, presumably, applies that block twice.
 
+### Environments
+
+Every block has an environment, which is the (possibly empty) set of bindings
+that it calls, which are not defined inside of it.
+
+```
+{ one two + } => three .
+```
+
+This block calls three bindings, `one`, `two`, and `+`. None of those are
+defined inside of it, so all of them are part of its environment.
+
+`+` is an intrinsic function, which is always available. But `one` and `two` are
+not defined anywhere. The compiler translates them as calls to a sentinel
+function, which fails at runtime.
+
+However, if such undefined functions are defined later, the compiler makes sure
+that the right function gets called.
+
+```
+# `one` and `two` not available here yet; compiled as calls to the sentinel
+# function.
+{ one two + } => three .
+
+# Missing functions defined later; all calls to the sentinel function are being
+# replaced.
+{ 1 } => one .
+{ 2 } => two .
+```
+
+These rules can lead to confusing situations, if abused.
+
+```
+# `one` and `two` are not available yet.
+{ one two + } => three .
+
+# We put a block calling `three` on the stack here. But nothing is called yet,
+# so all is good.
+{ three }
+
+# Now we provide the missing functions.
+{ 1 } => one .
+{ 2 } => two .
+
+# And finally we call `three`, indirectly, by applying the block on the stack
+# that calls it. All missing functions have been provided by now, so all is
+# well, even though all _wasn't_ well when the block was put on the stack.
+apply
+```
+
+You should avoid situations such as these. If you define a block that calls
+functions that have not been defined yet, don't apply that block in its parent
+scope.
+
+If you apply a block in its parent scope (for example calling a higher-order
+function), maybe define it right before that, to avoid any confusion.
+
 ### The Compiler
 
 This is a compiled language. And now it's finally time to talk about the
