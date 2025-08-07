@@ -127,8 +127,12 @@ If we put `{` and `}` around some code, we group that code into a block.
 { 2 + }
 ```
 
-A block is a value, just like a number. The result of the code above, is to put
-a block that contains this code on the stack.
+A block is a value, just like a number. In fact, it is represented as a number
+on the stack (the address of the block's code). There is no type system to
+distinguish between blocks and "real" numbers, so be careful when using them!
+
+The result of the code above, is to put a block that contains this code on the
+stack.
 
 We can apply that block, to execute the code it contains.
 
