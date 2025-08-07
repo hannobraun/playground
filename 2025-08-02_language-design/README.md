@@ -124,64 +124,29 @@ there's whitespace between them, the resulting code is equivalent.
 If we put `{` and `}` around some code, we group that code into a block.
 
 ```
-{ 1 2 + }
+{ 2 + }
 ```
 
 A block is a value, just like a number. The result of the code above, is to put
 a block that contains this code on the stack.
 
-We could then bind a name to that block.
-
-```
-{ 2 + } => add_two .
-```
-
-Or we could apply it, to execute the code it contains.
+We can apply that block, to execute the code it contains.
 
 ```
 1 { 2 + } apply
 # The result is `3`.
 ```
 
-Or we could combine both techniques.
+Or we can bind a name to the block, and execute it using that name.
 
 ```
 { 2 + } => add_two .
-1 add_two apply
-# The result is `3`.
-```
-
-Having to write `apply` everywhere is not very convenient. And you might note,
-that we don't have to do this for intrinsic functions like `1`, `2`, `+`, or
-`apply` itself.
-
-That's because what we bound a name to here, is not a function. It is, as I
-said, a block. And blocks are just the raw material we use to build functions,
-and other things as well.
-
-### Functions
-
-So let's do just that. Let's use a block to build a function.
-
-```
-{ 2 + } fun => add_two .
-```
-
-This is almost what we did above, except that we call the intrinsic function
-`fun` after defining the block. `fun` consumes a block and returns a function
-that wraps that block.
-
-Functions are mostly like blocks, except that _evaluating_ them doesn't put a
-function value on the stack. It _applies_ the function. And _evaluating_ a value
-is what we always do, when we call it by name.
-
-```
-{ 2 + } fun => add_two .
 1 add_two
 # The result is `3`.
 ```
 
-That's the same as above, except we no longer need that `apply`.
+By calling a block by name, we apply it automatically. This way, we define
+_functions_.
 
 ### Function Parameters
 
@@ -327,6 +292,53 @@ the type explicitly.
 1:u32 # 32-bit, unsigned
 2:s8  # 8-bit, signed
 ```
+
+### Functions
+
+Automatically applying a block that is bound to a name should work well, for the
+most part. If we still wanted to put a block on the stack, instead of applying
+it, we could do so by wrapping it in another block.
+
+```
+{ 2 + } => add_two .
+{ add_two }
+```
+
+At runtime, the resulting block that is put on the stack here is equivalent to
+the original `add_two` block. The only way to possibly observe the additional
+layer of block is through a slight difference in performance, and even that
+could be optimized.
+
+However, once we get into metaprogramming and start reading the contents of
+blocks with compile-time functions, the difference _does_ become observable.
+
+The rest of this section presents a different take on blocks and functions. The
+reason I don't want to go for that initially, is that it requires a static type
+system to work.
+
+---
+
+We can use a block to build a function.
+
+```
+{ 2 + } fun => add_two .
+```
+
+This is almost what we did above, except that we call the intrinsic function
+`fun` after defining the block. `fun` consumes a block and returns a function
+that wraps that block.
+
+Functions are mostly like blocks, except that _evaluating_ them doesn't put a
+function value on the stack. It _applies_ the function. And _evaluating_ a value
+is what we always do, when we call it by name.
+
+```
+{ 2 + } fun => add_two .
+1 add_two
+# The result is `3`.
+```
+
+That's the same as above, except we no longer need that `apply`.
 
 ### Arrays
 
