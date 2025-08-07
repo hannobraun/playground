@@ -121,7 +121,7 @@ there's whitespace between them, the resulting code is equivalent.
 
 ### Blocks
 
-If we put `{` and `}` around some code, we group it into a block.
+If we put `{` and `}` around some code, we group that code into a block.
 
 ```
 { 1 2 + }
