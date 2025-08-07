@@ -302,7 +302,6 @@ This is as far as I made it. Much more left to do, later. For example:
 - Error Handling
 - Memory Management
 
-
 ## Roadmap
 
 Once the design is a bit more solid, the goal of this section is to extract the
