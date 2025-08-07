@@ -426,24 +426,6 @@ the type explicitly.
 2:s8  # 8-bit, signed
 ```
 
-### Arrays
-
-Here's one thing where the introduction is actually a bit too luxurious: Array
-syntax can be replaced with blocks and a built-in function.
-
-```
-[ 1 2 3 ]
-# is equivalent to
-{ 1 2 3 } arr
-```
-
-But this syntax sugar actually provides quite a bit of bang for the buck (as I
-found out, when I tried to go back and update the introduction with the more
-basic version). And it's not hard to implement.
-
-But it might still make sense to desugar the array syntax to this more basic
-block-based form, under the hood.
-
 ### Destructuring
 
 The introduction goes with rather simple means for working with arrays and
