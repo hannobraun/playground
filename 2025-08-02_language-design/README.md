@@ -225,35 +225,6 @@ exports of the WebAssembly module.
 
 A value is exported as a global and functions are exported as functions.
 
-### Modules
-
-I said that the top-level context is implicitly a block. But it's not just any
-block, and also not a unique one that the compiler needs to treat in a special
-way.
-
-It's another example of a block wrapped in something else. Like a function.
-Except, this one is more like a function that runs at compile-time. It's a
-module.
-
-And as with functions, we can use a special intrinsic function to define our
-own.
-
-```
-{
-  { 2 + } fn => add_two .
-  { 3 + } fn => add_three .
-}
-  mod => ConstAdd .
-```
-
-Here's a module that defines two functions. When the compiler encounters this
-module, it treats it like the top-level module: It evaluates it, and translates
-its bindings into code.
-
-Except, since this is not the top-level module, its bindings don't become
-exported symbols of the WebAssembly module. They are made available to other
-code instead.
-
 ### To Be Continued...
 
 This is as far as I made it. Much more left to do, later. For example:
@@ -431,6 +402,35 @@ symbol.
 A symbol starts with `@`. What follows must be a valid identifier. If you use
 `get` or `set` with a symbol that doesn't match a field of the record, that's
 undefined behavior.
+
+### Modules
+
+I said above that the top-level context is implicitly a block. But it's not just
+any block, and also not a unique one that the compiler needs to treat in a
+special way.
+
+It's another example of a block wrapped in something else. Like a function.
+Except, this one is more like a function that runs at compile-time. It's a
+module.
+
+And as with functions, we can use a special intrinsic function to define our
+own.
+
+```
+{
+  { 2 + } fn => add_two .
+  { 3 + } fn => add_three .
+}
+  mod => ConstAdd .
+```
+
+Here's a module that defines two functions. When the compiler encounters this
+module, it treats it like the top-level module: It evaluates it, and translates
+its bindings into code.
+
+Except, since this is not the top-level module, its bindings don't become
+exported symbols of the WebAssembly module. They are made available to other
+code instead.
 
 ### Destructuring
 
