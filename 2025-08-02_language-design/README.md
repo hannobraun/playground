@@ -200,8 +200,8 @@ Here we pass a block to a function that, presumably, applies that block twice.
 
 ### The Compiler
 
-As I said above, this is a compiled language. And now it's finally time to talk
-about the compiler.
+This is a compiled language. And now it's finally time to talk about the
+compiler.
 
 The compiler is also an interpreter! We could just feed all of the examples
 we've seen so far into it directly, without any additional structure, and it
@@ -212,7 +212,7 @@ compile-time code! It takes what that code defines, then translates that into a
 WebAssembly module.
 
 What I said above, about not needing additional structure to run those examples,
-is not completely true. _We_ don't need to add anything else. But to the
+is not completely true though. _We_ don't need to add anything else. But to the
 compiler, there is some implicit structure here.
 
 To the compiler, the top-level context, where we write all that code that we
@@ -223,16 +223,7 @@ I said above, if that block has a result, the compiler will display that. But
 that's not all that happens. It then turns all the bindings in that block into
 exports of the WebAssembly module.
 
-A value is exported as a global. Functions are exported as functions. (And
-there's going to be a third category of binding, modules. We'll get to those in
-a moment.)
-
-I hope that this means the compiler can be relatively simple. It tokenizes, it
-parses, it evaluates, it translates. But that is just dumb infrastructure. There
-is no intelligence there, no decision-making.
-
-Because that intelligence is what your program provides. The part that's
-evaluated at compile-time.
+A value is exported as a global and functions are exported as functions.
 
 ### Modules
 
