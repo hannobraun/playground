@@ -229,7 +229,6 @@ A value is exported as a global and functions are exported as functions.
 
 This is as far as I made it. Much more left to do, later. For example:
 
-- Importing Modules
 - Error Handling
 - Memory Management
 
