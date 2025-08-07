@@ -2,9 +2,9 @@
 
 ## About
 
-This is the design for an experimental programming language. As of this writing,
-only this design exists. I'm just dreaming here. There's no implementation, and
-there might never be one.
+This is the design for an experimental, low-level programming language that
+compiles to WebAssembly. As of this writing, only this design exists. I'm just
+dreaming here. There's no implementation, and there might never be one.
 
 Not only that, but the design itself is pretty raw. It needs a few more rounds
 of review and refinement, and I might only do that when inspiration strikes.
