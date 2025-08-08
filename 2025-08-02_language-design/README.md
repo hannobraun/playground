@@ -33,7 +33,7 @@ easy to work with.
 
 Well, easy to work with for me, who's going to be stuck with implementing this.
 You might see it differently. And I might join you in that view, later on, when
-I'll become a user of the language myself.
+I'll become a user of the language.
 
 But let's move on. Here's a basic example.
 
@@ -44,9 +44,11 @@ But let's move on. Here's a basic example.
 We have three identifiers here, all of which refer to functions. And all of
 those are intrinsic functions, that are built into the compiler.
 
-`1` and `2` simply return these respective values and put them on the stack (all
-numbers are signed 32-bit integers). `+` then takes those two values from the
-stack, and puts their sum back on.
+`1` and `2` simply return these respective values and put them on the stack. All
+numbers are 32-bit integers, which depending on context are treated as signed
+(two's complement) or unsigned.
+
+`+` then takes those two values from the stack, and puts their sum back on.
 
 Once this is finished, the stack contains the number `3`. Plus whatever was on
 there in the first place.
