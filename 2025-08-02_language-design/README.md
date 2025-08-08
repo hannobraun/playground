@@ -69,9 +69,6 @@ redundant with other features of the language (I think this mainly affects
 Where relevant, only the variant of a numeric instruction for signed numbers is
 exposed.
 
-All memory instructions are exposed, except those that are not usable with
-32-bit integers.
-
 In addition, `drop`, `nop`, and `unreachable` are exposed.
 
 The name of the intrinsic is, where available, a common symbol (e.g. `+`, `*`,
@@ -322,12 +319,38 @@ directly into it.
 The compiler treats this top-level code as an implicit block. It translates any
 local bindings of that block into exports of the resulting WebAssembly module.
 
+### Memory Management
+
+Memory management is kept very basic. Besides the stack, direct access to all
+memory is granted using a family of `load` and `store` instructions.
+
+```
+value address store8  # store the 8 least significant bits of the value
+value address store16 # store the 16 least significant bits of the value
+value address store32 # store the whole value
+
+address load8  # load an 8-bit value and put it on the stack
+address load16 # load a 16-bit value and put it on the stack
+address load32 # load a 32-bit value and put it on the stack
+```
+
+In addition, some of WebAssembly's memory instructions are exposed as intrinsic
+functions.
+
+```
+# Put the current size of the memory (in pages) on the stack.
+memory_size 
+
+# Grow the memory by a number of pages. Put the previous size or `-1` on the
+# stack depending on the success of the operation.
+num_pages memory_grow
+```
+
 ### To Be Continued...
 
 This is as far as I made it. Much more left to do, later. For example:
 
 - Error Handling
-- Memory Management
 
 ## Roadmap
 
