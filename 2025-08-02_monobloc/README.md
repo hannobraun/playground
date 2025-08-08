@@ -29,7 +29,7 @@ easy to work with.
 
 Well, easy to work with for me, who's going to be stuck with implementing this.
 You might see it differently. And I might join you in that view, later on, when
-I'll become a user of the language.
+I become a user of the language.
 
 But let's move on. Here's a basic example.
 
@@ -40,11 +40,11 @@ But let's move on. Here's a basic example.
 We have three identifiers here, all of which refer to functions. And all of
 those are intrinsic functions, that are built into the compiler.
 
-`1` and `2` simply return these respective values and put them on the stack. All
-numbers are 32-bit integers, which depending on context are treated as signed
-(two's complement) or unsigned.
+`1` and `2` simply return these respective values and push them to the stack.
+All numbers are 32-bit integers, which depending on context are treated as
+signed (two's complement) or unsigned.
 
-`+` then takes those two values from the stack, and puts their sum back on.
+`+` then takes those two values from the stack, and pushes their sum.
 
 Once this is finished, the stack contains the number `3`. Plus whatever was on
 there in the first place.
@@ -70,6 +70,9 @@ In addition, `drop` and `nop` are exposed.
 The name of the intrinsic is, where available, a common symbol (e.g. `+`, `*`,
 `/`); where necessary, an explicit variant of the name of the instruction (e.g.
 `count_leading_zeros`); and otherwise just the instruction name.
+
+The remainder of this design specifies some other intrinsic functions that are
+exposed, and how they are exposed.
 
 ### Bindings
 
@@ -149,7 +152,7 @@ a
 Or literally any other way. As long as the order of the tokens is the same, and
 there's whitespace between them, the resulting code is equivalent.
 
-### Blocks
+### Blocks and Functions
 
 If we put `{` and `}` around some code, we group that code into a block.
 
@@ -158,13 +161,10 @@ If we put `{` and `}` around some code, we group that code into a block.
 ```
 
 A block is a value, just like a number. In fact, it is represented as a number
-on the stack (the address of the block's code). There is no type system to
-distinguish between blocks and "real" numbers, so be careful when using them!
+on the stack. There is no type system to distinguish between blocks and "real"
+numbers.
 
-The result of the code above, is to put a block that contains this code on the
-stack.
-
-We can apply that block, to execute the code it contains.
+We can apply a block, to execute the code it contains.
 
 ```
 1 { 2 + } apply
@@ -187,7 +187,7 @@ block on the stack. This way, we define _functions_.
 The only means of iteration is recursion.
 
 ```
-{ do important things then recurse} => recurse .
+{ do important things then recurse } => recurse .
 ```
 
 The only conditional primitive is an intrinsic `select` function, which executes
@@ -199,10 +199,10 @@ one of two blocks based on whether its third argument is zero or not.
 
 ### Function Parameters
 
-So far, we've only defined functions with implicit parameters. `add_two`
-consumes an argument, a number, but it doesn't specify that explicitly.
+So far, we've only defined functions with implicit parameters. `add_two`, from
+earlier, consumes an argument, a number, but it doesn't specify that explicitly.
 
-It does so _implicitly_, by putting a number on the stack, but then calling a
+It does so _implicitly_, by pushing a number to the stack, but then calling a
 function that takes 2 numbers from the stack. As a result, the combined function
 consumes one number and returns another one.
 
@@ -213,18 +213,18 @@ already do that!
 { => n
   n 2 +
 }
-  fun => add_two
+  => add_two
 ```
 
 This is the first example where we do something new, but don't require a new
-feature to do it. We just combine things that we already have; blocks,
-functions, and bindings; and we get a function with named parameters.
+feature to do it. We just combine things that we already have; blocks and
+bindings; and we get a function with named parameters.
 
 Strictly speaking, the parameter is still implicit. Only instead of the `+`
 consuming more than the function itself provides, we have a binding that
 consumes something that the caller needs to supply.
 
-And by putting such a binding first in a block, we can make the requirements of
+But by placing such a binding first in a block, we can make the requirements of
 that block very explicit.
 
 This demonstrates a very important design principle: A minimal set of orthogonal
@@ -259,16 +259,16 @@ defined inside of it, so all of them are part of its environment.
 not defined anywhere. The compiler translates them as calls to a sentinel
 function, which fails at runtime.
 
-However, if such undefined functions are defined later, the compiler makes sure
-that the right function gets called.
+However, if an undefined function is defined later, the compiler replaces these
+sentinel calls.
 
 ```
-# `one` and `two` not available here yet; compiled as calls to the sentinel
-# function.
+# `one` and `two` are not available here yet; they are compiled as calls to the
+# sentinel function.
 { one two + } => three .
 
-# Missing functions defined later; all calls to the sentinel function are being
-# replaced.
+# The missing functions defined later; all calls to the sentinel function are
+# being replaced.
 { 1 } => one .
 { 2 } => two .
 ```
@@ -279,7 +279,7 @@ These rules can lead to confusing situations, if abused.
 # `one` and `two` are not available yet.
 { one two + } => three .
 
-# We put a block calling `three` on the stack here. But nothing is called yet,
+# We push a block calling `three` to the stack here. But nothing is called yet,
 # so all is good.
 { three }
 
@@ -289,7 +289,7 @@ These rules can lead to confusing situations, if abused.
 
 # And finally we call `three`, indirectly, by applying the block on the stack
 # that calls it. All missing functions have been provided by now, so all is
-# well, even though all _wasn't_ well when the block was put on the stack.
+# well, even though all _wasn't_ well when the block was pushed to the stack.
 apply
 ```
 
@@ -298,15 +298,13 @@ functions that have not been defined yet, don't apply that block in its parent
 scope.
 
 If you apply a block in its parent scope (for example calling a higher-order
-function), maybe define it right before that, to avoid any confusion.
+function), maybe define it right before that, to avoid confusion.
 
 ### Compilation Model
 
 There is no distinction between code that is executed at runtime (i.e. regular
 old code) and code that only has effects at compile-time (defining functions,
-types, etc.).
-
-There is only code, and it all follows the same rules.
+types, etc.). There is only code, and it all follows the same rules.
 
 This means that the compiler is also an interpreter. It directly executes the
 top-level code at compile-time. All examples we've seen so far can be fed
@@ -318,50 +316,48 @@ local bindings of that block into exports of the resulting WebAssembly module.
 ### Memory Management
 
 Memory management is kept very basic. Besides the stack, direct access to all
-memory is granted using a family of `load` and `store` instructions.
+memory is granted using a family of `load` and `store` functions.
 
 ```
 value address store8  # store the 8 least significant bits of the value
 value address store16 # store the 16 least significant bits of the value
 value address store32 # store the whole value
 
-address load8  # load an 8-bit value and put it on the stack
-address load16 # load a 16-bit value and put it on the stack
-address load32 # load a 32-bit value and put it on the stack
+address load8  # load an 8-bit value and push it to the stack
+address load16 # load a 16-bit value and push it to the stack
+address load32 # load a 32-bit value and push it to the stack
 ```
 
 In addition, some of WebAssembly's memory instructions are exposed as intrinsic
 functions.
 
 ```
-# Put the current size of the memory (in pages) on the stack.
+# Push the current size of the memory (in pages) to the stack.
 memory_size 
 
-# Grow the memory by a number of pages. Put the previous size or `-1` on the
-# stack depending on the success of the operation.
+# Grow the memory by a number of pages. Push the previous size or `-1` to the
+# stack, depending on the success of the allocation.
 num_pages memory_grow
 ```
 
 ### Error Handling
 
-WebAssembly's `unreachable` instruction is exposed as an intrinsic function.
+WebAssembly's `unreachable` instruction is exposed as the intrinsic function
+`abort`.
 
 ```
 # Abort the program immediately.
-unreachable
+abort
 ```
 
 Other than that, the user may use the stack to signal error conditions.
-
-## Roadmap
-
-Once the design is a bit more solid, the goal of this section is to extract the
-first few minimal steps, that I can start with.
 
 ## Extensions
 
 This section details some possible extensions to the language design, which I
 wanted to leave out of the initial scope.
+
+From here on, I've put less effort into editing the text.
 
 ### Number Literals
 
@@ -377,7 +373,7 @@ the type explicitly.
 ### Functions
 
 Automatically applying a block that is bound to a name should work well, for the
-most part. If we still wanted to put a block on the stack, instead of applying
+most part. If we still wanted to push a block to the stack, instead of applying
 it, we could do so by wrapping it in another block.
 
 ```
@@ -385,8 +381,8 @@ it, we could do so by wrapping it in another block.
 { add_two }
 ```
 
-At runtime, the resulting block that is put on the stack here is equivalent to
-the original `add_two` block. The only way to possibly observe the additional
+At runtime, the resulting block that is pushed to the stack here is equivalent
+to the original `add_two` block. The only way to possibly observe the additional
 layer of block is through a slight difference in performance, and even that
 could be optimized.
 
@@ -409,8 +405,8 @@ This is almost what we did above, except that we call the intrinsic function
 `fun` after defining the block. `fun` consumes a block and returns a function
 that wraps that block.
 
-Functions are mostly like blocks, except that _evaluating_ them doesn't put a
-function value on the stack. It _applies_ the function. And _evaluating_ a value
+Functions are mostly like blocks, except that _evaluating_ them doesn't push a
+function value to the stack. It _applies_ the function. And _evaluating_ a value
 is what we always do, when we call it by name.
 
 ```
@@ -423,8 +419,8 @@ That's the same as above, except we no longer need that `apply`.
 
 ### Arrays
 
-If we put some values between `[` and `]`, that groups them into a single array
-value, and puts that on the stack.
+If we place some values between `[` and `]`, that groups them into a single
+array value, and pushes that to the stack.
 
 ```
 [ 1 2 3 ]
@@ -493,10 +489,10 @@ composite data types to have some real fun. Hence, records.
 
 Here we have a block, in which we create some bindings. Then we pass that to
 another intrinsic function, `rec`. It applies the block, just like `apply`. But
-it doesn't put the block's result on the stack.
+it doesn't push the block's result to the stack.
 
 Instead, it takes all the bindings in the block, uses those as the fields of a
-new record, then puts that record on the stack.
+new record, then pushes that record to the stack.
 
 What happens to the block's result? Well, in this case it doesn't make a
 difference, because the block returns nothing. If it did, that would be
@@ -595,7 +591,7 @@ consumes. If it doesn't, that's undefined behavior.
 1 2 3 => a ...
 # Undefined behavior. Do you expect to bind `a` to `1`? What if more values
 # were added to the stack earlier? And we know nothing about what the caller of
-# the current function might have put there.
+# the current function might have placed there.
 ```
 
 ### Pattern Matching
