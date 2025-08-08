@@ -69,7 +69,7 @@ redundant with other features of the language (I think this mainly affects
 Where relevant, only the variant of a numeric instruction for signed numbers is
 exposed.
 
-In addition, `drop`, `nop`, and `unreachable` are exposed.
+In addition, `drop` and `nop` are exposed.
 
 The name of the intrinsic is, where available, a common symbol (e.g. `+`, `*`,
 `/`); where necessary, an explicit variant of the name of the instruction (e.g.
@@ -346,11 +346,16 @@ memory_size
 num_pages memory_grow
 ```
 
-### To Be Continued...
+### Error Handling
 
-This is as far as I made it. Much more left to do, later. For example:
+WebAssembly's `unreachable` instruction is exposed as an intrinsic function.
 
-- Error Handling
+```
+# Abort the program immediately.
+unreachable
+```
+
+Other than that, the user may use the stack to signal error conditions.
 
 ## Roadmap
 
