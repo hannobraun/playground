@@ -6,10 +6,6 @@ This is the design for Monobloc, an experimental programming language. As of
 this writing, only this design exists. I'm just dreaming here. There's no
 implementation, and there might never be one.
 
-Not only that, but the design itself is pretty raw. It needs a few more rounds
-of review and refinement, and I might only do that when inspiration strikes.
-There's no schedule here.
-
 This design is written in the form of documentation, because I found that to be
 an effective tool to channel my thoughts. **Don't mistake this for actual
 documentation of an actual language.**
