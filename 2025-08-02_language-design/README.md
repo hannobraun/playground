@@ -294,13 +294,8 @@ first few minimal steps, that I can start with.
 
 ## Extensions
 
-The introduction above starts with the basics, and builds up from there. It
-follows a path that maps out what we actually need to implement, at a minimum,
-to make the language useful.
-
-This reference builds on that, by expanding the concepts already introduced with
-new capabilities. It's more like a menu of things to implement later, should
-there ever be time and focus to do that.
+This section details some possible extensions to the language design, which I
+wanted to leave out of the initial scope.
 
 ### Number Literals
 
