@@ -292,7 +292,7 @@ This is as far as I made it. Much more left to do, later. For example:
 Once the design is a bit more solid, the goal of this section is to extract the
 first few minimal steps, that I can start with.
 
-## Reference
+## Extensions
 
 The introduction above starts with the basics, and builds up from there. It
 follows a path that maps out what we actually need to implement, at a minimum,
