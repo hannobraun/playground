@@ -53,6 +53,31 @@ numbers are 32-bit integers, which depending on context are treated as signed
 Once this is finished, the stack contains the number `3`. Plus whatever was on
 there in the first place.
 
+### Intrinsic Functions
+
+We've already seen intrinsic functions, which are functions that are provided by
+the compiler.
+
+For every number that can be represented as a signed or unsigned 32-bit integer,
+there is an intrinsic function with the name of that number, which produces that
+number.
+
+All numeric instruction in WebAssembly that apply to 32-bit integers and are not
+redundant with other features of the language (I think this mainly affects
+`const`), are exposed as intrinsic functions.
+
+Where relevant, only the variant of a numeric instruction for signed numbers is
+exposed.
+
+All memory instructions are exposed, except those that are not usable with
+32-bit integers.
+
+In addition, `drop`, `nop`, and `unreachable` are exposed.
+
+The name of the intrinsic is, where available, a common symbol (e.g. `+`, `*`,
+`/`); where necessary, an explicit variant of the name of the instruction (e.g.
+`count_leading_zeros`); and otherwise just the instruction name.
+
 ### Bindings
 
 I have a hard time dealing with just a stack. It's a skill issue, I know. But
