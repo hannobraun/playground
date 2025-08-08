@@ -24,7 +24,7 @@ I have the following goals in working on this language:
 4. Explore the unification between runtime and compile-time code.
 5. Learn more about WebAssembly by using it as a compilation target.
 
-## Introduction
+## Design
 
 ### Basic Operations
 
