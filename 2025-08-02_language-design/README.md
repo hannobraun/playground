@@ -574,6 +574,23 @@ consumes. If it doesn't, that's undefined behavior.
 # the current function might have put there.
 ```
 
+### Pattern Matching
+
+Control flow can later be amended or replaced by pattern matching.
+
+```
+value ~>
+  => _: 0 { handle_zero }
+  => n { n handle_n }
+.
+```
+
+`~>` is an operator that introduces a pattern-matching expression. After it, we
+have a list of cases, based on an extended binding syntax. The list of cases is
+terminated with an `.`.
+
+The first case that accepts the value is executed.
+
 ## Notes and Questions
 
 This is a list of things that I want to change in this document. Some are clear
