@@ -580,3 +580,8 @@ output.
 
 There would be a shared subset between both, which includes functions we can
 expect to be available everywhere. Stuff like `+`.
+
+### Modules, Simplified
+
+As an alternative to the `mod` intrinsics, there could be a rule that blocks
+bound to CamelCase names become modules.
