@@ -189,6 +189,21 @@ Or we can bind a name to the block, and apply it via that name.
 By calling a block by name, we apply it automatically, rather than placing the
 block on the stack. This way, we define _functions_.
 
+### Control Flow
+
+The only means of iteration is recursion.
+
+```
+{ do important things then recurse} => recurse .
+```
+
+The only conditional primitive is an intrinsic `select` function, which executes
+one of two blocks based on whether its third argument is zero or not.
+
+```
+{ if_zero } { otherwise } condition select
+```
+
 ### Function Parameters
 
 So far, we've only defined functions with implicit parameters. `add_two`
