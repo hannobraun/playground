@@ -13,7 +13,7 @@ fn main() -> anyhow::Result<()> {
 
     println!("{code}");
 
-    let mut stack = Vec::new();
+    let mut stack = Vec::<i32>::new();
 
     for word in code.split_whitespace() {
         match word {
