@@ -1,0 +1,4 @@
+[package]
+name = "monobloc"
+edition = "2024"
+publish = false
