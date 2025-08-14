@@ -17,12 +17,6 @@ fn main() -> anyhow::Result<()> {
 
     for word in code.split_whitespace() {
         match word {
-            "1" => {
-                stack.push(1);
-            }
-            "2" => {
-                stack.push(2);
-            }
             "+" => {
                 let b = stack.pop().unwrap();
                 let a = stack.pop().unwrap();
@@ -30,7 +24,11 @@ fn main() -> anyhow::Result<()> {
                 stack.push(a + b);
             }
             identifier => {
-                println!("Unknown identifier: `{identifier}`");
+                if let Ok(value) = identifier.parse() {
+                    stack.push(value);
+                } else {
+                    println!("Unknown identifier: `{identifier}`");
+                }
             }
         }
     }
