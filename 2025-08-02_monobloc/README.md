@@ -333,7 +333,7 @@ functions.
 
 ```
 # Push the current size of the memory (in pages) to the stack.
-memory_size 
+memory_size
 
 # Grow the memory by a number of pages. Push the previous size or `-1` to the
 # stack, depending on the success of the allocation.
