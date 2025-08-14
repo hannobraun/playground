@@ -17,12 +17,12 @@ I have the following goals in working on this language:
 1. Create a minimal language that is usable as a portable assembler.
 2. Explore the potential of stack-based programming for that purpose.
 3. Do 2. without reinventing Forth. I have some of my own ideas.
-4. Explore the unification between runtime and compile-time code.
+4. Explore the unification of runtime and compile-time code.
 5. Learn more about WebAssembly by using it as a compilation target.
 
 ## Design
 
-### Basic Operations
+### Calling Functions
 
 The language is stack-based, as that makes for a very concise syntax that is
 easy to work with.
@@ -38,10 +38,10 @@ But let's move on. Here's a basic example.
 ```
 
 We have three identifiers here, all of which refer to functions. And all of
-those are intrinsic functions, that are built into the compiler.
+those are intrinsic functions, which are built into the compiler.
 
 `1` and `2` simply return these respective values and push them to the stack.
-All numbers are 32-bit integers, which depending on context are treated as
+All numbers are 32-bit integers which, depending on context, are treated as
 signed (two's complement) or unsigned.
 
 `+` then takes those two values from the stack, and pushes their sum.
@@ -55,11 +55,11 @@ We've already seen intrinsic functions, which are functions that are provided by
 the compiler.
 
 For every number that can be represented as a signed or unsigned 32-bit integer,
-there is an intrinsic function with the name of that number, which produces that
+there is an intrinsic function with the name of that number, which returns that
 number.
 
-All numeric instruction in WebAssembly that apply to 32-bit integers and are not
-redundant with other features of the language (I think this mainly affects
+All numeric instructions in WebAssembly that apply to 32-bit integers and are
+not redundant with other features of the language (I think this mainly affects
 `const`), are exposed as intrinsic functions.
 
 Where relevant, only the variant of a numeric instruction for signed numbers is
@@ -68,16 +68,16 @@ exposed.
 In addition, `drop` and `nop` are exposed.
 
 The name of the intrinsic is, where available, a common symbol (e.g. `+`, `*`,
-`/`); where necessary, an explicit variant of the name of the instruction (e.g.
-`count_leading_zeros`); and otherwise just the instruction name.
+`/`); where necessary, a more explicit variant of the name of the instruction
+(e.g. `count_leading_zeros`); and otherwise just the instruction name.
 
-The remainder of this design specifies some other intrinsic functions that are
-exposed, and how they are exposed.
+These are not all intrinsic functions. Other sections in this document specify
+some more.
 
 ### Bindings
 
 I have a hard time dealing with just a stack. It's a skill issue, I know. But
-this is my language. And I'd rather design and implement bindings than spend a
+this is my language. And I'd rather design and implement bindings, than spend a
 decade or five achieving enlightenment.
 
 ```
@@ -85,7 +85,7 @@ decade or five achieving enlightenment.
 ```
 
 This is the binding operator (`=>`). After it, you put a whitespace-delimited
-list of identifiers. You close that list with a period (`.`).
+list of identifiers. You terminate that list with a period (`.`).
 
 The binding operator consumes as many values from the stack, as there are
 identifiers in the list. It _binds_ names to those values, creating _bindings_.
@@ -101,9 +101,9 @@ a b +
 
 ### Stack Manipulation
 
-There's a nice side effect to having the binding operator: It saves us from
-having to learn all those stack manipulation operators, that other stack-based
-languages tend to have.
+As a side effect to having the binding operator, we don't have to learn all
+those stack manipulation operators, that other stack-based languages tend to
+have.
 
 We can just implement them using bindings.
 
@@ -149,19 +149,19 @@ b
 a
 ```
 
-Or literally any other way. As long as the order of the tokens is the same, and
-there's whitespace between them, the resulting code is equivalent.
+As long as the order of the tokens is the same, and there's whitespace between
+them, the resulting code is equivalent.
 
 ### Blocks and Functions
 
-If we put `{` and `}` around some code, we group that code into a block.
+By putting `{` and `}` around some code, we group that code into a block.
 
 ```
 { 2 + }
 ```
 
 A block is a value, just like a number. In fact, it is represented as a number
-on the stack. There is no type system to distinguish between blocks and "real"
+on the stack. There is no type system to distinguish between blocks and actual
 numbers.
 
 We can apply a block, to execute the code it contains.
@@ -171,7 +171,7 @@ We can apply a block, to execute the code it contains.
 # The result is `3`.
 ```
 
-Or we can bind a name to the block, and apply it via that name.
+Or we can bind a name to the block, and apply it by calling that name.
 
 ```
 { 2 + } => add_two .
@@ -180,7 +180,7 @@ Or we can bind a name to the block, and apply it via that name.
 ```
 
 By calling a block by name, we apply it automatically, rather than placing the
-block on the stack. This way, we define _functions_.
+block on the stack. That way, we define _functions_.
 
 ### Control Flow
 
@@ -202,12 +202,12 @@ one of two blocks based on whether its third argument is zero or not.
 So far, we've only defined functions with implicit parameters. `add_two`, from
 earlier, consumes an argument, a number, but it doesn't specify that explicitly.
 
-It does so _implicitly_, by pushing a number to the stack, but then calling a
-function that takes 2 numbers from the stack. As a result, the combined function
-consumes one number and returns another one.
+It does so implicitly, by pushing a number to the stack, but then calling a
+function that takes 2 numbers from the stack (and returns one). As a result, the
+combined function consumes one number and returns another one.
 
 And that's often fine. But sometimes we want named parameters. And we can
-already do that!
+already specify those!
 
 ```
 { => n
@@ -217,19 +217,19 @@ already do that!
 ```
 
 This is the first example where we do something new, but don't require a new
-feature to do it. We just combine things that we already have; blocks and
-bindings; and we get a function with named parameters.
+feature to do it. We just combine things that we already have, blocks and
+bindings, and we get a function with named parameters.
 
 Strictly speaking, the parameter is still implicit. Only instead of the `+`
-consuming more than the function itself provides, we have a binding that
-consumes something that the caller needs to supply.
+consuming more than the function itself provides, we have a binding that does
+so.
 
 But by placing such a binding first in a block, we can make the requirements of
 that block very explicit.
 
 This demonstrates a very important design principle: A minimal set of orthogonal
 features, that can be combined in interesting ways to build up more interesting
-things.
+behavior.
 
 ### Higher-Order Functions
 
@@ -259,7 +259,7 @@ defined inside of it, so all of them are part of its environment.
 not defined anywhere. The compiler translates them as calls to a sentinel
 function, which fails at runtime.
 
-However, if an undefined function is defined later, the compiler replaces these
+However, if those bindings are defined later, the compiler replaces those
 sentinel calls.
 
 ```
@@ -267,8 +267,8 @@ sentinel calls.
 # sentinel function.
 { one two + } => three .
 
-# The missing functions defined later; all calls to the sentinel function are
-# being replaced.
+# The missing functions are defined later; the calls to the sentinel function
+# are replaced.
 { 1 } => one .
 { 2 } => two .
 ```
@@ -293,7 +293,7 @@ These rules can lead to confusing situations, if abused.
 apply
 ```
 
-You should avoid situations such as these. If you define a block that calls
+You should avoid situations like that. If you define a block that calls
 functions that have not been defined yet, don't apply that block in its parent
 scope.
 
@@ -303,8 +303,8 @@ function), maybe define it right before that, to avoid confusion.
 ### Compilation Model
 
 There is no distinction between code that is executed at runtime (i.e. regular
-old code) and code that only has effects at compile-time (defining functions,
-types, etc.). There is only code, and it all follows the same rules.
+old code) and code that only has effects at compile-time (defining functions).
+There is only code, and it all follows the same rules.
 
 This means that the compiler is also an interpreter. It directly executes the
 top-level code at compile-time. All examples we've seen so far can be fed
@@ -336,7 +336,7 @@ functions.
 memory_size
 
 # Grow the memory by a number of pages. Push the previous size or `-1` to the
-# stack, depending on the success of the allocation.
+# stack, depending on whether the allocation succeeds.
 num_pages memory_grow
 ```
 
@@ -355,7 +355,7 @@ Other than that, the user may use the stack to signal error conditions.
 ## Extensions
 
 This section details some possible extensions to the language design, which I
-wanted to leave out of the initial scope.
+want to leave out of the initial scope.
 
 From here on, I've put less effort into editing the text.
 
