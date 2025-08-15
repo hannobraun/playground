@@ -31,7 +31,7 @@ fn emit_type_section(output: &mut Vec<u8>) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn emit_section(
+pub fn emit_section(
     id: u8,
     contents: Vec<u8>,
     output: &mut Vec<u8>,
