@@ -1,15 +1,9 @@
 use crate::compiler::wasm::leb128;
 
-pub fn emit_section(
-    id: u8,
-    contents: Vec<u8>,
-    output: &mut Vec<u8>,
-) -> anyhow::Result<()> {
+pub fn emit_section(id: u8, contents: Vec<u8>, output: &mut Vec<u8>) {
     emit_section_id(id, output);
     emit_section_size(contents.len(), output);
     emit_section_contents(contents, output);
-
-    Ok(())
 }
 
 fn emit_section_id(id: u8, output: &mut Vec<u8>) {

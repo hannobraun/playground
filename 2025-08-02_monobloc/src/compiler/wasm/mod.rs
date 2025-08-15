@@ -29,7 +29,7 @@ fn emit_type_section(output: &mut Vec<u8>) -> anyhow::Result<()> {
     let mut contents = Vec::new();
     emit_vec(&[], &mut contents)?;
 
-    emit_section(id, contents, output)?;
+    emit_section(id, contents, output);
 
     Ok(())
 }
@@ -40,7 +40,7 @@ fn emit_function_section(output: &mut Vec<u8>) -> anyhow::Result<()> {
     let mut contents = Vec::new();
     emit_vec(&[], &mut contents)?;
 
-    emit_section(id, contents, output)?;
+    emit_section(id, contents, output);
 
     Ok(())
 }
