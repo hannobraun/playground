@@ -27,7 +27,7 @@ fn emit_type_section(output: &mut Vec<u8>) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn emit_empty_vec(output: &mut Vec<u8>) -> anyhow::Result<()> {
+pub fn emit_empty_vec(output: &mut Vec<u8>) -> anyhow::Result<()> {
     emit_vec_length(0, output)?;
     Ok(())
 }
