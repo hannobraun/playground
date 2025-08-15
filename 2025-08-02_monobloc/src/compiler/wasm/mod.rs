@@ -3,7 +3,7 @@ use crate::compiler::wasm::{section::emit_section, vec::emit_empty_vec};
 mod section;
 mod vec;
 
-pub fn compile_wasm_module() -> anyhow::Result<Vec<u8>> {
+pub fn compile_module() -> anyhow::Result<Vec<u8>> {
     let mut output = Vec::new();
 
     emit_magic(&mut output);
