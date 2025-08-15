@@ -1,10 +1,14 @@
 use std::{fs::File, io::Read};
 
 use anyhow::Context;
+use wasmtime::{Engine, Instance, Module, Store};
 
 fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("numbers.mbl")?;
     println!("{input_code}");
+
+    let wasm_code = compile_wasm_module();
+    run_wasm_module(&wasm_code)?;
 
     let mut stack = Vec::<i32>::new();
 
@@ -38,4 +42,25 @@ fn read_input_code(path: &str) -> anyhow::Result<String> {
         .with_context(|| format!("Reading code from `{path}`"))?;
 
     Ok(buf)
+}
+
+fn compile_wasm_module() -> Vec<u8> {
+    let mut buf = Vec::new();
+
+    let magic = b"\0asm";
+    buf.extend(magic);
+
+    let version = [1, 0, 0, 0];
+    buf.extend(version);
+
+    buf
+}
+
+fn run_wasm_module(code: &[u8]) -> anyhow::Result<()> {
+    let engine = Engine::default();
+    let module = Module::new(&engine, code)?;
+    let mut store = Store::new(&engine, ());
+    Instance::new(&mut store, &module, &[])?;
+
+    Ok(())
 }
