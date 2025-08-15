@@ -4,7 +4,7 @@ mod leb128;
 mod section;
 mod vec;
 
-pub fn compile_module() -> anyhow::Result<Vec<u8>> {
+pub fn compile_module() -> Vec<u8> {
     let mut output = Vec::new();
 
     emit_magic(&mut output);
@@ -12,7 +12,7 @@ pub fn compile_module() -> anyhow::Result<Vec<u8>> {
     emit_type_section(&mut output);
     emit_function_section(&mut output);
 
-    Ok(output)
+    output
 }
 
 fn emit_magic(output: &mut Vec<u8>) {

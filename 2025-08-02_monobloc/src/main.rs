@@ -11,7 +11,7 @@ fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("numbers.mbl")?;
     println!("{input_code}");
 
-    let wasm_code = wasm::compile_module()?;
+    let wasm_code = wasm::compile_module();
     run_wasm_module(&wasm_code)?;
 
     let mut stack = Vec::<i32>::new();
