@@ -3,7 +3,7 @@ use std::{fs::File, io::Read};
 use anyhow::Context;
 use wasmtime::{Engine, Instance, Module, Store};
 
-use crate::compiler::compile_wasm_module;
+use crate::compiler::wasm::compile_wasm_module;
 
 mod compiler;
 
