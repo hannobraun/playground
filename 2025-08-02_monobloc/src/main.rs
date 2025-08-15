@@ -6,13 +6,13 @@ fn main() -> anyhow::Result<()> {
     let file = "add.mbl";
 
     let input_code = {
-        let mut input_code = String::new();
+        let mut buf = String::new();
         File::open(file)
             .with_context(|| format!("Opening `{file}`"))?
-            .read_to_string(&mut input_code)
+            .read_to_string(&mut buf)
             .with_context(|| format!("Reading code from `{file}`"))?;
 
-        input_code
+        buf
     };
 
     println!("{input_code}");
