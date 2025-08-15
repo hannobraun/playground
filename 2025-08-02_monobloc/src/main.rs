@@ -44,7 +44,7 @@ fn read_input_code(path: &str) -> anyhow::Result<String> {
     Ok(buf)
 }
 
-fn compile_wasm_module() -> anyhow::Result<Vec<u8>> {
+pub fn compile_wasm_module() -> anyhow::Result<Vec<u8>> {
     let mut output = Vec::new();
 
     emit_magic(&mut output);
