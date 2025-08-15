@@ -21,10 +21,12 @@ fn emit_version(output: &mut Vec<u8>) {
 }
 
 fn emit_type_section(output: &mut Vec<u8>) -> anyhow::Result<()> {
+    let id = 1;
+
     let mut contents = Vec::new();
     emit_empty_vec(&mut contents)?;
 
-    emit_section_id(1, output);
+    emit_section_id(id, output);
     emit_section_size(contents.len(), output)?;
     emit_section_contents(contents, output);
 
