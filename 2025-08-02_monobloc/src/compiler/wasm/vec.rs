@@ -1,7 +1,4 @@
-pub fn emit_empty_vec(
-    items: &[()],
-    output: &mut Vec<u8>,
-) -> anyhow::Result<()> {
+pub fn emit_vec(items: &[()], output: &mut Vec<u8>) -> anyhow::Result<()> {
     assert_eq!(
         items.len(),
         0,
