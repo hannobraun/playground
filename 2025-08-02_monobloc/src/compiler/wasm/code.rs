@@ -1,4 +1,4 @@
-use crate::compiler::wasm::{Emit, leb128::emit_usize, vec::emit_vec};
+use crate::compiler::wasm::{Emit, leb128::emit_u32, vec::emit_vec};
 
 pub struct Code {}
 
@@ -9,8 +9,11 @@ impl Emit for Code {
         emit_expression(&mut func);
 
         let size = func.len();
+        let Ok(size) = size.try_into() else {
+            panic!("Unsupported code size: `{size}`");
+        };
 
-        emit_usize(size, output);
+        emit_u32(size, output);
         output.extend(func);
     }
 }
