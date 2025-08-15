@@ -15,9 +15,7 @@ fn main() -> anyhow::Result<()> {
 
     let mut stack = Vec::<i32>::new();
 
-    for word in code.split_whitespace() {
-        let identifier = word;
-
+    for identifier in code.split_whitespace() {
         if let Ok(value) = identifier.parse() {
             stack.push(value);
         } else {
