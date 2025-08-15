@@ -3,7 +3,7 @@ use std::{fs::File, io::Read};
 use anyhow::Context;
 
 fn main() -> anyhow::Result<()> {
-    let input_code = read_input_code("add.mbl")?;
+    let input_code = read_input_code("numbers.mbl")?;
     println!("{input_code}");
 
     let mut stack = Vec::<i32>::new();
