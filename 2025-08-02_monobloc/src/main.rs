@@ -4,7 +4,6 @@ use anyhow::Context;
 
 fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("add.mbl")?;
-
     println!("{input_code}");
 
     let mut stack = Vec::<i32>::new();
