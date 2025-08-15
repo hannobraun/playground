@@ -52,8 +52,7 @@ fn emit_code_section(output: &mut Vec<u8>) {
     let id = 10;
 
     let mut contents = Vec::new();
-    let codes = &[Code {}];
-    emit_vec(codes, &mut contents);
+    emit_vec(&[Code {}], &mut contents);
 
     emit_section(id, contents, output);
 }
