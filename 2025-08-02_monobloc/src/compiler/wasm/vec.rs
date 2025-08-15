@@ -1,4 +1,12 @@
-pub fn emit_empty_vec(output: &mut Vec<u8>) -> anyhow::Result<()> {
+pub fn emit_empty_vec(
+    items: &[()],
+    output: &mut Vec<u8>,
+) -> anyhow::Result<()> {
+    assert_eq!(
+        items.len(),
+        0,
+        "Only empty vectors are supported right now.",
+    );
     emit_vec_length(0, output)?;
     Ok(())
 }
