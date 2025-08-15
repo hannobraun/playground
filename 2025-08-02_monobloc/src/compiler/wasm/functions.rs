@@ -11,5 +11,6 @@ impl Emit for FuncType {
 }
 
 fn emit_empty_result_type(output: &mut Vec<u8>) {
-    emit_vec(&[], output);
+    let result_types = &[];
+    emit_vec(result_types, output);
 }
