@@ -1,4 +1,6 @@
-use crate::compiler::wasm::{section::emit_section, vec::emit_vec};
+use crate::compiler::wasm::{
+    functions::FuncType, section::emit_section, vec::emit_vec,
+};
 
 mod functions;
 mod leb128;
@@ -28,7 +30,7 @@ fn emit_type_section(output: &mut Vec<u8>) {
     let id = 1;
 
     let mut contents = Vec::new();
-    emit_vec(&[], &mut contents);
+    emit_vec(&[FuncType {}], &mut contents);
 
     emit_section(id, contents, output);
 }
