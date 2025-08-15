@@ -48,15 +48,18 @@ fn compile_wasm_module() -> Vec<u8> {
     let mut output = Vec::new();
 
     emit_magic(&mut output);
-
-    let version = [1, 0, 0, 0];
-    output.extend(version);
+    emit_version(&mut output);
 
     output
 }
 
 fn emit_magic(output: &mut Vec<u8>) {
     output.extend(b"\0asm");
+}
+
+fn emit_version(output: &mut Vec<u8>) {
+    let version = [1, 0, 0, 0];
+    output.extend(version);
 }
 
 fn run_wasm_module(code: &[u8]) -> anyhow::Result<()> {
