@@ -43,3 +43,7 @@ fn emit_function_section(output: &mut Vec<u8>) {
 
     emit_section(id, contents, output);
 }
+
+trait Emit {
+    fn emit(&self, output: &mut Vec<u8>);
+}
