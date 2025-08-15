@@ -3,9 +3,7 @@ use std::{fs::File, io::Read};
 use anyhow::Context;
 
 fn main() -> anyhow::Result<()> {
-    let file = "add.mbl";
-
-    let input_code = read_input_code(file)?;
+    let input_code = read_input_code("add.mbl")?;
 
     println!("{input_code}");
 
