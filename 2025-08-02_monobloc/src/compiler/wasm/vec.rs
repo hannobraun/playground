@@ -11,6 +11,6 @@ pub fn emit_vec(items: &[()], output: &mut Vec<u8>) -> anyhow::Result<()> {
 }
 
 fn emit_vec_length(length: usize, output: &mut Vec<u8>) -> anyhow::Result<()> {
-    leb128::emit_usize(length, output)?;
+    leb128::emit_usize(length, output);
     Ok(())
 }

@@ -17,7 +17,7 @@ fn emit_section_id(id: u8, output: &mut Vec<u8>) {
 }
 
 fn emit_section_size(size: usize, output: &mut Vec<u8>) -> anyhow::Result<()> {
-    leb128::emit_usize(size, output)?;
+    leb128::emit_usize(size, output);
     Ok(())
 }
 
