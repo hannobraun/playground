@@ -47,13 +47,17 @@ fn read_input_code(path: &str) -> anyhow::Result<String> {
 fn compile_wasm_module() -> Vec<u8> {
     let mut buf = Vec::new();
 
-    let magic = b"\0asm";
-    buf.extend(magic);
+    emit_magic(&mut buf);
 
     let version = [1, 0, 0, 0];
     buf.extend(version);
 
     buf
+}
+
+fn emit_magic(buf: &mut Vec<u8>) {
+    let magic = b"\0asm";
+    buf.extend(magic);
 }
 
 fn run_wasm_module(code: &[u8]) -> anyhow::Result<()> {
