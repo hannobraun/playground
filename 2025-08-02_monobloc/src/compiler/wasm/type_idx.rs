@@ -6,6 +6,6 @@ pub struct TypeIdx {
 
 impl Emit for TypeIdx {
     fn emit(&self, output: &mut Vec<u8>) {
-        leb128::emit_u64(self.index.into(), output);
+        leb128::emit_u32(self.index, output);
     }
 }
