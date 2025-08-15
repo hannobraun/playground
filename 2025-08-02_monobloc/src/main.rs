@@ -5,16 +5,7 @@ use anyhow::Context;
 fn main() -> anyhow::Result<()> {
     let file = "add.mbl";
 
-    let input_code = {
-        let mut buf = String::new();
-
-        File::open(file)
-            .with_context(|| format!("Opening `{file}`"))?
-            .read_to_string(&mut buf)
-            .with_context(|| format!("Reading code from `{file}`"))?;
-
-        buf
-    };
+    let input_code = read_input_code(file)?;
 
     println!("{input_code}");
 
@@ -39,4 +30,15 @@ fn main() -> anyhow::Result<()> {
     println!();
 
     Ok(())
+}
+
+fn read_input_code(file: &str) -> anyhow::Result<String> {
+    let mut buf = String::new();
+
+    File::open(file)
+        .with_context(|| format!("Opening `{file}`"))?
+        .read_to_string(&mut buf)
+        .with_context(|| format!("Reading code from `{file}`"))?;
+
+    Ok(buf)
 }
