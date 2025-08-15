@@ -7,7 +7,7 @@ fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("numbers.mbl")?;
     println!("{input_code}");
 
-    let wasm_code = compile_wasm_module();
+    let wasm_code = compile_wasm_module()?;
     run_wasm_module(&wasm_code)?;
 
     let mut stack = Vec::<i32>::new();
@@ -44,13 +44,13 @@ fn read_input_code(path: &str) -> anyhow::Result<String> {
     Ok(buf)
 }
 
-fn compile_wasm_module() -> Vec<u8> {
+fn compile_wasm_module() -> anyhow::Result<Vec<u8>> {
     let mut output = Vec::new();
 
     emit_magic(&mut output);
     emit_version(&mut output);
 
-    output
+    Ok(output)
 }
 
 fn emit_magic(output: &mut Vec<u8>) {
