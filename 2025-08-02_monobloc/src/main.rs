@@ -7,6 +7,7 @@ fn main() -> anyhow::Result<()> {
 
     let input_code = {
         let mut buf = String::new();
+
         File::open(file)
             .with_context(|| format!("Opening `{file}`"))?
             .read_to_string(&mut buf)
