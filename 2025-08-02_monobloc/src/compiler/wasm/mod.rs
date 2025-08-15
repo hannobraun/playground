@@ -60,13 +60,15 @@ fn emit_export_section(output: &mut Vec<u8>) {
     let id = 7;
 
     let mut contents = Vec::new();
-    let exports = &[Export {
-        name: Name { inner: "root" },
-        desc: ExportDesc::FuncIdx {
-            index: FuncIdx { index: 0 },
-        },
-    }];
-    emit_vec(exports, &mut contents);
+    emit_vec(
+        &[Export {
+            name: Name { inner: "root" },
+            desc: ExportDesc::FuncIdx {
+                index: FuncIdx { index: 0 },
+            },
+        }],
+        &mut contents,
+    );
 
     emit_section(id, contents, output);
 }
