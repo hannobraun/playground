@@ -39,8 +39,8 @@ fn emit_function_section(output: &mut Vec<u8>) {
     let id = 3;
 
     let mut contents = Vec::new();
-    let functions: &[FuncType] = &[];
-    emit_vec(functions, &mut contents);
+    let func_types: &[FuncType] = &[];
+    emit_vec(func_types, &mut contents);
 
     emit_section(id, contents, output);
 }
