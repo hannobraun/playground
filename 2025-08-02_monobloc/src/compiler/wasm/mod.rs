@@ -17,6 +17,7 @@ pub fn compile_module() -> Vec<u8> {
     emit_version(&mut output);
     emit_type_section(&mut output);
     emit_function_section(&mut output);
+    emit_export_section(&mut output);
     emit_code_section(&mut output);
 
     output
@@ -44,6 +45,16 @@ fn emit_function_section(output: &mut Vec<u8>) {
 
     let mut contents = Vec::new();
     emit_vec(&[TypeIdx { index: 0 }], &mut contents);
+
+    emit_section(id, contents, output);
+}
+
+fn emit_export_section(output: &mut Vec<u8>) {
+    let id = 7;
+
+    let mut contents = Vec::new();
+    let exports: &[TypeIdx] = &[];
+    emit_vec(exports, &mut contents);
 
     emit_section(id, contents, output);
 }
