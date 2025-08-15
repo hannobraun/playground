@@ -1,3 +1,7 @@
+use crate::compiler::vec::emit_empty_vec;
+
+mod vec;
+
 pub fn compile_wasm_module() -> anyhow::Result<Vec<u8>> {
     let mut output = Vec::new();
 
@@ -23,21 +27,6 @@ fn emit_type_section(output: &mut Vec<u8>) -> anyhow::Result<()> {
     emit_section_id(1, output);
     emit_section_size(contents.len(), output)?;
     emit_section_contents(contents, output);
-
-    Ok(())
-}
-
-pub fn emit_empty_vec(output: &mut Vec<u8>) -> anyhow::Result<()> {
-    emit_vec_length(0, output)?;
-    Ok(())
-}
-
-fn emit_vec_length(length: usize, output: &mut Vec<u8>) -> anyhow::Result<()> {
-    let length = length
-        .try_into()
-        .expect("Can always conver `usize` to `u64`.");
-
-    leb128::write::unsigned(output, length)?;
 
     Ok(())
 }
