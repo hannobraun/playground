@@ -1,8 +1,8 @@
 use crate::compiler::wasm::{
-    functions::FuncType, section::emit_section, vec::emit_vec,
+    func_type::FuncType, section::emit_section, vec::emit_vec,
 };
 
-mod functions;
+mod func_type;
 mod leb128;
 mod section;
 mod vec;
