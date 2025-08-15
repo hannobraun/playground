@@ -8,7 +8,9 @@ impl Emit for Code {
         emit_locals(&mut func);
         emit_expression(&mut func);
 
-        emit_usize(func.len(), output);
+        let size = func.len();
+
+        emit_usize(size, output);
         output.extend(func);
     }
 }
