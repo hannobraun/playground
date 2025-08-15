@@ -6,11 +6,10 @@ pub fn emit_vec(items: &[()], output: &mut Vec<u8>) -> anyhow::Result<()> {
         0,
         "Only empty vectors are supported right now.",
     );
-    emit_vec_length(items.len(), output)?;
+    emit_vec_length(items.len(), output);
     Ok(())
 }
 
-fn emit_vec_length(length: usize, output: &mut Vec<u8>) -> anyhow::Result<()> {
+fn emit_vec_length(length: usize, output: &mut Vec<u8>) {
     leb128::emit_usize(length, output);
-    Ok(())
 }
