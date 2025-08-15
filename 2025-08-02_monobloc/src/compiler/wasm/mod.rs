@@ -1,5 +1,6 @@
 use crate::compiler::wasm::{section::emit_section, vec::emit_vec};
 
+mod functions;
 mod leb128;
 mod section;
 mod vec;
