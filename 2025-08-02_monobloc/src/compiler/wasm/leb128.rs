@@ -3,6 +3,10 @@ pub fn emit_usize(value: usize, output: &mut Vec<u8>) {
         .try_into()
         .expect("Can always convert `usize` to `u64`.");
 
+    emit_u64(value, output);
+}
+
+pub fn emit_u64(value: u64, output: &mut Vec<u8>) {
     leb128::write::unsigned(output, value)
         .expect("Writing into a `&mut Vec` should never fail.");
 }
