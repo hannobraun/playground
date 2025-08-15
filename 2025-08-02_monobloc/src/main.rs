@@ -58,8 +58,7 @@ fn emit_magic(output: &mut Vec<u8>) {
 }
 
 fn emit_version(output: &mut Vec<u8>) {
-    let version = [1, 0, 0, 0];
-    output.extend(version);
+    output.extend([1, 0, 0, 0]);
 }
 
 fn run_wasm_module(code: &[u8]) -> anyhow::Result<()> {
