@@ -1,4 +1,4 @@
-use crate::compiler::wasm::{Emit, leb128};
+use crate::compiler::wasm::{Emit, leb128::emit_u32};
 
 pub struct TypeIdx {
     pub index: u32,
@@ -6,6 +6,6 @@ pub struct TypeIdx {
 
 impl Emit for TypeIdx {
     fn emit(&self, output: &mut Vec<u8>) {
-        leb128::emit_u32(self.index, output);
+        emit_u32(self.index, output);
     }
 }
