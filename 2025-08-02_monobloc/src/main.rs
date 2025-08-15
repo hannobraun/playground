@@ -3,7 +3,7 @@ use std::{fs::File, io::Read};
 use anyhow::Context;
 use wasmtime::{Engine, Instance, Module, Store};
 
-use crate::compiler::wasm::compile_wasm_module;
+use crate::compiler::wasm;
 
 mod compiler;
 
@@ -11,7 +11,7 @@ fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("numbers.mbl")?;
     println!("{input_code}");
 
-    let wasm_code = compile_wasm_module()?;
+    let wasm_code = wasm::compile_wasm_module()?;
     run_wasm_module(&wasm_code)?;
 
     let mut stack = Vec::<i32>::new();
