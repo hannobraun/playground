@@ -71,3 +71,9 @@ fn emit_code_section(output: &mut Vec<u8>) {
 trait Emit {
     fn emit(&self, output: &mut Vec<u8>);
 }
+
+impl Emit for u8 {
+    fn emit(&self, output: &mut Vec<u8>) {
+        output.push(*self);
+    }
+}
