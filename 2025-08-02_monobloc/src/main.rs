@@ -45,14 +45,14 @@ fn read_input_code(path: &str) -> anyhow::Result<String> {
 }
 
 fn compile_wasm_module() -> Vec<u8> {
-    let mut buf = Vec::new();
+    let mut output = Vec::new();
 
-    emit_magic(&mut buf);
+    emit_magic(&mut output);
 
     let version = [1, 0, 0, 0];
-    buf.extend(version);
+    output.extend(version);
 
-    buf
+    output
 }
 
 fn emit_magic(output: &mut Vec<u8>) {
