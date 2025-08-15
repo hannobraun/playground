@@ -26,6 +26,16 @@ fn emit_type_section(output: &mut Vec<u8>) -> anyhow::Result<()> {
     let mut contents = Vec::new();
     emit_empty_vec(&mut contents)?;
 
+    emit_section(id, contents, output)?;
+
+    Ok(())
+}
+
+fn emit_section(
+    id: u8,
+    contents: Vec<u8>,
+    output: &mut Vec<u8>,
+) -> anyhow::Result<()> {
     emit_section_id(id, output);
     emit_section_size(contents.len(), output)?;
     emit_section_contents(contents, output);
