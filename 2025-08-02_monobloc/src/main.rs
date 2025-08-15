@@ -55,9 +55,9 @@ fn compile_wasm_module() -> Vec<u8> {
     buf
 }
 
-fn emit_magic(buf: &mut Vec<u8>) {
+fn emit_magic(output: &mut Vec<u8>) {
     let magic = b"\0asm";
-    buf.extend(magic);
+    output.extend(magic);
 }
 
 fn run_wasm_module(code: &[u8]) -> anyhow::Result<()> {
