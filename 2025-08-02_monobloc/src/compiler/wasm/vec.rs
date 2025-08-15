@@ -1,6 +1,6 @@
-use crate::compiler::wasm::{Emit, functions::FuncType, leb128};
+use crate::compiler::wasm::{Emit, leb128};
 
-pub fn emit_vec(items: &[FuncType], output: &mut Vec<u8>) {
+pub fn emit_vec(items: &[impl Emit], output: &mut Vec<u8>) {
     emit_vec_length(items.len(), output);
 
     for item in items {
