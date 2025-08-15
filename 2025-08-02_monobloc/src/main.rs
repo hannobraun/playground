@@ -16,20 +16,12 @@ fn main() -> anyhow::Result<()> {
     let mut stack = Vec::<i32>::new();
 
     for word in code.split_whitespace() {
-        match word {
-            "+" => {
-                let b = stack.pop().unwrap();
-                let a = stack.pop().unwrap();
+        let identifier = word;
 
-                stack.push(a + b);
-            }
-            identifier => {
-                if let Ok(value) = identifier.parse() {
-                    stack.push(value);
-                } else {
-                    println!("Unknown identifier: `{identifier}`");
-                }
-            }
+        if let Ok(value) = identifier.parse() {
+            stack.push(value);
+        } else {
+            println!("Unknown identifier: `{identifier}`");
         }
     }
 
