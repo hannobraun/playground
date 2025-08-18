@@ -42,7 +42,7 @@ impl Emit for Locals {
     }
 }
 
-struct Expressions;
+pub struct Expressions;
 
 impl Emit for Expressions {
     fn emit(&self, output: &mut Vec<u8>) {
