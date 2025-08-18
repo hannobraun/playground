@@ -5,7 +5,7 @@ use crate::compiler::wasm::{
 pub struct TypeSection;
 
 impl Emit for TypeSection {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         let id = 1;
 
         let mut contents = Vec::new();
@@ -14,6 +14,6 @@ impl Emit for TypeSection {
         }
         .emit(&mut contents);
 
-        emit_section(id, contents, output);
+        emit_section(id, contents, target);
     }
 }
