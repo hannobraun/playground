@@ -4,12 +4,12 @@ pub fn compile_input_code() -> Function {
     }
 }
 
-pub enum Type {
-    I32,
-}
-
 pub struct Function {
     pub body: Body,
+}
+
+pub enum Type {
+    I32,
 }
 
 pub type Body = Vec<Expression>;
