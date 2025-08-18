@@ -18,6 +18,6 @@ fn emit_section_size(size: usize, target: &mut Vec<u8>) {
     Leb128::U32 { value: size }.emit(target);
 }
 
-fn emit_section_contents(contents: Vec<u8>, output: &mut Vec<u8>) {
-    output.extend(contents);
+fn emit_section_contents(contents: Vec<u8>, target: &mut Vec<u8>) {
+    target.extend(contents);
 }
