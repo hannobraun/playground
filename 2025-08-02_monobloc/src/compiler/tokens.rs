@@ -1,4 +1,4 @@
-use std::mem;
+use std::{fmt, mem};
 
 use crate::compiler::input_code::InputCode;
 
@@ -95,6 +95,15 @@ enum State {
 pub enum Token {
     Identifier { name: String },
     Number { value: i32 },
+}
+
+impl fmt::Display for Token {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Identifier { name } => write!(f, "{name}"),
+            Self::Number { value } => write!(f, "{value}"),
+        }
+    }
 }
 
 pub enum ProcessCharOutcome {
