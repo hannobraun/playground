@@ -14,26 +14,6 @@ fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("examples/single-number.mbl")?;
     println!("{input_code}");
 
-    let mut stack = Vec::<i32>::new();
-
-    for identifier in input_code.split_whitespace() {
-        if let Ok(value) = identifier.parse() {
-            stack.push(value);
-        } else {
-            println!("Unknown identifier: `{identifier}`");
-        }
-    }
-
-    print!("Interpreter: ");
-    for (i, value) in stack.into_iter().enumerate() {
-        if i > 0 {
-            print!(" ");
-        }
-
-        print!("{value}");
-    }
-    println!();
-
     let root = compile_input_code(&input_code);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
