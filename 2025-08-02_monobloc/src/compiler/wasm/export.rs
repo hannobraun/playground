@@ -17,11 +17,11 @@ pub struct Name<'a> {
 }
 
 impl Emit for Name<'_> {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         WasmVec {
             items: self.inner.as_bytes(),
         }
-        .emit(output);
+        .emit(target);
     }
 }
 
