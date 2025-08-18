@@ -9,12 +9,12 @@ pub fn compile_input_code(tokens: Vec<Token>) -> Function {
 
     for token in tokens {
         match token {
-            Token::Identifier { name: identifier } => {
-                if let Ok(value) = identifier.parse() {
+            Token::Identifier { name } => {
+                if let Ok(value) = name.parse() {
                     body.push(Expression::Value { value });
                     signature.outputs.push(Type::I32);
                 } else {
-                    println!("Unknown identifier: `{identifier}`");
+                    println!("Unknown identifier: `{name}`");
                     body.push(Expression::Panic);
                 }
             }
