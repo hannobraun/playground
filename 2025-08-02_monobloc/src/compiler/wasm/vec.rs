@@ -9,7 +9,10 @@ where
     T: Emit,
 {
     fn emit(&self, output: &mut Vec<u8>) {
-        emit_vec_length(self.items.len(), output);
+        Length {
+            value: self.items.len(),
+        }
+        .emit(output);
 
         for item in self.items {
             item.emit(output);
@@ -17,10 +20,19 @@ where
     }
 }
 
-fn emit_vec_length(length: usize, output: &mut Vec<u8>) {
-    let Ok(length) = length.try_into() else {
-        panic!("Unsupported vector length: `{length}`");
-    };
+struct Length {
+    value: usize,
+}
 
-    Leb128::U32 { value: length }.emit(output);
+impl Emit for Length {
+    fn emit(&self, output: &mut Vec<u8>) {
+        let Ok(length) = self.value.try_into() else {
+            panic!(
+                "Unsupported vector length: `{length}`",
+                length = self.value,
+            );
+        };
+
+        Leb128::U32 { value: length }.emit(output);
+    }
 }
