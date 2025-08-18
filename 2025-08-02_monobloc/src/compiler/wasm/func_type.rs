@@ -11,13 +11,12 @@ pub struct FuncType {}
 
 impl Emit for FuncType {
     fn emit(&self, target: &mut Vec<u8>) {
-        target.push(0x60);
-
         let ir::Signature { inputs, outputs } = &ir::Signature {
             inputs: vec![],
             outputs: vec![ir::Type::I32],
         };
 
+        target.push(0x60);
         ResultType { types: inputs }.emit(target);
         ResultType { types: outputs }.emit(target);
     }
