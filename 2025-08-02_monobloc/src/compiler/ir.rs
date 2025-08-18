@@ -3,11 +3,9 @@ pub fn compile_input_code(_: &str) -> Function {
         inputs: vec![],
         outputs: vec![Type::I32],
     };
+    let body = vec![Expression::Value { value: 0 }];
 
-    Function {
-        signature,
-        body: vec![Expression::Value { value: 0 }],
-    }
+    Function { signature, body }
 }
 
 pub struct Function {
