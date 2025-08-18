@@ -21,7 +21,7 @@ impl Emit for Code {
     fn emit(&self, output: &mut Vec<u8>) {
         let mut func = Vec::new();
         Locals.emit(&mut func);
-        Expression.emit(&mut func);
+        Expressions.emit(&mut func);
 
         let size = func.len();
         let Ok(size) = size.try_into() else {
@@ -42,9 +42,9 @@ impl Emit for Locals {
     }
 }
 
-struct Expression;
+struct Expressions;
 
-impl Emit for Expression {
+impl Emit for Expressions {
     fn emit(&self, output: &mut Vec<u8>) {
         End.emit(output);
     }
