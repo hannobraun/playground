@@ -9,13 +9,13 @@ pub struct TypeSection<'a> {
 
 impl Emit for TypeSection<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let signature = self.signature;
-
         let id = 1;
 
         let mut contents = Vec::new();
         WasmVec {
-            items: &[FuncType { signature }],
+            items: &[FuncType {
+                signature: self.signature,
+            }],
         }
         .emit(&mut contents);
 
