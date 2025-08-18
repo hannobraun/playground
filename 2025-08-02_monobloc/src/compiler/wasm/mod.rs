@@ -18,7 +18,6 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     use crate::compiler::wasm::module::Module;
 
     let mut output = Vec::new();
-
     Module.emit(&mut output);
 
     output
