@@ -11,6 +11,9 @@ use crate::{
 };
 
 pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
+    // We wouldn't need to create the buffer here, if `String::into_chars` were
+    // stable:
+    // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
     let mut input_code = String::new();
     read_input_code(path, &mut input_code)?;
     let tokens = Tokenizer::new(&input_code).process_all_tokens();
