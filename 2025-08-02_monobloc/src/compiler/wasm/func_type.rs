@@ -7,15 +7,15 @@ use crate::compiler::wasm::{
 pub struct FuncType {}
 
 impl Emit for FuncType {
-    fn emit(&self, output: &mut Vec<u8>) {
-        output.push(0x60);
-        ResultType { inner: &[] }.emit(output);
+    fn emit(&self, target: &mut Vec<u8>) {
+        target.push(0x60);
+        ResultType { inner: &[] }.emit(target);
         ResultType {
             inner: &[ValType::NumType {
                 num_type: NumType::I32,
             }],
         }
-        .emit(output);
+        .emit(target);
     }
 }
 
