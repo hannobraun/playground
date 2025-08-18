@@ -19,10 +19,10 @@ pub enum NumType {
 }
 
 impl Emit for NumType {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         match self {
             NumType::I32 => {
-                output.push(0x7f);
+                target.push(0x7f);
             }
         }
     }
