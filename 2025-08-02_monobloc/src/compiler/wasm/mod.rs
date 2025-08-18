@@ -35,7 +35,7 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     output
 }
 
-fn emit_function_section(output: &mut Vec<u8>) {
+pub fn emit_function_section(output: &mut Vec<u8>) {
     let id = 3;
 
     let mut contents = Vec::new();
