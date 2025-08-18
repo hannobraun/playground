@@ -16,17 +16,6 @@ impl<'a> Tokenizer<'a> {
 
         while let Some(ch) = self.chars.next() {
             match ch {
-                ch if ch.is_whitespace() => {
-                    let token = if let Ok(value) = token.parse() {
-                        Token::Number { value }
-                    } else {
-                        Token::Identifier {
-                            name: mem::take(&mut token),
-                        }
-                    };
-
-                    return Some(token);
-                }
                 '#' => {
                     while let Some(&ch) = self.chars.peek() {
                         // This would be redundant, if we handled multiple
@@ -40,6 +29,17 @@ impl<'a> Tokenizer<'a> {
                             continue;
                         }
                     }
+                }
+                ch if ch.is_whitespace() => {
+                    let token = if let Ok(value) = token.parse() {
+                        Token::Number { value }
+                    } else {
+                        Token::Identifier {
+                            name: mem::take(&mut token),
+                        }
+                    };
+
+                    return Some(token);
                 }
                 ch => {
                     token.push(ch);
