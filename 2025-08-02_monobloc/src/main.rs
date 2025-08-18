@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::Context;
 
-use crate::compiler::wasm;
+use crate::compiler::{ir, wasm};
 
 mod compiler;
 mod runtime;
@@ -34,7 +34,7 @@ fn main() -> anyhow::Result<()> {
     }
     println!();
 
-    let root = 1;
+    let root = &[ir::Expression::Value { value: 1 }];
     let output = 1;
 
     let wasm_code = wasm::compile_module(root);
