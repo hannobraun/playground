@@ -52,8 +52,8 @@ impl Emit for Code<'_> {
 struct Locals;
 
 impl Emit for Locals {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         let locals: &[Code] = &[];
-        WasmVec { items: locals }.emit(output);
+        WasmVec { items: locals }.emit(target);
     }
 }
