@@ -7,8 +7,8 @@ pub fn compile_input_code(tokens: Vec<Token>) -> Function {
     };
     let mut body = Vec::new();
 
-    for identifier in tokens {
-        let Token::Identifier { name: identifier } = identifier;
+    for token in tokens {
+        let Token::Identifier { name: identifier } = token;
 
         if let Ok(value) = identifier.parse() {
             body.push(Expression::Value { value });
