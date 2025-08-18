@@ -8,12 +8,12 @@ pub struct Expressions<'a> {
 }
 
 impl Emit for Expressions<'_> {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         for expression in self.inner {
-            compile_expression(expression, output);
+            compile_expression(expression, target);
         }
 
-        End.emit(output);
+        End.emit(target);
     }
 }
 
