@@ -34,10 +34,12 @@ fn main() -> anyhow::Result<()> {
     }
     println!();
 
-    let root = &[ir::Expression::Value { value: 1 }];
+    let root = ir::Function {
+        body: vec![ir::Expression::Value { value: 1 }],
+    };
     let output = 1;
 
-    let wasm_code = wasm::compile_module(root);
+    let wasm_code = wasm::compile_module(&root.body);
     let stack = match runtime::evaluate_root(&wasm_code, output) {
         Ok(stack) => stack,
         Err(err) => {
