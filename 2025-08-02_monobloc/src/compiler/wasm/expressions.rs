@@ -18,11 +18,11 @@ impl Emit for Expressions<'_> {
 }
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
-    match *expression {
-        ir::Expression::Value { value } => {
-            Instruction::ConstI32 { value }.emit(target);
-        }
-    }
+    let instruction = match *expression {
+        ir::Expression::Value { value } => Instruction::ConstI32 { value },
+    };
+
+    instruction.emit(target);
 }
 
 struct End;
