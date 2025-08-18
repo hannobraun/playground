@@ -32,7 +32,7 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     output
 }
 
-fn emit_version(output: &mut Vec<u8>) {
+pub fn emit_version(output: &mut Vec<u8>) {
     output.extend([1, 0, 0, 0]);
 }
 
