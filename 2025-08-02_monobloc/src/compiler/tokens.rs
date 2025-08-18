@@ -3,7 +3,6 @@ use std::{iter::Peekable, mem, str::Chars};
 pub fn tokenize(input_code: &str) -> Vec<Token> {
     let tokenizer = Tokenizer {
         chars: input_code.chars().peekable(),
-        current_token: String::default(),
         tokens: Vec::new(),
     };
 
@@ -12,19 +11,20 @@ pub fn tokenize(input_code: &str) -> Vec<Token> {
 
 pub struct Tokenizer<'a> {
     pub chars: Peekable<Chars<'a>>,
-    pub current_token: String,
     pub tokens: Vec<Token>,
 }
 
 impl Tokenizer<'_> {
     pub fn process_token(&mut self) -> Option<Token> {
+        let mut current_token = String::default();
+
         while let Some(ch) = self.chars.next() {
             if ch.is_whitespace() {
-                let token = if let Ok(value) = self.current_token.parse() {
+                let token = if let Ok(value) = current_token.parse() {
                     Token::Number { value }
                 } else {
                     Token::Identifier {
-                        name: mem::take(&mut self.current_token),
+                        name: mem::take(&mut current_token),
                     }
                 };
 
@@ -43,7 +43,7 @@ impl Tokenizer<'_> {
                     }
                 }
             } else {
-                self.current_token.push(ch);
+                current_token.push(ch);
             }
         }
 
