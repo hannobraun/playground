@@ -21,11 +21,6 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    let root = 1;
-
-    let wasm_code = wasm::compile_module(root);
-    runtime::evaluate_root(&wasm_code)?;
-
     print!("Interpreter: ");
     for (i, value) in stack.into_iter().enumerate() {
         if i > 0 {
@@ -35,6 +30,11 @@ fn main() -> anyhow::Result<()> {
         print!("{value}");
     }
     println!();
+
+    let root = 1;
+
+    let wasm_code = wasm::compile_module(root);
+    runtime::evaluate_root(&wasm_code)?;
 
     Ok(())
 }
