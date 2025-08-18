@@ -1,6 +1,9 @@
-use crate::compiler::wasm::{
-    Emit, expressions::Expressions, leb128::Leb128, section::emit_section,
-    vec::WasmVec,
+use crate::compiler::{
+    ir,
+    wasm::{
+        Emit, expressions::Expressions, leb128::Leb128, section::emit_section,
+        vec::WasmVec,
+    },
 };
 
 pub struct CodeSection;
@@ -22,7 +25,10 @@ impl Emit for Code {
     fn emit(&self, output: &mut Vec<u8>) {
         let mut func = Vec::new();
         Locals.emit(&mut func);
-        Expressions.emit(&mut func);
+        Expressions {
+            inner: &[ir::Expression::Value { value: 0 }],
+        }
+        .emit(&mut func);
 
         let size = func.len();
         let Ok(size) = size.try_into() else {

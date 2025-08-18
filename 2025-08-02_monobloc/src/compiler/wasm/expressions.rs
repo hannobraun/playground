@@ -3,11 +3,16 @@ use crate::compiler::{
     wasm::{Emit, instruction::Instruction},
 };
 
-pub struct Expressions;
+pub struct Expressions<'a> {
+    pub inner: &'a [ir::Expression],
+}
 
-impl Emit for Expressions {
+impl Emit for Expressions<'_> {
     fn emit(&self, output: &mut Vec<u8>) {
-        compile_expression(&ir::Expression::Value { value: 0 }, output);
+        for expression in self.inner {
+            compile_expression(expression, output);
+        }
+
         End.emit(output);
     }
 }
