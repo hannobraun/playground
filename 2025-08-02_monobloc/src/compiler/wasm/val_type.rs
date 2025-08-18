@@ -5,10 +5,10 @@ pub enum ValType {
 }
 
 impl Emit for ValType {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         match self {
             ValType::NumType { num_type } => {
-                num_type.emit(output);
+                num_type.emit(target);
             }
         }
     }
