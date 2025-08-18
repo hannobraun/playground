@@ -15,31 +15,35 @@ impl<'a> Tokenizer<'a> {
         let mut token = String::new();
 
         while let Some(ch) = self.chars.next() {
-            if ch.is_whitespace() {
-                let token = if let Ok(value) = token.parse() {
-                    Token::Number { value }
-                } else {
-                    Token::Identifier {
-                        name: mem::take(&mut token),
-                    }
-                };
-
-                return Some(token);
-            } else if ch == '#' {
-                while let Some(&ch) = self.chars.peek() {
-                    // This would be redundant, if we handled multiple
-                    // subsequent whitespace characters correctly.
-                    self.chars.next();
-
-                    if ch == '\n' {
-                        break;
+            match ch {
+                ch if ch.is_whitespace() => {
+                    let token = if let Ok(value) = token.parse() {
+                        Token::Number { value }
                     } else {
+                        Token::Identifier {
+                            name: mem::take(&mut token),
+                        }
+                    };
+
+                    return Some(token);
+                }
+                '#' => {
+                    while let Some(&ch) = self.chars.peek() {
+                        // This would be redundant, if we handled multiple
+                        // subsequent whitespace characters correctly.
                         self.chars.next();
-                        continue;
+
+                        if ch == '\n' {
+                            break;
+                        } else {
+                            self.chars.next();
+                            continue;
+                        }
                     }
                 }
-            } else {
-                token.push(ch);
+                ch => {
+                    token.push(ch);
+                }
             }
         }
 
