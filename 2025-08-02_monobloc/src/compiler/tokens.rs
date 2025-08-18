@@ -32,13 +32,13 @@ impl Tokenizer {
     ) -> Option<Token> {
         loop {
             match self.process_char(input_code) {
-                None => {
+                ProcessCharOutcome::NoMoreChars => {
                     return None;
                 }
-                Some(Some(token)) => {
+                ProcessCharOutcome::TokenIsReady { token } => {
                     return Some(token);
                 }
-                Some(None) => {
+                ProcessCharOutcome::TokenNotReady => {
                     continue;
                 }
             }
@@ -48,8 +48,10 @@ impl Tokenizer {
     pub fn process_char(
         &mut self,
         input_code: &mut InputCode,
-    ) -> Option<Option<Token>> {
-        let ch = input_code.next()?;
+    ) -> ProcessCharOutcome {
+        let Some(ch) = input_code.next() else {
+            return ProcessCharOutcome::NoMoreChars;
+        };
 
         match (&self.state, ch) {
             (State::Initial, '#') => {
@@ -64,7 +66,7 @@ impl Tokenizer {
                     }
                 };
 
-                return Some(Some(token));
+                return ProcessCharOutcome::TokenIsReady { token };
             }
             (State::Initial, ch) => {
                 self.token.push(ch);
@@ -81,7 +83,7 @@ impl Tokenizer {
             }
         }
 
-        Some(None)
+        ProcessCharOutcome::TokenNotReady
     }
 }
 
@@ -93,4 +95,10 @@ enum State {
 pub enum Token {
     Identifier { name: String },
     Number { value: i32 },
+}
+
+pub enum ProcessCharOutcome {
+    NoMoreChars,
+    TokenIsReady { token: Token },
+    TokenNotReady,
 }
