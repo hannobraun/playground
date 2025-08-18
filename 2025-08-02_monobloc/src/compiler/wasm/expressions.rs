@@ -4,7 +4,7 @@ use crate::compiler::{
 };
 
 pub struct Expressions<'a> {
-    pub inner: &'a [ir::Expression],
+    pub inner: &'a ir::Body,
 }
 
 impl Emit for Expressions<'_> {
