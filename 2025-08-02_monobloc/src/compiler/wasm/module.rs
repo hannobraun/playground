@@ -12,15 +12,15 @@ pub struct Module<'a> {
 }
 
 impl Emit for Module<'_> {
-    fn emit(&self, output: &mut Vec<u8>) {
-        Magic.emit(output);
-        Version.emit(output);
-        TypeSection.emit(output);
-        FunctionSection.emit(output);
-        ExportSection.emit(output);
+    fn emit(&self, target: &mut Vec<u8>) {
+        Magic.emit(target);
+        Version.emit(target);
+        TypeSection.emit(target);
+        FunctionSection.emit(target);
+        ExportSection.emit(target);
         CodeSection {
             function: self.function,
         }
-        .emit(output);
+        .emit(target);
     }
 }
