@@ -1,9 +1,11 @@
 pub fn compile_input_code(_: &str) -> Function {
+    let signature = Signature {
+        inputs: vec![],
+        outputs: vec![Type::I32],
+    };
+
     Function {
-        signature: Signature {
-            inputs: vec![],
-            outputs: vec![Type::I32],
-        },
+        signature,
         body: vec![Expression::Value { value: 0 }],
     }
 }
