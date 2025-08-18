@@ -6,11 +6,11 @@ pub enum Leb128 {
 }
 
 impl Emit for Leb128 {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         let result = match *self {
-            Self::I32 { value } => leb128::write::signed(output, value.into()),
+            Self::I32 { value } => leb128::write::signed(target, value.into()),
             Self::U32 { value } => {
-                leb128::write::unsigned(output, value.into())
+                leb128::write::unsigned(target, value.into())
             }
         };
 
