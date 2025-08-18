@@ -5,9 +5,7 @@ mod tests;
 fn main() -> anyhow::Result<()> {
     use crate::tests::compile;
 
-    let path = "examples/single-number.mbl";
-
-    let stack = compile(path)?;
+    let stack = compile("examples/single-number.mbl")?;
 
     assert_eq!(stack, vec![1]);
 
