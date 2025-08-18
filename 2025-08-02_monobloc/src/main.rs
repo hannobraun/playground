@@ -33,7 +33,6 @@ fn main() -> anyhow::Result<()> {
 
         print!("{value}");
     }
-
     println!();
 
     Ok(())
