@@ -3,6 +3,7 @@ use crate::compiler::wasm::{
     export::{Export, ExportDesc, Name},
     func_idx::FuncIdx,
     func_type::FuncType,
+    magic::emit_magic,
     section::emit_section,
     type_idx::TypeIdx,
     vec::emit_vec,
@@ -13,6 +14,7 @@ mod export;
 mod func_idx;
 mod func_type;
 mod leb128;
+mod magic;
 mod section;
 mod type_idx;
 mod vec;
@@ -28,10 +30,6 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     emit_code_section(&mut output);
 
     output
-}
-
-pub fn emit_magic(output: &mut Vec<u8>) {
-    output.extend(b"\0asm");
 }
 
 fn emit_version(output: &mut Vec<u8>) {
