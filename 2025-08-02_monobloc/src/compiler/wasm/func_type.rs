@@ -1,7 +1,10 @@
-use crate::compiler::wasm::{
-    Emit,
-    val_type::{NumType, ValType},
-    vec::WasmVec,
+use crate::compiler::{
+    ir,
+    wasm::{
+        Emit,
+        val_type::{NumType, ValType},
+        vec::WasmVec,
+    },
 };
 
 pub struct FuncType {}
@@ -19,12 +22,14 @@ impl Emit for FuncType {
 }
 
 fn compile_types() -> Vec<ValType> {
-    vec![compile_type()]
+    vec![compile_type(&ir::Type::I32)]
 }
 
-fn compile_type() -> ValType {
-    ValType::NumType {
-        num_type: NumType::I32,
+fn compile_type(ty: &ir::Type) -> ValType {
+    match ty {
+        ir::Type::I32 => ValType::NumType {
+            num_type: NumType::I32,
+        },
     }
 }
 

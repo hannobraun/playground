@@ -4,6 +4,10 @@ pub fn compile_input_code() -> Function {
     }
 }
 
+pub enum Type {
+    I32,
+}
+
 pub struct Function {
     pub body: Body,
 }
