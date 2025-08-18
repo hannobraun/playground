@@ -27,7 +27,7 @@ fn main() -> anyhow::Result<()> {
         }
     };
 
-    print!("Compiler: ");
+    print!("Output: ");
     for (i, value) in stack.into_iter().enumerate() {
         if i > 0 {
             print!(" ");
