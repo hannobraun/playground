@@ -46,10 +46,14 @@ struct Expression;
 
 impl Emit for Expression {
     fn emit(&self, output: &mut Vec<u8>) {
-        emit_end(output);
+        End.emit(output);
     }
 }
 
-fn emit_end(output: &mut Vec<u8>) {
-    output.push(0x0b);
+struct End;
+
+impl Emit for End {
+    fn emit(&self, output: &mut Vec<u8>) {
+        output.push(0x0b);
+    }
 }
