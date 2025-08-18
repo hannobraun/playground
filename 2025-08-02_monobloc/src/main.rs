@@ -18,10 +18,10 @@ fn main() -> anyhow::Result<()> {
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
     let mut input_code = String::new();
+    let mut input_code = read_input_code(path, &mut input_code)?;
 
     let mut tokenizer = Tokenizer::new();
 
-    let mut input_code = read_input_code(path, &mut input_code)?;
     loop {
         match tokenizer.process_char(&mut input_code) {
             ProcessCharOutcome::NoMoreChars => {
