@@ -15,7 +15,7 @@ impl Emit for CodeSection {
     }
 }
 
-pub struct Code {}
+struct Code {}
 
 impl Emit for Code {
     fn emit(&self, output: &mut Vec<u8>) {
