@@ -1,11 +1,11 @@
 use std::{fs::File, io::Read};
 
 use anyhow::Context;
-use wasmtime::{Engine, Instance, Module, Store};
 
-use crate::compiler::wasm;
+use crate::{compiler::wasm, runtime::run_wasm_module};
 
 mod compiler;
+mod runtime;
 
 fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("examples/numbers.mbl")?;
@@ -48,16 +48,4 @@ fn read_input_code(path: &str) -> anyhow::Result<String> {
         .with_context(|| format!("Reading code from `{path}`"))?;
 
     Ok(buf)
-}
-
-pub fn run_wasm_module(code: &[u8]) -> anyhow::Result<()> {
-    let engine = Engine::default();
-    let module = Module::new(&engine, code)?;
-    let mut store = Store::new(&engine, ());
-    let instance = Instance::new(&mut store, &module, &[])?;
-
-    let root = instance.get_typed_func::<(), ()>(&mut store, "root")?;
-    let () = root.call(&mut store, ())?;
-
-    Ok(())
 }
