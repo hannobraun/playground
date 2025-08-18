@@ -15,7 +15,13 @@ impl Emit for Module<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         Magic.emit(target);
         Version.emit(target);
-        TypeSection.emit(target);
+        TypeSection {
+            signature: &ir::Signature {
+                inputs: vec![],
+                outputs: vec![ir::Type::I32],
+            },
+        }
+        .emit(target);
         FunctionSection.emit(target);
         ExportSection.emit(target);
         CodeSection {

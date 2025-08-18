@@ -3,14 +3,13 @@ use crate::compiler::{
     wasm::{Emit, func_type::FuncType, section::emit_section, vec::WasmVec},
 };
 
-pub struct TypeSection;
+pub struct TypeSection<'a> {
+    pub signature: &'a ir::Signature,
+}
 
-impl Emit for TypeSection {
+impl Emit for TypeSection<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let signature = &ir::Signature {
-            inputs: vec![],
-            outputs: vec![ir::Type::I32],
-        };
+        let signature = self.signature;
 
         let id = 1;
 
