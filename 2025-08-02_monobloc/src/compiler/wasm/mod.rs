@@ -5,7 +5,7 @@ use crate::compiler::wasm::{
     magic::Magic,
     section::emit_section,
     type_idx::TypeIdx,
-    type_section::emit_type_section,
+    type_section::TypeSection,
     vec::emit_vec,
     version::Version,
 };
@@ -27,7 +27,7 @@ pub fn compile_module(_: i32) -> Vec<u8> {
 
     Magic.emit(&mut output);
     Version.emit(&mut output);
-    emit_type_section(&mut output);
+    TypeSection.emit(&mut output);
     emit_function_section(&mut output);
     emit_export_section(&mut output);
     emit_code_section(&mut output);

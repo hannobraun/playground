@@ -1,12 +1,16 @@
 use crate::compiler::wasm::{
-    func_type::FuncType, section::emit_section, vec::emit_vec,
+    Emit, func_type::FuncType, section::emit_section, vec::emit_vec,
 };
 
-pub fn emit_type_section(output: &mut Vec<u8>) {
-    let id = 1;
+pub struct TypeSection;
 
-    let mut contents = Vec::new();
-    emit_vec(&[FuncType {}], &mut contents);
+impl Emit for TypeSection {
+    fn emit(&self, output: &mut Vec<u8>) {
+        let id = 1;
 
-    emit_section(id, contents, output);
+        let mut contents = Vec::new();
+        emit_vec(&[FuncType {}], &mut contents);
+
+        emit_section(id, contents, output);
+    }
 }
