@@ -13,8 +13,8 @@ impl Emit for FuncType {
     fn emit(&self, target: &mut Vec<u8>) {
         target.push(0x60);
 
-        let inputs = compile_types(&vec![]);
-        let outputs = compile_types(&vec![ir::Type::I32]);
+        let inputs = vec![];
+        let outputs = vec![ir::Type::I32];
 
         ResultType { inner: &inputs }.emit(target);
         ResultType { inner: &outputs }.emit(target);
@@ -22,12 +22,13 @@ impl Emit for FuncType {
 }
 
 struct ResultType<'a> {
-    inner: &'a [ValType],
+    inner: &'a ir::Types,
 }
 
 impl Emit for ResultType<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        WasmVec { items: self.inner }.emit(target);
+        let types = compile_types(self.inner);
+        WasmVec { items: &types }.emit(target);
     }
 }
 
