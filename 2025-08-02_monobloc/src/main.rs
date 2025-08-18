@@ -12,7 +12,7 @@ mod runtime;
 
 fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("examples/single-number.mbl")?;
-    println!("{input_code}");
+    println!("Input code:\n{input_code}");
 
     let root = compile_input_code(&input_code);
     let wasm_code = wasm::compile_module(&root);
