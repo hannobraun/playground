@@ -19,9 +19,13 @@ impl Emit for FuncType {
 }
 
 fn compile_types() -> Vec<ValType> {
-    vec![ValType::NumType {
+    vec![compile_type()]
+}
+
+fn compile_type() -> ValType {
+    ValType::NumType {
         num_type: NumType::I32,
-    }]
+    }
 }
 
 struct ResultType<'a> {
