@@ -17,10 +17,10 @@ impl Emit for Expressions<'_> {
     }
 }
 
-fn compile_expression(expression: &ir::Expression, output: &mut Vec<u8>) {
+fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     match *expression {
         ir::Expression::Value { value } => {
-            Instruction::ConstI32 { value }.emit(output);
+            Instruction::ConstI32 { value }.emit(target);
         }
     }
 }
