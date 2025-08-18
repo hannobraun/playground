@@ -1,7 +1,7 @@
 use crate::compiler::wasm::{Emit, leb128::Leb128};
 
-pub struct WasmVec<'r, T> {
-    pub items: &'r [T],
+pub struct WasmVec<'a, T> {
+    pub items: &'a [T],
 }
 
 impl<T> Emit for WasmVec<'_, T>
