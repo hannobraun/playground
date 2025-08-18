@@ -1,13 +1,20 @@
+use std::mem;
+
 pub fn tokenize(input_code: &str) -> Vec<Token> {
     let mut tokens = Vec::new();
+    let mut current_token = String::default();
 
-    for token in input_code.split_whitespace() {
-        if let Ok(value) = token.parse() {
-            tokens.push(Token::Number { value });
+    for ch in input_code.chars() {
+        if ch.is_whitespace() {
+            if let Ok(value) = current_token.parse() {
+                tokens.push(Token::Number { value });
+            } else {
+                tokens.push(Token::Identifier {
+                    name: mem::take(&mut current_token),
+                });
+            }
         } else {
-            tokens.push(Token::Identifier {
-                name: token.to_string(),
-            });
+            current_token.push(ch);
         }
     }
 
