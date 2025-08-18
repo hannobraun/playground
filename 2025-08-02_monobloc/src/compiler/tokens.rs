@@ -1,10 +1,11 @@
 use std::mem;
 
 pub fn tokenize(input_code: &str) -> Vec<Token> {
+    let chars = input_code.chars();
     let mut tokens = Vec::new();
     let mut current_token = String::default();
 
-    for ch in input_code.chars() {
+    for ch in chars {
         if ch.is_whitespace() {
             if let Ok(value) = current_token.parse() {
                 tokens.push(Token::Number { value });
