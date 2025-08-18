@@ -32,14 +32,14 @@ impl Tokenizer {
     ) -> Option<Token> {
         loop {
             match self.process_char(input_code) {
+                None => {
+                    return None;
+                }
                 Some(Some(token)) => {
                     return Some(token);
                 }
                 Some(None) => {
                     continue;
-                }
-                None => {
-                    return None;
                 }
             }
         }
