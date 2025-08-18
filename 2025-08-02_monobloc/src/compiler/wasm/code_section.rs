@@ -1,5 +1,6 @@
 use crate::compiler::wasm::{
-    Emit, leb128::emit_u32, section::emit_section, vec::emit_vec,
+    Emit, expressions::Expressions, leb128::emit_u32, section::emit_section,
+    vec::emit_vec,
 };
 
 pub struct CodeSection;
@@ -39,21 +40,5 @@ impl Emit for Locals {
     fn emit(&self, output: &mut Vec<u8>) {
         let locals: &[Code] = &[];
         emit_vec(locals, output);
-    }
-}
-
-pub struct Expressions;
-
-impl Emit for Expressions {
-    fn emit(&self, output: &mut Vec<u8>) {
-        End.emit(output);
-    }
-}
-
-struct End;
-
-impl Emit for End {
-    fn emit(&self, output: &mut Vec<u8>) {
-        output.push(0x0b);
     }
 }

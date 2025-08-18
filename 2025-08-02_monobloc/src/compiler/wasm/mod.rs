@@ -1,6 +1,7 @@
 mod code_section;
 mod export;
 mod export_section;
+mod expressions;
 mod func_idx;
 mod func_type;
 mod function_section;
