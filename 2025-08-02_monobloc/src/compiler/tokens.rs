@@ -1,12 +1,10 @@
 use std::{iter::Peekable, mem, str::Chars};
 
 pub fn tokenize(input_code: &str) -> Vec<Token> {
-    let tokens = Vec::new();
-
     let mut tokenizer = Tokenizer {
         chars: input_code.chars().peekable(),
         current_token: String::default(),
-        tokens,
+        tokens: Vec::new(),
     };
 
     while let Some(ch) = tokenizer.chars.next() {
