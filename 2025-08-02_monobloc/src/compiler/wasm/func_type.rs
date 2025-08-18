@@ -16,7 +16,6 @@ struct ResultType<'r> {
 
 impl Emit for ResultType<'_> {
     fn emit(&self, output: &mut Vec<u8>) {
-        let result_types: &[ValType] = self.inner;
-        emit_vec(result_types, output);
+        emit_vec(self.inner, output);
     }
 }
