@@ -4,9 +4,13 @@ pub struct Expressions;
 
 impl Emit for Expressions {
     fn emit(&self, output: &mut Vec<u8>) {
-        Instruction::ConstI32 { value: 0 }.emit(output);
+        compile_expression(output);
         End.emit(output);
     }
+}
+
+fn compile_expression(output: &mut Vec<u8>) {
+    Instruction::ConstI32 { value: 0 }.emit(output);
 }
 
 struct End;
