@@ -1,7 +1,7 @@
 use std::mem;
 
 pub fn tokenize(input_code: &str) -> Vec<Token> {
-    let chars = input_code.chars();
+    let chars = input_code.chars().peekable();
     let mut current_token = String::default();
     let mut tokens = Vec::new();
 
