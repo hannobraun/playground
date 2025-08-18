@@ -3,12 +3,14 @@ use std::mem;
 use crate::compiler::input_code::InputCode;
 
 pub struct Tokenizer {
+    state: State,
     pub token: String,
 }
 
 impl Tokenizer {
     pub fn new() -> Self {
         Self {
+            state: State::Initial,
             token: String::new(),
         }
     }
@@ -29,8 +31,8 @@ impl Tokenizer {
         input_code: &mut InputCode,
     ) -> Option<Token> {
         while let Some(ch) = input_code.next() {
-            match ch {
-                '#' => {
+            match (&self.state, ch) {
+                (State::Initial, '#') => {
                     while let Some(&ch) = input_code.peek() {
                         // This would be redundant, if we handled multiple
                         // subsequent whitespace characters correctly.
@@ -44,7 +46,7 @@ impl Tokenizer {
                         }
                     }
                 }
-                ch if ch.is_whitespace() => {
+                (State::Initial, ch) if ch.is_whitespace() => {
                     let token = if let Ok(value) = self.token.parse() {
                         Token::Number { value }
                     } else {
@@ -55,7 +57,7 @@ impl Tokenizer {
 
                     return Some(token);
                 }
-                ch => {
+                (State::Initial, ch) => {
                     self.token.push(ch);
                 }
             }
@@ -63,6 +65,10 @@ impl Tokenizer {
 
         None
     }
+}
+
+enum State {
+    Initial,
 }
 
 pub enum Token {
