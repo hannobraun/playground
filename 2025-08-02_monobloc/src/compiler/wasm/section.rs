@@ -6,8 +6,8 @@ pub fn emit_section(id: u8, contents: Vec<u8>, target: &mut Vec<u8>) {
     emit_section_contents(contents, target);
 }
 
-fn emit_section_id(id: u8, output: &mut Vec<u8>) {
-    output.push(id);
+fn emit_section_id(id: u8, target: &mut Vec<u8>) {
+    target.push(id);
 }
 
 fn emit_section_size(size: usize, output: &mut Vec<u8>) {
