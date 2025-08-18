@@ -5,12 +5,16 @@ pub struct FuncType {}
 impl Emit for FuncType {
     fn emit(&self, output: &mut Vec<u8>) {
         output.push(0x60);
-        emit_result_type(output);
-        emit_result_type(output);
+        ResultType.emit(output);
+        ResultType.emit(output);
     }
 }
 
-fn emit_result_type(output: &mut Vec<u8>) {
-    let result_types: &[ValType] = &[];
-    emit_vec(result_types, output);
+struct ResultType;
+
+impl Emit for ResultType {
+    fn emit(&self, output: &mut Vec<u8>) {
+        let result_types: &[ValType] = &[];
+        emit_vec(result_types, output);
+    }
 }
