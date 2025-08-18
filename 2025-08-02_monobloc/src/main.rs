@@ -35,10 +35,12 @@ fn main() -> anyhow::Result<()> {
     println!();
 
     let root = compile_input_code(&input_code);
-    let output = root.signature.outputs.len();
 
     let wasm_code = wasm::compile_module(&root);
-    let stack = match runtime::evaluate_root(&wasm_code, output) {
+    let stack = match runtime::evaluate_root(
+        &wasm_code,
+        root.signature.outputs.len(),
+    ) {
         Ok(stack) => stack,
         Err(err) => {
             let output = "error.wasm";
