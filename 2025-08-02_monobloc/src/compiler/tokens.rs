@@ -2,32 +2,31 @@ use std::mem;
 
 use crate::compiler::input_code::InputCode;
 
-pub struct Tokenizer<'a> {
-    pub chars: InputCode<'a>,
-}
+pub struct Tokenizer {}
 
-impl<'a> Tokenizer<'a> {
-    pub fn new(input_code: &'a str) -> Self {
-        Self {
-            chars: input_code.chars().peekable(),
-        }
+impl Tokenizer {
+    pub fn new() -> Self {
+        Self {}
     }
 
-    pub fn process_token(&mut self) -> Option<Token> {
+    pub fn process_token(
+        &mut self,
+        input_code: &mut InputCode,
+    ) -> Option<Token> {
         let mut token = String::new();
 
-        while let Some(ch) = self.chars.next() {
+        while let Some(ch) = input_code.next() {
             match ch {
                 '#' => {
-                    while let Some(&ch) = self.chars.peek() {
+                    while let Some(&ch) = input_code.peek() {
                         // This would be redundant, if we handled multiple
                         // subsequent whitespace characters correctly.
-                        self.chars.next();
+                        input_code.next();
 
                         if ch == '\n' {
                             break;
                         } else {
-                            self.chars.next();
+                            input_code.next();
                             continue;
                         }
                     }
@@ -52,10 +51,11 @@ impl<'a> Tokenizer<'a> {
         None
     }
 
-    pub fn process_all_tokens(mut self) -> Vec<Token> {
+    pub fn process_all_tokens(mut self, input_code: InputCode) -> Vec<Token> {
+        let mut input_code = input_code;
         let mut tokens = Vec::new();
 
-        while let Some(token) = self.process_token() {
+        while let Some(token) = self.process_token(&mut input_code) {
             tokens.push(token);
         }
 
