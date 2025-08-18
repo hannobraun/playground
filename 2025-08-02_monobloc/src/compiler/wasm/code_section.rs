@@ -31,7 +31,7 @@ struct Code<'a> {
 }
 
 impl Emit for Code<'_> {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         let mut func = Vec::new();
         Locals.emit(&mut func);
         Expressions {
@@ -44,8 +44,8 @@ impl Emit for Code<'_> {
             panic!("Unsupported code size: `{size}`");
         };
 
-        Leb128::U32 { value: size }.emit(output);
-        output.extend(func);
+        Leb128::U32 { value: size }.emit(target);
+        target.extend(func);
     }
 }
 
