@@ -18,8 +18,8 @@ impl Emit for FuncType {
     }
 }
 
-fn compile_types() -> [ValType; 1] {
-    [ValType::NumType {
+fn compile_types() -> Vec<ValType> {
+    vec![ValType::NumType {
         num_type: NumType::I32,
     }]
 }
