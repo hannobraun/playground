@@ -4,7 +4,7 @@ pub fn compile_input_code(_: &str) -> Function {
             inputs: vec![],
             outputs: vec![Type::I32],
         },
-        body: vec![Expression::Value { value: 1 }],
+        body: vec![Expression::Value { value: 0 }],
     }
 }
 
