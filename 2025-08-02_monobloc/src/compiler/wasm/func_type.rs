@@ -9,7 +9,10 @@ pub struct FuncType {}
 impl Emit for FuncType {
     fn emit(&self, target: &mut Vec<u8>) {
         target.push(0x60);
-        ResultType { inner: &[] }.emit(target);
+
+        let inputs = &[];
+
+        ResultType { inner: inputs }.emit(target);
         ResultType {
             inner: &[ValType::NumType {
                 num_type: NumType::I32,
