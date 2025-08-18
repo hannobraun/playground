@@ -1,7 +1,9 @@
-use std::{iter::Peekable, mem, str::Chars};
+use std::mem;
+
+use crate::compiler::input_code::InputCode;
 
 pub struct Tokenizer<'a> {
-    pub chars: Peekable<Chars<'a>>,
+    pub chars: InputCode<'a>,
 }
 
 impl<'a> Tokenizer<'a> {
