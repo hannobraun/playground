@@ -13,6 +13,17 @@ impl Tokenizer {
         }
     }
 
+    pub fn process_all_tokens(mut self, input_code: InputCode) -> Vec<Token> {
+        let mut input_code = input_code;
+        let mut tokens = Vec::new();
+
+        while let Some(token) = self.process_token(&mut input_code) {
+            tokens.push(token);
+        }
+
+        tokens
+    }
+
     pub fn process_token(
         &mut self,
         input_code: &mut InputCode,
@@ -51,17 +62,6 @@ impl Tokenizer {
         }
 
         None
-    }
-
-    pub fn process_all_tokens(mut self, input_code: InputCode) -> Vec<Token> {
-        let mut input_code = input_code;
-        let mut tokens = Vec::new();
-
-        while let Some(token) = self.process_token(&mut input_code) {
-            tokens.push(token);
-        }
-
-        tokens
     }
 }
 
