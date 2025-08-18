@@ -39,7 +39,7 @@ fn main() -> anyhow::Result<()> {
     };
     let output = 1;
 
-    let wasm_code = wasm::compile_module(&root.body);
+    let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, output) {
         Ok(stack) => stack,
         Err(err) => {
