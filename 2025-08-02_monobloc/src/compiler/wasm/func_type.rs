@@ -1,4 +1,4 @@
-use crate::compiler::wasm::{Emit, vec::emit_vec};
+use crate::compiler::wasm::{Emit, val_type::ValType, vec::emit_vec};
 
 pub struct FuncType {}
 
@@ -11,6 +11,6 @@ impl Emit for FuncType {
 }
 
 fn emit_empty_result_type(output: &mut Vec<u8>) {
-    let result_types: &[FuncType] = &[];
+    let result_types: &[ValType] = &[];
     emit_vec(result_types, output);
 }

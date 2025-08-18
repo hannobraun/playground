@@ -11,6 +11,7 @@ mod module;
 mod section;
 mod type_idx;
 mod type_section;
+mod val_type;
 mod vec;
 mod version;
 
