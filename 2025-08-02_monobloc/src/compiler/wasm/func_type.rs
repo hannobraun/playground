@@ -13,8 +13,10 @@ impl Emit for FuncType {
     fn emit(&self, target: &mut Vec<u8>) {
         target.push(0x60);
 
-        let inputs = vec![];
-        let outputs = vec![ir::Type::I32];
+        let ir::Signature { inputs, outputs } = ir::Signature {
+            inputs: vec![],
+            outputs: vec![ir::Type::I32],
+        };
 
         ResultType { types: &inputs }.emit(target);
         ResultType { types: &outputs }.emit(target);

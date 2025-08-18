@@ -8,6 +8,11 @@ pub struct Function {
     pub body: Body,
 }
 
+pub struct Signature {
+    pub inputs: Types,
+    pub outputs: Types,
+}
+
 pub type Types = Vec<Type>;
 
 pub enum Type {
