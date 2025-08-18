@@ -2,10 +2,14 @@ pub fn tokenize(input_code: &str) -> Vec<Token> {
     let mut tokens = Vec::new();
 
     for token in input_code.split_whitespace() {
-        let token = Token::Identifier {
-            name: token.to_string(),
-        };
-        tokens.push(token);
+        if let Ok(value) = token.parse() {
+            tokens.push(Token::Number { value });
+        } else {
+            let token = Token::Identifier {
+                name: token.to_string(),
+            };
+            tokens.push(token);
+        }
     }
 
     tokens
@@ -13,4 +17,5 @@ pub fn tokenize(input_code: &str) -> Vec<Token> {
 
 pub enum Token {
     Identifier { name: String },
+    Number { value: i32 },
 }
