@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::Context;
 
-use crate::compiler::{ir::compile_input_code, wasm};
+use crate::compiler::{ir::compile_input_code, tokens::tokenize, wasm};
 
 mod compiler;
 mod runtime;
@@ -14,7 +14,8 @@ fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("examples/single-number.mbl")?;
     println!("Input code:\n{input_code}");
 
-    let root = compile_input_code(&input_code);
+    let tokens = tokenize(&input_code);
+    let root = compile_input_code(tokens);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,

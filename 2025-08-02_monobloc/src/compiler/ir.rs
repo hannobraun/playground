@@ -1,11 +1,11 @@
-pub fn compile_input_code(input_code: &str) -> Function {
+pub fn compile_input_code(tokens: Vec<String>) -> Function {
     let mut signature = Signature {
         inputs: Vec::new(),
         outputs: Vec::new(),
     };
     let mut body = Vec::new();
 
-    for identifier in input_code.split_whitespace() {
+    for identifier in tokens {
         if let Ok(value) = identifier.parse() {
             body.push(Expression::Value { value });
             signature.outputs.push(Type::I32);
