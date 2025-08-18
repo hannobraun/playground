@@ -1,4 +1,7 @@
-use std::{fs::File, io::Read};
+use std::{
+    fs::File,
+    io::{Read, Write},
+};
 
 use anyhow::Context;
 
@@ -35,7 +38,16 @@ fn main() -> anyhow::Result<()> {
     let output = 0;
 
     let wasm_code = wasm::compile_module(root);
-    let stack = runtime::evaluate_root(&wasm_code, output)?;
+    let stack = match runtime::evaluate_root(&wasm_code, output) {
+        Ok(stack) => stack,
+        Err(err) => {
+            let output = "error.wasm";
+            File::create(output)?.write_all(&wasm_code)?;
+            return Err(err).with_context(|| {
+                format!("Error evaluating root; wrote module to `{output}`")
+            });
+        }
+    };
 
     print!("Compiler: ");
     for (i, value) in stack.into_iter().enumerate() {
