@@ -2,7 +2,7 @@ use crate::compiler::wasm::{
     code::Code,
     export::{Export, ExportDesc, Name},
     func_idx::FuncIdx,
-    function_section::emit_function_section,
+    function_section::FunctionSection,
     magic::Magic,
     section::emit_section,
     type_section::TypeSection,
@@ -29,7 +29,7 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     Magic.emit(&mut output);
     Version.emit(&mut output);
     TypeSection.emit(&mut output);
-    emit_function_section(&mut output);
+    FunctionSection.emit(&mut output);
     emit_export_section(&mut output);
     emit_code_section(&mut output);
 
