@@ -32,7 +32,7 @@ fn main() -> anyhow::Result<()> {
     };
 
     print!("Output: ");
-    for (i, value) in stack.into_iter().enumerate() {
+    for (i, value) in stack.iter().enumerate() {
         if i > 0 {
             print!(" ");
         }
