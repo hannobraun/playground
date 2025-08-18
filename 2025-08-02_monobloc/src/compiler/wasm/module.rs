@@ -8,7 +8,7 @@ use crate::compiler::{
 };
 
 pub struct Module<'a> {
-    pub function: &'a ir::Function,
+    pub root: &'a ir::Function,
 }
 
 impl Emit for Module<'_> {
@@ -25,7 +25,7 @@ impl Emit for Module<'_> {
         FunctionSection.emit(target);
         ExportSection.emit(target);
         CodeSection {
-            function: &self.function.body,
+            function: &self.root.body,
         }
         .emit(target);
     }
