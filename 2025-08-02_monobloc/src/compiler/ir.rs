@@ -1,7 +1,7 @@
 pub fn compile_input_code(input_code: &str) -> Function {
     let mut signature = Signature {
-        inputs: vec![],
-        outputs: vec![],
+        inputs: Vec::new(),
+        outputs: Vec::new(),
     };
     let mut body = Vec::new();
 
