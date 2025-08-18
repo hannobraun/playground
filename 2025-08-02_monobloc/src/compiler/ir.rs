@@ -1,4 +1,4 @@
-pub fn compile_input_code() -> Function {
+pub fn compile_input_code(_: &str) -> Function {
     Function {
         signature: Signature {
             inputs: vec![],

@@ -34,7 +34,7 @@ fn main() -> anyhow::Result<()> {
     }
     println!();
 
-    let root = compile_input_code();
+    let root = compile_input_code(&input_code);
     let output = 1;
 
     let wasm_code = wasm::compile_module(&root);
