@@ -1,11 +1,11 @@
 use std::mem;
 
 pub fn tokenize(input_code: &str) -> Vec<Token> {
-    let chars = input_code.chars().peekable();
+    let mut chars = input_code.chars().peekable();
     let mut current_token = String::default();
     let mut tokens = Vec::new();
 
-    for ch in chars {
+    while let Some(ch) = chars.next() {
         if ch.is_whitespace() {
             if let Ok(value) = current_token.parse() {
                 tokens.push(Token::Number { value });
@@ -13,6 +13,19 @@ pub fn tokenize(input_code: &str) -> Vec<Token> {
                 tokens.push(Token::Identifier {
                     name: mem::take(&mut current_token),
                 });
+            }
+        } else if ch == '#' {
+            while let Some(&ch) = chars.peek() {
+                // This would be redundant, if we handled multiple whitespace
+                // characters in a row correctly.
+                chars.next();
+
+                if ch == '\n' {
+                    break;
+                } else {
+                    chars.next();
+                    continue;
+                }
             }
         } else {
             current_token.push(ch);
