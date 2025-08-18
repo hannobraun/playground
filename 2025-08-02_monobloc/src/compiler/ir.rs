@@ -1,9 +1,17 @@
-pub fn compile_input_code(_: &str) -> Function {
+pub fn compile_input_code(input_code: &str) -> Function {
     let signature = Signature {
         inputs: vec![],
         outputs: vec![Type::I32],
     };
-    let body = vec![Expression::Value { value: 0 }];
+    let mut body = vec![];
+
+    for identifier in input_code.split_whitespace() {
+        if let Ok(value) = identifier.parse() {
+            body.push(Expression::Value { value });
+        } else {
+            println!("Unknown identifier: `{identifier}`");
+        }
+    }
 
     Function { signature, body }
 }
