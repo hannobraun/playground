@@ -2,7 +2,7 @@ use std::{fs::File, io::Read};
 
 use anyhow::Context;
 
-use crate::{compiler::wasm, runtime::run_wasm_module};
+use crate::{compiler::wasm, runtime::evaluate_root};
 
 mod compiler;
 mod runtime;
@@ -24,7 +24,7 @@ fn main() -> anyhow::Result<()> {
     let root = 1;
 
     let wasm_code = wasm::compile_module(root);
-    run_wasm_module(&wasm_code)?;
+    evaluate_root(&wasm_code)?;
 
     for (i, value) in stack.into_iter().enumerate() {
         if i > 0 {
