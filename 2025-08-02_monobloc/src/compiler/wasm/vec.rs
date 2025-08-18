@@ -25,7 +25,7 @@ struct Length {
 }
 
 impl Emit for Length {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         let Ok(length) = self.value.try_into() else {
             panic!(
                 "Unsupported vector length: `{length}`",
@@ -33,6 +33,6 @@ impl Emit for Length {
             );
         };
 
-        Leb128::U32 { value: length }.emit(output);
+        Leb128::U32 { value: length }.emit(target);
     }
 }
