@@ -15,6 +15,7 @@ impl Tokenizer {
         }
     }
 
+    #[cfg(test)]
     pub fn process_all_tokens(mut self, input_code: InputCode) -> Vec<Token> {
         let mut input_code = input_code;
         let mut tokens = Vec::new();
@@ -26,6 +27,7 @@ impl Tokenizer {
         tokens
     }
 
+    #[cfg(test)]
     pub fn process_token(
         &mut self,
         input_code: &mut InputCode,

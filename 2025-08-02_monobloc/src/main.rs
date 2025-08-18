@@ -1,3 +1,7 @@
+use crate::compiler::{
+    input_code::read_input_code,
+    tokens::{ProcessCharOutcome, Tokenizer},
+};
 #[cfg(test)]
 use crate::tests::compile;
 
@@ -8,6 +12,28 @@ mod runtime;
 mod tests;
 
 fn main() -> anyhow::Result<()> {
+    let path = "examples/single-number.mbl";
+
+    // We wouldn't need to create the buffer here, if `String::into_chars` were
+    // stable:
+    // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
+    let mut input_code = String::new();
+
+    let mut tokenizer = Tokenizer::new();
+
+    let mut input_code = read_input_code(path, &mut input_code)?;
+    loop {
+        match tokenizer.process_char(&mut input_code) {
+            ProcessCharOutcome::NoMoreChars => {
+                break;
+            }
+            ProcessCharOutcome::TokenIsReady { token } => {
+                println!("Token: {token}");
+            }
+            ProcessCharOutcome::TokenNotReady => {}
+        }
+    }
+
     Ok(())
 }
 
