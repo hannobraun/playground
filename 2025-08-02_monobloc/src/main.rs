@@ -43,7 +43,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn read_input_code(path: &str) -> anyhow::Result<String> {
+pub fn read_input_code(path: &str) -> anyhow::Result<String> {
     let mut buf = String::new();
 
     File::open(path)
