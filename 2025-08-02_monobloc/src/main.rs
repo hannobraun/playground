@@ -36,10 +36,7 @@ fn main() -> anyhow::Result<()> {
 
     let root = compile_input_code(&input_code);
     let wasm_code = wasm::compile_module(&root);
-    let stack = match runtime::evaluate_root(
-        &wasm_code,
-        root.signature.outputs.len(),
-    ) {
+    let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,
         Err(err) => {
             let output = "error.wasm";
