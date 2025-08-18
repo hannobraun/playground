@@ -17,7 +17,7 @@ impl Emit for CodeSection<'_> {
         let mut contents = Vec::new();
         WasmVec {
             items: &[Code {
-                expressions: self.function,
+                body: self.function,
             }],
         }
         .emit(&mut contents);
@@ -27,17 +27,14 @@ impl Emit for CodeSection<'_> {
 }
 
 struct Code<'a> {
-    pub expressions: &'a ir::Body,
+    pub body: &'a ir::Body,
 }
 
 impl Emit for Code<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let mut func = Vec::new();
         Locals.emit(&mut func);
-        Expressions {
-            inner: self.expressions,
-        }
-        .emit(&mut func);
+        Expressions { inner: self.body }.emit(&mut func);
 
         let size = func.len();
         let Ok(size) = size.try_into() else {
