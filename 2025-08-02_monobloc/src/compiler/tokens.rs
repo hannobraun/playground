@@ -20,13 +20,15 @@ impl Tokenizer<'_> {
     pub fn process_token(&mut self) -> bool {
         while let Some(ch) = self.chars.next() {
             if ch.is_whitespace() {
-                if let Ok(value) = self.current_token.parse() {
-                    self.tokens.push(Token::Number { value });
+                let token = if let Ok(value) = self.current_token.parse() {
+                    Token::Number { value }
                 } else {
-                    self.tokens.push(Token::Identifier {
+                    Token::Identifier {
                         name: mem::take(&mut self.current_token),
-                    });
-                }
+                    }
+                };
+
+                self.tokens.push(token);
 
                 return true;
             } else if ch == '#' {
