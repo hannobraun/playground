@@ -1,7 +1,10 @@
-use crate::compiler::wasm::{
-    Emit, code_section::CodeSection, export_section::ExportSection,
-    function_section::FunctionSection, magic::Magic, type_section::TypeSection,
-    version::Version,
+use crate::compiler::{
+    ir,
+    wasm::{
+        Emit, code_section::CodeSection, export_section::ExportSection,
+        function_section::FunctionSection, magic::Magic,
+        type_section::TypeSection, version::Version,
+    },
 };
 
 pub struct Module;
@@ -13,6 +16,9 @@ impl Emit for Module {
         TypeSection.emit(output);
         FunctionSection.emit(output);
         ExportSection.emit(output);
-        CodeSection.emit(output);
+        CodeSection {
+            function: &[ir::Expression::Value { value: 0 }],
+        }
+        .emit(output);
     }
 }

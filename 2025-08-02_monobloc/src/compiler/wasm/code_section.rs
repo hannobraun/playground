@@ -6,16 +6,18 @@ use crate::compiler::{
     },
 };
 
-pub struct CodeSection;
+pub struct CodeSection<'a> {
+    pub function: &'a [ir::Expression],
+}
 
-impl Emit for CodeSection {
+impl Emit for CodeSection<'_> {
     fn emit(&self, output: &mut Vec<u8>) {
         let id = 10;
 
         let mut contents = Vec::new();
         WasmVec {
             items: &[Code {
-                expressions: &[ir::Expression::Value { value: 0 }],
+                expressions: self.function,
             }],
         }
         .emit(&mut contents);
