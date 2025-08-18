@@ -9,7 +9,7 @@ use crate::compiler::wasm::{
 pub struct ExportSection;
 
 impl Emit for ExportSection {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         let id = 7;
 
         let mut contents = Vec::new();
@@ -23,6 +23,6 @@ impl Emit for ExportSection {
         }
         .emit(&mut contents);
 
-        emit_section(id, contents, output);
+        emit_section(id, contents, target);
     }
 }
