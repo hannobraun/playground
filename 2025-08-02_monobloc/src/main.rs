@@ -26,6 +26,7 @@ fn main() -> anyhow::Result<()> {
     let wasm_code = wasm::compile_module(root);
     runtime::evaluate_root(&wasm_code)?;
 
+    print!("Interpreter: ");
     for (i, value) in stack.into_iter().enumerate() {
         if i > 0 {
             print!(" ");
