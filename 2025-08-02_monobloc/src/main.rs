@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::Context;
 
-use crate::compiler::{ir, wasm};
+use crate::compiler::{ir::compile_input_code, wasm};
 
 mod compiler;
 mod runtime;
@@ -34,9 +34,7 @@ fn main() -> anyhow::Result<()> {
     }
     println!();
 
-    let root = ir::Function {
-        body: vec![ir::Expression::Value { value: 1 }],
-    };
+    let root = compile_input_code();
     let output = 1;
 
     let wasm_code = wasm::compile_module(&root);
