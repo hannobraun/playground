@@ -11,13 +11,17 @@ impl Emit for FuncType {
         target.push(0x60);
 
         let inputs = &[];
-        let outputs = [ValType::NumType {
-            num_type: NumType::I32,
-        }];
+        let outputs = compile_types();
 
         ResultType { inner: inputs }.emit(target);
         ResultType { inner: &outputs }.emit(target);
     }
+}
+
+fn compile_types() -> [ValType; 1] {
+    [ValType::NumType {
+        num_type: NumType::I32,
+    }]
 }
 
 struct ResultType<'a> {
