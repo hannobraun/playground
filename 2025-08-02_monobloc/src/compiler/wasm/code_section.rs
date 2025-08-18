@@ -27,7 +27,7 @@ impl Emit for CodeSection<'_> {
 }
 
 struct Code<'a> {
-    pub expressions: &'a [ir::Expression],
+    pub expressions: &'a ir::Body,
 }
 
 impl Emit for Code<'_> {
