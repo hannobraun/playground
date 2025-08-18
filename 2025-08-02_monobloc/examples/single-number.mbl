@@ -1,6 +1,5 @@
 # For every number that can be represented by a signed (two's complement) or
 # unsigned 32-bit integer, there is an intrinsic function, whose name and output
 # is that respective number.
-
 1
 # The output is `1`.
