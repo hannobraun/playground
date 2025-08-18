@@ -28,7 +28,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
 struct End;
 
 impl Emit for End {
-    fn emit(&self, output: &mut Vec<u8>) {
-        output.push(0x0b);
+    fn emit(&self, target: &mut Vec<u8>) {
+        target.push(0x0b);
     }
 }
