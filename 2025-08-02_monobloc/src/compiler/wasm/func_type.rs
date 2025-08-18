@@ -11,14 +11,12 @@ impl Emit for FuncType {
         target.push(0x60);
 
         let inputs = &[];
+        let outputs = &[ValType::NumType {
+            num_type: NumType::I32,
+        }];
 
         ResultType { inner: inputs }.emit(target);
-        ResultType {
-            inner: &[ValType::NumType {
-                num_type: NumType::I32,
-            }],
-        }
-        .emit(target);
+        ResultType { inner: outputs }.emit(target);
     }
 }
 
