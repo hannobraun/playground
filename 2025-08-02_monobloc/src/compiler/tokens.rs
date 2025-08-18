@@ -1,38 +1,50 @@
-use std::mem;
+use std::{iter::Peekable, mem, str::Chars};
 
 pub fn tokenize(input_code: &str) -> Vec<Token> {
-    let mut chars = input_code.chars().peekable();
-    let mut current_token = String::default();
-    let mut tokens = Vec::new();
+    let chars = input_code.chars().peekable();
+    let current_token = String::default();
+    let tokens = Vec::new();
 
-    while let Some(ch) = chars.next() {
+    let mut tokenizer = Tokenizer {
+        chars,
+        current_token,
+        tokens,
+    };
+
+    while let Some(ch) = tokenizer.chars.next() {
         if ch.is_whitespace() {
-            if let Ok(value) = current_token.parse() {
-                tokens.push(Token::Number { value });
+            if let Ok(value) = tokenizer.current_token.parse() {
+                tokenizer.tokens.push(Token::Number { value });
             } else {
-                tokens.push(Token::Identifier {
-                    name: mem::take(&mut current_token),
+                tokenizer.tokens.push(Token::Identifier {
+                    name: mem::take(&mut tokenizer.current_token),
                 });
             }
         } else if ch == '#' {
-            while let Some(&ch) = chars.peek() {
+            while let Some(&ch) = tokenizer.chars.peek() {
                 // This would be redundant, if we handled multiple subsequent
                 // whitespace characters correctly.
-                chars.next();
+                tokenizer.chars.next();
 
                 if ch == '\n' {
                     break;
                 } else {
-                    chars.next();
+                    tokenizer.chars.next();
                     continue;
                 }
             }
         } else {
-            current_token.push(ch);
+            tokenizer.current_token.push(ch);
         }
     }
 
-    tokens
+    tokenizer.tokens
+}
+
+pub struct Tokenizer<'a> {
+    pub chars: Peekable<Chars<'a>>,
+    pub current_token: String,
+    pub tokens: Vec<Token>,
 }
 
 pub enum Token {
