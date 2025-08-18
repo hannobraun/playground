@@ -35,7 +35,7 @@ trait Emit {
 }
 
 impl Emit for u8 {
-    fn emit(&self, output: &mut Vec<u8>) {
-        output.push(*self);
+    fn emit(&self, target: &mut Vec<u8>) {
+        target.push(*self);
     }
 }
