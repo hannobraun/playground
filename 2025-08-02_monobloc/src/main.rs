@@ -11,9 +11,6 @@ fn main() -> anyhow::Result<()> {
     let input_code = read_input_code("numbers.mbl")?;
     println!("{input_code}");
 
-    let wasm_code = wasm::compile_module();
-    run_wasm_module(&wasm_code)?;
-
     let mut stack = Vec::<i32>::new();
 
     for identifier in input_code.split_whitespace() {
@@ -23,6 +20,9 @@ fn main() -> anyhow::Result<()> {
             println!("Unknown identifier: `{identifier}`");
         }
     }
+
+    let wasm_code = wasm::compile_module();
+    run_wasm_module(&wasm_code)?;
 
     for (i, value) in stack.into_iter().enumerate() {
         if i > 0 {
