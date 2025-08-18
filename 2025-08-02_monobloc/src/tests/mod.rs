@@ -11,7 +11,8 @@ use crate::{
 };
 
 pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
-    let input_code = read_input_code(path)?;
+    let mut input_code = String::new();
+    read_input_code(path, &mut input_code)?;
     let tokens = Tokenizer::new(&input_code).process_all_tokens();
     let root = compile_input_code(tokens);
     let wasm_code = wasm::compile_module(&root);
@@ -29,13 +30,11 @@ pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
     Ok(stack)
 }
 
-pub fn read_input_code(path: &str) -> anyhow::Result<String> {
-    let mut buf = String::new();
-
+pub fn read_input_code(path: &str, buf: &mut String) -> anyhow::Result<()> {
     File::open(path)
         .with_context(|| format!("Opening `{path}`"))?
-        .read_to_string(&mut buf)
+        .read_to_string(buf)
         .with_context(|| format!("Reading code from `{path}`"))?;
 
-    Ok(buf)
+    Ok(())
 }
