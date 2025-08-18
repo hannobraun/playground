@@ -1,6 +1,8 @@
 pub struct Function {
-    pub body: Vec<Expression>,
+    pub body: Body,
 }
+
+pub type Body = Vec<Expression>;
 
 pub enum Expression {
     Value { value: i32 },
