@@ -2,19 +2,21 @@ use std::mem;
 
 use crate::compiler::input_code::InputCode;
 
-pub struct Tokenizer {}
+pub struct Tokenizer {
+    pub token: String,
+}
 
 impl Tokenizer {
     pub fn new() -> Self {
-        Self {}
+        Self {
+            token: String::new(),
+        }
     }
 
     pub fn process_token(
         &mut self,
         input_code: &mut InputCode,
     ) -> Option<Token> {
-        let mut token = String::new();
-
         while let Some(ch) = input_code.next() {
             match ch {
                 '#' => {
@@ -32,18 +34,18 @@ impl Tokenizer {
                     }
                 }
                 ch if ch.is_whitespace() => {
-                    let token = if let Ok(value) = token.parse() {
+                    let token = if let Ok(value) = self.token.parse() {
                         Token::Number { value }
                     } else {
                         Token::Identifier {
-                            name: mem::take(&mut token),
+                            name: mem::take(&mut self.token),
                         }
                     };
 
                     return Some(token);
                 }
                 ch => {
-                    token.push(ch);
+                    self.token.push(ch);
                 }
             }
         }

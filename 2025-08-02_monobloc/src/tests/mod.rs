@@ -6,7 +6,9 @@ use std::{
 use anyhow::Context;
 
 use crate::{
-    compiler::{ir::compile_input_code, tokens::Tokenizer, wasm},
+    compiler::{
+        input_code::InputCode, ir::compile_input_code, tokens::Tokenizer, wasm,
+    },
     runtime,
 };
 
@@ -15,8 +17,8 @@ pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
     let mut input_code = String::new();
-    read_input_code(path, &mut input_code)?;
-    let tokens = Tokenizer::new(&input_code).process_all_tokens();
+    let input_code = read_input_code(path, &mut input_code)?;
+    let tokens = Tokenizer::new().process_all_tokens(input_code);
     let root = compile_input_code(tokens);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
@@ -33,11 +35,14 @@ pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
     Ok(stack)
 }
 
-pub fn read_input_code(path: &str, buf: &mut String) -> anyhow::Result<()> {
+pub fn read_input_code<'a>(
+    path: &str,
+    buf: &'a mut String,
+) -> anyhow::Result<InputCode<'a>> {
     File::open(path)
         .with_context(|| format!("Opening `{path}`"))?
         .read_to_string(buf)
         .with_context(|| format!("Reading code from `{path}`"))?;
 
-    Ok(())
+    Ok(buf.chars().peekable())
 }
