@@ -1,9 +1,3 @@
-use crate::compiler::wasm::{
-    code_section::CodeSection, export_section::ExportSection,
-    function_section::FunctionSection, magic::Magic, type_section::TypeSection,
-    version::Version,
-};
-
 mod code;
 mod code_section;
 mod export;
@@ -13,6 +7,7 @@ mod func_type;
 mod function_section;
 mod leb128;
 mod magic;
+mod module;
 mod section;
 mod type_idx;
 mod type_section;
@@ -20,14 +15,11 @@ mod vec;
 mod version;
 
 pub fn compile_module(_: i32) -> Vec<u8> {
+    use crate::compiler::wasm::module::Module;
+
     let mut output = Vec::new();
 
-    Magic.emit(&mut output);
-    Version.emit(&mut output);
-    TypeSection.emit(&mut output);
-    FunctionSection.emit(&mut output);
-    ExportSection.emit(&mut output);
-    CodeSection.emit(&mut output);
+    Module.emit(&mut output);
 
     output
 }
