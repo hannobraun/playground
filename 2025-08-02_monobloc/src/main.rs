@@ -11,7 +11,7 @@ mod compiler;
 mod runtime;
 
 fn main() -> anyhow::Result<()> {
-    let input_code = read_input_code("examples/numbers.mbl")?;
+    let input_code = read_input_code("examples/single-number.mbl")?;
     println!("{input_code}");
 
     let mut stack = Vec::<i32>::new();
