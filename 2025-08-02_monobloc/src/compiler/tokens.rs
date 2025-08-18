@@ -4,7 +4,7 @@ use crate::compiler::input_code::InputCode;
 
 pub struct Tokenizer {
     state: State,
-    pub token: String,
+    token: String,
 }
 
 impl Tokenizer {
