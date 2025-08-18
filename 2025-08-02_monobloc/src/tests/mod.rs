@@ -1,13 +1,11 @@
-use std::{
-    fs::File,
-    io::{Read, Write},
-};
+use std::{fs::File, io::Write};
 
 use anyhow::Context;
 
 use crate::{
     compiler::{
-        input_code::InputCode, ir::compile_input_code, tokens::Tokenizer, wasm,
+        input_code::read_input_code, ir::compile_input_code, tokens::Tokenizer,
+        wasm,
     },
     runtime,
 };
@@ -33,16 +31,4 @@ pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
     };
 
     Ok(stack)
-}
-
-pub fn read_input_code<'a>(
-    path: &str,
-    buf: &'a mut String,
-) -> anyhow::Result<InputCode<'a>> {
-    File::open(path)
-        .with_context(|| format!("Opening `{path}`"))?
-        .read_to_string(buf)
-        .with_context(|| format!("Reading code from `{path}`"))?;
-
-    Ok(buf.chars().peekable())
 }
