@@ -14,15 +14,15 @@ impl Emit for FuncType {
         target.push(0x60);
 
         let inputs = &[];
-        let outputs = compile_types();
+        let outputs = compile_types(&vec![ir::Type::I32]);
 
         ResultType { inner: inputs }.emit(target);
         ResultType { inner: &outputs }.emit(target);
     }
 }
 
-fn compile_types() -> Vec<ValType> {
-    vec![compile_type(&ir::Type::I32)]
+fn compile_types(types: &ir::Types) -> Vec<ValType> {
+    types.iter().map(compile_type).collect()
 }
 
 fn compile_type(ty: &ir::Type) -> ValType {

@@ -8,6 +8,8 @@ pub struct Function {
     pub body: Body,
 }
 
+pub type Types = Vec<Type>;
+
 pub enum Type {
     I32,
 }
