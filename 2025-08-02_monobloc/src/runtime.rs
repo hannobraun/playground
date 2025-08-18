@@ -9,12 +9,12 @@ pub fn evaluate_root(code: &[u8], output: usize) -> anyhow::Result<Vec<i32>> {
     let mut store = Store::new(&engine, ());
     let instance = Instance::new(&mut store, &module, &[])?;
 
-    let root = instance
+    let func = instance
         .get_func(&mut store, "root")
         .ok_or_else(|| anyhow!("Could not find root function."))?;
 
     let mut results = iter::repeat_n(Val::I32(0), output).collect::<Vec<_>>();
-    root.call(&mut store, &[], &mut results)?;
+    func.call(&mut store, &[], &mut results)?;
 
     let output = results
         .into_iter()
