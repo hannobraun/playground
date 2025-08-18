@@ -33,18 +33,7 @@ impl Tokenizer {
         while let Some(ch) = input_code.next() {
             match (&self.state, ch) {
                 (State::Initial, '#') => {
-                    while let Some(&ch) = input_code.peek() {
-                        // This would be redundant, if we handled multiple
-                        // subsequent whitespace characters correctly.
-                        input_code.next();
-
-                        if ch == '\n' {
-                            break;
-                        } else {
-                            input_code.next();
-                            continue;
-                        }
-                    }
+                    self.state = State::Comment;
                 }
                 (State::Initial, ch) if ch.is_whitespace() => {
                     let token = if let Ok(value) = self.token.parse() {
@@ -60,6 +49,16 @@ impl Tokenizer {
                 (State::Initial, ch) => {
                     self.token.push(ch);
                 }
+                (State::Comment, '\n') => {
+                    self.state = State::Initial;
+                }
+                (State::Comment, ch) => {
+                    let _ = ch;
+
+                    // This would be redundant, if we handled multiple
+                    // subsequent whitespace characters correctly.
+                    input_code.next();
+                }
             }
         }
 
@@ -69,6 +68,7 @@ impl Tokenizer {
 
 enum State {
     Initial,
+    Comment,
 }
 
 pub enum Token {
