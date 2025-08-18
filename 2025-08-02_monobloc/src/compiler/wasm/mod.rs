@@ -1,3 +1,5 @@
+use crate::compiler::ir;
+
 mod code_section;
 mod export;
 mod export_section;
@@ -20,7 +22,10 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     use crate::compiler::wasm::module::Module;
 
     let mut output = Vec::new();
-    Module.emit(&mut output);
+    Module {
+        function: &[ir::Expression::Value { value: 0 }],
+    }
+    .emit(&mut output);
 
     output
 }

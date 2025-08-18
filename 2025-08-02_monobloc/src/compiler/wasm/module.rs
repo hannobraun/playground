@@ -7,9 +7,11 @@ use crate::compiler::{
     },
 };
 
-pub struct Module;
+pub struct Module<'a> {
+    pub function: &'a [ir::Expression],
+}
 
-impl Emit for Module {
+impl Emit for Module<'_> {
     fn emit(&self, output: &mut Vec<u8>) {
         Magic.emit(output);
         Version.emit(output);
@@ -17,7 +19,7 @@ impl Emit for Module {
         FunctionSection.emit(output);
         ExportSection.emit(output);
         CodeSection {
-            function: &[ir::Expression::Value { value: 0 }],
+            function: self.function,
         }
         .emit(output);
     }
