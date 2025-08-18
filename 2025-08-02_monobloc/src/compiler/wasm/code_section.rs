@@ -7,7 +7,7 @@ use crate::compiler::{
 };
 
 pub struct CodeSection<'a> {
-    pub function: &'a ir::Body,
+    pub root: &'a ir::Body,
 }
 
 impl Emit for CodeSection<'_> {
@@ -16,9 +16,7 @@ impl Emit for CodeSection<'_> {
 
         let mut contents = Vec::new();
         WasmVec {
-            items: &[Code {
-                body: self.function,
-            }],
+            items: &[Code { body: self.root }],
         }
         .emit(&mut contents);
 
