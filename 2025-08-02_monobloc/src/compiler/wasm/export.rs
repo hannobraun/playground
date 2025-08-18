@@ -1,4 +1,4 @@
-use crate::compiler::wasm::{Emit, func_idx::FuncIdx, vec::emit_vec};
+use crate::compiler::wasm::{Emit, func_idx::FuncIdx, vec::WasmVec};
 
 pub struct Export<'a> {
     pub name: Name<'a>,
@@ -18,7 +18,10 @@ pub struct Name<'a> {
 
 impl Emit for Name<'_> {
     fn emit(&self, output: &mut Vec<u8>) {
-        emit_vec(self.inner.as_bytes(), output);
+        WasmVec {
+            items: self.inner.as_bytes(),
+        }
+        .emit(output);
     }
 }
 

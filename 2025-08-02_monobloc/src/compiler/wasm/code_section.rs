@@ -1,6 +1,6 @@
 use crate::compiler::wasm::{
     Emit, expressions::Expressions, leb128::Leb128, section::emit_section,
-    vec::emit_vec,
+    vec::WasmVec,
 };
 
 pub struct CodeSection;
@@ -10,7 +10,7 @@ impl Emit for CodeSection {
         let id = 10;
 
         let mut contents = Vec::new();
-        emit_vec(&[Code {}], &mut contents);
+        WasmVec { items: &[Code {}] }.emit(&mut contents);
 
         emit_section(id, contents, output);
     }
@@ -39,6 +39,6 @@ struct Locals;
 impl Emit for Locals {
     fn emit(&self, output: &mut Vec<u8>) {
         let locals: &[Code] = &[];
-        emit_vec(locals, output);
+        WasmVec { items: locals }.emit(output);
     }
 }

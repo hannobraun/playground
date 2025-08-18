@@ -1,10 +1,19 @@
 use crate::compiler::wasm::{Emit, leb128::Leb128};
 
-pub fn emit_vec(items: &[impl Emit], output: &mut Vec<u8>) {
-    emit_vec_length(items.len(), output);
+pub struct WasmVec<'r, T> {
+    pub items: &'r [T],
+}
 
-    for item in items {
-        item.emit(output);
+impl<T> Emit for WasmVec<'_, T>
+where
+    T: Emit,
+{
+    fn emit(&self, output: &mut Vec<u8>) {
+        emit_vec_length(self.items.len(), output);
+
+        for item in self.items {
+            item.emit(output);
+        }
     }
 }
 
