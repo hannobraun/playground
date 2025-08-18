@@ -4,12 +4,12 @@ use crate::compiler::{
 };
 
 pub struct Expressions<'a> {
-    pub inner: &'a ir::Body,
+    pub body: &'a ir::Body,
 }
 
 impl Emit for Expressions<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        for expression in self.inner {
+        for expression in self.body {
             compile_expression(expression, target);
         }
 

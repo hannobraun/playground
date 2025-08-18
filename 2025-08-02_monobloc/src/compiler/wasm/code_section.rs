@@ -34,7 +34,7 @@ impl Emit for Code<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let mut func = Vec::new();
         Locals.emit(&mut func);
-        Expressions { inner: self.body }.emit(&mut func);
+        Expressions { body: self.body }.emit(&mut func);
 
         let size = func.len();
         let Ok(size) = size.try_into() else {
