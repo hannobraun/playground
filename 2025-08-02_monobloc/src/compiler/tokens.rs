@@ -16,15 +16,15 @@ pub struct Tokenizer<'a> {
 
 impl Tokenizer<'_> {
     pub fn process_token(&mut self) -> Option<Token> {
-        let mut current_token = String::default();
+        let mut token = String::default();
 
         while let Some(ch) = self.chars.next() {
             if ch.is_whitespace() {
-                let token = if let Ok(value) = current_token.parse() {
+                let token = if let Ok(value) = token.parse() {
                     Token::Number { value }
                 } else {
                     Token::Identifier {
-                        name: mem::take(&mut current_token),
+                        name: mem::take(&mut token),
                     }
                 };
 
@@ -43,7 +43,7 @@ impl Tokenizer<'_> {
                     }
                 }
             } else {
-                current_token.push(ch);
+                token.push(ch);
             }
         }
 
