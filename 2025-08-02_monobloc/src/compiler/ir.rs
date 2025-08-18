@@ -1,4 +1,6 @@
-pub fn compile_input_code(tokens: Vec<String>) -> Function {
+use crate::compiler::tokens::Token;
+
+pub fn compile_input_code(tokens: Vec<Token>) -> Function {
     let mut signature = Signature {
         inputs: Vec::new(),
         outputs: Vec::new(),
@@ -6,6 +8,8 @@ pub fn compile_input_code(tokens: Vec<String>) -> Function {
     let mut body = Vec::new();
 
     for identifier in tokens {
+        let Token::Identifier { name: identifier } = identifier;
+
         if let Ok(value) = identifier.parse() {
             body.push(Expression::Value { value });
             signature.outputs.push(Type::I32);
