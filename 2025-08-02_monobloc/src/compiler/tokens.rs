@@ -1,6 +1,9 @@
 pub fn tokenize(input_code: &str) -> Vec<String> {
-    input_code
-        .split_whitespace()
-        .map(|token| token.to_string())
-        .collect()
+    let mut tokens = Vec::new();
+
+    for token in input_code.split_whitespace() {
+        tokens.push(token.to_string());
+    }
+
+    tokens
 }
