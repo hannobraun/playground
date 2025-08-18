@@ -20,7 +20,7 @@ pub struct Code {}
 impl Emit for Code {
     fn emit(&self, output: &mut Vec<u8>) {
         let mut func = Vec::new();
-        emit_locals(&mut func);
+        Locals.emit(&mut func);
         emit_expression(&mut func);
 
         let size = func.len();
@@ -33,9 +33,13 @@ impl Emit for Code {
     }
 }
 
-fn emit_locals(output: &mut Vec<u8>) {
-    let locals: &[Code] = &[];
-    emit_vec(locals, output);
+struct Locals;
+
+impl Emit for Locals {
+    fn emit(&self, output: &mut Vec<u8>) {
+        let locals: &[Code] = &[];
+        emit_vec(locals, output);
+    }
 }
 
 fn emit_expression(output: &mut Vec<u8>) {
