@@ -8,7 +8,7 @@ use crate::compiler::wasm;
 mod compiler;
 
 fn main() -> anyhow::Result<()> {
-    let input_code = read_input_code("numbers.mbl")?;
+    let input_code = read_input_code("examples/numbers.mbl")?;
     println!("{input_code}");
 
     let mut stack = Vec::<i32>::new();
