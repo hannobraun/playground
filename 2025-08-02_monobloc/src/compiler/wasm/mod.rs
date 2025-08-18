@@ -22,10 +22,7 @@ pub fn compile_module(root: &ir::Function) -> Vec<u8> {
     use crate::compiler::wasm::module::Module;
 
     let mut target = Vec::new();
-    Module {
-        function: &root.body,
-    }
-    .emit(&mut target);
+    Module { function: root }.emit(&mut target);
 
     target
 }
