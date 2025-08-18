@@ -8,14 +8,14 @@ impl<T> Emit for WasmVec<'_, T>
 where
     T: Emit,
 {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         Length {
             value: self.items.len(),
         }
-        .emit(output);
+        .emit(target);
 
         for item in self.items {
-            item.emit(output);
+            item.emit(target);
         }
     }
 }
