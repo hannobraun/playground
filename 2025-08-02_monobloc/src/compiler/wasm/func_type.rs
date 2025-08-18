@@ -1,4 +1,8 @@
-use crate::compiler::wasm::{Emit, val_type::ValType, vec::WasmVec};
+use crate::compiler::wasm::{
+    Emit,
+    val_type::{NumType, ValType},
+    vec::WasmVec,
+};
 
 pub struct FuncType {}
 
@@ -6,7 +10,12 @@ impl Emit for FuncType {
     fn emit(&self, output: &mut Vec<u8>) {
         output.push(0x60);
         ResultType { inner: &[] }.emit(output);
-        ResultType { inner: &[] }.emit(output);
+        ResultType {
+            inner: &[ValType::NumType {
+                num_type: NumType::I32,
+            }],
+        }
+        .emit(output);
     }
 }
 

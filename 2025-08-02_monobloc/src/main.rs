@@ -35,7 +35,7 @@ fn main() -> anyhow::Result<()> {
     println!();
 
     let root = 1;
-    let output = 0;
+    let output = 1;
 
     let wasm_code = wasm::compile_module(root);
     let stack = match runtime::evaluate_root(&wasm_code, output) {

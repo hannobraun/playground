@@ -1,9 +1,10 @@
-use crate::compiler::wasm::Emit;
+use crate::compiler::wasm::{Emit, instruction::Instruction};
 
 pub struct Expressions;
 
 impl Emit for Expressions {
     fn emit(&self, output: &mut Vec<u8>) {
+        Instruction::ConstI32 { value: 0 }.emit(output);
         End.emit(output);
     }
 }
