@@ -1,33 +1,13 @@
-use std::{fs::File, io::Write};
-
-use anyhow::Context;
-
-use crate::{
-    compiler::{ir::compile_input_code, tokens::tokenize, wasm},
-    tests::read_input_code,
-};
-
 mod compiler;
 mod runtime;
 mod tests;
 
 fn main() -> anyhow::Result<()> {
+    use crate::tests::compile;
+
     let path = "examples/single-number.mbl";
 
-    let input_code = read_input_code(path)?;
-    let tokens = tokenize(&input_code);
-    let root = compile_input_code(tokens);
-    let wasm_code = wasm::compile_module(&root);
-    let stack = match runtime::evaluate_root(&wasm_code, &root) {
-        Ok(stack) => stack,
-        Err(err) => {
-            let output = "error.wasm";
-            File::create(output)?.write_all(&wasm_code)?;
-            return Err(err).with_context(|| {
-                format!("Error evaluating root; wrote module to `{output}`")
-            });
-        }
-    };
+    let stack = compile(path)?;
 
     assert_eq!(stack, vec![1]);
 
