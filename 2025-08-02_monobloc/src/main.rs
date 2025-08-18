@@ -41,5 +41,7 @@ fn main() -> anyhow::Result<()> {
     }
     println!();
 
+    assert_eq!(stack, vec![1]);
+
     Ok(())
 }
