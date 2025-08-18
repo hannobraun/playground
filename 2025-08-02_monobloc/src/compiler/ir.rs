@@ -3,7 +3,7 @@ pub fn compile_input_code(input_code: &str) -> Function {
         inputs: vec![],
         outputs: vec![Type::I32],
     };
-    let mut body = vec![];
+    let mut body = Vec::new();
 
     for identifier in input_code.split_whitespace() {
         if let Ok(value) = identifier.parse() {
