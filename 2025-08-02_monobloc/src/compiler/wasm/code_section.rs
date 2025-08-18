@@ -1,5 +1,5 @@
 use crate::compiler::wasm::{
-    Emit, expressions::Expressions, leb128::emit_u32, section::emit_section,
+    Emit, expressions::Expressions, leb128::Leb128, section::emit_section,
     vec::emit_vec,
 };
 
@@ -29,7 +29,7 @@ impl Emit for Code {
             panic!("Unsupported code size: `{size}`");
         };
 
-        emit_u32(size, output);
+        Leb128::U32 { value: size }.emit(output);
         output.extend(func);
     }
 }

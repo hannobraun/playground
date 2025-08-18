@@ -1,4 +1,4 @@
-use crate::compiler::wasm::{Emit, leb128::emit_u32};
+use crate::compiler::wasm::{Emit, leb128::Leb128};
 
 pub fn emit_vec(items: &[impl Emit], output: &mut Vec<u8>) {
     emit_vec_length(items.len(), output);
@@ -13,5 +13,5 @@ fn emit_vec_length(length: usize, output: &mut Vec<u8>) {
         panic!("Unsupported vector length: `{length}`");
     };
 
-    emit_u32(length, output);
+    Leb128::U32 { value: length }.emit(output);
 }
