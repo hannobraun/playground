@@ -34,7 +34,17 @@ fn main() -> anyhow::Result<()> {
     let root = 1;
 
     let wasm_code = wasm::compile_module(root);
-    runtime::evaluate_root(&wasm_code)?;
+    let stack = runtime::evaluate_root(&wasm_code)?;
+
+    print!("Compiler: ");
+    for (i, value) in stack.into_iter().enumerate() {
+        if i > 0 {
+            print!(" ");
+        }
+
+        print!("{value}");
+    }
+    println!();
 
     Ok(())
 }
