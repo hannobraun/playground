@@ -11,7 +11,9 @@ mod compiler;
 mod runtime;
 
 fn main() -> anyhow::Result<()> {
-    let input_code = read_input_code("examples/single-number.mbl")?;
+    let path = "examples/single-number.mbl";
+
+    let input_code = read_input_code(path)?;
     println!("Input code:\n{input_code}");
 
     let tokens = tokenize(&input_code);
