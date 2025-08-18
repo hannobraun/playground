@@ -2,8 +2,8 @@ use std::mem;
 
 pub fn tokenize(input_code: &str) -> Vec<Token> {
     let chars = input_code.chars();
-    let mut tokens = Vec::new();
     let mut current_token = String::default();
+    let mut tokens = Vec::new();
 
     for ch in chars {
         if ch.is_whitespace() {
