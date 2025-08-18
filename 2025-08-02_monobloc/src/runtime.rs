@@ -1,7 +1,9 @@
+use std::iter;
+
 use anyhow::anyhow;
 use wasmtime::{Engine, Instance, Module, Store, Val};
 
-pub fn evaluate_root(code: &[u8]) -> anyhow::Result<Vec<i32>> {
+pub fn evaluate_root(code: &[u8], output: usize) -> anyhow::Result<Vec<i32>> {
     let engine = Engine::default();
     let module = Module::new(&engine, code)?;
     let mut store = Store::new(&engine, ());
@@ -11,7 +13,7 @@ pub fn evaluate_root(code: &[u8]) -> anyhow::Result<Vec<i32>> {
         .get_func(&mut store, "root")
         .ok_or_else(|| anyhow!("Could not find root function."))?;
 
-    let mut results = Vec::new();
+    let mut results = iter::repeat_n(Val::I32(0), output).collect::<Vec<_>>();
     root.call(&mut store, &[], &mut results)?;
 
     let output = results

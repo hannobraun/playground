@@ -32,9 +32,10 @@ fn main() -> anyhow::Result<()> {
     println!();
 
     let root = 1;
+    let output = 0;
 
     let wasm_code = wasm::compile_module(root);
-    let stack = runtime::evaluate_root(&wasm_code)?;
+    let stack = runtime::evaluate_root(&wasm_code, output)?;
 
     print!("Compiler: ");
     for (i, value) in stack.into_iter().enumerate() {
