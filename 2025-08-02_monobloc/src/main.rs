@@ -15,7 +15,6 @@ fn main() -> anyhow::Result<()> {
     let path = "examples/single-number.mbl";
 
     let input_code = read_input_code(path)?;
-
     let tokens = tokenize(&input_code);
     let root = compile_input_code(tokens);
     let wasm_code = wasm::compile_module(&root);
