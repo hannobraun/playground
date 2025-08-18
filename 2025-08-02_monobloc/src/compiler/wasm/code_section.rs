@@ -13,20 +13,27 @@ impl Emit for CodeSection {
         let id = 10;
 
         let mut contents = Vec::new();
-        WasmVec { items: &[Code {}] }.emit(&mut contents);
+        WasmVec {
+            items: &[Code {
+                expressions: &[ir::Expression::Value { value: 0 }],
+            }],
+        }
+        .emit(&mut contents);
 
         emit_section(id, contents, output);
     }
 }
 
-struct Code {}
+struct Code<'a> {
+    pub expressions: &'a [ir::Expression],
+}
 
-impl Emit for Code {
+impl Emit for Code<'_> {
     fn emit(&self, output: &mut Vec<u8>) {
         let mut func = Vec::new();
         Locals.emit(&mut func);
         Expressions {
-            inner: &[ir::Expression::Value { value: 0 }],
+            inner: self.expressions,
         }
         .emit(&mut func);
 
