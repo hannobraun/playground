@@ -5,7 +5,7 @@ pub struct TypeIdx {
 }
 
 impl Emit for TypeIdx {
-    fn emit(&self, output: &mut Vec<u8>) {
-        Leb128::U32 { value: self.index }.emit(output);
+    fn emit(&self, target: &mut Vec<u8>) {
+        Leb128::U32 { value: self.index }.emit(target);
     }
 }
