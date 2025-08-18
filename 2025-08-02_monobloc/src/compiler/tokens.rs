@@ -16,7 +16,7 @@ pub struct Tokenizer<'a> {
 
 impl Tokenizer<'_> {
     pub fn process_token(&mut self) -> Option<Token> {
-        let mut token = String::default();
+        let mut token = String::new();
 
         while let Some(ch) = self.chars.next() {
             if ch.is_whitespace() {
