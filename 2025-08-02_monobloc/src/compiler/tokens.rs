@@ -30,39 +30,52 @@ impl Tokenizer {
         &mut self,
         input_code: &mut InputCode,
     ) -> Option<Token> {
-        while let Some(ch) = input_code.next() {
-            match (&self.state, ch) {
-                (State::Initial, '#') => {
-                    self.state = State::Comment;
-                }
-                (State::Initial, ch) if ch.is_whitespace() => {
-                    let token = if let Ok(value) = self.token.parse() {
-                        Token::Number { value }
-                    } else {
-                        Token::Identifier {
-                            name: mem::take(&mut self.token),
-                        }
-                    };
+        loop {
+            if let Some(token) = self.process_char(input_code)? {
+                return Some(token);
+            } else {
+                continue;
+            }
+        }
+    }
 
-                    return Some(token);
-                }
-                (State::Initial, ch) => {
-                    self.token.push(ch);
-                }
-                (State::Comment, '\n') => {
-                    self.state = State::Initial;
-                }
-                (State::Comment, ch) => {
-                    let _ = ch;
+    pub fn process_char(
+        &mut self,
+        input_code: &mut InputCode,
+    ) -> Option<Option<Token>> {
+        let ch = input_code.next()?;
 
-                    // This would be redundant, if we handled multiple
-                    // subsequent whitespace characters correctly.
-                    input_code.next();
-                }
+        match (&self.state, ch) {
+            (State::Initial, '#') => {
+                self.state = State::Comment;
+            }
+            (State::Initial, ch) if ch.is_whitespace() => {
+                let token = if let Ok(value) = self.token.parse() {
+                    Token::Number { value }
+                } else {
+                    Token::Identifier {
+                        name: mem::take(&mut self.token),
+                    }
+                };
+
+                return Some(Some(token));
+            }
+            (State::Initial, ch) => {
+                self.token.push(ch);
+            }
+            (State::Comment, '\n') => {
+                self.state = State::Initial;
+            }
+            (State::Comment, ch) => {
+                let _ = ch;
+
+                // This would be redundant, if we handled multiple subsequent
+                // whitespace characters correctly.
+                input_code.next();
             }
         }
 
-        None
+        Some(None)
     }
 }
 
