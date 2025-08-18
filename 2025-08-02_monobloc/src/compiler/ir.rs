@@ -11,6 +11,7 @@ pub fn compile_input_code(input_code: &str) -> Function {
             signature.outputs.push(Type::I32);
         } else {
             println!("Unknown identifier: `{identifier}`");
+            body.push(Expression::Panic);
         }
     }
 
@@ -36,5 +37,6 @@ pub enum Type {
 pub type Body = Vec<Expression>;
 
 pub enum Expression {
+    Panic,
     Value { value: i32 },
 }

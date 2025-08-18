@@ -19,6 +19,7 @@ impl Emit for Expressions<'_> {
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     let instruction = match *expression {
+        ir::Expression::Panic => Instruction::Unreachable,
         ir::Expression::Value { value } => Instruction::ConstI32 { value },
     };
 
