@@ -1,10 +1,16 @@
-use crate::compiler::wasm::{code::Code, section::emit_section, vec::emit_vec};
+use crate::compiler::wasm::{
+    Emit, code::Code, section::emit_section, vec::emit_vec,
+};
 
-pub fn emit_code_section(output: &mut Vec<u8>) {
-    let id = 10;
+pub struct CodeSection;
 
-    let mut contents = Vec::new();
-    emit_vec(&[Code {}], &mut contents);
+impl Emit for CodeSection {
+    fn emit(&self, output: &mut Vec<u8>) {
+        let id = 10;
 
-    emit_section(id, contents, output);
+        let mut contents = Vec::new();
+        emit_vec(&[Code {}], &mut contents);
+
+        emit_section(id, contents, output);
+    }
 }
