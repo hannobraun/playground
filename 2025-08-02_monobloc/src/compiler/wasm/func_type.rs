@@ -7,14 +7,13 @@ use crate::compiler::{
     },
 };
 
-pub struct FuncType {}
+pub struct FuncType<'a> {
+    pub signature: &'a ir::Signature,
+}
 
-impl Emit for FuncType {
+impl Emit for FuncType<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let ir::Signature { inputs, outputs } = &ir::Signature {
-            inputs: vec![],
-            outputs: vec![ir::Type::I32],
-        };
+        let ir::Signature { inputs, outputs } = self.signature;
 
         target.push(0x60);
         ResultType { types: inputs }.emit(target);

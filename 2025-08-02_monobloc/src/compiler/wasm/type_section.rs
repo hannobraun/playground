@@ -1,5 +1,6 @@
-use crate::compiler::wasm::{
-    Emit, func_type::FuncType, section::emit_section, vec::WasmVec,
+use crate::compiler::{
+    ir,
+    wasm::{Emit, func_type::FuncType, section::emit_section, vec::WasmVec},
 };
 
 pub struct TypeSection;
@@ -10,7 +11,12 @@ impl Emit for TypeSection {
 
         let mut contents = Vec::new();
         WasmVec {
-            items: &[FuncType {}],
+            items: &[FuncType {
+                signature: &ir::Signature {
+                    inputs: vec![],
+                    outputs: vec![ir::Type::I32],
+                },
+            }],
         }
         .emit(&mut contents);
 
