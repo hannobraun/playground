@@ -24,7 +24,7 @@ struct ResultType<'a> {
 }
 
 impl Emit for ResultType<'_> {
-    fn emit(&self, output: &mut Vec<u8>) {
-        WasmVec { items: self.inner }.emit(output);
+    fn emit(&self, target: &mut Vec<u8>) {
+        WasmVec { items: self.inner }.emit(target);
     }
 }
