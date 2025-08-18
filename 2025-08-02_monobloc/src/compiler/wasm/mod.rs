@@ -1,4 +1,3 @@
-mod code;
 mod code_section;
 mod export;
 mod export_section;
