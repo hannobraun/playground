@@ -40,7 +40,7 @@ impl Tokenizer {
                 ProcessCharOutcome::TokenIsReady { token } => {
                     return Some(token);
                 }
-                ProcessCharOutcome::TokenNotReady => {
+                ProcessCharOutcome::TokenNotReady { ch: _ } => {
                     continue;
                 }
             }
@@ -85,7 +85,7 @@ impl Tokenizer {
             }
         }
 
-        ProcessCharOutcome::TokenNotReady
+        ProcessCharOutcome::TokenNotReady { ch }
     }
 }
 
@@ -113,5 +113,5 @@ impl fmt::Display for Token {
 pub enum ProcessCharOutcome {
     NoMoreChars,
     TokenIsReady { token: Token },
-    TokenNotReady,
+    TokenNotReady { ch: char },
 }

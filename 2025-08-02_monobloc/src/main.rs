@@ -30,7 +30,9 @@ fn main() -> anyhow::Result<()> {
             ProcessCharOutcome::TokenIsReady { token } => {
                 println!("Token: {token}");
             }
-            ProcessCharOutcome::TokenNotReady => {}
+            ProcessCharOutcome::TokenNotReady { ch } => {
+                println!("Char: {ch}");
+            }
         }
     }
 
