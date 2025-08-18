@@ -18,7 +18,7 @@ pub struct Tokenizer<'a> {
 
 impl Tokenizer<'_> {
     pub fn process_token(&mut self) -> bool {
-        if let Some(ch) = self.chars.next() {
+        while let Some(ch) = self.chars.next() {
             if ch.is_whitespace() {
                 if let Ok(value) = self.current_token.parse() {
                     self.tokens.push(Token::Number { value });
@@ -27,6 +27,8 @@ impl Tokenizer<'_> {
                         name: mem::take(&mut self.current_token),
                     });
                 }
+
+                return true;
             } else if ch == '#' {
                 while let Some(&ch) = self.chars.peek() {
                     // This would be redundant, if we handled multiple
@@ -43,11 +45,9 @@ impl Tokenizer<'_> {
             } else {
                 self.current_token.push(ch);
             }
-
-            true
-        } else {
-            false
         }
+
+        false
     }
 
     pub fn process_all_tokens(mut self) -> Vec<Token> {
