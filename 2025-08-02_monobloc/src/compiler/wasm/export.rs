@@ -30,11 +30,11 @@ pub enum ExportDesc {
 }
 
 impl Emit for ExportDesc {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         match self {
             ExportDesc::FuncIdx { index } => {
-                output.push(0x00);
-                index.emit(output);
+                target.push(0x00);
+                index.emit(target);
             }
         }
     }
