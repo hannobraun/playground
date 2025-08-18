@@ -17,7 +17,7 @@ mod section;
 mod type_idx;
 mod vec;
 
-pub fn compile_module() -> Vec<u8> {
+pub fn compile_module(_: i32) -> Vec<u8> {
     let mut output = Vec::new();
 
     emit_magic(&mut output);

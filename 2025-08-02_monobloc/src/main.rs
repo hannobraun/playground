@@ -21,7 +21,9 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    let wasm_code = wasm::compile_module();
+    let root = 1;
+
+    let wasm_code = wasm::compile_module(root);
     run_wasm_module(&wasm_code)?;
 
     for (i, value) in stack.into_iter().enumerate() {
