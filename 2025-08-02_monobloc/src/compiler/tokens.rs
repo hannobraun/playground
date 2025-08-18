@@ -5,10 +5,9 @@ pub fn tokenize(input_code: &str) -> Vec<Token> {
         if let Ok(value) = token.parse() {
             tokens.push(Token::Number { value });
         } else {
-            let token = Token::Identifier {
+            tokens.push(Token::Identifier {
                 name: token.to_string(),
-            };
-            tokens.push(token);
+            });
         }
     }
 
