@@ -6,9 +6,9 @@ pub struct Export<'a> {
 }
 
 impl Emit for Export<'_> {
-    fn emit(&self, output: &mut Vec<u8>) {
-        self.name.emit(output);
-        self.desc.emit(output);
+    fn emit(&self, target: &mut Vec<u8>) {
+        self.name.emit(target);
+        self.desc.emit(target);
     }
 }
 
