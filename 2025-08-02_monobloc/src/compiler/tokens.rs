@@ -16,8 +16,8 @@ pub fn tokenize(input_code: &str) -> Vec<Token> {
             }
         } else if ch == '#' {
             while let Some(&ch) = chars.peek() {
-                // This would be redundant, if we handled multiple whitespace
-                // characters in a row correctly.
+                // This would be redundant, if we handled multiple subsequent
+                // whitespace characters correctly.
                 chars.next();
 
                 if ch == '\n' {
