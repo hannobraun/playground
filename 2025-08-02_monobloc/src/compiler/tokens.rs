@@ -17,7 +17,7 @@ pub struct Tokenizer<'a> {
 }
 
 impl Tokenizer<'_> {
-    pub fn process_token(&mut self) -> bool {
+    pub fn process_token(&mut self) -> Option<Token> {
         while let Some(ch) = self.chars.next() {
             if ch.is_whitespace() {
                 let token = if let Ok(value) = self.current_token.parse() {
@@ -28,9 +28,7 @@ impl Tokenizer<'_> {
                     }
                 };
 
-                self.tokens.push(token);
-
-                return true;
+                return Some(token);
             } else if ch == '#' {
                 while let Some(&ch) = self.chars.peek() {
                     // This would be redundant, if we handled multiple
@@ -49,11 +47,14 @@ impl Tokenizer<'_> {
             }
         }
 
-        false
+        None
     }
 
     pub fn process_all_tokens(mut self) -> Vec<Token> {
-        while self.process_token() {}
+        while let Some(token) = self.process_token() {
+            self.tokens.push(token);
+        }
+
         self.tokens
     }
 }
