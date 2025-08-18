@@ -31,7 +31,7 @@ pub fn compile_module(_: i32) -> Vec<u8> {
 }
 
 trait Emit {
-    fn emit(&self, output: &mut Vec<u8>);
+    fn emit(&self, target: &mut Vec<u8>);
 }
 
 impl Emit for u8 {
