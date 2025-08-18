@@ -1,7 +1,6 @@
 #[cfg(test)]
 use crate::tests::compile;
 
-#[cfg(test)]
 mod compiler;
 #[cfg(test)]
 mod runtime;
