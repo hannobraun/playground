@@ -18,12 +18,12 @@ mod val_type;
 mod vec;
 mod version;
 
-pub fn compile_module(_: i32) -> Vec<u8> {
+pub fn compile_module(output: i32) -> Vec<u8> {
     use crate::compiler::wasm::module::Module;
 
     let mut target = Vec::new();
     Module {
-        function: &[ir::Expression::Value { value: 0 }],
+        function: &[ir::Expression::Value { value: output }],
     }
     .emit(&mut target);
 
