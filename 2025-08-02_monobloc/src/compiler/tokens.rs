@@ -31,10 +31,13 @@ impl Tokenizer {
         input_code: &mut InputCode,
     ) -> Option<Token> {
         loop {
-            if let Some(token) = self.process_char(input_code)? {
-                return Some(token);
-            } else {
-                continue;
+            match self.process_char(input_code)? {
+                Some(token) => {
+                    return Some(token);
+                }
+                None => {
+                    continue;
+                }
             }
         }
     }
