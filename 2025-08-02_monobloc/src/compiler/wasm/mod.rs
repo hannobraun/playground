@@ -1,17 +1,12 @@
 use crate::compiler::wasm::{
-    code::Code,
-    export::{Export, ExportDesc, Name},
-    func_idx::FuncIdx,
-    function_section::FunctionSection,
-    magic::Magic,
-    section::emit_section,
-    type_section::TypeSection,
-    vec::emit_vec,
-    version::Version,
+    code::Code, export_section::emit_export_section,
+    function_section::FunctionSection, magic::Magic, section::emit_section,
+    type_section::TypeSection, vec::emit_vec, version::Version,
 };
 
 mod code;
 mod export;
+mod export_section;
 mod func_idx;
 mod func_type;
 mod function_section;
@@ -34,23 +29,6 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     emit_code_section(&mut output);
 
     output
-}
-
-pub fn emit_export_section(output: &mut Vec<u8>) {
-    let id = 7;
-
-    let mut contents = Vec::new();
-    emit_vec(
-        &[Export {
-            name: Name { inner: "root" },
-            desc: ExportDesc::FuncIdx {
-                index: FuncIdx { index: 0 },
-            },
-        }],
-        &mut contents,
-    );
-
-    emit_section(id, contents, output);
 }
 
 fn emit_code_section(output: &mut Vec<u8>) {
