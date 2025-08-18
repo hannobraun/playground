@@ -31,8 +31,8 @@ impl Tokenizer<'_> {
                 }
             } else if ch == '#' {
                 while let Some(&ch) = self.chars.peek() {
-                    // This would be redundant, if we handled multiple subsequent
-                    // whitespace characters correctly.
+                    // This would be redundant, if we handled multiple
+                    // subsequent whitespace characters correctly.
                     self.chars.next();
 
                     if ch == '\n' {
