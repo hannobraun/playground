@@ -7,6 +7,7 @@ use crate::compiler::wasm::{
     section::emit_section,
     type_idx::TypeIdx,
     vec::emit_vec,
+    version::emit_version,
 };
 
 mod code;
@@ -18,6 +19,7 @@ mod magic;
 mod section;
 mod type_idx;
 mod vec;
+mod version;
 
 pub fn compile_module(_: i32) -> Vec<u8> {
     let mut output = Vec::new();
@@ -30,10 +32,6 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     emit_code_section(&mut output);
 
     output
-}
-
-pub fn emit_version(output: &mut Vec<u8>) {
-    output.extend([1, 0, 0, 0]);
 }
 
 fn emit_type_section(output: &mut Vec<u8>) {
