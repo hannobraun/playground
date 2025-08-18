@@ -30,7 +30,7 @@ pub fn compile_module(_: i32) -> Vec<u8> {
     output
 }
 
-fn emit_magic(output: &mut Vec<u8>) {
+pub fn emit_magic(output: &mut Vec<u8>) {
     output.extend(b"\0asm");
 }
 
