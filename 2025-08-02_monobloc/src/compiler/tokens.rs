@@ -1,9 +1,7 @@
 use std::{iter::Peekable, mem, str::Chars};
 
 pub fn tokenize(input_code: &str) -> Vec<Token> {
-    let tokenizer = Tokenizer::new(input_code);
-
-    tokenizer.process_all_tokens()
+    Tokenizer::new(input_code).process_all_tokens()
 }
 
 pub struct Tokenizer<'a> {
