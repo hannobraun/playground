@@ -31,12 +31,15 @@ impl Tokenizer {
         input_code: &mut InputCode,
     ) -> Option<Token> {
         loop {
-            match self.process_char(input_code)? {
-                Some(token) => {
+            match self.process_char(input_code) {
+                Some(Some(token)) => {
                     return Some(token);
                 }
-                None => {
+                Some(None) => {
                     continue;
+                }
+                None => {
+                    return None;
                 }
             }
         }
