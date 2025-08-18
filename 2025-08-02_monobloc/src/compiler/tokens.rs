@@ -94,6 +94,7 @@ enum State {
     Comment,
 }
 
+#[derive(Debug)]
 pub enum Token {
     Identifier { name: String },
     Number { value: i32 },
@@ -108,6 +109,7 @@ impl fmt::Display for Token {
     }
 }
 
+#[derive(Debug)]
 pub enum ProcessCharOutcome {
     NoMoreChars,
     TokenIsReady { token: Token },
