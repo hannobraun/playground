@@ -1,14 +1,15 @@
-use std::{
-    fs::File,
-    io::{Read, Write},
-};
+use std::{fs::File, io::Write};
 
 use anyhow::Context;
 
-use crate::compiler::{ir::compile_input_code, tokens::tokenize, wasm};
+use crate::{
+    compiler::{ir::compile_input_code, tokens::tokenize, wasm},
+    tests::read_input_code,
+};
 
 mod compiler;
 mod runtime;
+mod tests;
 
 fn main() -> anyhow::Result<()> {
     let path = "examples/single-number.mbl";
@@ -41,15 +42,4 @@ fn main() -> anyhow::Result<()> {
     println!();
 
     Ok(())
-}
-
-pub fn read_input_code(path: &str) -> anyhow::Result<String> {
-    let mut buf = String::new();
-
-    File::open(path)
-        .with_context(|| format!("Opening `{path}`"))?
-        .read_to_string(&mut buf)
-        .with_context(|| format!("Reading code from `{path}`"))?;
-
-    Ok(buf)
 }
