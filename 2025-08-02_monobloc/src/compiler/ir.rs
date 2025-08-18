@@ -1,10 +1,15 @@
 pub fn compile_input_code() -> Function {
     Function {
+        signature: Signature {
+            inputs: vec![],
+            outputs: vec![Type::I32],
+        },
         body: vec![Expression::Value { value: 1 }],
     }
 }
 
 pub struct Function {
+    pub signature: Signature,
     pub body: Body,
 }
 

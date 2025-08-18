@@ -16,10 +16,7 @@ impl Emit for Module<'_> {
         Magic.emit(target);
         Version.emit(target);
         TypeSection {
-            signature: &ir::Signature {
-                inputs: vec![],
-                outputs: vec![ir::Type::I32],
-            },
+            signature: &self.root.signature,
         }
         .emit(target);
         FunctionSection.emit(target);
