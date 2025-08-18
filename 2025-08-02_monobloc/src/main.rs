@@ -15,7 +15,6 @@ fn main() -> anyhow::Result<()> {
     let path = "examples/single-number.mbl";
 
     let input_code = read_input_code(path)?;
-    println!("Input code:\n{input_code}");
 
     let tokens = tokenize(&input_code);
     let root = compile_input_code(tokens);
@@ -30,16 +29,6 @@ fn main() -> anyhow::Result<()> {
             });
         }
     };
-
-    print!("Output: ");
-    for (i, value) in stack.iter().enumerate() {
-        if i > 0 {
-            print!(" ");
-        }
-
-        print!("{value}");
-    }
-    println!();
 
     assert_eq!(stack, vec![1]);
 
