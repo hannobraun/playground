@@ -10,7 +10,7 @@ pub fn evaluate_root(code: &[u8]) -> anyhow::Result<()> {
     let root = instance
         .get_func(&mut store, "root")
         .ok_or_else(|| anyhow!("Could not find root function."))?;
-    let () = root.call(&mut store, &[], &mut [])?;
+    root.call(&mut store, &[], &mut [])?;
 
     Ok(())
 }
