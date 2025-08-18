@@ -19,8 +19,8 @@ impl Emit for FuncType {
     }
 }
 
-struct ResultType<'r> {
-    inner: &'r [ValType],
+struct ResultType<'a> {
+    inner: &'a [ValType],
 }
 
 impl Emit for ResultType<'_> {
