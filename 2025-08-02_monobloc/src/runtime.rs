@@ -1,7 +1,7 @@
 use anyhow::anyhow;
-use wasmtime::{Engine, Instance, Module, Store};
+use wasmtime::{Engine, Instance, Module, Store, Val};
 
-pub fn evaluate_root(code: &[u8]) -> anyhow::Result<()> {
+pub fn evaluate_root(code: &[u8]) -> anyhow::Result<Vec<i32>> {
     let engine = Engine::default();
     let module = Module::new(&engine, code)?;
     let mut store = Store::new(&engine, ());
@@ -14,5 +14,16 @@ pub fn evaluate_root(code: &[u8]) -> anyhow::Result<()> {
     let mut results = Vec::new();
     root.call(&mut store, &[], &mut results)?;
 
-    Ok(())
+    let output = results
+        .into_iter()
+        .map(|val| {
+            if let Val::I32(value) = val {
+                value
+            } else {
+                panic!("Invalid result from root function: `{val:?}`");
+            }
+        })
+        .collect();
+
+    Ok(output)
 }
