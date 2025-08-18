@@ -10,12 +10,12 @@ fn emit_section_id(id: u8, target: &mut Vec<u8>) {
     target.push(id);
 }
 
-fn emit_section_size(size: usize, output: &mut Vec<u8>) {
+fn emit_section_size(size: usize, target: &mut Vec<u8>) {
     let Ok(size) = size.try_into() else {
         panic!("Unsupported section size: `{size}`");
     };
 
-    Leb128::U32 { value: size }.emit(output);
+    Leb128::U32 { value: size }.emit(target);
 }
 
 fn emit_section_contents(contents: Vec<u8>, output: &mut Vec<u8>) {
