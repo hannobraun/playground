@@ -18,36 +18,36 @@ pub struct Tokenizer<'a> {
 
 impl Tokenizer<'_> {
     pub fn process_token(&mut self) -> bool {
-        let Some(ch) = self.chars.next() else {
-            return false;
-        };
-
-        if ch.is_whitespace() {
-            if let Ok(value) = self.current_token.parse() {
-                self.tokens.push(Token::Number { value });
-            } else {
-                self.tokens.push(Token::Identifier {
-                    name: mem::take(&mut self.current_token),
-                });
-            }
-        } else if ch == '#' {
-            while let Some(&ch) = self.chars.peek() {
-                // This would be redundant, if we handled multiple subsequent
-                // whitespace characters correctly.
-                self.chars.next();
-
-                if ch == '\n' {
-                    break;
+        if let Some(ch) = self.chars.next() {
+            if ch.is_whitespace() {
+                if let Ok(value) = self.current_token.parse() {
+                    self.tokens.push(Token::Number { value });
                 } else {
-                    self.chars.next();
-                    continue;
+                    self.tokens.push(Token::Identifier {
+                        name: mem::take(&mut self.current_token),
+                    });
                 }
-            }
-        } else {
-            self.current_token.push(ch);
-        }
+            } else if ch == '#' {
+                while let Some(&ch) = self.chars.peek() {
+                    // This would be redundant, if we handled multiple
+                    // subsequent whitespace characters correctly.
+                    self.chars.next();
 
-        true
+                    if ch == '\n' {
+                        break;
+                    } else {
+                        self.chars.next();
+                        continue;
+                    }
+                }
+            } else {
+                self.current_token.push(ch);
+            }
+
+            true
+        } else {
+            false
+        }
     }
 
     pub fn process_all_tokens(mut self) -> Vec<Token> {
