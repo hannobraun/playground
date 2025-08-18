@@ -5,7 +5,7 @@ use crate::compiler::wasm::{
 pub struct FunctionSection;
 
 impl Emit for FunctionSection {
-    fn emit(&self, output: &mut Vec<u8>) {
+    fn emit(&self, target: &mut Vec<u8>) {
         let id = 3;
 
         let mut contents = Vec::new();
@@ -14,6 +14,6 @@ impl Emit for FunctionSection {
         }
         .emit(&mut contents);
 
-        emit_section(id, contents, output);
+        emit_section(id, contents, target);
     }
 }
