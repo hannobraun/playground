@@ -77,6 +77,9 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
+#[derive(clap::Parser)]
+pub struct Args {}
+
 #[test]
 fn single_number() -> anyhow::Result<()> {
     let stack = compile("examples/single-number.mbl")?;
