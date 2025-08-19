@@ -3,6 +3,7 @@ use crate::compiler::wasm::{Emit, leb128::Leb128};
 pub enum Instruction {
     Unreachable,
     ConstI32 { value: i32 },
+    EqI32,
 }
 
 impl Emit for Instruction {
@@ -14,6 +15,9 @@ impl Emit for Instruction {
             Self::ConstI32 { value } => {
                 target.push(0x41);
                 Leb128::I32 { value }.emit(target);
+            }
+            Self::EqI32 => {
+                target.push(0x46);
             }
         }
     }

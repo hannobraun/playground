@@ -12,10 +12,15 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             Token::Comment { text: _ } => {
                 // ignoring comment
             }
-            Token::Identifier { name } => {
-                println!("Unknown identifier: `{name}`");
-                body.push(Expression::Panic);
-            }
+            Token::Identifier { name } => match name.as_str() {
+                "=" => {
+                    body.push(Expression::Equals);
+                }
+                _ => {
+                    println!("Unknown identifier: `{name}`");
+                    body.push(Expression::Panic);
+                }
+            },
             Token::Number { value } => {
                 body.push(Expression::Value { value });
                 signature.outputs.push(Type::I32);
@@ -47,4 +52,5 @@ pub type Body = Vec<Expression>;
 pub enum Expression {
     Panic,
     Value { value: i32 },
+    Equals,
 }
