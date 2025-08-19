@@ -21,6 +21,7 @@ fn main() -> anyhow::Result<()> {
     let program = args
         .program
         .unwrap_or_else(|| PathBuf::from("examples/single-number.mbl"));
+    let interactive = args.interactive;
 
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
@@ -40,13 +41,13 @@ fn main() -> anyhow::Result<()> {
                 tokens.push(token);
             }
             ProcessCharOutcome::TokenNotReady { ch } => {
-                if args.interactive {
+                if interactive {
                     println!("Char: {ch}");
                 }
             }
         }
 
-        if args.interactive {
+        if interactive {
             let mut prev_token: Option<&Token> = None;
 
             for token in &tokens {
