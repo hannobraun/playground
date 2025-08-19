@@ -1,6 +1,6 @@
 use crate::compiler::{
     input_code::read_input_code,
-    tokens::{ProcessCharOutcome, Tokenizer},
+    tokens::{ProcessCharOutcome, Token, Tokenizer},
 };
 #[cfg(test)]
 use crate::tests::compile;
@@ -28,7 +28,12 @@ fn main() -> anyhow::Result<()> {
                 break;
             }
             ProcessCharOutcome::TokenIsReady { token } => {
-                println!("Token: {token}");
+                print!("Token: ");
+                match token {
+                    Token::Comment { text } => println!("#{text}"),
+                    Token::Identifier { name } => println!("{name}"),
+                    Token::Number { value } => println!("{value}"),
+                }
             }
             ProcessCharOutcome::TokenNotReady { ch } => {
                 println!("Char: {ch}");

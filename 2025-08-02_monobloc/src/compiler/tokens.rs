@@ -1,4 +1,4 @@
-use std::{fmt, mem};
+use std::mem;
 
 use crate::compiler::input_code::InputCode;
 
@@ -101,16 +101,6 @@ pub enum Token {
     Comment { text: String },
     Identifier { name: String },
     Number { value: i32 },
-}
-
-impl fmt::Display for Token {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Self::Comment { text } => writeln!(f, "#{text}"),
-            Self::Identifier { name } => write!(f, "{name}"),
-            Self::Number { value } => write!(f, "{value}"),
-        }
-    }
 }
 
 #[derive(Debug)]
