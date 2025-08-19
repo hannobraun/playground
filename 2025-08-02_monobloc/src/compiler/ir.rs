@@ -15,6 +15,10 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             Token::Identifier { name } => match name.as_str() {
                 "=" => {
                     body.push(Expression::Equals);
+
+                    stack.pop(Type::I32);
+                    stack.pop(Type::I32);
+                    stack.push(Type::I32);
                 }
                 _ => {
                     println!("Unknown identifier: `{name}`");
@@ -45,6 +49,16 @@ struct Stack {
 impl Stack {
     fn push(&mut self, ty: Type) {
         self.outputs.push(ty);
+    }
+
+    fn pop(&mut self, ty: Type) {
+        if let Some(on_stack) = self.outputs.pop() {
+            // We're not checking yet, if the type matches. Since there's only
+            // one type so far, it would be redundant anyway.
+            let _ = on_stack;
+        } else {
+            self.inputs.push(ty);
+        }
     }
 }
 
