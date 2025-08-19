@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use crate::compiler::{
     input_code::read_input_code,
     tokens::{ProcessCharOutcome, Token, Tokenizer},
@@ -78,7 +80,9 @@ fn main() -> anyhow::Result<()> {
 }
 
 #[derive(clap::Parser)]
-pub struct Args {}
+pub struct Args {
+    pub program: Option<PathBuf>,
+}
 
 #[test]
 fn single_number() -> anyhow::Result<()> {
