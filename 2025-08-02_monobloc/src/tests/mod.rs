@@ -16,6 +16,7 @@ pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
     let mut input_code = String::new();
     let input_code = read_input_code(path, &mut input_code)?;
+
     let tokens = Tokenizer::new().process_all_tokens(input_code);
     let root = compile_tokens(tokens);
     let wasm_code = wasm::compile_module(&root);
