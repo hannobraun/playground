@@ -27,7 +27,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     instruction.emit(target);
 }
 
-struct End;
+pub struct End;
 
 impl Emit for End {
     fn emit(&self, target: &mut Vec<u8>) {
