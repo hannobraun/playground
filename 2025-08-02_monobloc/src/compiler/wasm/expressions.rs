@@ -1,6 +1,9 @@
 use crate::compiler::{
     ir,
-    wasm::{Emit, instruction::Instruction},
+    wasm::{
+        Emit,
+        instruction::{End, Instruction},
+    },
 };
 
 pub struct Expressions<'a> {
@@ -25,12 +28,4 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     };
 
     instruction.emit(target);
-}
-
-pub struct End;
-
-impl Emit for End {
-    fn emit(&self, target: &mut Vec<u8>) {
-        target.push(0x0b);
-    }
 }

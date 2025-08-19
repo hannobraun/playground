@@ -22,3 +22,11 @@ impl Emit for Instruction {
         }
     }
 }
+
+pub struct End;
+
+impl Emit for End {
+    fn emit(&self, target: &mut Vec<u8>) {
+        target.push(0x0b);
+    }
+}
