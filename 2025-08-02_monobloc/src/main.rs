@@ -40,46 +40,50 @@ fn main() -> anyhow::Result<()> {
                 tokens.push(token);
             }
             ProcessCharOutcome::TokenNotReady { ch } => {
-                println!("Char: {ch}");
+                if args.interactive {
+                    println!("Char: {ch}");
+                }
             }
         }
 
-        let mut prev_token: Option<&Token> = None;
+        if args.interactive {
+            let mut prev_token: Option<&Token> = None;
 
-        for token in &tokens {
-            match (prev_token, token) {
-                (Some(Token::Comment { .. }), Token::Comment { .. }) => {
-                    // Already printed a newline at the end of the previous
-                    // comment.
+            for token in &tokens {
+                match (prev_token, token) {
+                    (Some(Token::Comment { .. }), Token::Comment { .. }) => {
+                        // Already printed a newline at the end of the previous
+                        // comment.
+                    }
+                    (Some(_), Token::Comment { .. }) => {
+                        // Start comment on a new line.
+                        println!();
+                    }
+                    (Some(Token::Comment { .. }) | None, _) => {
+                        // We are on a fresh line. Nothing to prepare.
+                    }
+                    (Some(_), _) => {
+                        // Add other tokens to the same line.
+                        print!(" ");
+                    }
                 }
-                (Some(_), Token::Comment { .. }) => {
-                    // Start comment on a new line.
-                    println!();
+
+                match token {
+                    Token::Comment { text } => {
+                        println!("#{text}");
+                    }
+                    Token::Identifier { name } => {
+                        println!("{name}");
+                    }
+                    Token::Number { value } => {
+                        println!("{value}");
+                    }
                 }
-                (Some(Token::Comment { .. }) | None, _) => {
-                    // We are on a fresh line. Nothing to prepare.
-                }
-                (Some(_), _) => {
-                    // Add other tokens to the same line.
-                    print!(" ");
-                }
+
+                prev_token = Some(token);
             }
-
-            match token {
-                Token::Comment { text } => {
-                    println!("#{text}");
-                }
-                Token::Identifier { name } => {
-                    println!("{name}");
-                }
-                Token::Number { value } => {
-                    println!("{value}");
-                }
-            }
-
-            prev_token = Some(token);
+            println!();
         }
-        println!();
     }
 
     Ok(())
