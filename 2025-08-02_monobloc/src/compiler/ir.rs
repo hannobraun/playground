@@ -20,6 +20,10 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
                     stack.pop(Type::I32);
                     stack.push(Type::I32);
                 }
+                "assert" => {
+                    body.push(Expression::Assert);
+                    stack.pop(Type::I32);
+                }
                 _ => {
                     println!("Unknown identifier: `{name}`");
                     body.push(Expression::Panic);
@@ -82,6 +86,7 @@ pub type Body = Vec<Expression>;
 
 pub enum Expression {
     Panic,
+    Assert,
     Value { value: i32 },
     Equals,
 }

@@ -2,7 +2,7 @@ use crate::compiler::{
     ir,
     wasm::{
         Emit,
-        instruction::{End, Instruction},
+        instruction::{BlockType, End, Instruction},
     },
 };
 
@@ -23,6 +23,11 @@ impl Emit for Expressions<'_> {
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     let instruction = match *expression {
         ir::Expression::Panic => Instruction::Unreachable,
+        ir::Expression::Assert => Instruction::If {
+            block_type: BlockType::Empty,
+            then: vec![],
+            else_: vec![Instruction::Unreachable],
+        },
         ir::Expression::Value { value } => Instruction::ConstI32 { value },
         ir::Expression::Equals => Instruction::EqI32,
     };
