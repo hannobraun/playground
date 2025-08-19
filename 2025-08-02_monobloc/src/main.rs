@@ -88,6 +88,9 @@ fn main() -> anyhow::Result<()> {
 #[derive(clap::Parser)]
 pub struct Args {
     pub program: Option<PathBuf>,
+
+    #[arg(short, long)]
+    pub interactive: bool,
 }
 
 #[test]
