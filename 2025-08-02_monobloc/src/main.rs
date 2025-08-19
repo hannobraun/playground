@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 
 use clap::Parser;
+use walkdir::WalkDir;
 
 use crate::compiler::{
     input_code::read_input_code,
@@ -18,11 +19,20 @@ mod tests;
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
-    let program = args
-        .program
-        .unwrap_or_else(|| PathBuf::from("examples/single-number.mbl"));
+    if let Some(program) = args.program {
+        run(program, args.interactive)?;
+    } else {
+        for entry in WalkDir::new("examples") {
+            let entry = entry?;
 
-    run(program, args.interactive)?;
+            if entry.file_type().is_dir() {
+                continue;
+            }
+
+            let program = entry.path();
+            run(program, args.interactive)?;
+        }
+    }
 
     Ok(())
 }
