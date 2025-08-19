@@ -1,7 +1,7 @@
 use crate::compiler::tokens::Token;
 
 pub fn compile_tokens(tokens: Vec<Token>) -> Function {
-    let mut signature = Signature {
+    let mut signature = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),
     };
@@ -28,7 +28,18 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
         }
     }
 
-    Function { signature, body }
+    Function {
+        signature: Signature {
+            inputs: signature.inputs,
+            outputs: signature.outputs,
+        },
+        body,
+    }
+}
+
+struct Stack {
+    inputs: Types,
+    outputs: Types,
 }
 
 pub struct Function {
