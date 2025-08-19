@@ -1,5 +1,7 @@
 use std::path::PathBuf;
 
+use clap::Parser;
+
 use crate::compiler::{
     input_code::read_input_code,
     tokens::{ProcessCharOutcome, Token, Tokenizer},
@@ -14,7 +16,11 @@ mod runtime;
 mod tests;
 
 fn main() -> anyhow::Result<()> {
-    let path = "examples/single-number.mbl";
+    let args = Args::parse();
+
+    let path = args
+        .program
+        .unwrap_or_else(|| PathBuf::from("examples/single-number.mbl"));
 
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
