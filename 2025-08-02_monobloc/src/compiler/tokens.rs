@@ -60,12 +60,12 @@ impl Tokenizer {
                 self.state = State::Comment;
             }
             (State::Initial, ch) if ch.is_whitespace() => {
-                let token = if let Ok(value) = self.buf.parse() {
+                let buf = mem::take(&mut self.buf);
+
+                let token = if let Ok(value) = buf.parse() {
                     Token::Number { value }
                 } else {
-                    Token::Identifier {
-                        name: mem::take(&mut self.buf),
-                    }
+                    Token::Identifier { name: buf }
                 };
 
                 return ProcessCharOutcome::TokenIsReady { token };
