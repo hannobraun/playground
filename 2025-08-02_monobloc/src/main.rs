@@ -21,6 +21,7 @@ fn main() -> anyhow::Result<()> {
     let mut input_code = read_input_code(path, &mut input_code)?;
 
     let mut tokenizer = Tokenizer::new();
+    let mut tokens = Vec::new();
 
     loop {
         match tokenizer.process_char(&mut input_code) {
@@ -28,23 +29,49 @@ fn main() -> anyhow::Result<()> {
                 break;
             }
             ProcessCharOutcome::TokenIsReady { token } => {
-                print!("Token: ");
-                match token {
-                    Token::Comment { text } => {
-                        println!("#{text}");
-                    }
-                    Token::Identifier { name } => {
-                        println!("{name}");
-                    }
-                    Token::Number { value } => {
-                        println!("{value}");
-                    }
-                }
+                tokens.push(token);
             }
             ProcessCharOutcome::TokenNotReady { ch } => {
                 println!("Char: {ch}");
             }
         }
+
+        let mut prev_token: Option<&Token> = None;
+
+        for token in &tokens {
+            match (prev_token, token) {
+                (Some(Token::Comment { .. }), Token::Comment { .. }) => {
+                    // Already printed a newline at the end of the previous
+                    // comment.
+                }
+                (Some(_), Token::Comment { .. }) => {
+                    // Start comment on a new line.
+                    println!();
+                }
+                (Some(Token::Comment { .. }) | None, _) => {
+                    // We are on a fresh line. Nothing to prepare.
+                }
+                (Some(_), _) => {
+                    // Add other tokens to the same line.
+                    print!(" ");
+                }
+            }
+
+            match token {
+                Token::Comment { text } => {
+                    println!("#{text}");
+                }
+                Token::Identifier { name } => {
+                    println!("{name}");
+                }
+                Token::Number { value } => {
+                    println!("{value}");
+                }
+            }
+
+            prev_token = Some(token);
+        }
+        println!();
     }
 
     Ok(())
