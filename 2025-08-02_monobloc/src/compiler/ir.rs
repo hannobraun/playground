@@ -1,6 +1,6 @@
 use crate::compiler::tokens::Token;
 
-pub fn compile_input_code(tokens: Vec<Token>) -> Function {
+pub fn compile_tokens(tokens: Vec<Token>) -> Function {
     let mut signature = Signature {
         inputs: Vec::new(),
         outputs: Vec::new(),

@@ -4,7 +4,7 @@ use anyhow::Context;
 
 use crate::{
     compiler::{
-        input_code::read_input_code, ir::compile_input_code, tokens::Tokenizer,
+        input_code::read_input_code, ir::compile_tokens, tokens::Tokenizer,
         wasm,
     },
     runtime,
@@ -17,7 +17,7 @@ pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
     let mut input_code = String::new();
     let input_code = read_input_code(path, &mut input_code)?;
     let tokens = Tokenizer::new().process_all_tokens(input_code);
-    let root = compile_input_code(tokens);
+    let root = compile_tokens(tokens);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,
