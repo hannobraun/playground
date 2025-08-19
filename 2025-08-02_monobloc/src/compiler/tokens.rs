@@ -4,14 +4,14 @@ use crate::compiler::input_code::InputCode;
 
 pub struct Tokenizer {
     state: State,
-    token: String,
+    buf: String,
 }
 
 impl Tokenizer {
     pub fn new() -> Self {
         Self {
             state: State::Initial,
-            token: String::new(),
+            buf: String::new(),
         }
     }
 
@@ -60,18 +60,18 @@ impl Tokenizer {
                 self.state = State::Comment;
             }
             (State::Initial, ch) if ch.is_whitespace() => {
-                let token = if let Ok(value) = self.token.parse() {
+                let token = if let Ok(value) = self.buf.parse() {
                     Token::Number { value }
                 } else {
                     Token::Identifier {
-                        name: mem::take(&mut self.token),
+                        name: mem::take(&mut self.buf),
                     }
                 };
 
                 return ProcessCharOutcome::TokenIsReady { token };
             }
             (State::Initial, ch) => {
-                self.token.push(ch);
+                self.buf.push(ch);
             }
             (State::Comment, '\n') => {
                 self.state = State::Initial;
