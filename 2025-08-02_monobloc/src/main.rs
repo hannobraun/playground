@@ -18,7 +18,7 @@ mod tests;
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
-    let path = args
+    let program = args
         .program
         .unwrap_or_else(|| PathBuf::from("examples/single-number.mbl"));
 
@@ -26,7 +26,7 @@ fn main() -> anyhow::Result<()> {
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
     let mut input_code = String::new();
-    let mut input_code = read_input_code(path, &mut input_code)?;
+    let mut input_code = read_input_code(program, &mut input_code)?;
 
     let mut tokenizer = Tokenizer::new();
     let mut tokens = Vec::new();
