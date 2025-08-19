@@ -9,6 +9,9 @@ pub fn compile_input_code(tokens: Vec<Token>) -> Function {
 
     for token in tokens {
         match token {
+            Token::Comment { text: _ } => {
+                // ignoring comment
+            }
             Token::Identifier { name } => {
                 println!("Unknown identifier: `{name}`");
                 body.push(Expression::Panic);

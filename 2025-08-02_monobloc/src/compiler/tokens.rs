@@ -75,9 +75,15 @@ impl Tokenizer {
             }
             (State::Comment, '\n') => {
                 self.state = State::Initial;
+
+                return ProcessCharOutcome::TokenIsReady {
+                    token: Token::Comment {
+                        text: mem::take(&mut self.buf),
+                    },
+                };
             }
             (State::Comment, ch) => {
-                let _ = ch;
+                self.buf.push(ch);
             }
         }
 
@@ -92,6 +98,7 @@ pub enum State {
 
 #[derive(Debug)]
 pub enum Token {
+    Comment { text: String },
     Identifier { name: String },
     Number { value: i32 },
 }
@@ -99,6 +106,7 @@ pub enum Token {
 impl fmt::Display for Token {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
+            Self::Comment { text } => writeln!(f, "#{text}"),
             Self::Identifier { name } => write!(f, "{name}"),
             Self::Number { value } => write!(f, "{value}"),
         }
