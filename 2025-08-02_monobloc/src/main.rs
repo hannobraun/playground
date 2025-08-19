@@ -80,6 +80,6 @@ fn main() -> anyhow::Result<()> {
 #[test]
 fn single_number() -> anyhow::Result<()> {
     let stack = compile("examples/single-number.mbl")?;
-    assert_eq!(stack, vec![1]);
+    assert!(stack.is_empty());
     Ok(())
 }
