@@ -30,9 +30,15 @@ fn main() -> anyhow::Result<()> {
             ProcessCharOutcome::TokenIsReady { token } => {
                 print!("Token: ");
                 match token {
-                    Token::Comment { text } => println!("#{text}"),
-                    Token::Identifier { name } => println!("{name}"),
-                    Token::Number { value } => println!("{value}"),
+                    Token::Comment { text } => {
+                        println!("#{text}");
+                    }
+                    Token::Identifier { name } => {
+                        println!("{name}");
+                    }
+                    Token::Number { value } => {
+                        println!("{value}");
+                    }
                 }
             }
             ProcessCharOutcome::TokenNotReady { ch } => {
