@@ -1,7 +1,7 @@
 use crate::compiler::tokens::Token;
 
 pub fn compile_tokens(tokens: Vec<Token>) -> Function {
-    let mut signature = Stack {
+    let mut stack = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),
     };
@@ -23,15 +23,15 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             },
             Token::Number { value } => {
                 body.push(Expression::Value { value });
-                signature.outputs.push(Type::I32);
+                stack.outputs.push(Type::I32);
             }
         }
     }
 
     Function {
         signature: Signature {
-            inputs: signature.inputs,
-            outputs: signature.outputs,
+            inputs: stack.inputs,
+            outputs: stack.outputs,
         },
         body,
     }
