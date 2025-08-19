@@ -31,6 +31,8 @@ fn main() -> anyhow::Result<()> {
 
             let program = entry.path();
             run(program, args.interactive)?;
+
+            println!("{program}", program = program.display());
         }
     }
 
