@@ -78,10 +78,6 @@ impl Tokenizer {
             }
             (State::Comment, ch) => {
                 let _ = ch;
-
-                // This would be redundant, if we handled multiple subsequent
-                // whitespace characters correctly.
-                input_code.next();
             }
         }
 
