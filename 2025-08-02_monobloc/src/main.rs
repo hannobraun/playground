@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use clap::Parser;
 
@@ -23,6 +23,20 @@ fn main() -> anyhow::Result<()> {
         .unwrap_or_else(|| PathBuf::from("examples/single-number.mbl"));
     let interactive = args.interactive;
 
+    run(program, interactive)?;
+
+    Ok(())
+}
+
+#[derive(clap::Parser)]
+pub struct Args {
+    pub program: Option<PathBuf>,
+
+    #[arg(short, long)]
+    pub interactive: bool,
+}
+
+fn run(program: impl AsRef<Path>, interactive: bool) -> anyhow::Result<()> {
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
@@ -88,14 +102,6 @@ fn main() -> anyhow::Result<()> {
     }
 
     Ok(())
-}
-
-#[derive(clap::Parser)]
-pub struct Args {
-    pub program: Option<PathBuf>,
-
-    #[arg(short, long)]
-    pub interactive: bool,
 }
 
 #[test]
