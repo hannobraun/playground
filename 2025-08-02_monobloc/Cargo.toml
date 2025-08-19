@@ -7,3 +7,7 @@ publish = false
 anyhow = "*"
 leb128 = "*"
 wasmtime = "*"
+
+[dependencies.clap]
+version = "*"
+features = ["derive"]
