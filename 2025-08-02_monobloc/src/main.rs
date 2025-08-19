@@ -21,9 +21,8 @@ fn main() -> anyhow::Result<()> {
     let program = args
         .program
         .unwrap_or_else(|| PathBuf::from("examples/single-number.mbl"));
-    let interactive = args.interactive;
 
-    run(program, interactive)?;
+    run(program, args.interactive)?;
 
     Ok(())
 }
