@@ -23,7 +23,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             },
             Token::Number { value } => {
                 body.push(Expression::Value { value });
-                stack.outputs.push(Type::I32);
+                stack.push(Type::I32);
             }
         }
     }
@@ -40,6 +40,12 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
 struct Stack {
     inputs: Types,
     outputs: Types,
+}
+
+impl Stack {
+    fn push(&mut self, ty: Type) {
+        self.outputs.push(ty);
+    }
 }
 
 pub struct Function {
