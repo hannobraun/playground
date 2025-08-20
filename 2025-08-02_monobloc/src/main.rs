@@ -117,7 +117,7 @@ fn compile(program: impl AsRef<Path>, interactive: bool) -> anyhow::Result<()> {
 fn single_number() -> anyhow::Result<()> {
     use crate::tests::compile;
 
-    let stack = compile("examples/single-number.mbl")?;
+    let stack = compile("examples/single-number.mbl", false)?;
     assert!(stack.is_empty());
     Ok(())
 }

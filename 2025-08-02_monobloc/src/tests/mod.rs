@@ -10,7 +10,7 @@ use crate::{
     runtime,
 };
 
-pub fn compile(path: &str) -> anyhow::Result<Vec<i32>> {
+pub fn compile(path: &str, _: bool) -> anyhow::Result<Vec<i32>> {
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
