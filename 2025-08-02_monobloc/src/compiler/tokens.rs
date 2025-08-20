@@ -21,6 +21,10 @@ impl Tokenizer {
             (State::Initial, ch) if ch.is_whitespace() => {
                 let buf = mem::take(&mut self.buf);
 
+                if buf.is_empty() {
+                    return ProcessCharOutcome::TokenNotReady { ch };
+                }
+
                 let token = if let Ok(value) = buf.parse() {
                     Token::Number { value }
                 } else {

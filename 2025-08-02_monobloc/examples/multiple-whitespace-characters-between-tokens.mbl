@@ -1,0 +1,9 @@
+# Tokens are separated by whitespace, and it makes no difference how many
+# whitespace characters are between them, and what type.
+#
+# Here, we have two tokens separated by two spaces, that behave just the same as
+# if they were separated by a single one.
+1  2
+
+2 = assert
+1 = assert
