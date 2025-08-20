@@ -63,10 +63,11 @@ pub fn compile(
     let mut tokens = Vec::new();
 
     loop {
-        match tokenizer.process_char(&mut input_code) {
-            ProcessCharOutcome::NoMoreChars => {
-                break;
-            }
+        let Some(ch) = input_code.next() else {
+            break;
+        };
+
+        match tokenizer.process_char(ch) {
             ProcessCharOutcome::TokenIsReady { token } => {
                 tokens.push(token);
             }

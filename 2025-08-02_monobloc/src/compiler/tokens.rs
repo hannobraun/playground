@@ -1,7 +1,5 @@
 use std::mem;
 
-use crate::compiler::input_code::InputCode;
-
 pub struct Tokenizer {
     state: State,
     buf: String,
@@ -15,14 +13,7 @@ impl Tokenizer {
         }
     }
 
-    pub fn process_char(
-        &mut self,
-        input_code: &mut InputCode,
-    ) -> ProcessCharOutcome {
-        let Some(ch) = input_code.next() else {
-            return ProcessCharOutcome::NoMoreChars;
-        };
-
+    pub fn process_char(&mut self, ch: char) -> ProcessCharOutcome {
         match (&self.state, ch) {
             (State::Initial, '#') => {
                 self.state = State::Comment;
@@ -73,7 +64,6 @@ pub enum Token {
 
 #[derive(Debug)]
 pub enum ProcessCharOutcome {
-    NoMoreChars,
     TokenIsReady { token: Token },
     TokenNotReady { ch: char },
 }
