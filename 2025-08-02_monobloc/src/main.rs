@@ -1,18 +1,22 @@
-use std::path::{Path, PathBuf};
+use std::{
+    fs::File,
+    io::Write,
+    path::{Path, PathBuf},
+};
 
+use anyhow::Context;
 use clap::Parser;
 use walkdir::WalkDir;
 
 use crate::compiler::{
     input_code::read_input_code,
+    ir::compile_tokens,
     tokens::{ProcessCharOutcome, Token, Tokenizer},
+    wasm,
 };
 
 mod compiler;
-#[cfg(test)]
 mod runtime;
-#[cfg(test)]
-mod tests;
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
@@ -45,7 +49,10 @@ pub struct Args {
     pub interactive: bool,
 }
 
-fn compile(program: impl AsRef<Path>, interactive: bool) -> anyhow::Result<()> {
+pub fn compile(
+    program: impl AsRef<Path>,
+    interactive: bool,
+) -> anyhow::Result<Vec<i32>> {
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
@@ -110,13 +117,24 @@ fn compile(program: impl AsRef<Path>, interactive: bool) -> anyhow::Result<()> {
         }
     }
 
-    Ok(())
+    let root = compile_tokens(tokens);
+    let wasm_code = wasm::compile_module(&root);
+    let stack = match runtime::evaluate_root(&wasm_code, &root) {
+        Ok(stack) => stack,
+        Err(err) => {
+            let output = "error.wasm";
+            File::create(output)?.write_all(&wasm_code)?;
+            return Err(err).with_context(|| {
+                format!("Error evaluating root; wrote module to `{output}`")
+            });
+        }
+    };
+
+    Ok(stack)
 }
 
 #[test]
 fn single_number() -> anyhow::Result<()> {
-    use crate::tests::compile;
-
     let stack = compile("examples/single-number.mbl", false)?;
     assert!(stack.is_empty());
     Ok(())
