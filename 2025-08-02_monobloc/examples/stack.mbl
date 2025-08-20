@@ -1,5 +1,6 @@
 # Multiple functions that return values can be called subsequently. Each number
 # is added to the operand stack.
 1 2
+
 2 = assert
 1 = assert
