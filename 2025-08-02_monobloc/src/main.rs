@@ -7,8 +7,6 @@ use crate::compiler::{
     input_code::read_input_code,
     tokens::{ProcessCharOutcome, Token, Tokenizer},
 };
-#[cfg(test)]
-use crate::tests::compile;
 
 mod compiler;
 #[cfg(test)]
@@ -117,6 +115,8 @@ fn run(program: impl AsRef<Path>, interactive: bool) -> anyhow::Result<()> {
 
 #[test]
 fn single_number() -> anyhow::Result<()> {
+    use crate::tests::compile;
+
     let stack = compile("examples/single-number.mbl")?;
     assert!(stack.is_empty());
     Ok(())
