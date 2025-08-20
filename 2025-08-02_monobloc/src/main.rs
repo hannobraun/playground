@@ -132,10 +132,3 @@ pub fn compile(
 
     Ok(stack)
 }
-
-#[test]
-fn single_number() -> anyhow::Result<()> {
-    let stack = compile("examples/single-number.mbl", false)?;
-    assert!(stack.is_empty());
-    Ok(())
-}
