@@ -13,14 +13,14 @@ use crate::{
 };
 
 pub fn compile(
-    path: impl AsRef<Path>,
+    program: impl AsRef<Path>,
     interactive: bool,
 ) -> anyhow::Result<Vec<i32>> {
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
     let mut input_code = String::new();
-    let mut input_code = read_input_code(path, &mut input_code)?;
+    let mut input_code = read_input_code(program, &mut input_code)?;
 
     let mut tokenizer = Tokenizer::new();
     let mut tokens = Vec::new();
