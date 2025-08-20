@@ -15,38 +15,6 @@ impl Tokenizer {
         }
     }
 
-    #[cfg(test)]
-    pub fn process_all_tokens(mut self, input_code: InputCode) -> Vec<Token> {
-        let mut input_code = input_code;
-        let mut tokens = Vec::new();
-
-        while let Some(token) = self.process_token(&mut input_code) {
-            tokens.push(token);
-        }
-
-        tokens
-    }
-
-    #[cfg(test)]
-    pub fn process_token(
-        &mut self,
-        input_code: &mut InputCode,
-    ) -> Option<Token> {
-        loop {
-            match self.process_char(input_code) {
-                ProcessCharOutcome::NoMoreChars => {
-                    return None;
-                }
-                ProcessCharOutcome::TokenIsReady { token } => {
-                    return Some(token);
-                }
-                ProcessCharOutcome::TokenNotReady { ch: _ } => {
-                    continue;
-                }
-            }
-        }
-    }
-
     pub fn process_char(
         &mut self,
         input_code: &mut InputCode,
