@@ -1,4 +1,4 @@
-use std::{fs::File, io::Write};
+use std::{fs::File, io::Write, path::Path};
 
 use anyhow::Context;
 
@@ -12,7 +12,10 @@ use crate::{
     runtime,
 };
 
-pub fn compile(path: &str, interactive: bool) -> anyhow::Result<Vec<i32>> {
+pub fn compile(
+    path: impl AsRef<Path>,
+    interactive: bool,
+) -> anyhow::Result<Vec<i32>> {
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
