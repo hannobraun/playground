@@ -22,7 +22,7 @@ impl Tokenizer {
                 let buf = mem::take(&mut self.buf);
 
                 if buf.is_empty() {
-                    return ProcessCharOutcome::TokenNotReady { ch };
+                    return ProcessCharOutcome::TokenNotReady;
                 }
 
                 let token = if let Ok(value) = buf.parse() {
@@ -50,7 +50,7 @@ impl Tokenizer {
             }
         }
 
-        ProcessCharOutcome::TokenNotReady { ch }
+        ProcessCharOutcome::TokenNotReady
     }
 }
 
@@ -69,5 +69,5 @@ pub enum Token {
 #[derive(Debug)]
 pub enum ProcessCharOutcome {
     TokenIsReady { token: Token },
-    TokenNotReady { ch: char },
+    TokenNotReady,
 }

@@ -71,7 +71,7 @@ pub fn compile(
             ProcessCharOutcome::TokenIsReady { token } => {
                 tokens.push(token);
             }
-            ProcessCharOutcome::TokenNotReady { ch } => {
+            ProcessCharOutcome::TokenNotReady => {
                 if interactive {
                     println!("Char: {ch}");
                 }
