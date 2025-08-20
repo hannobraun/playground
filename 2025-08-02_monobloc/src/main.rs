@@ -18,7 +18,7 @@ fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
     if let Some(program) = args.program {
-        run(program, args.interactive)?;
+        compile(program, args.interactive)?;
     } else {
         for entry in WalkDir::new("examples") {
             let entry = entry?;
@@ -28,7 +28,7 @@ fn main() -> anyhow::Result<()> {
             }
 
             let program = entry.path();
-            run(program, args.interactive)?;
+            compile(program, args.interactive)?;
 
             println!("{program}", program = program.display());
         }
@@ -45,7 +45,7 @@ pub struct Args {
     pub interactive: bool,
 }
 
-fn run(program: impl AsRef<Path>, interactive: bool) -> anyhow::Result<()> {
+fn compile(program: impl AsRef<Path>, interactive: bool) -> anyhow::Result<()> {
     // We wouldn't need to create the buffer here, if `String::into_chars` were
     // stable:
     // https://doc.rust-lang.org/std/string/struct.String.html#method.into_chars
