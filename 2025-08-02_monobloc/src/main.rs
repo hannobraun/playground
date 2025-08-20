@@ -11,7 +11,7 @@ use walkdir::WalkDir;
 use crate::compiler::{
     input_code::read_input_code,
     ir::compile_tokens,
-    tokens::{ProcessCharOutcome, Token, Tokenizer},
+    tokens::{Token, Tokenizer},
     wasm,
 };
 
@@ -68,10 +68,10 @@ pub fn compile(
         };
 
         match tokenizer.process_char(ch) {
-            ProcessCharOutcome::TokenIsReady { token } => {
+            Some(token) => {
                 tokens.push(token);
             }
-            ProcessCharOutcome::TokenNotReady => {
+            None => {
                 if interactive {
                     println!("Char: {ch}");
                 }

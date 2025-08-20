@@ -13,7 +13,7 @@ impl Tokenizer {
         }
     }
 
-    pub fn process_char(&mut self, ch: char) -> ProcessCharOutcome {
+    pub fn process_char(&mut self, ch: char) -> Option<Token> {
         match (&self.state, ch) {
             (State::Initial, '#') => {
                 self.state = State::Comment;
@@ -22,7 +22,7 @@ impl Tokenizer {
                 let buf = mem::take(&mut self.buf);
 
                 if buf.is_empty() {
-                    return ProcessCharOutcome::TokenNotReady;
+                    return None;
                 }
 
                 let token = if let Ok(value) = buf.parse() {
@@ -31,7 +31,7 @@ impl Tokenizer {
                     Token::Identifier { name: buf }
                 };
 
-                return ProcessCharOutcome::TokenIsReady { token };
+                return Some(token);
             }
             (State::Initial, ch) => {
                 self.buf.push(ch);
@@ -39,18 +39,16 @@ impl Tokenizer {
             (State::Comment, '\n') => {
                 self.state = State::Initial;
 
-                return ProcessCharOutcome::TokenIsReady {
-                    token: Token::Comment {
-                        text: mem::take(&mut self.buf),
-                    },
-                };
+                return Some(Token::Comment {
+                    text: mem::take(&mut self.buf),
+                });
             }
             (State::Comment, ch) => {
                 self.buf.push(ch);
             }
         }
 
-        ProcessCharOutcome::TokenNotReady
+        None
     }
 }
 
@@ -64,10 +62,4 @@ pub enum Token {
     Comment { text: String },
     Identifier { name: String },
     Number { value: i32 },
-}
-
-#[derive(Debug)]
-pub enum ProcessCharOutcome {
-    TokenIsReady { token: Token },
-    TokenNotReady,
 }
