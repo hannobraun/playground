@@ -6,3 +6,9 @@
 # bits; signed (two's complement) or unsigned.
 -2147483648 -2147483648 = assert
 4294967295 4294967295 = assert
+
+# There is no type system to distinguish between signed and unsigned integers.
+# Both are just represented as sign-agnostic 32-bit values under the hood (as
+# are all other types) and can be used interchangeably.
+2147483648 -2147483648 = assert
+4294967295 -1 = assert
