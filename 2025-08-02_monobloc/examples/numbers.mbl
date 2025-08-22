@@ -1,6 +1,7 @@
-# For every number that can be represented by a signed (two's complement) or
-# unsigned 32-bit integer, there is an intrinsic function, whose name and output
-# is that respective number.
-1
+# Integer literals are just calls to intrinsic functions. A function with the
+# name of an integer literal returns the respective integer.
+1 1 = assert
 
-1 = assert
+# Intrinsic functions exist for all integers that can be represented with 32
+# bits; signed (two's complement) or unsigned.
+-2147483648 -2147483648 = assert
