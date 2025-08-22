@@ -5,3 +5,4 @@
 # Intrinsic functions exist for all integers that can be represented with 32
 # bits; signed (two's complement) or unsigned.
 -2147483648 -2147483648 = assert
+4294967295 4294967295 = assert
