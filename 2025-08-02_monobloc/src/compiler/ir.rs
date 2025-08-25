@@ -13,6 +13,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             ("<=", (LessThanOrEquals, [&[I32, I32], &[I32]])),
             ("=", (Equals, [&[I32, I32], &[I32]])),
             (">", (GreaterThan, [&[I32, I32], &[I32]])),
+            (">=", (GreaterThanOrEquals, [&[I32, I32], &[I32]])),
             ("assert", (Assert, [&[I32], &[]])),
             ("not", (Not, [&[I32], &[I32]])),
         ]);
@@ -112,6 +113,7 @@ pub enum Expression {
     Add,
     Equals,
     GreaterThan,
+    GreaterThanOrEquals,
     LessThan,
     LessThanOrEquals,
     Not,

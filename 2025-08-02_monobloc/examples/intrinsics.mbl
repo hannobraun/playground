@@ -20,6 +20,11 @@
 2 2 > not assert
 1 2 > not assert
 
+# greater than or equals
+2 1 >= assert
+2 2 >= assert
+1 2 >= not assert
+
 # addition
 1 2 + 3 = assert
 2 1 + 3 = assert
