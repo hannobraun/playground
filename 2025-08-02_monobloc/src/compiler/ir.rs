@@ -109,8 +109,11 @@ pub type Body = Vec<Expression>;
 pub enum Expression {
     Panic,
     Assert,
+
     Value { value: i32 },
+
     Add,
+
     Equals,
     GreaterThan,
     GreaterThanOrEquals,
