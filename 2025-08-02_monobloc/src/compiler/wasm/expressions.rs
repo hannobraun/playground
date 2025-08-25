@@ -40,6 +40,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
 
         ir::Expression::Add => Instruction::I32Add,
         ir::Expression::LeadingZeros => Instruction::I32Clz,
+        ir::Expression::TrailingZeros => Instruction::I32Ctz,
     };
 
     instruction.emit(target);

@@ -17,6 +17,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             ("assert", (Assert, [&[I32], &[]])),
             ("leading_zeros", (LeadingZeros, [&[I32], &[I32]])),
             ("not", (Not, [&[I32], &[I32]])),
+            ("trailing_zeros", (TrailingZeros, [&[I32], &[I32]])),
         ]);
 
         map
@@ -122,4 +123,5 @@ pub enum Expression {
 
     Add,
     LeadingZeros,
+    TrailingZeros,
 }
