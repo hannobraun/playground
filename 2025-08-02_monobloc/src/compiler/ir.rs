@@ -10,6 +10,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
         map.extend([
             ("+", (Add, [&[I32, I32] as &[_], &[I32]])),
             ("<", (LessThan, [&[I32, I32], &[I32]])),
+            ("<=", (LessThanOrEquals, [&[I32, I32], &[I32]])),
             ("=", (Equals, [&[I32, I32], &[I32]])),
             (">", (GreaterThan, [&[I32, I32], &[I32]])),
             ("assert", (Assert, [&[I32], &[]])),
@@ -112,5 +113,6 @@ pub enum Expression {
     Equals,
     GreaterThan,
     LessThan,
+    LessThanOrEquals,
     Not,
 }

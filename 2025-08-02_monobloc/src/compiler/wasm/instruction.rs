@@ -14,6 +14,7 @@ pub enum Instruction {
     I32Eq,
     I32LtS,
     I32GtS,
+    I32LeS,
     I32Add,
 }
 
@@ -54,6 +55,9 @@ impl Emit for Instruction {
             }
             Self::I32GtS => {
                 target.push(0x4a);
+            }
+            Self::I32LeS => {
+                target.push(0x4c);
             }
             Self::I32Add => {
                 target.push(0x6a);
