@@ -1,21 +1,21 @@
 # The compiler provides various intrinsic functions that are directly compiled
 # into WebAssembly.
 
-# Equality
+# equality
 1 1 = assert
 1 2 = not assert
 
-# "Less than" comparison
+# less than
 1 2 < assert
 2 2 < not assert
 2 1 < not assert
 
-# "Greater than" comparison
+# greater than
 2 1 > assert
 2 2 > not assert
 1 2 > not assert
 
-# Addition
+# addition
 1 2 + 3 = assert
 2 1 + 3 = assert
 2147483647 1 + -2147483648 = assert
