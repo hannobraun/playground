@@ -1,3 +1,4 @@
 # The compiler provides various intrinsic functions that are directly compiled
 # into WebAssembly.
 1 2 + 3 = assert
+1 2 = not assert

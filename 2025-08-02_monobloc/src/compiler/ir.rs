@@ -11,6 +11,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             ("+", (Add, [&[I32, I32] as &[_], &[I32]])),
             ("=", (Equals, [&[I32, I32], &[I32]])),
             ("assert", (Assert, [&[I32], &[]])),
+            ("not", (Not, [&[I32], &[I32]])),
         ]);
 
         map
@@ -107,4 +108,5 @@ pub enum Expression {
     Value { value: i32 },
     Add,
     Equals,
+    Not,
 }

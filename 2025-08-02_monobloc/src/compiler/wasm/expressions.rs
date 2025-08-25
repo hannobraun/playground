@@ -31,6 +31,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
         ir::Expression::Value { value } => Instruction::I32Const { value },
         ir::Expression::Add => Instruction::I32Add,
         ir::Expression::Equals => Instruction::I32Eq,
+        ir::Expression::Not => Instruction::I32Eqz,
     };
 
     instruction.emit(target);
