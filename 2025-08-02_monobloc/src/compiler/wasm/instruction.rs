@@ -7,15 +7,18 @@ pub enum Instruction {
         then: Vec<Instruction>,
         else_: Vec<Instruction>,
     },
+
     I32Const {
         value: i32,
     },
+
     I32Eqz,
     I32Eq,
     I32LtS,
     I32GtS,
     I32LeS,
     I32GeS,
+
     I32Add,
 }
 
@@ -41,10 +44,12 @@ impl Emit for Instruction {
                 }
                 End.emit(target);
             }
+
             Self::I32Const { value } => {
                 target.push(0x41);
                 Leb128::I32 { value }.emit(target);
             }
+
             Self::I32Eqz => {
                 target.push(0x45);
             }
@@ -63,6 +68,7 @@ impl Emit for Instruction {
             Self::I32GeS => {
                 target.push(0x4e);
             }
+
             Self::I32Add => {
                 target.push(0x6a);
             }
