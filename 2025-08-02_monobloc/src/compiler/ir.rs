@@ -15,6 +15,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             (">", (GreaterThan, [&[I32, I32], &[I32]])),
             (">=", (GreaterThanOrEquals, [&[I32, I32], &[I32]])),
             ("assert", (Assert, [&[I32], &[]])),
+            ("leading_zeros", (LeadingZeros, [&[I32], &[I32]])),
             ("not", (Not, [&[I32], &[I32]])),
         ]);
 
@@ -120,4 +121,5 @@ pub enum Expression {
     Not,
 
     Add,
+    LeadingZeros,
 }
