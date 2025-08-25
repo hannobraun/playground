@@ -13,6 +13,13 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
                 // ignoring comment
             }
             Token::Identifier { name } => match name.as_str() {
+                "+" => {
+                    body.push(Expression::Add);
+
+                    stack.pop(Type::I32);
+                    stack.pop(Type::I32);
+                    stack.push(Type::I32);
+                }
                 "=" => {
                     body.push(Expression::Equals);
 
@@ -88,5 +95,6 @@ pub enum Expression {
     Panic,
     Assert,
     Value { value: i32 },
+    Add,
     Equals,
 }
