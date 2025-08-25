@@ -1,6 +1,21 @@
+use std::collections::BTreeMap;
+
 use crate::compiler::tokens::Token;
 
 pub fn compile_tokens(tokens: Vec<Token>) -> Function {
+    let intrinsics = {
+        use self::{Expression::*, Type::*};
+
+        let mut map = BTreeMap::new();
+        map.extend([
+            ("+", (Add, [&[I32, I32] as &[_], &[I32]])),
+            ("=", (Equals, [&[I32, I32], &[I32]])),
+            ("assert", (Assert, [&[I32], &[]])),
+        ]);
+
+        map
+    };
+
     let mut stack = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),
@@ -12,30 +27,23 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             Token::Comment { text: _ } => {
                 // ignoring comment
             }
-            Token::Identifier { name } => match name.as_str() {
-                "+" => {
-                    body.push(Expression::Add);
+            Token::Identifier { name } => {
+                if let Some((instruction, [inputs, outputs])) =
+                    intrinsics.get(name.as_str()).copied()
+                {
+                    body.push(instruction);
 
-                    stack.pop(Type::I32);
-                    stack.pop(Type::I32);
-                    stack.push(Type::I32);
-                }
-                "=" => {
-                    body.push(Expression::Equals);
-
-                    stack.pop(Type::I32);
-                    stack.pop(Type::I32);
-                    stack.push(Type::I32);
-                }
-                "assert" => {
-                    body.push(Expression::Assert);
-                    stack.pop(Type::I32);
-                }
-                _ => {
+                    for &input in inputs {
+                        stack.pop(input);
+                    }
+                    for &output in outputs {
+                        stack.push(output);
+                    }
+                } else {
                     println!("Unknown identifier: `{name}`");
                     body.push(Expression::Panic);
                 }
-            },
+            }
             Token::Number { value } => {
                 body.push(Expression::Value { value });
                 stack.push(Type::I32);
