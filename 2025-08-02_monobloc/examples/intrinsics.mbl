@@ -2,3 +2,4 @@
 # into WebAssembly.
 1 2 + 3 = assert
 1 2 = not assert
+1 2 < assert
