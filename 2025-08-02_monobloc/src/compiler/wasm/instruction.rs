@@ -7,7 +7,7 @@ pub enum Instruction {
         then: Vec<Instruction>,
         else_: Vec<Instruction>,
     },
-    ConstI32 {
+    I32Const {
         value: i32,
     },
     EqI32,
@@ -35,7 +35,7 @@ impl Emit for Instruction {
                 }
                 End.emit(target);
             }
-            Self::ConstI32 { value } => {
+            Self::I32Const { value } => {
                 target.push(0x41);
                 Leb128::I32 { value }.emit(target);
             }

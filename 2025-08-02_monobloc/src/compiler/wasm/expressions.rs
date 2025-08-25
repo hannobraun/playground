@@ -28,7 +28,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
             then: vec![],
             else_: vec![Instruction::Unreachable],
         },
-        ir::Expression::Value { value } => Instruction::ConstI32 { value },
+        ir::Expression::Value { value } => Instruction::I32Const { value },
         ir::Expression::Equals => Instruction::EqI32,
     };
 
