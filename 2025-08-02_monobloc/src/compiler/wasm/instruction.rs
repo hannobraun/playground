@@ -21,6 +21,7 @@ pub enum Instruction {
 
     I32Clz,
     I32Ctz,
+    I32Popcnt,
     I32Add,
 }
 
@@ -76,6 +77,9 @@ impl Emit for Instruction {
             }
             Self::I32Ctz => {
                 target.push(0x68);
+            }
+            Self::I32Popcnt => {
+                target.push(0x69);
             }
             Self::I32Add => {
                 target.push(0x6a);

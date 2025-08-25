@@ -10,6 +10,12 @@
 2147483648 trailing_zeros 31 = assert
 0 trailing_zeros 32 = assert
 
+# count ones
+0 count_ones 0 = assert
+1 count_ones 1 = assert
+2147483647 count_ones 31 = assert
+4294967295 count_ones 32 = assert
+
 # addition
 1 2 + 3 = assert
 2 1 + 3 = assert
