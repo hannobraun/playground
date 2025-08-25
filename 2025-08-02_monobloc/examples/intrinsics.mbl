@@ -2,13 +2,18 @@
 # into WebAssembly.
 
 # Equality
+1 1 = assert
 1 2 = not assert
 
 # "Less than" comparison
 1 2 < assert
+2 2 < not assert
+2 1 < not assert
 
 # "Greater than" comparison
 2 1 > assert
+2 2 > not assert
+1 2 > not assert
 
 # Addition
 1 2 + 3 = assert
