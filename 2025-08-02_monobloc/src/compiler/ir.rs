@@ -112,12 +112,12 @@ pub enum Expression {
 
     Value { value: i32 },
 
-    Add,
-
     Equals,
     GreaterThan,
     GreaterThanOrEquals,
     LessThan,
     LessThanOrEquals,
     Not,
+
+    Add,
 }
