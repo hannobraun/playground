@@ -92,6 +92,7 @@ pub enum Type {
 
 pub type Body = Vec<Expression>;
 
+#[derive(Clone, Copy)]
 pub enum Expression {
     Panic,
     Assert,
