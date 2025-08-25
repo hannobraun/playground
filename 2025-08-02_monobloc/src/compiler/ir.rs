@@ -85,6 +85,7 @@ pub struct Signature {
 
 pub type Types = Vec<Type>;
 
+#[derive(Clone, Copy)]
 pub enum Type {
     I32,
 }
