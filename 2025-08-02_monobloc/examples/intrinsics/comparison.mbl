@@ -1,5 +1,4 @@
-# The compiler provides various intrinsic functions that are directly compiled
-# into WebAssembly.
+# Comparison operators are available as intrinsic functions.
 
 # equality
 0 0 = assert
@@ -24,8 +23,3 @@
 1 0 >= assert
 1 1 >= assert
 0 1 >= not assert
-
-# addition
-1 2 + 3 = assert
-2 1 + 3 = assert
-2147483647 1 + -2147483648 = assert
