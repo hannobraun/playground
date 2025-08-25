@@ -8,18 +8,22 @@
 0 1 < assert
 1 1 < not assert
 1 0 < not assert
+-1 0 < assert
 
 # less than or equals
 0 1 <= assert
 1 1 <= assert
 1 0 <= not assert
+-1 0 <= assert
 
 # greater than
 1 0 > assert
 1 1 > not assert
 0 1 > not assert
+0 -1 > assert
 
 # greater than or equals
 1 0 >= assert
 1 1 >= assert
 0 1 >= not assert
+0 -1 >= assert
