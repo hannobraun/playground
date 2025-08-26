@@ -664,3 +664,24 @@ expect to be available everywhere. Stuff like `+`.
 
 As an alternative to the `mod` intrinsics, there could be a rule that blocks
 bound to CamelCase names become modules.
+
+## Issues
+
+If this project ever graduates to a dedicated repository, this section should be
+converted into actual issues.
+
+### Division by Zero Is Undefined Behavior
+
+Division is directly translated into the respective WebAssembly construction.
+According to the WebAssembly specification, division by zero is
+[undefined behavior](https://webassembly.github.io/spec/core/exec/numerics.html#op-idiv-s).
+
+This case should reliably result in a panic.
+
+### `-2147483648 -1 /` Is Undefined Behavior
+
+The result of this operation is `2^31`, which according to the WebAssembly
+specification, is
+[undefined behavior](https://webassembly.github.io/spec/core/exec/numerics.html#op-idiv-s).
+
+This case should reliably result in a panic.
