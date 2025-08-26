@@ -48,6 +48,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
         ir::Expression::CountOnes => Instruction::I32Popcnt,
         ir::Expression::LeadingZeros => Instruction::I32Clz,
         ir::Expression::Or => Instruction::I32Or,
+        ir::Expression::RotateLeft => Instruction::I32Rotl,
         ir::Expression::ShiftLeft => Instruction::I32Shl,
         ir::Expression::ShiftRight => Instruction::I32ShrS,
         ir::Expression::TrailingZeros => Instruction::I32Ctz,
