@@ -18,6 +18,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             ("=", (Equals, [&[I32, I32], &[I32]])),
             (">", (GreaterThan, [&[I32, I32], &[I32]])),
             (">=", (GreaterThanOrEquals, [&[I32, I32], &[I32]])),
+            ("and", (And, [&[I32, I32], &[I32]])),
             ("assert", (Assert, [&[I32], &[]])),
             ("count_ones", (CountOnes, [&[I32], &[I32]])),
             ("leading_zeros", (LeadingZeros, [&[I32], &[I32]])),
@@ -149,6 +150,7 @@ pub enum Expression {
     Subtract,
 
     // Bitwise operations
+    And,
     CountOnes,
     LeadingZeros,
     TrailingZeros,

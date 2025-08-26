@@ -18,3 +18,10 @@
 0x00000006 count_ones 2 = assert
 0xfffffffe count_ones 31 = assert
 0xffffffff count_ones 32 = assert
+
+# and
+0x00ff00ff
+0x00ffff00
+    and
+0x00ff0000
+    = assert
