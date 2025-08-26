@@ -33,3 +33,8 @@
 2 1 * 2 = assert
 2 -1 * -2 = assert
 1073741824 2 * -2147483648 = assert
+
+# division
+8 2 / 4 = assert
+9 2 / 4 = assert
+8 -2 / -4 = assert

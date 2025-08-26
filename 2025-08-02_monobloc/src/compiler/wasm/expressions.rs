@@ -40,6 +40,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
 
         ir::Expression::Add => Instruction::I32Add,
         ir::Expression::CountOnes => Instruction::I32Popcnt,
+        ir::Expression::Divide => Instruction::I32DivS,
         ir::Expression::LeadingZeros => Instruction::I32Clz,
         ir::Expression::Multiply => Instruction::I32Mul,
         ir::Expression::Subtract => Instruction::I32Sub,
