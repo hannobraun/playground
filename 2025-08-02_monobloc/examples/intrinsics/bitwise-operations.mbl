@@ -13,7 +13,8 @@
 0x00000000 trailing_zeros 32 = assert
 
 # count ones
-0 count_ones 0 = assert
-1 count_ones 1 = assert
-2147483647 count_ones 31 = assert
-4294967295 count_ones 32 = assert
+0x00000000 count_ones 0 = assert
+0x00000002 count_ones 1 = assert
+0x00000006 count_ones 2 = assert
+0xfffffffe count_ones 31 = assert
+0xffffffff count_ones 32 = assert
