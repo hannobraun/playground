@@ -33,6 +33,7 @@ pub enum Instruction {
     I32Shl,
     I32ShrS,
     I32Rotl,
+    I32Rotr,
 }
 
 impl Emit for Instruction {
@@ -123,6 +124,9 @@ impl Emit for Instruction {
             }
             Self::I32Rotl => {
                 target.push(0x77);
+            }
+            Self::I32Rotr => {
+                target.push(0x78);
             }
         }
     }
