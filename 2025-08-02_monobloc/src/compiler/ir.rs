@@ -9,7 +9,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
         let mut map = BTreeMap::new();
         map.extend([
             ("*", (Multiply, [&[I32, I32] as &[_], &[I32]])),
-            ("+", (Add, [&[I32, I32] as &[_], &[I32]])),
+            ("+", (Add, [&[I32, I32], &[I32]])),
             ("-", (Subtract, [&[I32, I32], &[I32]])),
             ("<", (LessThan, [&[I32, I32], &[I32]])),
             ("<=", (LessThanOrEquals, [&[I32, I32], &[I32]])),
