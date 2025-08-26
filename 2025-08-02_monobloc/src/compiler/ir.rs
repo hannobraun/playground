@@ -56,7 +56,13 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
                     body.push(Expression::Panic);
                 }
             }
-            Token::Integer { value } => {
+            Token::IntegerSigned { value } => {
+                body.push(Expression::Value { value });
+                stack.push(Type::I32);
+            }
+            Token::IntegerUnsigned { value } => {
+                let value = i32::from_le_bytes(value.to_le_bytes());
+
                 body.push(Expression::Value { value });
                 stack.push(Type::I32);
             }

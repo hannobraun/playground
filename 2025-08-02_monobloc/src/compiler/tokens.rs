@@ -29,10 +29,9 @@ impl Tokenizer {
                 let token_as_i32: Option<i32> = buf.parse().ok();
 
                 let token = if let Some(value) = token_as_u32 {
-                    let value = i32::from_le_bytes(value.to_le_bytes());
-                    Token::Integer { value }
+                    Token::IntegerUnsigned { value }
                 } else if let Some(value) = token_as_i32 {
-                    Token::Integer { value }
+                    Token::IntegerSigned { value }
                 } else {
                     Token::Identifier { name: buf }
                 };
@@ -67,5 +66,6 @@ pub enum State {
 pub enum Token {
     Comment { text: String },
     Identifier { name: String },
-    Integer { value: i32 },
+    IntegerSigned { value: i32 },
+    IntegerUnsigned { value: u32 },
 }

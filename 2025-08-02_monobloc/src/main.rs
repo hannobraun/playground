@@ -107,7 +107,10 @@ pub fn compile(
                     Token::Identifier { name } => {
                         println!("{name}");
                     }
-                    Token::Integer { value } => {
+                    Token::IntegerSigned { value } => {
+                        println!("{value}");
+                    }
+                    Token::IntegerUnsigned { value } => {
                         println!("{value}");
                     }
                 }
