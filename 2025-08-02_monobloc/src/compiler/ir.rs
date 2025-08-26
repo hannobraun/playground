@@ -113,11 +113,14 @@ pub type Body = Vec<Expression>;
 
 #[derive(Clone, Copy)]
 pub enum Expression {
+    // Panics
     Panic,
     Assert,
 
+    // Literals
     Value { value: i32 },
 
+    // Comparisons
     Equals,
     GreaterThan,
     GreaterThanOrEquals,
@@ -125,11 +128,13 @@ pub enum Expression {
     LessThanOrEquals,
     Not,
 
+    // Arithmetic
     Add,
     Divide,
     Multiply,
     Subtract,
 
+    // Bitwise operations
     CountOnes,
     LeadingZeros,
     TrailingZeros,
