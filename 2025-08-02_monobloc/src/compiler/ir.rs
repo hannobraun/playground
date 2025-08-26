@@ -8,6 +8,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
 
         let mut map = BTreeMap::new();
         map.extend([
+            ("%", (Remainder, [&[I32, I32] as &[_], &[I32]])),
             ("*", (Multiply, [&[I32, I32] as &[_], &[I32]])),
             ("+", (Add, [&[I32, I32], &[I32]])),
             ("-", (Subtract, [&[I32, I32], &[I32]])),
@@ -132,6 +133,7 @@ pub enum Expression {
     Add,
     Divide,
     Multiply,
+    Remainder,
     Subtract,
 
     // Bitwise operations

@@ -37,3 +37,11 @@
 # While the language doesn't provide any options to handle these kinds of
 # exceptions, this behavior is desirable. But the same lack of exception
 # handling capability means there's no way to test it here.
+
+# remainder
+8 2 % 0 = assert
+9 2 % 1 = assert
+-9 2 % -1 = assert
+-9 -2 % -1 = assert
+# If the second operand is `0`, the result of the numeric operation is
+# undefined, which will cause the WebAssembly instruction to trap.
