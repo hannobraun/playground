@@ -23,6 +23,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             ("count_ones", (CountOnes, [&[I32], &[I32]])),
             ("leading_zeros", (LeadingZeros, [&[I32], &[I32]])),
             ("not", (Not, [&[I32], &[I32]])),
+            ("or", (Or, [&[I32, I32], &[I32]])),
             ("trailing_zeros", (TrailingZeros, [&[I32], &[I32]])),
         ]);
 
@@ -153,5 +154,6 @@ pub enum Expression {
     And,
     CountOnes,
     LeadingZeros,
+    Or,
     TrailingZeros,
 }

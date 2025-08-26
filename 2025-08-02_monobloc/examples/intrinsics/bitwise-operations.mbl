@@ -25,3 +25,10 @@
     and
 0x00ff0000
     = assert
+
+# or
+0x00ff00ff
+0x00ffff00
+    or
+0x00ffffff
+    = assert

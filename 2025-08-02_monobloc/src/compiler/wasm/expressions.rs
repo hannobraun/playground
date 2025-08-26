@@ -47,6 +47,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
         ir::Expression::And => Instruction::I32And,
         ir::Expression::CountOnes => Instruction::I32Popcnt,
         ir::Expression::LeadingZeros => Instruction::I32Clz,
+        ir::Expression::Or => Instruction::I32Or,
         ir::Expression::TrailingZeros => Instruction::I32Ctz,
     };
 
