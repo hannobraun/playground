@@ -29,6 +29,7 @@ pub enum Instruction {
     I32RemS,
     I32And,
     I32Or,
+    I32Xor,
 }
 
 impl Emit for Instruction {
@@ -107,6 +108,9 @@ impl Emit for Instruction {
             }
             Self::I32Or => {
                 target.push(0x72);
+            }
+            Self::I32Xor => {
+                target.push(0x73);
             }
         }
     }

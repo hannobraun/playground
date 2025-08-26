@@ -32,3 +32,10 @@
     or
 0x00ffffff
     = assert
+
+# exclusive or
+0x00ff00ff
+0x00ffff00
+    xor
+0x0000ffff
+    = assert

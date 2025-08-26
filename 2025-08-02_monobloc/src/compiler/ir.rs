@@ -25,6 +25,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
             ("not", (Not, [&[I32], &[I32]])),
             ("or", (Or, [&[I32, I32], &[I32]])),
             ("trailing_zeros", (TrailingZeros, [&[I32], &[I32]])),
+            ("xor", (Xor, [&[I32, I32], &[I32]])),
         ]);
 
         map
@@ -156,4 +157,5 @@ pub enum Expression {
     LeadingZeros,
     Or,
     TrailingZeros,
+    Xor,
 }
