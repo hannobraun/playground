@@ -107,7 +107,7 @@ pub fn compile(
                     Token::Identifier { name } => {
                         println!("{name}");
                     }
-                    Token::Number { value } => {
+                    Token::Integer { value } => {
                         println!("{value}");
                     }
                 }

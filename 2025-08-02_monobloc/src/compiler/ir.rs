@@ -56,7 +56,7 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
                     body.push(Expression::Panic);
                 }
             }
-            Token::Number { value } => {
+            Token::Integer { value } => {
                 body.push(Expression::Value { value });
                 stack.push(Type::I32);
             }
