@@ -12,3 +12,6 @@
 # are all other types) and can be used interchangeably.
 2147483648 -2147483648 = assert
 4294967295 -1 = assert
+
+# Integers can also be specified using hexadecimal literals.
+0xff 255 = assert

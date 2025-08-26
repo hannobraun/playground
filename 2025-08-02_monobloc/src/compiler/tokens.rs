@@ -27,11 +27,16 @@ impl Tokenizer {
 
                 let token_as_unsigned_int: Option<u32> = buf.parse().ok();
                 let token_as_signed_int: Option<i32> = buf.parse().ok();
+                let token_as_hex_int = buf
+                    .strip_prefix("0x")
+                    .and_then(|s| u32::from_str_radix(s, 16).ok());
 
                 let token = if let Some(value) = token_as_unsigned_int {
                     Token::IntegerUnsigned { value }
                 } else if let Some(value) = token_as_signed_int {
                     Token::IntegerSigned { value }
+                } else if let Some(value) = token_as_hex_int {
+                    Token::IntegerHex { value }
                 } else {
                     Token::Identifier { name: buf }
                 };
@@ -66,6 +71,7 @@ pub enum State {
 pub enum Token {
     Comment { text: String },
     Identifier { name: String },
+    IntegerHex { value: u32 },
     IntegerSigned { value: i32 },
     IntegerUnsigned { value: u32 },
 }

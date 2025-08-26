@@ -107,6 +107,9 @@ pub fn compile(
                     Token::Identifier { name } => {
                         println!("{name}");
                     }
+                    Token::IntegerHex { value } => {
+                        println!("{value:x}");
+                    }
                     Token::IntegerSigned { value } => {
                         println!("{value}");
                     }
