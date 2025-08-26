@@ -38,3 +38,6 @@
 8 2 / 4 = assert
 9 2 / 4 = assert
 8 -2 / -4 = assert
+# Some cases of division are undefined behavior, which is an undesirable
+# property of the current implementation. Refer to the "Issues" section in
+# `README.md` for details.
