@@ -45,3 +45,9 @@
 0x0f070301 2 shift_left 0x3c1c0c04 = assert
 0x0f070301 4 shift_left 0xf0703010 = assert
 0x0f070301 8 shift_left 0x07030100 = assert
+
+# shift right
+0xf0703010 1 shift_right 0xf8381808 = assert
+0xf0703010 2 shift_right 0xfc1c0c04 = assert
+0xf0703010 4 shift_right 0xff070301 = assert
+0xf0703010 8 shift_right 0xfff07030 = assert
