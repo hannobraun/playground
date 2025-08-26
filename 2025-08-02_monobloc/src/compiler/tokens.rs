@@ -26,11 +26,11 @@ impl Tokenizer {
                 }
 
                 let token_as_unsigned_int: Option<u32> = buf.parse().ok();
-                let token_as_i32: Option<i32> = buf.parse().ok();
+                let token_as_signed_int: Option<i32> = buf.parse().ok();
 
                 let token = if let Some(value) = token_as_unsigned_int {
                     Token::IntegerUnsigned { value }
-                } else if let Some(value) = token_as_i32 {
+                } else if let Some(value) = token_as_signed_int {
                     Token::IntegerSigned { value }
                 } else {
                     Token::Identifier { name: buf }
