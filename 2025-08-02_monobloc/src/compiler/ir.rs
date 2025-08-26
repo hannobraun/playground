@@ -126,10 +126,11 @@ pub enum Expression {
     Not,
 
     Add,
-    CountOnes,
     Divide,
-    LeadingZeros,
     Multiply,
     Subtract,
+
+    CountOnes,
+    LeadingZeros,
     TrailingZeros,
 }
