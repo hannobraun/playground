@@ -28,10 +28,10 @@ impl Tokenizer {
                 let token_as_i32: Option<i32> = buf.parse().ok();
                 let token_as_u32: Option<u32> = buf.parse().ok();
 
-                let token = if let Some(value) = token_as_i32 {
-                    Token::Integer { value }
-                } else if let Some(value) = token_as_u32 {
+                let token = if let Some(value) = token_as_u32 {
                     let value = i32::from_le_bytes(value.to_le_bytes());
+                    Token::Integer { value }
+                } else if let Some(value) = token_as_i32 {
                     Token::Integer { value }
                 } else {
                     Token::Identifier { name: buf }
