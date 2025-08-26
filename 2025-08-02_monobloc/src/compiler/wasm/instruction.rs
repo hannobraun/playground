@@ -24,6 +24,7 @@ pub enum Instruction {
     I32Popcnt,
     I32Add,
     I32Sub,
+    I32Mul,
 }
 
 impl Emit for Instruction {
@@ -87,6 +88,9 @@ impl Emit for Instruction {
             }
             Self::I32Sub => {
                 target.push(0x6b);
+            }
+            Self::I32Mul => {
+                target.push(0x6c);
             }
         }
     }
