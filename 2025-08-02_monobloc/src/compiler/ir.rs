@@ -8,7 +8,7 @@ use crate::compiler::{
 };
 
 pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
-    let intrinsics = {
+    let resolver = {
         use self::{Intrinsic::*, Type::*};
 
         let mut map = BTreeMap::new();
@@ -56,7 +56,7 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
             }
             Token::Identifier { name } => {
                 if let Some((intrinsic, [inputs, outputs])) =
-                    intrinsics.intrinsics.get(name.as_str()).copied()
+                    resolver.intrinsics.get(name.as_str()).copied()
                 {
                     body.push(Expression::Intrinsic { intrinsic });
 
