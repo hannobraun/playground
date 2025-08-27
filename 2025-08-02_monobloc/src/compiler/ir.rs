@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    intrinsics::Intrinsic,
+    intrinsics::{Intrinsic, Resolver},
     syntax::{SyntaxElement, SyntaxElementKind},
     tokens::Token,
     types::{Signature, Type, Types},
@@ -37,7 +37,7 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
             ("xor", (Xor, [&[I32, I32], &[I32]])),
         ]);
 
-        map
+        Resolver { intrinsics: map }
     };
 
     let mut stack = Stack {
@@ -56,7 +56,7 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
             }
             Token::Identifier { name } => {
                 if let Some((intrinsic, [inputs, outputs])) =
-                    intrinsics.get(name.as_str()).copied()
+                    intrinsics.intrinsics.get(name.as_str()).copied()
                 {
                     body.push(Expression::Intrinsic { intrinsic });
 

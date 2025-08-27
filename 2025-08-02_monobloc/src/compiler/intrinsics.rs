@@ -1,3 +1,11 @@
+use std::collections::BTreeMap;
+
+use crate::compiler::types::Type;
+
+pub struct Resolver {
+    pub intrinsics: BTreeMap<&'static str, (Intrinsic, [&'static [Type]; 2])>,
+}
+
 #[derive(Clone, Copy)]
 pub enum Intrinsic {
     // Panics
