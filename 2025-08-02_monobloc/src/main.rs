@@ -103,6 +103,15 @@ pub fn compile(
                 }
 
                 match &node.kind {
+                    NodeKind::Binding { names } => {
+                        print!("=> ");
+
+                        for name in names {
+                            print!("{name} ");
+                        }
+
+                        println!(".");
+                    }
                     NodeKind::Comment { text } => {
                         println!("#{text}");
                     }

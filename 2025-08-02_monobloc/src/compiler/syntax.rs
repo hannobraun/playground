@@ -1,3 +1,5 @@
+use std::mem;
+
 use crate::compiler::tokens::{IntegerFormat, Token};
 
 pub struct Parser {
@@ -19,7 +21,7 @@ impl Parser {
 
         let kind = match (&mut self.state, token) {
             (State::Initial, Token::Binding) => {
-                self.state = State::Binding;
+                self.state = State::Binding { names: Vec::new() };
                 return None;
             }
             (State::Initial, Token::Comment { text }) => {
@@ -31,15 +33,15 @@ impl Parser {
             (State::Initial, Token::Integer { value, format }) => {
                 NodeKind::Integer { value, format }
             }
-            (State::Binding, Token::Identifier { name: _ }) => {
-                // Not supported yet; ignore for now.
+            (State::Binding { names }, Token::Identifier { name }) => {
+                names.push(name);
                 return None;
             }
-            (State::Binding, Token::Terminator) => {
-                // Parsing bindings is not supported yet, but at least handle
-                // the state correctly.
+            (State::Binding { names }, Token::Terminator) => {
+                let names = mem::take(names);
+
                 self.state = State::Initial;
-                return None;
+                NodeKind::Binding { names }
             }
             (_, token) => {
                 panic!("Unexpected token `{token:?}`");
@@ -52,7 +54,7 @@ impl Parser {
 
 enum State {
     Initial,
-    Binding,
+    Binding { names: Vec<String> },
 }
 
 pub struct SyntaxNode {
@@ -66,6 +68,7 @@ pub struct NodeId {
 }
 
 pub enum NodeKind {
+    Binding { names: Vec<String> },
     Comment { text: String },
     Identifier { name: String },
     Integer { value: u32, format: IntegerFormat },

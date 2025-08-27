@@ -13,6 +13,9 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
 
     for node in syntax {
         match node.kind {
+            NodeKind::Binding { names: _ } => {
+                // Not supported yet; ignoring for now.
+            }
             NodeKind::Comment { text: _ } => {
                 // ignoring comment
             }
