@@ -15,10 +15,14 @@ impl Parser {
         let id = self.next_id;
         self.next_id.inner += 1;
 
-        SyntaxElement {
-            id,
-            kind: SyntaxElementKind::UnprocessedToken { token },
-        }
+        let kind = match token {
+            Token::Identifier { name } => {
+                SyntaxElementKind::Identifier { name }
+            }
+            token => SyntaxElementKind::UnprocessedToken { token },
+        };
+
+        SyntaxElement { id, kind }
     }
 }
 
@@ -33,5 +37,6 @@ pub struct SyntaxElementId {
 }
 
 pub enum SyntaxElementKind {
+    Identifier { name: String },
     UnprocessedToken { token: Token },
 }

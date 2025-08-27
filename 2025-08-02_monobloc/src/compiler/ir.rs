@@ -17,14 +17,7 @@ pub fn generate_ir(
 
     for syntax_element in syntax {
         match syntax_element.kind {
-            SyntaxElementKind::UnprocessedToken {
-                token: Token::Comment { text: _ },
-            } => {
-                // ignoring comment
-            }
-            SyntaxElementKind::UnprocessedToken {
-                token: Token::Identifier { name },
-            } => {
+            SyntaxElementKind::Identifier { name } => {
                 if let Some(intrinsic) =
                     resolver.intrinsics.get(&syntax_element.id).copied()
                 {
@@ -44,6 +37,18 @@ pub fn generate_ir(
                         intrinsic: Intrinsic::Panic,
                     });
                 }
+            }
+            SyntaxElementKind::UnprocessedToken {
+                token: Token::Comment { text: _ },
+            } => {
+                // ignoring comment
+            }
+            SyntaxElementKind::UnprocessedToken {
+                token: Token::Identifier { name: _ },
+            } => {
+                unreachable!(
+                    "`Token::Identifier` gets processed by the parser."
+                );
             }
             SyntaxElementKind::UnprocessedToken {
                 token: Token::IntegerHex { value },

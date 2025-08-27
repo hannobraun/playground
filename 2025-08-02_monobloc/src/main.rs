@@ -117,15 +117,20 @@ pub fn compile(
                 }
 
                 match &syntax_element.kind {
+                    SyntaxElementKind::Identifier { name } => {
+                        println!("{name}");
+                    }
                     SyntaxElementKind::UnprocessedToken {
                         token: Token::Comment { text },
                     } => {
                         println!("#{text}");
                     }
                     SyntaxElementKind::UnprocessedToken {
-                        token: Token::Identifier { name },
+                        token: Token::Identifier { name: _ },
                     } => {
-                        println!("{name}");
+                        unreachable!(
+                            "`Token::Identifier` gets processed by the parser."
+                        );
                     }
                     SyntaxElementKind::UnprocessedToken {
                         token: Token::IntegerHex { value },
