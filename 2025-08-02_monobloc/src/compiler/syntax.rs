@@ -18,7 +18,7 @@ impl Parser {
         self.next_id.inner += 1;
 
         let kind = match (&self.state, token) {
-            (State::Initial, Token::Assignment) => {
+            (State::Initial, Token::Binding) => {
                 // Not supported yet; ignore for now.
                 return None;
             }
