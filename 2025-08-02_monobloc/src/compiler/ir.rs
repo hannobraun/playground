@@ -1,14 +1,11 @@
 use crate::compiler::{
     intrinsics::{Intrinsic, Resolver},
-    syntax::{SyntaxElement, SyntaxElementKind},
+    syntax::{SyntaxElementKind, SyntaxNode},
     tokens::Token,
     types::{Signature, Type, Types},
 };
 
-pub fn generate_ir(
-    syntax: Vec<SyntaxElement>,
-    resolver: &Resolver,
-) -> Function {
+pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
     let mut stack = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),

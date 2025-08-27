@@ -11,7 +11,7 @@ impl Parser {
         }
     }
 
-    pub fn process_token(&mut self, token: Token) -> SyntaxElement {
+    pub fn process_token(&mut self, token: Token) -> SyntaxNode {
         let id = self.next_id;
         self.next_id.inner += 1;
 
@@ -22,11 +22,11 @@ impl Parser {
             token => SyntaxElementKind::UnprocessedToken { token },
         };
 
-        SyntaxElement { id, kind }
+        SyntaxNode { id, kind }
     }
 }
 
-pub struct SyntaxElement {
+pub struct SyntaxNode {
     pub id: SyntaxElementId,
     pub kind: SyntaxElementKind,
 }
