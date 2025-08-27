@@ -3,37 +3,37 @@ use std::collections::BTreeMap;
 use crate::compiler::{syntax::SyntaxElement, types::Type};
 
 pub struct Resolver {
-    pub intrinsics: BTreeMap<&'static str, (Intrinsic, [&'static [Type]; 2])>,
+    pub intrinsics: BTreeMap<&'static str, Intrinsic>,
 }
 
 impl Resolver {
     pub fn new() -> Self {
-        use self::{Intrinsic::*, Type::*};
+        use self::Intrinsic::*;
 
         let mut intrinsics = BTreeMap::new();
         intrinsics.extend([
-            ("%", (Remainder, [&[I32, I32] as &[_], &[I32]])),
-            ("*", (Multiply, [&[I32, I32], &[I32]])),
-            ("+", (Add, [&[I32, I32], &[I32]])),
-            ("-", (Subtract, [&[I32, I32], &[I32]])),
-            ("/", (Divide, [&[I32, I32], &[I32]])),
-            ("<", (LessThan, [&[I32, I32], &[I32]])),
-            ("<=", (LessThanOrEquals, [&[I32, I32], &[I32]])),
-            ("=", (Equals, [&[I32, I32], &[I32]])),
-            (">", (GreaterThan, [&[I32, I32], &[I32]])),
-            (">=", (GreaterThanOrEquals, [&[I32, I32], &[I32]])),
-            ("and", (And, [&[I32, I32], &[I32]])),
-            ("assert", (Assert, [&[I32], &[]])),
-            ("count_ones", (CountOnes, [&[I32], &[I32]])),
-            ("leading_zeros", (LeadingZeros, [&[I32], &[I32]])),
-            ("not", (Not, [&[I32], &[I32]])),
-            ("or", (Or, [&[I32, I32], &[I32]])),
-            ("rotate_left", (RotateLeft, [&[I32, I32], &[I32]])),
-            ("rotate_right", (RotateRight, [&[I32, I32], &[I32]])),
-            ("shift_left", (ShiftLeft, [&[I32, I32], &[I32]])),
-            ("shift_right", (ShiftRight, [&[I32, I32], &[I32]])),
-            ("trailing_zeros", (TrailingZeros, [&[I32], &[I32]])),
-            ("xor", (Xor, [&[I32, I32], &[I32]])),
+            ("%", Remainder),
+            ("*", Multiply),
+            ("+", Add),
+            ("-", Subtract),
+            ("/", Divide),
+            ("<", LessThan),
+            ("<=", LessThanOrEquals),
+            ("=", Equals),
+            (">", GreaterThan),
+            (">=", GreaterThanOrEquals),
+            ("and", And),
+            ("assert", Assert),
+            ("count_ones", CountOnes),
+            ("leading_zeros", LeadingZeros),
+            ("not", Not),
+            ("or", Or),
+            ("rotate_left", RotateLeft),
+            ("rotate_right", RotateRight),
+            ("shift_left", ShiftLeft),
+            ("shift_right", ShiftRight),
+            ("trailing_zeros", TrailingZeros),
+            ("xor", Xor),
         ]);
 
         Self { intrinsics }
@@ -79,4 +79,41 @@ pub enum Intrinsic {
     ShiftRight,
     TrailingZeros,
     Xor,
+}
+
+impl Intrinsic {
+    pub fn signature(&self) -> [&[Type]; 2] {
+        use Type::*;
+
+        match self {
+            Self::Assert => [&[I32], &[]],
+            Self::Panic => [&[], &[]],
+
+            Self::Integer { .. } => [&[], &[I32]],
+
+            Self::Equals => [&[I32, I32], &[I32]],
+            Self::GreaterThan => [&[I32, I32], &[I32]],
+            Self::GreaterThanOrEquals => [&[I32, I32], &[I32]],
+            Self::LessThan => [&[I32, I32], &[I32]],
+            Self::LessThanOrEquals => [&[I32, I32], &[I32]],
+            Self::Not => [&[I32], &[I32]],
+
+            Self::Add => [&[I32, I32], &[I32]],
+            Self::Divide => [&[I32, I32], &[I32]],
+            Self::Multiply => [&[I32, I32], &[I32]],
+            Self::Remainder => [&[I32, I32] as &[_], &[I32]],
+            Self::Subtract => [&[I32, I32], &[I32]],
+
+            Self::And => [&[I32, I32], &[I32]],
+            Self::CountOnes => [&[I32], &[I32]],
+            Self::LeadingZeros => [&[I32], &[I32]],
+            Self::Or => [&[I32, I32], &[I32]],
+            Self::RotateLeft => [&[I32, I32], &[I32]],
+            Self::RotateRight => [&[I32, I32], &[I32]],
+            Self::ShiftLeft => [&[I32, I32], &[I32]],
+            Self::ShiftRight => [&[I32, I32], &[I32]],
+            Self::TrailingZeros => [&[I32], &[I32]],
+            Self::Xor => [&[I32, I32], &[I32]],
+        }
+    }
 }

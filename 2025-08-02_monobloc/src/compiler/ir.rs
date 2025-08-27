@@ -24,9 +24,11 @@ pub fn generate_ir(
                 // ignoring comment
             }
             Token::Identifier { name } => {
-                if let Some((intrinsic, [inputs, outputs])) =
+                if let Some(intrinsic) =
                     resolver.intrinsics.get(name.as_str()).copied()
                 {
+                    let [inputs, outputs] = intrinsic.signature();
+
                     body.push(Expression::Intrinsic { intrinsic });
 
                     for &input in inputs {
