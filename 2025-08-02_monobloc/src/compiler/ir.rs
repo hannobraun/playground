@@ -136,8 +136,8 @@ pub type Body = Vec<Expression>;
 #[derive(Clone, Copy)]
 pub enum Expression {
     // Panics
-    Panic,
     Assert,
+    Panic,
 
     // Literals
     Integer { value: i32 },

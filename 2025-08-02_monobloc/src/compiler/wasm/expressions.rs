@@ -22,12 +22,12 @@ impl Emit for Expressions<'_> {
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     let instruction = match *expression {
-        ir::Expression::Panic => Instruction::Unreachable,
         ir::Expression::Assert => Instruction::If {
             block_type: BlockType::Empty,
             then: vec![],
             else_: vec![Instruction::Unreachable],
         },
+        ir::Expression::Panic => Instruction::Unreachable,
 
         ir::Expression::Integer { value } => Instruction::I32Const { value },
 
