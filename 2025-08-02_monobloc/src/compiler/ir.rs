@@ -12,11 +12,11 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
     };
     let mut body = Vec::new();
 
-    for syntax_element in syntax {
-        match syntax_element.kind {
+    for node in syntax {
+        match node.kind {
             NodeKind::Identifier { name } => {
                 if let Some(intrinsic) =
-                    resolver.intrinsics.get(&syntax_element.id).copied()
+                    resolver.intrinsics.get(&node.id).copied()
                 {
                     let [inputs, outputs] = intrinsic.signature();
 
