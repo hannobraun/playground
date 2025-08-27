@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use crate::compiler::types::Type;
+use crate::compiler::{syntax::SyntaxElement, types::Type};
 
 pub struct Resolver {
     pub intrinsics: BTreeMap<&'static str, (Intrinsic, [&'static [Type]; 2])>,
@@ -37,6 +37,10 @@ impl Resolver {
         ]);
 
         Self { intrinsics }
+    }
+
+    pub fn process_syntax_element(&mut self, syntax_element: &SyntaxElement) {
+        let _ = syntax_element;
     }
 }
 

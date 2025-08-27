@@ -54,7 +54,7 @@ pub fn compile(
 
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
-    let resolver = Resolver::new();
+    let mut resolver = Resolver::new();
 
     let mut syntax = Vec::new();
 
@@ -66,6 +66,7 @@ pub fn compile(
         match tokenizer.process_char(ch) {
             Some(token) => {
                 let syntax_element = parser.process_token(token);
+                resolver.process_syntax_element(&syntax_element);
                 syntax.push(syntax_element);
             }
             None => {
