@@ -41,13 +41,6 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 // ignoring comment
             }
             NodeKind::UnprocessedToken {
-                token: Token::Identifier { name: _ },
-            } => {
-                unreachable!(
-                    "`Token::Identifier` gets processed by the parser."
-                );
-            }
-            NodeKind::UnprocessedToken {
                 token: Token::IntegerHex { value },
             } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
@@ -74,6 +67,9 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                     intrinsic: Intrinsic::Integer { value },
                 });
                 stack.push(Type::I32);
+            }
+            NodeKind::UnprocessedToken { token: _ } => {
+                unreachable!("All other tokens get processed by the parser.");
             }
         }
     }
