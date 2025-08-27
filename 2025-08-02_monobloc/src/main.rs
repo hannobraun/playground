@@ -83,12 +83,22 @@ pub fn compile(
                 let SyntaxElementKind::UnprocessedToken { token } =
                     &syntax_element.kind;
 
-                match (prev_token, token) {
-                    (Some(Token::Comment { .. }), Token::Comment { .. }) => {
+                match (prev_token, &syntax_element.kind) {
+                    (
+                        Some(Token::Comment { .. }),
+                        SyntaxElementKind::UnprocessedToken {
+                            token: Token::Comment { .. },
+                        },
+                    ) => {
                         // Already printed a newline at the end of the previous
                         // comment.
                     }
-                    (Some(_), Token::Comment { .. }) => {
+                    (
+                        Some(_),
+                        SyntaxElementKind::UnprocessedToken {
+                            token: Token::Comment { .. },
+                        },
+                    ) => {
                         // Start comment on a new line.
                         println!();
                     }
