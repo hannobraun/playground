@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::compiler::{syntax::SyntaxElement, tokens::Token};
 
-pub fn compile_tokens(tokens: Vec<SyntaxElement>) -> Function {
+pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
     let intrinsics = {
         use self::{Expression::*, Type::*};
 
@@ -41,7 +41,7 @@ pub fn compile_tokens(tokens: Vec<SyntaxElement>) -> Function {
     };
     let mut body = Vec::new();
 
-    for token in tokens {
+    for token in syntax {
         let SyntaxElement::UnprocessedToken { token } = token;
 
         match token {
