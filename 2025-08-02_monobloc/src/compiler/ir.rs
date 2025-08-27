@@ -16,7 +16,7 @@ pub fn generate_ir(
     let mut body = Vec::new();
 
     for syntax_element in syntax {
-        let _ = syntax_element.id;
+        let _ = syntax_element.id.inner;
         let SyntaxElementKind::UnprocessedToken { token } = syntax_element.kind;
 
         match token {

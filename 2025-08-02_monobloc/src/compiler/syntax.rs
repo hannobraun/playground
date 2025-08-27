@@ -14,15 +14,19 @@ impl Parser {
         self.next_id += 1;
 
         SyntaxElement {
-            id,
+            id: SyntaxElementId { inner: id },
             kind: SyntaxElementKind::UnprocessedToken { token },
         }
     }
 }
 
 pub struct SyntaxElement {
-    pub id: u64,
+    pub id: SyntaxElementId,
     pub kind: SyntaxElementKind,
+}
+
+pub struct SyntaxElementId {
+    pub inner: u64,
 }
 
 pub enum SyntaxElementKind {
