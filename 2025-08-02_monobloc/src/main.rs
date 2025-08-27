@@ -63,8 +63,8 @@ pub fn compile(
 
         match tokenizer.process_char(ch) {
             Some(token) => {
-                let token = parser.process_token(token);
-                syntax.push(token);
+                let syntax_element = parser.process_token(token);
+                syntax.push(syntax_element);
             }
             None => {
                 if interactive {
