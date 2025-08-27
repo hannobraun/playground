@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir::{self, Signature},
+    ir::{self, Signature, Types},
     wasm::{
         Emit,
         val_type::{NumType, ValType},
@@ -22,7 +22,7 @@ impl Emit for FuncType<'_> {
 }
 
 struct ResultType<'a> {
-    types: &'a ir::Types,
+    types: &'a Types,
 }
 
 impl Emit for ResultType<'_> {
@@ -32,7 +32,7 @@ impl Emit for ResultType<'_> {
     }
 }
 
-fn compile_types(types: &ir::Types) -> Vec<ValType> {
+fn compile_types(types: &Types) -> Vec<ValType> {
     types.iter().map(compile_type).collect()
 }
 
