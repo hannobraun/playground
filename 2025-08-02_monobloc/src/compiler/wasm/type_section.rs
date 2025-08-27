@@ -1,10 +1,10 @@
 use crate::compiler::{
-    ir,
+    ir::Signature,
     wasm::{Emit, func_type::FuncType, section::emit_section, vec::WasmVec},
 };
 
 pub struct TypeSection<'a> {
-    pub signature: &'a ir::Signature,
+    pub signature: &'a Signature,
 }
 
 impl Emit for TypeSection<'_> {
