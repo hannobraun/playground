@@ -1,7 +1,6 @@
 use crate::compiler::{
     intrinsics::{Intrinsic, Resolver},
     syntax::{NodeKind, SyntaxNode},
-    tokens::Token,
     types::{Signature, Type, Types},
 };
 
@@ -38,16 +37,11 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                     });
                 }
             }
-            NodeKind::UnprocessedToken {
-                token: Token::Integer { value, format: _ },
-            } => {
+            NodeKind::Integer { value, format: _ } => {
                 body.push(Expression::Intrinsic {
                     intrinsic: Intrinsic::Integer { value },
                 });
                 stack.push(Type::I32);
-            }
-            NodeKind::UnprocessedToken { token: _ } => {
-                unreachable!("All other tokens get processed by the parser.");
             }
         }
     }

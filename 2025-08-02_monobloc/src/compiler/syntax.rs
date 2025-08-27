@@ -1,4 +1,4 @@
-use crate::compiler::tokens::Token;
+use crate::compiler::tokens::{IntegerFormat, Token};
 
 pub struct Parser {
     pub next_id: NodeId,
@@ -18,7 +18,9 @@ impl Parser {
         let kind = match token {
             Token::Comment { text } => NodeKind::Comment { text },
             Token::Identifier { name } => NodeKind::Identifier { name },
-            token => NodeKind::UnprocessedToken { token },
+            Token::Integer { value, format } => {
+                NodeKind::Integer { value, format }
+            }
         };
 
         SyntaxNode { id, kind }
@@ -38,5 +40,5 @@ pub struct NodeId {
 pub enum NodeKind {
     Comment { text: String },
     Identifier { name: String },
-    UnprocessedToken { token: Token },
+    Integer { value: u32, format: IntegerFormat },
 }

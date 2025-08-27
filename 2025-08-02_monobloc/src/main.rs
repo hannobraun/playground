@@ -10,7 +10,7 @@ use crate::{
         intrinsics::Resolver,
         ir::generate_ir,
         syntax::{NodeKind, Parser},
-        tokens::{IntegerFormat, Token, Tokenizer},
+        tokens::{IntegerFormat, Tokenizer},
         wasm,
     },
 };
@@ -108,38 +108,24 @@ pub fn compile(
                     NodeKind::Identifier { name } => {
                         println!("{name}");
                     }
-                    NodeKind::UnprocessedToken {
-                        token:
-                            Token::Integer {
-                                value,
-                                format: IntegerFormat::Hex,
-                            },
+                    NodeKind::Integer {
+                        value,
+                        format: IntegerFormat::Hex,
                     } => {
                         println!("{value:x}");
                     }
-                    NodeKind::UnprocessedToken {
-                        token:
-                            Token::Integer {
-                                value,
-                                format: IntegerFormat::Signed,
-                            },
+                    NodeKind::Integer {
+                        value,
+                        format: IntegerFormat::Signed,
                     } => {
                         let value = i32::from_le_bytes(value.to_le_bytes());
                         println!("{value}");
                     }
-                    NodeKind::UnprocessedToken {
-                        token:
-                            Token::Integer {
-                                value,
-                                format: IntegerFormat::Unsigned,
-                            },
+                    NodeKind::Integer {
+                        value,
+                        format: IntegerFormat::Unsigned,
                     } => {
                         println!("{value}");
-                    }
-                    NodeKind::UnprocessedToken { token: _ } => {
-                        unreachable!(
-                            "All other tokens get processed by the parser."
-                        );
                     }
                 }
 
