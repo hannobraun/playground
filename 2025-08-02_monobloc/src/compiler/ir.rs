@@ -49,10 +49,10 @@ pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
                 // ignoring comment
             }
             Token::Identifier { name } => {
-                if let Some((instruction, [inputs, outputs])) =
+                if let Some((expression, [inputs, outputs])) =
                     intrinsics.get(name.as_str()).copied()
                 {
-                    body.push(instruction);
+                    body.push(expression);
 
                     for &input in inputs {
                         stack.pop(input);
