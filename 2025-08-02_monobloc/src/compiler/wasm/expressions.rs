@@ -32,10 +32,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
         },
         Intrinsic::Panic => Instruction::Unreachable,
 
-        Intrinsic::Integer { value } => {
-            let value = i32::from_le_bytes(value.to_le_bytes());
-            Instruction::I32Const { value }
-        }
+        Intrinsic::Integer { value } => Instruction::I32Const { value },
 
         Intrinsic::Equals => Instruction::I32Eq,
         Intrinsic::GreaterThan => Instruction::I32GtS,

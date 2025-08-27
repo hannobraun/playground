@@ -9,7 +9,7 @@ pub enum Instruction {
     },
 
     I32Const {
-        value: i32,
+        value: u32,
     },
 
     I32Eqz,
@@ -60,6 +60,8 @@ impl Emit for Instruction {
             }
 
             Self::I32Const { value } => {
+                let value = i32::from_le_bytes(value.to_le_bytes());
+
                 target.push(0x41);
                 Leb128::I32 { value }.emit(target);
             }
