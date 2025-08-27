@@ -19,7 +19,7 @@ impl Parser {
 
         let kind = match (&self.state, token) {
             (State::Initial, Token::Binding) => {
-                // Not supported yet; ignore for now.
+                self.state = State::Binding;
                 return None;
             }
             (State::Initial, Token::Comment { text }) => {
@@ -30,6 +30,16 @@ impl Parser {
             }
             (State::Initial, Token::Integer { value, format }) => {
                 NodeKind::Integer { value, format }
+            }
+            (State::Binding, Token::Identifier { name: _ }) => {
+                // Not supported yet; ignore for now.
+                return None;
+            }
+            (State::Binding, Token::Terminator) => {
+                // Parsing bindings is not supported yet, but at least handle
+                // the state correctly.
+                self.state = State::Initial;
+                return None;
             }
             (_, token) => {
                 panic!("Unexpected token `{token:?}`");
@@ -42,6 +52,7 @@ impl Parser {
 
 enum State {
     Initial,
+    Binding,
 }
 
 pub struct SyntaxNode {
