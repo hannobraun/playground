@@ -32,12 +32,21 @@ impl Tokenizer {
                     .and_then(|s| u32::from_str_radix(s, 16).ok());
 
                 let token = if let Some(value) = token_as_unsigned_int {
-                    Token::IntegerUnsigned { value }
+                    Token::Integer {
+                        value,
+                        format: IntegerFormat::Unsigned,
+                    }
                 } else if let Some(value) = token_as_signed_int {
                     let value = u32::from_le_bytes(value.to_le_bytes());
-                    Token::IntegerSigned { value }
+                    Token::Integer {
+                        value,
+                        format: IntegerFormat::Signed,
+                    }
                 } else if let Some(value) = token_as_hex_int {
-                    Token::IntegerHex { value }
+                    Token::Integer {
+                        value,
+                        format: IntegerFormat::Hex,
+                    }
                 } else {
                     Token::Identifier { name: buf }
                 };
@@ -72,7 +81,12 @@ pub enum State {
 pub enum Token {
     Comment { text: String },
     Identifier { name: String },
-    IntegerHex { value: u32 },
-    IntegerSigned { value: u32 },
-    IntegerUnsigned { value: u32 },
+    Integer { value: u32, format: IntegerFormat },
+}
+
+#[derive(Debug)]
+pub enum IntegerFormat {
+    Hex,
+    Signed,
+    Unsigned,
 }

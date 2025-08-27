@@ -10,7 +10,7 @@ use crate::{
         intrinsics::Resolver,
         ir::generate_ir,
         syntax::{NodeKind, Parser},
-        tokens::{Token, Tokenizer},
+        tokens::{IntegerFormat, Token, Tokenizer},
         wasm,
     },
 };
@@ -109,17 +109,29 @@ pub fn compile(
                         println!("{name}");
                     }
                     NodeKind::UnprocessedToken {
-                        token: Token::IntegerHex { value },
+                        token:
+                            Token::Integer {
+                                value,
+                                format: IntegerFormat::Hex,
+                            },
                     } => {
                         println!("{value:x}");
                     }
                     NodeKind::UnprocessedToken {
-                        token: Token::IntegerSigned { value },
+                        token:
+                            Token::Integer {
+                                value,
+                                format: IntegerFormat::Signed,
+                            },
                     } => {
                         println!("{value}");
                     }
                     NodeKind::UnprocessedToken {
-                        token: Token::IntegerUnsigned { value },
+                        token:
+                            Token::Integer {
+                                value,
+                                format: IntegerFormat::Unsigned,
+                            },
                     } => {
                         println!("{value}");
                     }

@@ -39,23 +39,7 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 }
             }
             NodeKind::UnprocessedToken {
-                token: Token::IntegerHex { value },
-            } => {
-                body.push(Expression::Intrinsic {
-                    intrinsic: Intrinsic::Integer { value },
-                });
-                stack.push(Type::I32);
-            }
-            NodeKind::UnprocessedToken {
-                token: Token::IntegerSigned { value },
-            } => {
-                body.push(Expression::Intrinsic {
-                    intrinsic: Intrinsic::Integer { value },
-                });
-                stack.push(Type::I32);
-            }
-            NodeKind::UnprocessedToken {
-                token: Token::IntegerUnsigned { value },
+                token: Token::Integer { value, format: _ },
             } => {
                 body.push(Expression::Intrinsic {
                     intrinsic: Intrinsic::Integer { value },
