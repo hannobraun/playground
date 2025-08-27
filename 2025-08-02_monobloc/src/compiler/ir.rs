@@ -16,13 +16,15 @@ pub fn generate_ir(
     let mut body = Vec::new();
 
     for syntax_element in syntax {
-        let SyntaxElementKind::UnprocessedToken { token } = syntax_element.kind;
-
-        match token {
-            Token::Comment { text: _ } => {
+        match syntax_element.kind {
+            SyntaxElementKind::UnprocessedToken {
+                token: Token::Comment { text: _ },
+            } => {
                 // ignoring comment
             }
-            Token::Identifier { name } => {
+            SyntaxElementKind::UnprocessedToken {
+                token: Token::Identifier { name },
+            } => {
                 if let Some(intrinsic) =
                     resolver.intrinsics.get(&syntax_element.id).copied()
                 {
@@ -43,7 +45,9 @@ pub fn generate_ir(
                     });
                 }
             }
-            Token::IntegerHex { value } => {
+            SyntaxElementKind::UnprocessedToken {
+                token: Token::IntegerHex { value },
+            } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
 
                 body.push(Expression::Intrinsic {
@@ -51,13 +55,17 @@ pub fn generate_ir(
                 });
                 stack.push(Type::I32);
             }
-            Token::IntegerSigned { value } => {
+            SyntaxElementKind::UnprocessedToken {
+                token: Token::IntegerSigned { value },
+            } => {
                 body.push(Expression::Intrinsic {
                     intrinsic: Intrinsic::Integer { value },
                 });
                 stack.push(Type::I32);
             }
-            Token::IntegerUnsigned { value } => {
+            SyntaxElementKind::UnprocessedToken {
+                token: Token::IntegerUnsigned { value },
+            } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
 
                 body.push(Expression::Intrinsic {
