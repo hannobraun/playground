@@ -77,15 +77,14 @@ pub fn compile(
         }
 
         if interactive {
-            let mut prev_token: Option<&Token> = None;
+            let mut prev_token: Option<&SyntaxElementKind> = None;
 
             for syntax_element in &syntax {
-                let SyntaxElementKind::UnprocessedToken { token } =
-                    &syntax_element.kind;
-
                 match (prev_token, &syntax_element.kind) {
                     (
-                        Some(Token::Comment { .. }),
+                        Some(SyntaxElementKind::UnprocessedToken {
+                            token: Token::Comment { .. },
+                        }),
                         SyntaxElementKind::UnprocessedToken {
                             token: Token::Comment { .. },
                         },
@@ -102,7 +101,13 @@ pub fn compile(
                         // Start comment on a new line.
                         println!();
                     }
-                    (Some(Token::Comment { .. }) | None, _) => {
+                    (
+                        Some(SyntaxElementKind::UnprocessedToken {
+                            token: Token::Comment { .. },
+                        })
+                        | None,
+                        _,
+                    ) => {
                         // We are on a fresh line. Nothing to prepare.
                     }
                     (Some(_), _) => {
@@ -139,7 +144,7 @@ pub fn compile(
                     }
                 }
 
-                prev_token = Some(token);
+                prev_token = Some(&syntax_element.kind);
             }
             println!();
         }
