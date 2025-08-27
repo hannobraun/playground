@@ -1,20 +1,22 @@
 use crate::compiler::tokens::Token;
 
 pub struct Parser {
-    pub next_id: u64,
+    pub next_id: SyntaxElementId,
 }
 
 impl Parser {
     pub fn new() -> Self {
-        Self { next_id: 0 }
+        Self {
+            next_id: SyntaxElementId { inner: 0 },
+        }
     }
 
     pub fn process_token(&mut self, token: Token) -> SyntaxElement {
         let id = self.next_id;
-        self.next_id += 1;
+        self.next_id.inner += 1;
 
         SyntaxElement {
-            id: SyntaxElementId { inner: id },
+            id,
             kind: SyntaxElementKind::UnprocessedToken { token },
         }
     }
