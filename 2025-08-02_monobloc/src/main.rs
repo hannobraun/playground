@@ -111,20 +111,30 @@ pub fn compile(
                     }
                 }
 
-                match token {
-                    Token::Comment { text } => {
+                match &syntax_element.kind {
+                    SyntaxElementKind::UnprocessedToken {
+                        token: Token::Comment { text },
+                    } => {
                         println!("#{text}");
                     }
-                    Token::Identifier { name } => {
+                    SyntaxElementKind::UnprocessedToken {
+                        token: Token::Identifier { name },
+                    } => {
                         println!("{name}");
                     }
-                    Token::IntegerHex { value } => {
+                    SyntaxElementKind::UnprocessedToken {
+                        token: Token::IntegerHex { value },
+                    } => {
                         println!("{value:x}");
                     }
-                    Token::IntegerSigned { value } => {
+                    SyntaxElementKind::UnprocessedToken {
+                        token: Token::IntegerSigned { value },
+                    } => {
                         println!("{value}");
                     }
-                    Token::IntegerUnsigned { value } => {
+                    SyntaxElementKind::UnprocessedToken {
+                        token: Token::IntegerUnsigned { value },
+                    } => {
                         println!("{value}");
                     }
                 }
