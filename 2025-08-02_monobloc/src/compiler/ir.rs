@@ -1,8 +1,8 @@
 use std::collections::BTreeMap;
 
-use crate::compiler::tokens::Token;
+use crate::compiler::{syntax::SyntaxElement, tokens::Token};
 
-pub fn compile_tokens(tokens: Vec<Token>) -> Function {
+pub fn compile_tokens(tokens: Vec<SyntaxElement>) -> Function {
     let intrinsics = {
         use self::{Expression::*, Type::*};
 
@@ -42,6 +42,8 @@ pub fn compile_tokens(tokens: Vec<Token>) -> Function {
     let mut body = Vec::new();
 
     for token in tokens {
+        let SyntaxElement::UnprocessedToken { token } = token;
+
         match token {
             Token::Comment { text: _ } => {
                 // ignoring comment

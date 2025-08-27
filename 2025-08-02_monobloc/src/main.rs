@@ -8,7 +8,7 @@ use crate::{
     compiler::{
         input_code::read_input_code,
         ir::compile_tokens,
-        syntax::Parser,
+        syntax::{Parser, SyntaxElement},
         tokens::{Token, Tokenizer},
         wasm,
     },
@@ -77,6 +77,8 @@ pub fn compile(
             let mut prev_token: Option<&Token> = None;
 
             for token in &tokens {
+                let SyntaxElement::UnprocessedToken { token } = token;
+
                 match (prev_token, token) {
                     (Some(Token::Comment { .. }), Token::Comment { .. }) => {
                         // Already printed a newline at the end of the previous

@@ -7,7 +7,11 @@ impl Parser {
         Self {}
     }
 
-    pub fn process_token(&mut self, token: Token) -> Token {
-        token
+    pub fn process_token(&mut self, token: Token) -> SyntaxElement {
+        SyntaxElement::UnprocessedToken { token }
     }
+}
+
+pub enum SyntaxElement {
+    UnprocessedToken { token: Token },
 }
