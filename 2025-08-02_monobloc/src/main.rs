@@ -77,10 +77,10 @@ pub fn compile(
         }
 
         if interactive {
-            let mut prev_element: Option<&SyntaxElementKind> = None;
+            let mut prev_node: Option<&SyntaxElementKind> = None;
 
             for syntax_element in &syntax {
-                match (prev_element, &syntax_element.kind) {
+                match (prev_node, &syntax_element.kind) {
                     (
                         Some(SyntaxElementKind::UnprocessedToken {
                             token: Token::Comment { .. },
@@ -149,7 +149,7 @@ pub fn compile(
                     }
                 }
 
-                prev_element = Some(&syntax_element.kind);
+                prev_node = Some(&syntax_element.kind);
             }
             println!();
         }
