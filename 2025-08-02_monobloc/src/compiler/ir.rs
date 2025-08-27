@@ -11,8 +11,8 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
     let resolver = {
         use self::{Intrinsic::*, Type::*};
 
-        let mut map = BTreeMap::new();
-        map.extend([
+        let mut intrinsics = BTreeMap::new();
+        intrinsics.extend([
             ("%", (Remainder, [&[I32, I32] as &[_], &[I32]])),
             ("*", (Multiply, [&[I32, I32], &[I32]])),
             ("+", (Add, [&[I32, I32], &[I32]])),
@@ -37,7 +37,7 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
             ("xor", (Xor, [&[I32, I32], &[I32]])),
         ]);
 
-        Resolver { intrinsics: map }
+        Resolver { intrinsics }
     };
 
     let mut stack = Stack {
