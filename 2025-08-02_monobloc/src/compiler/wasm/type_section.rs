@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir::Signature,
+    types::Signature,
     wasm::{Emit, func_type::FuncType, section::emit_section, vec::WasmVec},
 };
 

@@ -3,4 +3,5 @@ pub mod intrinsics;
 pub mod ir;
 pub mod syntax;
 pub mod tokens;
+pub mod types;
 pub mod wasm;

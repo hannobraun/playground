@@ -4,6 +4,7 @@ use crate::compiler::{
     intrinsics::Intrinsic,
     syntax::{SyntaxElement, SyntaxElementKind},
     tokens::Token,
+    types::{Signature, Type, Types},
 };
 
 pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
@@ -130,18 +131,6 @@ impl Stack {
 pub struct Function {
     pub signature: Signature,
     pub body: Body,
-}
-
-pub struct Signature {
-    pub inputs: Types,
-    pub outputs: Types,
-}
-
-pub type Types = Vec<Type>;
-
-#[derive(Clone, Copy)]
-pub enum Type {
-    I32,
 }
 
 pub type Body = Vec<Expression>;
