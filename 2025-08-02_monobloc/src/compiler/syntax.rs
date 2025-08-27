@@ -25,6 +25,7 @@ pub struct SyntaxElement {
     pub kind: SyntaxElementKind,
 }
 
+#[derive(Clone, Copy)]
 pub struct SyntaxElementId {
     pub inner: u64,
 }
