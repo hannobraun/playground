@@ -1,5 +1,3 @@
-use std::collections::BTreeMap;
-
 use crate::compiler::{
     intrinsics::{Intrinsic, Resolver},
     syntax::{SyntaxElement, SyntaxElementKind},
@@ -8,37 +6,7 @@ use crate::compiler::{
 };
 
 pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
-    let resolver = {
-        use self::{Intrinsic::*, Type::*};
-
-        let mut intrinsics = BTreeMap::new();
-        intrinsics.extend([
-            ("%", (Remainder, [&[I32, I32] as &[_], &[I32]])),
-            ("*", (Multiply, [&[I32, I32], &[I32]])),
-            ("+", (Add, [&[I32, I32], &[I32]])),
-            ("-", (Subtract, [&[I32, I32], &[I32]])),
-            ("/", (Divide, [&[I32, I32], &[I32]])),
-            ("<", (LessThan, [&[I32, I32], &[I32]])),
-            ("<=", (LessThanOrEquals, [&[I32, I32], &[I32]])),
-            ("=", (Equals, [&[I32, I32], &[I32]])),
-            (">", (GreaterThan, [&[I32, I32], &[I32]])),
-            (">=", (GreaterThanOrEquals, [&[I32, I32], &[I32]])),
-            ("and", (And, [&[I32, I32], &[I32]])),
-            ("assert", (Assert, [&[I32], &[]])),
-            ("count_ones", (CountOnes, [&[I32], &[I32]])),
-            ("leading_zeros", (LeadingZeros, [&[I32], &[I32]])),
-            ("not", (Not, [&[I32], &[I32]])),
-            ("or", (Or, [&[I32, I32], &[I32]])),
-            ("rotate_left", (RotateLeft, [&[I32, I32], &[I32]])),
-            ("rotate_right", (RotateRight, [&[I32, I32], &[I32]])),
-            ("shift_left", (ShiftLeft, [&[I32, I32], &[I32]])),
-            ("shift_right", (ShiftRight, [&[I32, I32], &[I32]])),
-            ("trailing_zeros", (TrailingZeros, [&[I32], &[I32]])),
-            ("xor", (Xor, [&[I32, I32], &[I32]])),
-        ]);
-
-        Resolver { intrinsics }
-    };
+    let resolver = Resolver::new();
 
     let mut stack = Stack {
         inputs: Vec::new(),
