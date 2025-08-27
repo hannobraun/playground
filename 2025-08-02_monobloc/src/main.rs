@@ -8,6 +8,7 @@ use crate::{
     compiler::{
         input_code::read_input_code,
         ir::compile_tokens,
+        syntax::Parser,
         tokens::{Token, Tokenizer},
         wasm,
     },
@@ -51,6 +52,8 @@ pub fn compile(
     let mut input_code = read_input_code(program, &mut input_code)?;
 
     let mut tokenizer = Tokenizer::new();
+    let mut parser = Parser::new();
+
     let mut tokens = Vec::new();
 
     loop {
@@ -60,6 +63,7 @@ pub fn compile(
 
         match tokenizer.process_char(ch) {
             Some(token) => {
+                let token = parser.process_token(token);
                 tokens.push(token);
             }
             None => {
