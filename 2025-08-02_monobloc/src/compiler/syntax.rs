@@ -17,7 +17,7 @@ impl Parser {
         let id = self.next_id;
         self.next_id.inner += 1;
 
-        let kind = match (&self.state, token) {
+        let kind = match (&mut self.state, token) {
             (State::Initial, Token::Binding) => {
                 self.state = State::Binding;
                 return None;
