@@ -75,7 +75,7 @@ impl Tokenizer {
     }
 }
 
-pub enum State {
+enum State {
     Initial,
     Comment,
 }
