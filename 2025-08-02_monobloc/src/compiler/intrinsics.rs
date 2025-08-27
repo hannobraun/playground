@@ -62,7 +62,7 @@ pub enum Intrinsic {
     Panic,
 
     // Literals
-    Integer { value: i32 },
+    Integer { value: u32 },
 
     // Comparisons
     Equals,
