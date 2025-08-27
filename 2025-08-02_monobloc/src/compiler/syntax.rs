@@ -1,12 +1,14 @@
 use crate::compiler::tokens::{IntegerFormat, Token};
 
 pub struct Parser {
+    state: State,
     next_id: NodeId,
 }
 
 impl Parser {
     pub fn new() -> Self {
         Self {
+            state: State::Initial,
             next_id: NodeId { inner: 0 },
         }
     }
@@ -15,20 +17,28 @@ impl Parser {
         let id = self.next_id;
         self.next_id.inner += 1;
 
-        let kind = match token {
-            Token::Assignment => {
+        let kind = match (&self.state, token) {
+            (State::Initial, Token::Assignment) => {
                 // Not supported yet; ignore for now.
                 return None;
             }
-            Token::Comment { text } => NodeKind::Comment { text },
-            Token::Identifier { name } => NodeKind::Identifier { name },
-            Token::Integer { value, format } => {
+            (State::Initial, Token::Comment { text }) => {
+                NodeKind::Comment { text }
+            }
+            (State::Initial, Token::Identifier { name }) => {
+                NodeKind::Identifier { name }
+            }
+            (State::Initial, Token::Integer { value, format }) => {
                 NodeKind::Integer { value, format }
             }
         };
 
         Some(SyntaxNode { id, kind })
     }
+}
+
+enum State {
+    Initial,
 }
 
 pub struct SyntaxNode {
