@@ -54,12 +54,10 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
                 // ignoring comment
             }
             Token::Identifier { name } => {
-                if let Some((expression, [inputs, outputs])) =
+                if let Some((intrinsic, [inputs, outputs])) =
                     intrinsics.get(name.as_str()).copied()
                 {
-                    body.push(Expression::Intrinsic {
-                        intrinsic: expression,
-                    });
+                    body.push(Expression::Intrinsic { intrinsic });
 
                     for &input in inputs {
                         stack.pop(input);
