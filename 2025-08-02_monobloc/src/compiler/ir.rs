@@ -5,7 +5,7 @@ use crate::compiler::{
     tokens::Token,
 };
 
-pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
+pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
     let intrinsics = {
         use self::{Expression::*, Type::*};
 
