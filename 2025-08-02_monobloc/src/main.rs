@@ -124,6 +124,7 @@ pub fn compile(
                                 format: IntegerFormat::Signed,
                             },
                     } => {
+                        let value = i32::from_le_bytes(value.to_le_bytes());
                         println!("{value}");
                     }
                     NodeKind::UnprocessedToken {
