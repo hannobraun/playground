@@ -22,11 +22,9 @@ impl Emit for Expressions<'_> {
 }
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
-    let ir::Expression::Intrinsic {
-        intrinsic: expression,
-    } = expression;
+    let ir::Expression::Intrinsic { intrinsic } = expression;
 
-    let instruction = match *expression {
+    let instruction = match *intrinsic {
         Intrinsic::Assert => Instruction::If {
             block_type: BlockType::Empty,
             then: vec![],
