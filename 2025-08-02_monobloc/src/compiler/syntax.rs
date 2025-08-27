@@ -31,6 +31,9 @@ impl Parser {
             (State::Initial, Token::Integer { value, format }) => {
                 NodeKind::Integer { value, format }
             }
+            (State::Initial, token) => {
+                panic!("Unexpected token `{token:?}`");
+            }
         };
 
         Some(SyntaxNode { id, kind })

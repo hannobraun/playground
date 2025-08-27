@@ -33,6 +33,8 @@ impl Tokenizer {
 
                 let token = if buf == "=>" {
                     Token::Binding
+                } else if buf == "." {
+                    Token::Terminator
                 } else if let Some(value) = token_as_unsigned_int {
                     Token::Integer {
                         value,
@@ -86,6 +88,7 @@ pub enum Token {
     Comment { text: String },
     Identifier { name: String },
     Integer { value: u32, format: IntegerFormat },
+    Terminator,
 }
 
 #[derive(Debug)]
