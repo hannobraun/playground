@@ -1,13 +1,13 @@
 use crate::compiler::tokens::Token;
 
 pub struct Parser {
-    pub next_id: SyntaxElementId,
+    pub next_id: NodeId,
 }
 
 impl Parser {
     pub fn new() -> Self {
         Self {
-            next_id: SyntaxElementId { inner: 0 },
+            next_id: NodeId { inner: 0 },
         }
     }
 
@@ -27,12 +27,12 @@ impl Parser {
 }
 
 pub struct SyntaxNode {
-    pub id: SyntaxElementId,
+    pub id: NodeId,
     pub kind: SyntaxElementKind,
 }
 
 #[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
-pub struct SyntaxElementId {
+pub struct NodeId {
     pub inner: u64,
 }
 

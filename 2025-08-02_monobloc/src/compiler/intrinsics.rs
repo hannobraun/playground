@@ -1,12 +1,12 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    syntax::{SyntaxElementId, SyntaxElementKind, SyntaxNode},
+    syntax::{NodeId, SyntaxElementKind, SyntaxNode},
     types::Type,
 };
 
 pub struct Resolver {
-    pub intrinsics: BTreeMap<SyntaxElementId, Intrinsic>,
+    pub intrinsics: BTreeMap<NodeId, Intrinsic>,
 }
 
 impl Resolver {
