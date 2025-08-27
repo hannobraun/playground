@@ -45,6 +45,7 @@ pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
     let mut body = Vec::new();
 
     for syntax_element in syntax {
+        let _ = syntax_element.id;
         let SyntaxElementKind::UnprocessedToken { token } = syntax_element.kind;
 
         match token {
