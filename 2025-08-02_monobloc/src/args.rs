@@ -7,3 +7,9 @@ pub struct Args {
     #[arg(short, long)]
     pub interactive: bool,
 }
+
+impl Args {
+    pub fn parse() -> Self {
+        <Self as clap::Parser>::parse()
+    }
+}

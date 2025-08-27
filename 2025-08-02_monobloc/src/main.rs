@@ -1,7 +1,6 @@
 use std::{fs::File, io::Write, path::Path};
 
 use anyhow::Context;
-use clap::Parser;
 use walkdir::WalkDir;
 
 use crate::{
