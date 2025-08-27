@@ -1,6 +1,6 @@
 use crate::compiler::{
     intrinsics::{Intrinsic, Resolver},
-    syntax::{SyntaxElementKind, SyntaxNode},
+    syntax::{NodeKind, SyntaxNode},
     tokens::Token,
     types::{Signature, Type, Types},
 };
@@ -14,7 +14,7 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
 
     for syntax_element in syntax {
         match syntax_element.kind {
-            SyntaxElementKind::Identifier { name } => {
+            NodeKind::Identifier { name } => {
                 if let Some(intrinsic) =
                     resolver.intrinsics.get(&syntax_element.id).copied()
                 {
@@ -35,19 +35,19 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                     });
                 }
             }
-            SyntaxElementKind::UnprocessedToken {
+            NodeKind::UnprocessedToken {
                 token: Token::Comment { text: _ },
             } => {
                 // ignoring comment
             }
-            SyntaxElementKind::UnprocessedToken {
+            NodeKind::UnprocessedToken {
                 token: Token::Identifier { name: _ },
             } => {
                 unreachable!(
                     "`Token::Identifier` gets processed by the parser."
                 );
             }
-            SyntaxElementKind::UnprocessedToken {
+            NodeKind::UnprocessedToken {
                 token: Token::IntegerHex { value },
             } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
@@ -57,7 +57,7 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 });
                 stack.push(Type::I32);
             }
-            SyntaxElementKind::UnprocessedToken {
+            NodeKind::UnprocessedToken {
                 token: Token::IntegerSigned { value },
             } => {
                 body.push(Expression::Intrinsic {
@@ -65,7 +65,7 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 });
                 stack.push(Type::I32);
             }
-            SyntaxElementKind::UnprocessedToken {
+            NodeKind::UnprocessedToken {
                 token: Token::IntegerUnsigned { value },
             } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());

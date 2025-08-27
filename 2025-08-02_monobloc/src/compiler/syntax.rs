@@ -16,10 +16,8 @@ impl Parser {
         self.next_id.inner += 1;
 
         let kind = match token {
-            Token::Identifier { name } => {
-                SyntaxElementKind::Identifier { name }
-            }
-            token => SyntaxElementKind::UnprocessedToken { token },
+            Token::Identifier { name } => NodeKind::Identifier { name },
+            token => NodeKind::UnprocessedToken { token },
         };
 
         SyntaxNode { id, kind }
@@ -28,7 +26,7 @@ impl Parser {
 
 pub struct SyntaxNode {
     pub id: NodeId,
-    pub kind: SyntaxElementKind,
+    pub kind: NodeKind,
 }
 
 #[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
@@ -36,7 +34,7 @@ pub struct NodeId {
     pub inner: u64,
 }
 
-pub enum SyntaxElementKind {
+pub enum NodeKind {
     Identifier { name: String },
     UnprocessedToken { token: Token },
 }

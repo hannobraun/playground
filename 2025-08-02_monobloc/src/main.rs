@@ -9,7 +9,7 @@ use crate::{
         input_code::read_input_code,
         intrinsics::Resolver,
         ir::generate_ir,
-        syntax::{Parser, SyntaxElementKind},
+        syntax::{NodeKind, Parser},
         tokens::{Token, Tokenizer},
         wasm,
     },
@@ -77,15 +77,15 @@ pub fn compile(
         }
 
         if interactive {
-            let mut prev_node: Option<&SyntaxElementKind> = None;
+            let mut prev_node: Option<&NodeKind> = None;
 
             for node in &syntax {
                 match (prev_node, &node.kind) {
                     (
-                        Some(SyntaxElementKind::UnprocessedToken {
+                        Some(NodeKind::UnprocessedToken {
                             token: Token::Comment { .. },
                         }),
-                        SyntaxElementKind::UnprocessedToken {
+                        NodeKind::UnprocessedToken {
                             token: Token::Comment { .. },
                         },
                     ) => {
@@ -94,7 +94,7 @@ pub fn compile(
                     }
                     (
                         Some(_),
-                        SyntaxElementKind::UnprocessedToken {
+                        NodeKind::UnprocessedToken {
                             token: Token::Comment { .. },
                         },
                     ) => {
@@ -102,7 +102,7 @@ pub fn compile(
                         println!();
                     }
                     (
-                        Some(SyntaxElementKind::UnprocessedToken {
+                        Some(NodeKind::UnprocessedToken {
                             token: Token::Comment { .. },
                         })
                         | None,
@@ -117,32 +117,32 @@ pub fn compile(
                 }
 
                 match &node.kind {
-                    SyntaxElementKind::Identifier { name } => {
+                    NodeKind::Identifier { name } => {
                         println!("{name}");
                     }
-                    SyntaxElementKind::UnprocessedToken {
+                    NodeKind::UnprocessedToken {
                         token: Token::Comment { text },
                     } => {
                         println!("#{text}");
                     }
-                    SyntaxElementKind::UnprocessedToken {
+                    NodeKind::UnprocessedToken {
                         token: Token::Identifier { name: _ },
                     } => {
                         unreachable!(
                             "`Token::Identifier` gets processed by the parser."
                         );
                     }
-                    SyntaxElementKind::UnprocessedToken {
+                    NodeKind::UnprocessedToken {
                         token: Token::IntegerHex { value },
                     } => {
                         println!("{value:x}");
                     }
-                    SyntaxElementKind::UnprocessedToken {
+                    NodeKind::UnprocessedToken {
                         token: Token::IntegerSigned { value },
                     } => {
                         println!("{value}");
                     }
-                    SyntaxElementKind::UnprocessedToken {
+                    NodeKind::UnprocessedToken {
                         token: Token::IntegerUnsigned { value },
                     } => {
                         println!("{value}");

@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    syntax::{NodeId, SyntaxElementKind, SyntaxNode},
+    syntax::{NodeId, NodeKind, SyntaxNode},
     types::Type,
 };
 
@@ -17,7 +17,7 @@ impl Resolver {
     }
 
     pub fn process_syntax_element(&mut self, syntax_node: &SyntaxNode) {
-        let SyntaxElementKind::Identifier { name } = &syntax_node.kind else {
+        let NodeKind::Identifier { name } = &syntax_node.kind else {
             return;
         };
 
