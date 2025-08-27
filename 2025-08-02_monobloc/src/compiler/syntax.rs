@@ -1,7 +1,7 @@
 use crate::compiler::tokens::{IntegerFormat, Token};
 
 pub struct Parser {
-    pub next_id: NodeId,
+    next_id: NodeId,
 }
 
 impl Parser {
