@@ -54,7 +54,7 @@ pub fn compile(
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
 
-    let mut tokens = Vec::new();
+    let mut syntax = Vec::new();
 
     loop {
         let Some(ch) = input_code.next() else {
@@ -64,7 +64,7 @@ pub fn compile(
         match tokenizer.process_char(ch) {
             Some(token) => {
                 let token = parser.process_token(token);
-                tokens.push(token);
+                syntax.push(token);
             }
             None => {
                 if interactive {
@@ -76,7 +76,7 @@ pub fn compile(
         if interactive {
             let mut prev_token: Option<&Token> = None;
 
-            for token in &tokens {
+            for token in &syntax {
                 let SyntaxElement::UnprocessedToken { token } = token;
 
                 match (prev_token, token) {
@@ -121,7 +121,7 @@ pub fn compile(
         }
     }
 
-    let root = compile_tokens(tokens);
+    let root = compile_tokens(syntax);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,
