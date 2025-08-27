@@ -76,8 +76,8 @@ pub fn compile(
         if interactive {
             let mut prev_token: Option<&Token> = None;
 
-            for token in &syntax {
-                let SyntaxElement::UnprocessedToken { token } = token;
+            for syntax_element in &syntax {
+                let SyntaxElement::UnprocessedToken { token } = syntax_element;
 
                 match (prev_token, token) {
                     (Some(Token::Comment { .. }), Token::Comment { .. }) => {
