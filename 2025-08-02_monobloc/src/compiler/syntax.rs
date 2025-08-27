@@ -27,7 +27,7 @@ pub struct SyntaxElement {
     pub kind: SyntaxElementKind,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
 pub struct SyntaxElementId {
     pub inner: u64,
 }
