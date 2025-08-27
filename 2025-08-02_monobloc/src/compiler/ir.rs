@@ -68,17 +68,17 @@ pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
             Token::IntegerHex { value } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
 
-                body.push(Expression::Value { value });
+                body.push(Expression::Integer { value });
                 stack.push(Type::I32);
             }
             Token::IntegerSigned { value } => {
-                body.push(Expression::Value { value });
+                body.push(Expression::Integer { value });
                 stack.push(Type::I32);
             }
             Token::IntegerUnsigned { value } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
 
-                body.push(Expression::Value { value });
+                body.push(Expression::Integer { value });
                 stack.push(Type::I32);
             }
         }
@@ -140,7 +140,7 @@ pub enum Expression {
     Assert,
 
     // Literals
-    Value { value: i32 },
+    Integer { value: i32 },
 
     // Comparisons
     Equals,
