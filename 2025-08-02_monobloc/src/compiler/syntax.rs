@@ -11,7 +11,7 @@ impl Parser {
         }
     }
 
-    pub fn process_token(&mut self, token: Token) -> SyntaxNode {
+    pub fn process_token(&mut self, token: Token) -> Option<SyntaxNode> {
         let id = self.next_id;
         self.next_id.inner += 1;
 
@@ -23,7 +23,7 @@ impl Parser {
             }
         };
 
-        SyntaxNode { id, kind }
+        Some(SyntaxNode { id, kind })
     }
 }
 
