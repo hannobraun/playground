@@ -41,8 +41,8 @@ pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
     };
     let mut body = Vec::new();
 
-    for token in syntax {
-        let SyntaxElement::UnprocessedToken { token } = token;
+    for syntax_element in syntax {
+        let SyntaxElement::UnprocessedToken { token } = syntax_element;
 
         match token {
             Token::Comment { text: _ } => {
