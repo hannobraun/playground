@@ -7,6 +7,7 @@ use crate::{
     args::Args,
     compiler::{
         input_code::read_input_code,
+        intrinsics::Resolver,
         ir::generate_ir,
         syntax::{Parser, SyntaxElementKind},
         tokens::{Token, Tokenizer},
@@ -53,6 +54,7 @@ pub fn compile(
 
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
+    let resolver = Resolver::new();
 
     let mut syntax = Vec::new();
 
@@ -122,7 +124,7 @@ pub fn compile(
         }
     }
 
-    let root = generate_ir(syntax);
+    let root = generate_ir(syntax, &resolver);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,
