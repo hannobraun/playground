@@ -1,20 +1,20 @@
-use std::{
-    fs::File,
-    io::Write,
-    path::{Path, PathBuf},
-};
+use std::{fs::File, io::Write, path::Path};
 
 use anyhow::Context;
 use clap::Parser;
 use walkdir::WalkDir;
 
-use crate::compiler::{
-    input_code::read_input_code,
-    ir::compile_tokens,
-    tokens::{Token, Tokenizer},
-    wasm,
+use crate::{
+    args::Args,
+    compiler::{
+        input_code::read_input_code,
+        ir::compile_tokens,
+        tokens::{Token, Tokenizer},
+        wasm,
+    },
 };
 
+mod args;
 mod compiler;
 mod runtime;
 
@@ -39,14 +39,6 @@ fn main() -> anyhow::Result<()> {
     }
 
     Ok(())
-}
-
-#[derive(clap::Parser)]
-pub struct Args {
-    pub program: Option<PathBuf>,
-
-    #[arg(short, long)]
-    pub interactive: bool,
 }
 
 pub fn compile(
