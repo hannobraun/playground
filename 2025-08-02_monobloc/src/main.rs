@@ -126,13 +126,6 @@ pub fn compile(
                         println!("#{text}");
                     }
                     NodeKind::UnprocessedToken {
-                        token: Token::Identifier { name: _ },
-                    } => {
-                        unreachable!(
-                            "`Token::Identifier` gets processed by the parser."
-                        );
-                    }
-                    NodeKind::UnprocessedToken {
                         token: Token::IntegerHex { value },
                     } => {
                         println!("{value:x}");
@@ -146,6 +139,11 @@ pub fn compile(
                         token: Token::IntegerUnsigned { value },
                     } => {
                         println!("{value}");
+                    }
+                    NodeKind::UnprocessedToken { token: _ } => {
+                        unreachable!(
+                            "All other tokens get processed by the parser."
+                        );
                     }
                 }
 
