@@ -31,7 +31,9 @@ impl Tokenizer {
                     .strip_prefix("0x")
                     .and_then(|s| u32::from_str_radix(s, 16).ok());
 
-                let token = if let Some(value) = token_as_unsigned_int {
+                let token = if buf == "=>" {
+                    Token::Binding
+                } else if let Some(value) = token_as_unsigned_int {
                     Token::Integer {
                         value,
                         format: IntegerFormat::Unsigned,
@@ -48,8 +50,6 @@ impl Tokenizer {
                         value,
                         format: IntegerFormat::Hex,
                     }
-                } else if buf == "=>" {
-                    Token::Binding
                 } else {
                     Token::Identifier { name: buf }
                 };
