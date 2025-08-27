@@ -38,6 +38,7 @@ impl Tokenizer {
                     }
                 } else if let Some(value) = token_as_signed_int {
                     let value = u32::from_le_bytes(value.to_le_bytes());
+
                     Token::Integer {
                         value,
                         format: IntegerFormat::Signed,
