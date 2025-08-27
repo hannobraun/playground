@@ -1,13 +1,14 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
+    intrinsics::Intrinsic,
     syntax::{SyntaxElement, SyntaxElementKind},
     tokens::Token,
 };
 
 pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
     let intrinsics = {
-        use self::{Expression::*, Type::*};
+        use self::{Intrinsic::*, Type::*};
 
         let mut map = BTreeMap::new();
         map.extend([
@@ -56,7 +57,9 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
                 if let Some((expression, [inputs, outputs])) =
                     intrinsics.get(name.as_str()).copied()
                 {
-                    body.push(expression);
+                    body.push(Expression::Intrinsic {
+                        intrinsic: expression,
+                    });
 
                     for &input in inputs {
                         stack.pop(input);
@@ -66,23 +69,31 @@ pub fn generate_ir(syntax: Vec<SyntaxElement>) -> Function {
                     }
                 } else {
                     println!("Unknown identifier: `{name}`");
-                    body.push(Expression::Panic);
+                    body.push(Expression::Intrinsic {
+                        intrinsic: Intrinsic::Panic,
+                    });
                 }
             }
             Token::IntegerHex { value } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
 
-                body.push(Expression::Integer { value });
+                body.push(Expression::Intrinsic {
+                    intrinsic: Intrinsic::Integer { value },
+                });
                 stack.push(Type::I32);
             }
             Token::IntegerSigned { value } => {
-                body.push(Expression::Integer { value });
+                body.push(Expression::Intrinsic {
+                    intrinsic: Intrinsic::Integer { value },
+                });
                 stack.push(Type::I32);
             }
             Token::IntegerUnsigned { value } => {
                 let value = i32::from_le_bytes(value.to_le_bytes());
 
-                body.push(Expression::Integer { value });
+                body.push(Expression::Intrinsic {
+                    intrinsic: Intrinsic::Integer { value },
+                });
                 stack.push(Type::I32);
             }
         }
@@ -139,37 +150,5 @@ pub type Body = Vec<Expression>;
 
 #[derive(Clone, Copy)]
 pub enum Expression {
-    // Panics
-    Assert,
-    Panic,
-
-    // Literals
-    Integer { value: i32 },
-
-    // Comparisons
-    Equals,
-    GreaterThan,
-    GreaterThanOrEquals,
-    LessThan,
-    LessThanOrEquals,
-    Not,
-
-    // Arithmetic
-    Add,
-    Divide,
-    Multiply,
-    Remainder,
-    Subtract,
-
-    // Bitwise operations
-    And,
-    CountOnes,
-    LeadingZeros,
-    Or,
-    RotateLeft,
-    RotateRight,
-    ShiftLeft,
-    ShiftRight,
-    TrailingZeros,
-    Xor,
+    Intrinsic { intrinsic: Intrinsic },
 }
