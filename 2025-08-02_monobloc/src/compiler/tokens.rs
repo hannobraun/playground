@@ -34,6 +34,7 @@ impl Tokenizer {
                 let token = if let Some(value) = token_as_unsigned_int {
                     Token::IntegerUnsigned { value }
                 } else if let Some(value) = token_as_signed_int {
+                    let value = u32::from_le_bytes(value.to_le_bytes());
                     Token::IntegerSigned { value }
                 } else if let Some(value) = token_as_hex_int {
                     Token::IntegerHex { value }
@@ -72,6 +73,6 @@ pub enum Token {
     Comment { text: String },
     Identifier { name: String },
     IntegerHex { value: u32 },
-    IntegerSigned { value: i32 },
+    IntegerSigned { value: u32 },
     IntegerUnsigned { value: u32 },
 }
