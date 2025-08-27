@@ -25,7 +25,7 @@ pub fn generate_ir(
             }
             Token::Identifier { name } => {
                 if let Some(intrinsic) =
-                    resolver.intrinsics.get(name.as_str()).copied()
+                    resolver.intrinsics.get(&syntax_element.id).copied()
                 {
                     let [inputs, outputs] = intrinsic.signature();
 

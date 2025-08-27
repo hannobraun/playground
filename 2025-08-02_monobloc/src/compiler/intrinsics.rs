@@ -1,46 +1,61 @@
 use std::collections::BTreeMap;
 
-use crate::compiler::{syntax::SyntaxElement, types::Type};
+use crate::compiler::{
+    syntax::{SyntaxElement, SyntaxElementId, SyntaxElementKind},
+    tokens::Token,
+    types::Type,
+};
 
 pub struct Resolver {
-    pub intrinsics: BTreeMap<&'static str, Intrinsic>,
+    pub intrinsics: BTreeMap<SyntaxElementId, Intrinsic>,
 }
 
 impl Resolver {
     pub fn new() -> Self {
-        use self::Intrinsic::*;
-
-        let mut intrinsics = BTreeMap::new();
-        intrinsics.extend([
-            ("%", Remainder),
-            ("*", Multiply),
-            ("+", Add),
-            ("-", Subtract),
-            ("/", Divide),
-            ("<", LessThan),
-            ("<=", LessThanOrEquals),
-            ("=", Equals),
-            (">", GreaterThan),
-            (">=", GreaterThanOrEquals),
-            ("and", And),
-            ("assert", Assert),
-            ("count_ones", CountOnes),
-            ("leading_zeros", LeadingZeros),
-            ("not", Not),
-            ("or", Or),
-            ("rotate_left", RotateLeft),
-            ("rotate_right", RotateRight),
-            ("shift_left", ShiftLeft),
-            ("shift_right", ShiftRight),
-            ("trailing_zeros", TrailingZeros),
-            ("xor", Xor),
-        ]);
-
-        Self { intrinsics }
+        Self {
+            intrinsics: BTreeMap::new(),
+        }
     }
 
     pub fn process_syntax_element(&mut self, syntax_element: &SyntaxElement) {
-        let _ = syntax_element;
+        let SyntaxElementKind::UnprocessedToken {
+            token: Token::Identifier { name },
+        } = &syntax_element.kind
+        else {
+            return;
+        };
+
+        use self::Intrinsic::*;
+        let intrinsic = match name.as_str() {
+            "%" => Remainder,
+            "*" => Multiply,
+            "+" => Add,
+            "-" => Subtract,
+            "/" => Divide,
+            "<" => LessThan,
+            "<=" => LessThanOrEquals,
+            "=" => Equals,
+            ">" => GreaterThan,
+            ">=" => GreaterThanOrEquals,
+            "and" => And,
+            "assert" => Assert,
+            "count_ones" => CountOnes,
+            "leading_zeros" => LeadingZeros,
+            "not" => Not,
+            "or" => Or,
+            "rotate_left" => RotateLeft,
+            "rotate_right" => RotateRight,
+            "shift_left" => ShiftLeft,
+            "shift_right" => ShiftRight,
+            "trailing_zeros" => TrailingZeros,
+            "xor" => Xor,
+
+            _ => {
+                return;
+            }
+        };
+
+        self.intrinsics.insert(syntax_element.id, intrinsic);
     }
 }
 
