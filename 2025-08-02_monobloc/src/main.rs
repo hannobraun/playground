@@ -82,32 +82,17 @@ pub fn compile(
             for node in &syntax {
                 match (prev_node, &node.kind) {
                     (
-                        Some(NodeKind::UnprocessedToken {
-                            token: Token::Comment { .. },
-                        }),
-                        NodeKind::UnprocessedToken {
-                            token: Token::Comment { .. },
-                        },
+                        Some(NodeKind::Comment { .. }),
+                        NodeKind::Comment { .. },
                     ) => {
                         // Already printed a newline at the end of the previous
                         // comment.
                     }
-                    (
-                        Some(_),
-                        NodeKind::UnprocessedToken {
-                            token: Token::Comment { .. },
-                        },
-                    ) => {
+                    (Some(_), NodeKind::Comment { .. }) => {
                         // Start comment on a new line.
                         println!();
                     }
-                    (
-                        Some(NodeKind::UnprocessedToken {
-                            token: Token::Comment { .. },
-                        })
-                        | None,
-                        _,
-                    ) => {
+                    (Some(NodeKind::Comment { .. }) | None, _) => {
                         // We are on a fresh line. Nothing to prepare.
                     }
                     (Some(_), _) => {
@@ -117,13 +102,11 @@ pub fn compile(
                 }
 
                 match &node.kind {
+                    NodeKind::Comment { text } => {
+                        println!("#{text}");
+                    }
                     NodeKind::Identifier { name } => {
                         println!("{name}");
-                    }
-                    NodeKind::UnprocessedToken {
-                        token: Token::Comment { text },
-                    } => {
-                        println!("#{text}");
                     }
                     NodeKind::UnprocessedToken {
                         token: Token::IntegerHex { value },

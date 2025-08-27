@@ -16,6 +16,7 @@ impl Parser {
         self.next_id.inner += 1;
 
         let kind = match token {
+            Token::Comment { text } => NodeKind::Comment { text },
             Token::Identifier { name } => NodeKind::Identifier { name },
             token => NodeKind::UnprocessedToken { token },
         };
@@ -35,6 +36,7 @@ pub struct NodeId {
 }
 
 pub enum NodeKind {
+    Comment { text: String },
     Identifier { name: String },
     UnprocessedToken { token: Token },
 }

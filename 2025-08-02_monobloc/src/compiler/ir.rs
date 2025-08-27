@@ -14,6 +14,9 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
 
     for node in syntax {
         match node.kind {
+            NodeKind::Comment { text: _ } => {
+                // ignoring comment
+            }
             NodeKind::Identifier { name } => {
                 if let Some(intrinsic) =
                     resolver.intrinsics.get(&node.id).copied()
@@ -34,11 +37,6 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                         intrinsic: Intrinsic::Panic,
                     });
                 }
-            }
-            NodeKind::UnprocessedToken {
-                token: Token::Comment { text: _ },
-            } => {
-                // ignoring comment
             }
             NodeKind::UnprocessedToken {
                 token: Token::IntegerHex { value },
