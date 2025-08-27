@@ -16,6 +16,10 @@ impl Parser {
         self.next_id.inner += 1;
 
         let kind = match token {
+            Token::Assignment => {
+                // Not supported yet; ignore for now.
+                return None;
+            }
             Token::Comment { text } => NodeKind::Comment { text },
             Token::Identifier { name } => NodeKind::Identifier { name },
             Token::Integer { value, format } => {

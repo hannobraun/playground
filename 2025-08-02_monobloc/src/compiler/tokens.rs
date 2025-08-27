@@ -48,6 +48,8 @@ impl Tokenizer {
                         value,
                         format: IntegerFormat::Hex,
                     }
+                } else if buf == "=>" {
+                    Token::Assignment
                 } else {
                     Token::Identifier { name: buf }
                 };
@@ -80,6 +82,7 @@ pub enum State {
 
 #[derive(Debug)]
 pub enum Token {
+    Assignment,
     Comment { text: String },
     Identifier { name: String },
     Integer { value: u32, format: IntegerFormat },
