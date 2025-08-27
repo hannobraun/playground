@@ -79,8 +79,8 @@ pub fn compile(
         if interactive {
             let mut prev_node: Option<&SyntaxElementKind> = None;
 
-            for syntax_element in &syntax {
-                match (prev_node, &syntax_element.kind) {
+            for node in &syntax {
+                match (prev_node, &node.kind) {
                     (
                         Some(SyntaxElementKind::UnprocessedToken {
                             token: Token::Comment { .. },
@@ -116,7 +116,7 @@ pub fn compile(
                     }
                 }
 
-                match &syntax_element.kind {
+                match &node.kind {
                     SyntaxElementKind::Identifier { name } => {
                         println!("{name}");
                     }
@@ -149,7 +149,7 @@ pub fn compile(
                     }
                 }
 
-                prev_node = Some(&syntax_element.kind);
+                prev_node = Some(&node.kind);
             }
             println!();
         }
