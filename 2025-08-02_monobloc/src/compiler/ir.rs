@@ -49,8 +49,6 @@ pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
             NodeKind::UnprocessedToken {
                 token: Token::IntegerSigned { value },
             } => {
-                let value = u32::from_le_bytes(value.to_le_bytes());
-
                 body.push(Expression::Intrinsic {
                     intrinsic: Intrinsic::Integer { value },
                 });
