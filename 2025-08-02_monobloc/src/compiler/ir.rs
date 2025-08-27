@@ -1,6 +1,9 @@
 use std::collections::BTreeMap;
 
-use crate::compiler::{syntax::SyntaxElement, tokens::Token};
+use crate::compiler::{
+    syntax::{SyntaxElement, SyntaxElementKind},
+    tokens::Token,
+};
 
 pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
     let intrinsics = {
@@ -42,7 +45,7 @@ pub fn compile_tokens(syntax: Vec<SyntaxElement>) -> Function {
     let mut body = Vec::new();
 
     for syntax_element in syntax {
-        let SyntaxElement::UnprocessedToken { token } = syntax_element;
+        let SyntaxElementKind::UnprocessedToken { token } = syntax_element.kind;
 
         match token {
             Token::Comment { text: _ } => {

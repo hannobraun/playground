@@ -8,7 +8,7 @@ use crate::{
     compiler::{
         input_code::read_input_code,
         ir::compile_tokens,
-        syntax::{Parser, SyntaxElement},
+        syntax::{Parser, SyntaxElementKind},
         tokens::{Token, Tokenizer},
         wasm,
     },
@@ -77,7 +77,8 @@ pub fn compile(
             let mut prev_token: Option<&Token> = None;
 
             for syntax_element in &syntax {
-                let SyntaxElement::UnprocessedToken { token } = syntax_element;
+                let SyntaxElementKind::UnprocessedToken { token } =
+                    &syntax_element.kind;
 
                 match (prev_token, token) {
                     (Some(Token::Comment { .. }), Token::Comment { .. }) => {

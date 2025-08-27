@@ -8,10 +8,16 @@ impl Parser {
     }
 
     pub fn process_token(&mut self, token: Token) -> SyntaxElement {
-        SyntaxElement::UnprocessedToken { token }
+        SyntaxElement {
+            kind: SyntaxElementKind::UnprocessedToken { token },
+        }
     }
 }
 
-pub enum SyntaxElement {
+pub struct SyntaxElement {
+    pub kind: SyntaxElementKind,
+}
+
+pub enum SyntaxElementKind {
     UnprocessedToken { token: Token },
 }
