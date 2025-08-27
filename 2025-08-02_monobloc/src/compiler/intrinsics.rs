@@ -16,9 +16,8 @@ impl Resolver {
         }
     }
 
-    pub fn process_syntax_element(&mut self, syntax_element: &SyntaxNode) {
-        let SyntaxElementKind::Identifier { name } = &syntax_element.kind
-        else {
+    pub fn process_syntax_element(&mut self, syntax_node: &SyntaxNode) {
+        let SyntaxElementKind::Identifier { name } = &syntax_node.kind else {
             return;
         };
 
@@ -52,7 +51,7 @@ impl Resolver {
             }
         };
 
-        self.intrinsics.insert(syntax_element.id, intrinsic);
+        self.intrinsics.insert(syntax_node.id, intrinsic);
     }
 }
 
