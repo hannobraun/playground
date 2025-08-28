@@ -31,8 +31,7 @@ struct Code<'a> {
 impl Emit for Code<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let mut func = Vec::new();
-        let locals: &[Locals] = &[];
-        WasmVec { items: locals }.emit(&mut func);
+        LocalsVec.emit(&mut func);
         Expressions { body: self.body }.emit(&mut func);
 
         let size = func.len();
@@ -42,6 +41,15 @@ impl Emit for Code<'_> {
 
         Leb128::U32 { value: size }.emit(target);
         target.extend(func);
+    }
+}
+
+struct LocalsVec;
+
+impl Emit for LocalsVec {
+    fn emit(&self, target: &mut Vec<u8>) {
+        let locals: &[Locals] = &[];
+        WasmVec { items: locals }.emit(target);
     }
 }
 
