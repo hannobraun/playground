@@ -2,7 +2,7 @@ use crate::compiler::{
     ir,
     wasm::{
         Emit, expressions::Expressions, leb128::Leb128, section::emit_section,
-        vec::WasmVec,
+        val_type::ValType, vec::WasmVec,
     },
 };
 
@@ -53,8 +53,14 @@ impl Emit for LocalsVec {
     }
 }
 
-struct Locals;
+struct Locals {
+    pub n: u32,
+    pub val_type: ValType,
+}
 
 impl Emit for Locals {
-    fn emit(&self, _: &mut Vec<u8>) {}
+    fn emit(&self, target: &mut Vec<u8>) {
+        Leb128::U32 { value: self.n }.emit(target);
+        self.val_type.emit(target);
+    }
 }
