@@ -7,8 +7,8 @@ use crate::{
     args::Args,
     compiler::{
         input_code::read_input_code,
-        intrinsics::Resolver,
         ir,
+        resolver::Resolver,
         syntax::{NodeKind, Parser},
         tokens::{IntegerFormat, Tokenizer},
         wasm,

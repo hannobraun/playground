@@ -1,9 +1,9 @@
 use crate::compiler::{
-    intrinsics::Resolver,
     ir::{
         Expression, Function, Intrinsic,
         types::{Signature, Type, Types},
     },
+    resolver::Resolver,
     syntax::{NodeKind, SyntaxNode},
 };
 
