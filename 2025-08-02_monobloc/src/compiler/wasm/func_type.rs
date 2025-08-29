@@ -1,8 +1,5 @@
 use crate::compiler::{
-    ir::{
-        Type,
-        types::{Signature, Types},
-    },
+    ir::{Signature, Type, types::Types},
     wasm::{
         Emit,
         val_type::{NumType, ValType},

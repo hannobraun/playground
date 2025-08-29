@@ -1,9 +1,12 @@
-use crate::compiler::{intrinsics::Intrinsic, ir::types::Signature};
+use crate::compiler::intrinsics::Intrinsic;
 
 mod generate;
 pub mod types;
 
-pub use self::{generate::generate, types::Type};
+pub use self::{
+    generate::generate,
+    types::{Signature, Type},
+};
 
 pub struct Function {
     pub signature: Signature,
