@@ -28,6 +28,7 @@ impl Emit for ResultType<'_> {
             .iter()
             .map(|ty| ValType { ty })
             .collect::<Vec<_>>();
+
         WasmVec { items: &types }.emit(target);
     }
 }
