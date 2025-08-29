@@ -1,7 +1,7 @@
 use crate::compiler::intrinsics::Intrinsic;
 
 mod generate;
-pub mod types;
+mod types;
 
 pub use self::{
     generate::generate,
