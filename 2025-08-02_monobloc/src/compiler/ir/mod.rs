@@ -10,6 +10,7 @@ pub use self::{
 
 pub struct Function {
     pub signature: Signature,
+    pub bindings: Bindings,
     pub body: Body,
 }
 

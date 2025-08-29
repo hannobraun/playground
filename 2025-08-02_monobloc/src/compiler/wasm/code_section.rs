@@ -15,10 +15,9 @@ impl Emit for CodeSection<'_> {
         let id = 10;
 
         let mut contents = Vec::new();
-        let bindings = Vec::new();
         WasmVec {
             items: &[Code {
-                bindings: &bindings,
+                bindings: &self.root.bindings,
                 body: &self.root.body,
             }],
         }

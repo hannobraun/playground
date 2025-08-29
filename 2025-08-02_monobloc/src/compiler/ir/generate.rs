@@ -57,6 +57,7 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
             inputs: stack.inputs,
             outputs: stack.outputs,
         },
+        bindings: Vec::new(),
         body,
     }
 }
