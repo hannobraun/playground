@@ -1,8 +1,10 @@
 use crate::compiler::{
     intrinsics::{Intrinsic, Resolver},
-    ir::{Expression, Function},
+    ir::{
+        Expression, Function,
+        types::{Signature, Type, Types},
+    },
     syntax::{NodeKind, SyntaxNode},
-    types::{Signature, Type, Types},
 };
 
 pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {

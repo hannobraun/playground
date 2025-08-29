@@ -1,6 +1,7 @@
-use crate::compiler::{intrinsics::Intrinsic, types::Signature};
+use crate::compiler::{intrinsics::Intrinsic, ir::types::Signature};
 
 mod generate;
+pub mod types;
 
 pub use self::generate::generate;
 
