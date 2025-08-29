@@ -12,6 +12,8 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
         inputs: Vec::new(),
         outputs: Vec::new(),
     };
+
+    let bindings = Vec::new();
     let mut body = Vec::new();
 
     for node in syntax {
@@ -57,7 +59,7 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
             inputs: stack.inputs,
             outputs: stack.outputs,
         },
-        bindings: Vec::new(),
+        bindings,
         body,
     }
 }
