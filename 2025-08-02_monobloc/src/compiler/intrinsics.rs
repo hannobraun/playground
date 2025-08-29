@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    ir::types::Type,
+    ir::Type,
     syntax::{NodeId, NodeKind, SyntaxNode},
 };
 

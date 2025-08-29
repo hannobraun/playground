@@ -3,7 +3,7 @@ use crate::compiler::{intrinsics::Intrinsic, ir::types::Signature};
 mod generate;
 pub mod types;
 
-pub use self::generate::generate;
+pub use self::{generate::generate, types::Type};
 
 pub struct Function {
     pub signature: Signature,
