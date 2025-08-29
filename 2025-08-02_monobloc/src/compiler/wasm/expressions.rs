@@ -1,6 +1,5 @@
 use crate::compiler::{
-    intrinsics::Intrinsic,
-    ir,
+    ir::{self, Intrinsic},
     wasm::{
         Emit,
         instruction::{BlockType, End, Instruction},

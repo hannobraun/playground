@@ -1,10 +1,10 @@
-use crate::compiler::intrinsics::Intrinsic;
-
 mod generate;
+mod intrinsics;
 mod types;
 
 pub use self::{
     generate::generate,
+    intrinsics::Intrinsic,
     types::{Signature, Type, Types},
 };
 
