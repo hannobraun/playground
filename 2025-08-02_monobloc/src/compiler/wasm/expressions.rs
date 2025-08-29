@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir::{self},
+    ir,
     wasm::{
         Emit,
         instruction::{BlockType, End, Instruction},
