@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir::{self, Type, Types},
+    ir::{self, Types},
     wasm::{
         Emit,
         val_type::{NumType, ValType},
@@ -36,9 +36,9 @@ fn compile_types(types: &Types) -> Vec<ValType> {
     types.iter().map(compile_type).collect()
 }
 
-fn compile_type(ty: &Type) -> ValType {
+fn compile_type(ty: &ir::Type) -> ValType {
     match ty {
-        Type::I32 => ValType::NumType {
+        ir::Type::I32 => ValType::NumType {
             num_type: NumType::I32,
         },
     }
