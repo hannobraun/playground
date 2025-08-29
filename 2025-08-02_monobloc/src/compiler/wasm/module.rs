@@ -21,9 +21,6 @@ impl Emit for Module<'_> {
         .emit(target);
         FunctionSection.emit(target);
         ExportSection.emit(target);
-        CodeSection {
-            root: &self.root.body,
-        }
-        .emit(target);
+        CodeSection { root: self.root }.emit(target);
     }
 }
