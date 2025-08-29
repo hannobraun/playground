@@ -1,15 +1,13 @@
-use crate::compiler::wasm::Emit;
+use crate::compiler::{ir, wasm::Emit};
 
-pub enum ValType {
-    NumType { num_type: NumType },
+pub struct ValType<'a> {
+    pub ty: &'a ir::Type,
 }
 
-impl Emit for ValType {
+impl Emit for ValType<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        match self {
-            ValType::NumType { num_type } => {
-                num_type.emit(target);
-            }
+        match self.ty {
+            ir::Type::I32 => NumType::I32.emit(target),
         }
     }
 }

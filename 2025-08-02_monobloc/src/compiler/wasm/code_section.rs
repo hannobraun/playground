@@ -53,12 +53,12 @@ impl Emit for LocalsVec {
     }
 }
 
-struct Locals {
+struct Locals<'a> {
     pub n: u32,
-    pub val_type: ValType,
+    pub val_type: ValType<'a>,
 }
 
-impl Emit for Locals {
+impl Emit for Locals<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         Leb128::U32 { value: self.n }.emit(target);
         self.val_type.emit(target);

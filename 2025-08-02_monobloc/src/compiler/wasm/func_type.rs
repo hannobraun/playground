@@ -1,10 +1,6 @@
 use crate::compiler::{
     ir,
-    wasm::{
-        Emit,
-        val_type::{NumType, ValType},
-        vec::WasmVec,
-    },
+    wasm::{Emit, val_type::ValType, vec::WasmVec},
 };
 
 pub struct FuncType<'a> {
@@ -32,14 +28,10 @@ impl Emit for ResultType<'_> {
     }
 }
 
-fn compile_types(types: &ir::Types) -> Vec<ValType> {
+fn compile_types(types: &ir::Types) -> Vec<ValType<'_>> {
     types.iter().map(compile_type).collect()
 }
 
-fn compile_type(ty: &ir::Type) -> ValType {
-    match ty {
-        ir::Type::I32 => ValType::NumType {
-            num_type: NumType::I32,
-        },
-    }
+fn compile_type(ty: &ir::Type) -> ValType<'_> {
+    ValType { ty }
 }
