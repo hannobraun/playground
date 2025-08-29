@@ -15,8 +15,12 @@ impl Emit for CodeSection<'_> {
         let id = 10;
 
         let mut contents = Vec::new();
+        let bindings = Vec::new();
         WasmVec {
-            items: &[Code { body: self.root }],
+            items: &[Code {
+                bindings: &bindings,
+                body: self.root,
+            }],
         }
         .emit(&mut contents);
 
@@ -25,15 +29,15 @@ impl Emit for CodeSection<'_> {
 }
 
 struct Code<'a> {
+    pub bindings: &'a ir::Bindings,
     pub body: &'a ir::Body,
 }
 
 impl Emit for Code<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let mut func = Vec::new();
-        let bindings = Vec::new();
         LocalsVec {
-            bindings: &bindings,
+            bindings: self.bindings,
         }
         .emit(&mut func);
         Expressions { body: self.body }.emit(&mut func);
