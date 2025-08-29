@@ -13,6 +13,8 @@ pub struct Function {
     pub body: Body,
 }
 
+pub type Bindings = Vec<Type>;
+
 pub type Body = Vec<Expression>;
 
 #[derive(Clone, Copy)]

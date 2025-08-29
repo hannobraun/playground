@@ -31,7 +31,11 @@ struct Code<'a> {
 impl Emit for Code<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let mut func = Vec::new();
-        LocalsVec.emit(&mut func);
+        let bindings = Vec::new();
+        LocalsVec {
+            bindings: &bindings,
+        }
+        .emit(&mut func);
         Expressions { body: self.body }.emit(&mut func);
 
         let size = func.len();
@@ -44,11 +48,21 @@ impl Emit for Code<'_> {
     }
 }
 
-struct LocalsVec;
+struct LocalsVec<'a> {
+    pub bindings: &'a ir::Bindings,
+}
 
-impl Emit for LocalsVec {
+impl Emit for LocalsVec<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let locals: [Locals; 0] = [];
+        let locals = self
+            .bindings
+            .iter()
+            .map(|ty| Locals {
+                n: 1,
+                val_type: ValType { ty },
+            })
+            .collect::<Vec<_>>();
+
         WasmVec { items: &locals }.emit(target);
     }
 }
