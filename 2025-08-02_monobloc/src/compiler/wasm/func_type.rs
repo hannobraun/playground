@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir::{Signature, Type, Types},
+    ir::{self, Type, Types},
     wasm::{
         Emit,
         val_type::{NumType, ValType},
@@ -8,12 +8,12 @@ use crate::compiler::{
 };
 
 pub struct FuncType<'a> {
-    pub signature: &'a Signature,
+    pub signature: &'a ir::Signature,
 }
 
 impl Emit for FuncType<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let Signature { inputs, outputs } = self.signature;
+        let ir::Signature { inputs, outputs } = self.signature;
 
         target.push(0x60);
         ResultType { types: inputs }.emit(target);
