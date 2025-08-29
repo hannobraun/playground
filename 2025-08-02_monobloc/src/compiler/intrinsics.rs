@@ -21,7 +21,7 @@ impl Resolver {
             return;
         };
 
-        use self::Intrinsic::*;
+        use Intrinsic::*;
         let intrinsic = match name.as_str() {
             "%" => Remainder,
             "*" => Multiply,
