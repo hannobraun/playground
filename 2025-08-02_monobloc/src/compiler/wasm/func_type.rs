@@ -23,11 +23,11 @@ struct ResultType<'a> {
 
 impl Emit for ResultType<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let types = compile_types(self.types);
+        let types = self
+            .types
+            .iter()
+            .map(|ty| ValType { ty })
+            .collect::<Vec<_>>();
         WasmVec { items: &types }.emit(target);
     }
-}
-
-fn compile_types(types: &ir::Types) -> Vec<ValType<'_>> {
-    types.iter().map(|ty| ValType { ty }).collect()
 }
