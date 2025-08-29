@@ -8,7 +8,7 @@ use crate::{
     compiler::{
         input_code::read_input_code,
         intrinsics::Resolver,
-        ir::generate_ir,
+        ir,
         syntax::{NodeKind, Parser},
         tokens::{IntegerFormat, Tokenizer},
         wasm,
@@ -145,7 +145,7 @@ pub fn compile(
         }
     }
 
-    let root = generate_ir(syntax, &resolver);
+    let root = ir::generate_ir(syntax, &resolver);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,
