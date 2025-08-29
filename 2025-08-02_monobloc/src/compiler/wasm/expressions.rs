@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir::{self, Intrinsic},
+    ir::{self},
     wasm::{
         Emit,
         instruction::{BlockType, End, Instruction},
@@ -24,38 +24,38 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     let ir::Expression::Intrinsic { intrinsic } = expression;
 
     let instruction = match *intrinsic {
-        Intrinsic::Assert => Instruction::If {
+        ir::Intrinsic::Assert => Instruction::If {
             block_type: BlockType::Empty,
             then: vec![],
             else_: vec![Instruction::Unreachable],
         },
-        Intrinsic::Panic => Instruction::Unreachable,
+        ir::Intrinsic::Panic => Instruction::Unreachable,
 
-        Intrinsic::Integer { value } => Instruction::I32Const { value },
+        ir::Intrinsic::Integer { value } => Instruction::I32Const { value },
 
-        Intrinsic::Equals => Instruction::I32Eq,
-        Intrinsic::GreaterThan => Instruction::I32GtS,
-        Intrinsic::GreaterThanOrEquals => Instruction::I32GeS,
-        Intrinsic::LessThan => Instruction::I32LtS,
-        Intrinsic::LessThanOrEquals => Instruction::I32LeS,
-        Intrinsic::Not => Instruction::I32Eqz,
+        ir::Intrinsic::Equals => Instruction::I32Eq,
+        ir::Intrinsic::GreaterThan => Instruction::I32GtS,
+        ir::Intrinsic::GreaterThanOrEquals => Instruction::I32GeS,
+        ir::Intrinsic::LessThan => Instruction::I32LtS,
+        ir::Intrinsic::LessThanOrEquals => Instruction::I32LeS,
+        ir::Intrinsic::Not => Instruction::I32Eqz,
 
-        Intrinsic::Add => Instruction::I32Add,
-        Intrinsic::Divide => Instruction::I32DivS,
-        Intrinsic::Multiply => Instruction::I32Mul,
-        Intrinsic::Remainder => Instruction::I32RemS,
-        Intrinsic::Subtract => Instruction::I32Sub,
+        ir::Intrinsic::Add => Instruction::I32Add,
+        ir::Intrinsic::Divide => Instruction::I32DivS,
+        ir::Intrinsic::Multiply => Instruction::I32Mul,
+        ir::Intrinsic::Remainder => Instruction::I32RemS,
+        ir::Intrinsic::Subtract => Instruction::I32Sub,
 
-        Intrinsic::And => Instruction::I32And,
-        Intrinsic::CountOnes => Instruction::I32Popcnt,
-        Intrinsic::LeadingZeros => Instruction::I32Clz,
-        Intrinsic::Or => Instruction::I32Or,
-        Intrinsic::RotateLeft => Instruction::I32Rotl,
-        Intrinsic::RotateRight => Instruction::I32Rotr,
-        Intrinsic::ShiftLeft => Instruction::I32Shl,
-        Intrinsic::ShiftRight => Instruction::I32ShrS,
-        Intrinsic::TrailingZeros => Instruction::I32Ctz,
-        Intrinsic::Xor => Instruction::I32Xor,
+        ir::Intrinsic::And => Instruction::I32And,
+        ir::Intrinsic::CountOnes => Instruction::I32Popcnt,
+        ir::Intrinsic::LeadingZeros => Instruction::I32Clz,
+        ir::Intrinsic::Or => Instruction::I32Or,
+        ir::Intrinsic::RotateLeft => Instruction::I32Rotl,
+        ir::Intrinsic::RotateRight => Instruction::I32Rotr,
+        ir::Intrinsic::ShiftLeft => Instruction::I32Shl,
+        ir::Intrinsic::ShiftRight => Instruction::I32ShrS,
+        ir::Intrinsic::TrailingZeros => Instruction::I32Ctz,
+        ir::Intrinsic::Xor => Instruction::I32Xor,
     };
 
     instruction.emit(target);
