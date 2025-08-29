@@ -29,9 +29,5 @@ impl Emit for ResultType<'_> {
 }
 
 fn compile_types(types: &ir::Types) -> Vec<ValType<'_>> {
-    types.iter().map(|ty| compile_type(ty)).collect()
-}
-
-fn compile_type(ty: &ir::Type) -> ValType<'_> {
-    ValType { ty }
+    types.iter().map(|ty| ValType { ty }).collect()
 }
