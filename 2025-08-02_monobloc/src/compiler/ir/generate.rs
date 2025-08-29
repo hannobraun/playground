@@ -1,8 +1,8 @@
 use crate::compiler::{
     intrinsics::{Intrinsic, Resolver},
-    ir::{Expression, Function, Stack},
+    ir::{Expression, Function},
     syntax::{NodeKind, SyntaxNode},
-    types::{Signature, Type},
+    types::{Signature, Type, Types},
 };
 
 pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
@@ -56,5 +56,26 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
             outputs: stack.outputs,
         },
         body,
+    }
+}
+
+struct Stack {
+    inputs: Types,
+    outputs: Types,
+}
+
+impl Stack {
+    fn push(&mut self, ty: Type) {
+        self.outputs.push(ty);
+    }
+
+    fn pop(&mut self, ty: Type) {
+        if let Some(on_stack) = self.outputs.pop() {
+            // We're not checking yet, if the type matches. Since there's only
+            // one type so far, it would be redundant anyway.
+            let _ = on_stack;
+        } else {
+            self.inputs.push(ty);
+        }
     }
 }
