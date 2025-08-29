@@ -5,7 +5,7 @@ pub mod types;
 
 pub use self::{
     generate::generate,
-    types::{Signature, Type},
+    types::{Signature, Type, Types},
 };
 
 pub struct Function {
