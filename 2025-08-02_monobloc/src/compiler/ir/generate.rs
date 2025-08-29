@@ -5,7 +5,7 @@ use crate::compiler::{
     types::{Signature, Type},
 };
 
-pub fn generate_ir(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
+pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
     let mut stack = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),

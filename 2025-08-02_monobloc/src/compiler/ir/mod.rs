@@ -5,7 +5,7 @@ use crate::compiler::{
 
 mod generate;
 
-pub use self::generate::generate_ir;
+pub use self::generate::generate;
 
 struct Stack {
     inputs: Types,
