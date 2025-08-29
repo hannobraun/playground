@@ -48,8 +48,8 @@ struct LocalsVec;
 
 impl Emit for LocalsVec {
     fn emit(&self, target: &mut Vec<u8>) {
-        let locals: &[Locals] = &[];
-        WasmVec { items: locals }.emit(target);
+        let locals: [Locals; 0] = [];
+        WasmVec { items: &locals }.emit(target);
     }
 }
 
