@@ -24,12 +24,12 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                         "More than `u32::MAX` bindings per scope are not \
                         supported.",
                     );
+
                     bindings.push(Binding {
                         name,
                         index,
                         ty: Type::I32,
                     });
-
                     body.push(Expression::Bind { index });
 
                     // Not supported yet; ignoring for now.
