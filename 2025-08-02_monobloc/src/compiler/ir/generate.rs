@@ -20,7 +20,13 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
         match node.kind {
             NodeKind::Binding { names } => {
                 for name in names.into_iter().rev() {
+                    let index = bindings.len().try_into().expect(
+                        "More than `u32::MAX` bindings per scope are not \
+                        supported.",
+                    );
                     bindings.push(Binding { ty: Type::I32 });
+
+                    body.push(Expression::Bind { index });
 
                     // Not supported yet; ignoring for now.
                     let _ = name;

@@ -24,5 +24,6 @@ pub type Body = Vec<Expression>;
 
 #[derive(Clone, Copy)]
 pub enum Expression {
+    Bind { index: u32 },
     Intrinsic { intrinsic: Intrinsic },
 }

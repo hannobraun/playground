@@ -8,6 +8,10 @@ pub enum Instruction {
         else_: Vec<Instruction>,
     },
 
+    LocalSet {
+        index: u32,
+    },
+
     I32Const {
         value: u32,
     },
@@ -57,6 +61,11 @@ impl Emit for Instruction {
                     instruction.emit(target);
                 }
                 End.emit(target);
+            }
+
+            Self::LocalSet { index } => {
+                target.push(0x20);
+                Leb128::U32 { value: index }.emit(target);
             }
 
             Self::I32Const { value } => {
