@@ -64,7 +64,7 @@ impl Emit for Instruction {
             }
 
             Self::LocalSet { index } => {
-                target.push(0x20);
+                target.push(0x21);
                 Leb128::U32 { value: index }.emit(target);
             }
 
