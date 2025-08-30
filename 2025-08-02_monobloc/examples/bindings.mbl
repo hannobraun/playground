@@ -1,0 +1,5 @@
+# Using the binding operator `=>`, you can pop values from the stack and bind
+# names to them, creating a binding.
+1 2 => a b .
+a 1 = assert
+b 2 = assert

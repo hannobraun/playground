@@ -8,6 +8,9 @@ pub enum Instruction {
         else_: Vec<Instruction>,
     },
 
+    LocalGet {
+        index: u32,
+    },
     LocalSet {
         index: u32,
     },
@@ -63,6 +66,10 @@ impl Emit for Instruction {
                 End.emit(target);
             }
 
+            Self::LocalGet { index } => {
+                target.push(0x20);
+                Leb128::U32 { value: index }.emit(target);
+            }
             Self::LocalSet { index } => {
                 target.push(0x21);
                 Leb128::U32 { value: index }.emit(target);

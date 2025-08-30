@@ -24,7 +24,11 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                         "More than `u32::MAX` bindings per scope are not \
                         supported.",
                     );
-                    bindings.push(Binding { ty: Type::I32 });
+                    bindings.push(Binding {
+                        name,
+                        index,
+                        ty: Type::I32,
+                    });
 
                     body.push(Expression::Bind { index });
 
@@ -36,7 +40,13 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 // ignoring comment
             }
             NodeKind::Identifier { name } => {
-                if let Some(intrinsic) =
+                if let Some(binding) =
+                    bindings.iter().find(|binding| binding.name == name)
+                {
+                    body.push(Expression::CallBinding {
+                        index: binding.index,
+                    });
+                } else if let Some(intrinsic) =
                     resolver.intrinsics.get(&node.id).copied()
                 {
                     let [inputs, outputs] = intrinsic.signature();
