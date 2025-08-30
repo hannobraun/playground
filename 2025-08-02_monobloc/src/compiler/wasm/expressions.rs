@@ -21,9 +21,9 @@ impl Emit for Expressions<'_> {
 }
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
-    let ir::Expression::Intrinsic { intrinsic } = expression;
-
-    let instruction = compile_intrinsic(intrinsic);
+    let instruction = match expression {
+        ir::Expression::Intrinsic { intrinsic } => compile_intrinsic(intrinsic),
+    };
 
     instruction.emit(target);
 }
