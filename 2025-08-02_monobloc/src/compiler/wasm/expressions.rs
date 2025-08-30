@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir,
+    ir::{self, Intrinsic},
     wasm::{
         Emit,
         instruction::{BlockType, End, Instruction},
@@ -23,7 +23,13 @@ impl Emit for Expressions<'_> {
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     let ir::Expression::Intrinsic { intrinsic } = expression;
 
-    let instruction = match *intrinsic {
+    let instruction = compile_intrinsic(intrinsic);
+
+    instruction.emit(target);
+}
+
+pub fn compile_intrinsic(intrinsic: &Intrinsic) -> Instruction {
+    match *intrinsic {
         ir::Intrinsic::Assert => Instruction::If {
             block_type: BlockType::Empty,
             then: vec![],
@@ -56,7 +62,5 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
         ir::Intrinsic::ShiftRight => Instruction::I32ShrS,
         ir::Intrinsic::TrailingZeros => Instruction::I32Ctz,
         ir::Intrinsic::Xor => Instruction::I32Xor,
-    };
-
-    instruction.emit(target);
+    }
 }
