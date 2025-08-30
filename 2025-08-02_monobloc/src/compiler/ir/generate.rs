@@ -31,6 +31,7 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                         ty: Type::I32,
                     });
                     body.push(Expression::Bind { index });
+                    stack.pop(Type::I32);
                 }
             }
             NodeKind::Comment { text: _ } => {
@@ -43,6 +44,7 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                     body.push(Expression::CallBinding {
                         index: binding.index,
                     });
+                    stack.push(Type::I32);
                 } else if let Some(intrinsic) =
                     resolver.intrinsics.get(&node.id).copied()
                 {
