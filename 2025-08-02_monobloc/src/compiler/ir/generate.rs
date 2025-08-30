@@ -31,9 +31,6 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                         ty: Type::I32,
                     });
                     body.push(Expression::Bind { index });
-
-                    // Not supported yet; ignoring for now.
-                    let _ = name;
                 }
             }
             NodeKind::Comment { text: _ } => {
