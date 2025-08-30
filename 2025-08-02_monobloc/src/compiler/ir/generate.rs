@@ -1,6 +1,6 @@
 use crate::compiler::{
     ir::{
-        Expression, Function, Intrinsic,
+        Binding, Expression, Function, Intrinsic,
         types::{Signature, Type, Types},
     },
     resolver::Resolver,
@@ -13,13 +13,15 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
         outputs: Vec::new(),
     };
 
-    let bindings = Vec::new();
+    let mut bindings = Vec::new();
     let mut body = Vec::new();
 
     for node in syntax {
         match node.kind {
             NodeKind::Binding { names } => {
                 for name in names.into_iter().rev() {
+                    bindings.push(Binding { ty: Type::I32 });
+
                     // Not supported yet; ignoring for now.
                     let _ = name;
                 }
