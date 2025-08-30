@@ -14,7 +14,9 @@ pub struct Function {
     pub body: Body,
 }
 
-pub type Bindings = Vec<Type>;
+pub type Bindings = Vec<Binding>;
+
+pub type Binding = Type;
 
 pub type Body = Vec<Expression>;
 
