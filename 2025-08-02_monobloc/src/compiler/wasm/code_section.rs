@@ -60,9 +60,9 @@ impl Emit for LocalsVec<'_> {
         let locals = self
             .bindings
             .iter()
-            .map(|ty| Locals {
+            .map(|binding| Locals {
                 n: 1,
-                val_type: ValType { ty },
+                val_type: ValType { ty: &binding.ty },
             })
             .collect::<Vec<_>>();
 
