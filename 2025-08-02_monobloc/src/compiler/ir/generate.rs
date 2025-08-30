@@ -18,8 +18,11 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
 
     for node in syntax {
         match node.kind {
-            NodeKind::Binding { names: _ } => {
-                // Not supported yet; ignoring for now.
+            NodeKind::Binding { names } => {
+                for name in names.into_iter().rev() {
+                    // Not supported yet; ignoring for now.
+                    let _ = name;
+                }
             }
             NodeKind::Comment { text: _ } => {
                 // ignoring comment
