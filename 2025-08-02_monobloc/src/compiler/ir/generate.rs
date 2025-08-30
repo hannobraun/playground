@@ -39,7 +39,7 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
             }
             NodeKind::Identifier { name } => {
                 if let Some(binding) =
-                    bindings.iter().find(|binding| binding.name == name)
+                    bindings.iter().rev().find(|binding| binding.name == name)
                 {
                     body.push(Expression::CallBinding {
                         index: binding.index,
