@@ -37,6 +37,8 @@ impl Tokenizer {
                     Token::Terminator
                 } else if buf == "{" {
                     Token::BlockOpen
+                } else if buf == "}" {
+                    Token::BlockClose
                 } else if let Some(value) = token_as_unsigned_int {
                     Token::Integer {
                         value,
@@ -87,6 +89,7 @@ enum State {
 #[derive(Debug)]
 pub enum Token {
     Binding,
+    BlockClose,
     BlockOpen,
     Comment { text: String },
     Identifier { name: String },
