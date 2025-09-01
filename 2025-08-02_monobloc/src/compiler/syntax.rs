@@ -10,7 +10,7 @@ pub struct Parser {
 impl Parser {
     pub fn new() -> Self {
         Self {
-            state: vec![],
+            state: Vec::new(),
             next_id: NodeId { inner: 0 },
         }
     }
