@@ -3,14 +3,14 @@ use std::mem;
 use crate::compiler::tokens::{IntegerFormat, Token};
 
 pub struct Parser {
-    state: State,
+    state: Vec<State>,
     next_id: NodeId,
 }
 
 impl Parser {
     pub fn new() -> Self {
         Self {
-            state: State::Initial,
+            state: vec![State::Initial],
             next_id: NodeId { inner: 0 },
         }
     }
@@ -19,28 +19,30 @@ impl Parser {
         let id = self.next_id;
         self.next_id.inner += 1;
 
-        let kind = match (&mut self.state, token) {
-            (State::Initial, Token::Binding) => {
-                self.state = State::Binding { names: Vec::new() };
+        let kind = match (self.state.last_mut(), token) {
+            (Some(State::Initial), Token::Binding) => {
+                self.state.pop();
+                self.state.push(State::Binding { names: Vec::new() });
                 return None;
             }
-            (State::Initial, Token::Comment { text }) => {
+            (Some(State::Initial), Token::Comment { text }) => {
                 NodeKind::Comment { text }
             }
-            (State::Initial, Token::Identifier { name }) => {
+            (Some(State::Initial), Token::Identifier { name }) => {
                 NodeKind::Identifier { name }
             }
-            (State::Initial, Token::Integer { value, format }) => {
+            (Some(State::Initial), Token::Integer { value, format }) => {
                 NodeKind::Integer { value, format }
             }
-            (State::Binding { names }, Token::Identifier { name }) => {
+            (Some(State::Binding { names }), Token::Identifier { name }) => {
                 names.push(name);
                 return None;
             }
-            (State::Binding { names }, Token::Terminator) => {
+            (Some(State::Binding { names }), Token::Terminator) => {
                 let names = mem::take(names);
 
-                self.state = State::Initial;
+                self.state.pop();
+                self.state.push(State::Initial);
                 NodeKind::Binding { names }
             }
             (_, token) => {
