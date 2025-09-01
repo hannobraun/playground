@@ -10,7 +10,7 @@ pub struct Parser {
 impl Parser {
     pub fn new() -> Self {
         Self {
-            state: vec![State::Initial],
+            state: vec![],
             next_id: NodeId { inner: 0 },
         }
     }
@@ -20,18 +20,14 @@ impl Parser {
         self.next_id.inner += 1;
 
         let kind = match (self.state.last_mut(), token) {
-            (Some(State::Initial), Token::Binding) => {
+            (None, Token::Binding) => {
                 self.state.pop();
                 self.state.push(State::Binding { names: Vec::new() });
                 return None;
             }
-            (Some(State::Initial), Token::Comment { text }) => {
-                NodeKind::Comment { text }
-            }
-            (Some(State::Initial), Token::Identifier { name }) => {
-                NodeKind::Identifier { name }
-            }
-            (Some(State::Initial), Token::Integer { value, format }) => {
+            (None, Token::Comment { text }) => NodeKind::Comment { text },
+            (None, Token::Identifier { name }) => NodeKind::Identifier { name },
+            (None, Token::Integer { value, format }) => {
                 NodeKind::Integer { value, format }
             }
             (Some(State::Binding { names }), Token::Identifier { name }) => {
@@ -42,7 +38,6 @@ impl Parser {
                 let names = mem::take(names);
 
                 self.state.pop();
-                self.state.push(State::Initial);
                 NodeKind::Binding { names }
             }
             (_, token) => {
@@ -55,7 +50,6 @@ impl Parser {
 }
 
 enum State {
-    Initial,
     Binding { names: Vec<String> },
 }
 
