@@ -21,7 +21,6 @@ impl Parser {
 
         let kind = match (self.state.last_mut(), token) {
             (None, Token::Binding) => {
-                self.state.pop();
                 self.state.push(State::Binding { names: Vec::new() });
                 return None;
             }
