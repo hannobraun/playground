@@ -24,9 +24,13 @@ impl Parser {
                 self.state.push(State::Binding { names: Vec::new() });
                 return None;
             }
+            (None, Token::BlockOpen) => {
+                self.state.push(State::Block);
+                return None;
+            }
             (None, Token::Comment { text }) => NodeKind::Comment { text },
             (None, Token::Identifier { name }) => NodeKind::Identifier { name },
-            (None, Token::Integer { value, format }) => {
+            (None | Some(State::Block), Token::Integer { value, format }) => {
                 NodeKind::Integer { value, format }
             }
             (Some(State::Binding { names }), Token::Identifier { name }) => {
@@ -39,6 +43,10 @@ impl Parser {
                 self.state.pop();
                 NodeKind::Binding { names }
             }
+            (Some(State::Block), Token::BlockClose) => {
+                self.state.pop();
+                return None;
+            }
             (_, token) => {
                 panic!("Unexpected token `{token:?}`");
             }
@@ -50,6 +58,7 @@ impl Parser {
 
 enum State {
     Binding { names: Vec<String> },
+    Block,
 }
 
 pub struct SyntaxNode {
