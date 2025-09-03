@@ -66,7 +66,7 @@ pub fn compile(
         match tokenizer.process_char(ch) {
             Some(token) => {
                 if let Some(syntax_node) = parser.process_token(token) {
-                    resolver.process_syntax_element(&syntax_node);
+                    resolver.process_node(&syntax_node);
                     syntax.push(syntax_node);
                 }
             }

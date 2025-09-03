@@ -16,7 +16,7 @@ impl Resolver {
         }
     }
 
-    pub fn process_syntax_element(&mut self, syntax_node: &SyntaxNode) {
+    pub fn process_node(&mut self, syntax_node: &SyntaxNode) {
         let NodeKind::Identifier { name } = &syntax_node.kind else {
             return;
         };
