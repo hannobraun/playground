@@ -83,13 +83,14 @@ impl Stack {
         self.outputs.push(ty);
     }
 
-    fn pop(&mut self, expected_type: Type) {
+    fn pop(&mut self, expected_type: Type) -> Option<Type> {
         if let Some(type_on_stack) = self.outputs.pop() {
             // We're not checking yet, if the type matches. Since there's only
             // one type so far, it would be redundant anyway.
-            let _ = type_on_stack;
+            Some(type_on_stack)
         } else {
             self.inputs.push(expected_type);
+            None
         }
     }
 }
