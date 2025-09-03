@@ -8,7 +8,7 @@ pub use self::{
     types::{Signature, Type, Types},
 };
 
-pub struct Function {
+pub struct Block {
     pub signature: Signature,
     pub bindings: Bindings,
     pub body: Body,

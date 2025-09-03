@@ -7,7 +7,7 @@ use crate::compiler::{
 };
 
 pub struct CodeSection<'a> {
-    pub root: &'a ir::Function,
+    pub root: &'a ir::Block,
 }
 
 impl Emit for CodeSection<'_> {

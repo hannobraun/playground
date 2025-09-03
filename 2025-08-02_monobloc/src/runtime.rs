@@ -3,9 +3,9 @@ use std::iter;
 use anyhow::anyhow;
 use wasmtime::{Engine, Instance, Module, Store, Val};
 
-use crate::compiler::ir::Function;
+use crate::compiler::ir::Block;
 
-pub fn evaluate_root(code: &[u8], root: &Function) -> anyhow::Result<Vec<i32>> {
+pub fn evaluate_root(code: &[u8], root: &Block) -> anyhow::Result<Vec<i32>> {
     let engine = Engine::default();
     let module = Module::new(&engine, code)?;
     let mut store = Store::new(&engine, ());

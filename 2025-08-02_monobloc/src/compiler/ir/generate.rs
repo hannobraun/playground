@@ -1,6 +1,6 @@
 use crate::compiler::{
     inferrer::Inferrer,
-    ir::{Expression, Function, Intrinsic},
+    ir::{Block, Expression, Intrinsic},
     nodes::{Node, NodeKind},
     resolver::Resolver,
 };
@@ -9,7 +9,7 @@ pub fn generate(
     nodes: Vec<Node>,
     resolver: Resolver,
     inferrer: Inferrer,
-) -> Function {
+) -> Block {
     let mut body = Vec::new();
 
     for node in nodes {
@@ -51,7 +51,7 @@ pub fn generate(
         }
     }
 
-    Function {
+    Block {
         signature: inferrer.into_signature(),
         bindings: resolver.into_bindings_in_root(),
         body,
