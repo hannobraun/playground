@@ -1,5 +1,5 @@
 use crate::compiler::{
-    ir::{Signature, Type, Types},
+    ir::{Intrinsic, Signature, Type, Types},
     nodes::{Node, NodeKind},
     resolver::Resolver,
 };
@@ -33,7 +33,9 @@ impl Inferrer {
                     inferrer.process_node(node, resolver);
                 }
 
-                self.stack.push(Type::Block);
+                self.stack.push(Type::Block {
+                    signature: inferrer.into_signature(),
+                });
             }
             NodeKind::Comment { text: _ } => {
                 // ignoring comment
@@ -43,6 +45,19 @@ impl Inferrer {
 
                 if resolver.binding_call_at(&node.id).is_some() {
                     self.stack.push(Type::I32);
+                } else if let Some(Intrinsic::Apply) = intrinsic {
+                    let Some(Type::Block { signature }) =
+                        self.stack.pop(Type::I32)
+                    else {
+                        panic!(
+                            "Expected type of `apply` argument to be known."
+                        );
+                    };
+
+                    self.stack.pop(Type::I32);
+                    for ty in signature.outputs {
+                        self.stack.push(ty);
+                    }
                 } else if let Some([inputs, outputs]) = intrinsic
                     .as_ref()
                     .and_then(|intrinsic| intrinsic.signature())

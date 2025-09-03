@@ -8,6 +8,6 @@ pub type Types = Vec<Type>;
 
 #[derive(Clone, Debug)]
 pub enum Type {
-    Block,
+    Block { signature: Signature },
     I32,
 }
