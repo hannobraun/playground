@@ -1,6 +1,6 @@
 use crate::compiler::{
     ir::{
-        Binding, Expression, Function, Intrinsic,
+        Expression, Function, Intrinsic,
         types::{Signature, Type, Types},
     },
     resolver::Resolver,
@@ -13,24 +13,15 @@ pub fn generate(nodes: Vec<Node>, resolver: Resolver) -> Function {
         outputs: Vec::new(),
     };
 
-    let mut bindings = Vec::new();
     let mut body = Vec::new();
 
     for node in nodes {
         match node.kind {
-            NodeKind::Binding { names } => {
-                for name in names.into_iter().rev() {
-                    let index = bindings.len().try_into().expect(
-                        "More than `u32::MAX` bindings per scope are not \
-                        supported.",
-                    );
-
-                    bindings.push(Binding {
-                        name,
-                        index,
-                        ty: Type::I32,
+            NodeKind::Binding { names: _ } => {
+                for binding in resolver.binding_definitions_at(&node.id) {
+                    body.push(Expression::Bind {
+                        index: binding.index,
                     });
-                    body.push(Expression::Bind { index });
                     stack.pop(Type::I32);
                 }
             }
@@ -43,9 +34,7 @@ pub fn generate(nodes: Vec<Node>, resolver: Resolver) -> Function {
             NodeKind::Identifier { name } => {
                 let intrinsic = resolver.intrinsic_at(&node.id).copied();
 
-                if let Some(binding) =
-                    bindings.iter().rev().find(|binding| binding.name == name)
-                {
+                if let Some(binding) = resolver.binding_call_at(&node.id) {
                     body.push(Expression::CallBinding {
                         index: binding.index,
                     });
@@ -87,7 +76,7 @@ pub fn generate(nodes: Vec<Node>, resolver: Resolver) -> Function {
             inputs: stack.inputs,
             outputs: stack.outputs,
         },
-        bindings,
+        bindings: resolver.into_bindings_in_root(),
         body,
     }
 }
