@@ -35,7 +35,7 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 }
             }
             NodeKind::Block => {
-                // not supported yet; ignoring
+                stack.push(Type::Block);
             }
             NodeKind::Comment { text: _ } => {
                 // ignoring comment

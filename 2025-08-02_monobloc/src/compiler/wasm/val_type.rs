@@ -7,6 +7,7 @@ pub struct ValType<'a> {
 impl Emit for ValType<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         match self.ty {
+            ir::Type::Block => NumType::I32.emit(target),
             ir::Type::I32 => NumType::I32.emit(target),
         }
     }

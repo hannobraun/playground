@@ -7,5 +7,6 @@ pub type Types = Vec<Type>;
 
 #[derive(Clone, Copy)]
 pub enum Type {
+    Block,
     I32,
 }
