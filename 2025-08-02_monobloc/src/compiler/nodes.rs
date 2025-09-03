@@ -25,8 +25,7 @@ impl Parser {
                 NodeKind::Block
             }
             (None, token) => {
-                let (kind, state) =
-                    process_token_in_block(token, &mut self.state);
+                let (kind, state) = process_token_in_block(token);
 
                 if let Some(state) = state {
                     self.state.push(state);
@@ -35,8 +34,7 @@ impl Parser {
                 kind?
             }
             (Some(State::Block), token) => {
-                let (kind, state) =
-                    process_token_in_block(token, &mut self.state);
+                let (kind, state) = process_token_in_block(token);
 
                 if let Some(state) = state {
                     self.state.push(state);
@@ -68,10 +66,7 @@ enum State {
     Block,
 }
 
-fn process_token_in_block(
-    token: Token,
-    _: &mut Vec<State>,
-) -> (Option<NodeKind>, Option<State>) {
+fn process_token_in_block(token: Token) -> (Option<NodeKind>, Option<State>) {
     let node = match token {
         Token::Binding => {
             return (None, Some(State::Binding { names: Vec::new() }));
