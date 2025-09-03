@@ -21,13 +21,15 @@ impl Emit for Expressions<'_> {
 }
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
-    let instruction = match *expression {
-        ir::Expression::Bind { index } => Instruction::LocalSet { index },
+    let instruction = match expression {
+        ir::Expression::Bind { index } => {
+            Instruction::LocalSet { index: *index }
+        }
         ir::Expression::CallBinding { index } => {
-            Instruction::LocalGet { index }
+            Instruction::LocalGet { index: *index }
         }
         ir::Expression::Intrinsic { intrinsic } => {
-            let Some(instruction) = compile_intrinsic(&intrinsic) else {
+            let Some(instruction) = compile_intrinsic(intrinsic) else {
                 return;
             };
 
