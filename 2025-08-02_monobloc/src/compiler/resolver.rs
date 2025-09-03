@@ -16,8 +16,8 @@ impl Resolver {
         }
     }
 
-    pub fn process_node(&mut self, syntax_node: &Node) {
-        let NodeKind::Identifier { name } = &syntax_node.kind else {
+    pub fn process_node(&mut self, node: &Node) {
+        let NodeKind::Identifier { name } = &node.kind else {
             return;
         };
 
@@ -51,6 +51,6 @@ impl Resolver {
             }
         };
 
-        self.intrinsics.insert(syntax_node.id, intrinsic);
+        self.intrinsics.insert(node.id, intrinsic);
     }
 }
