@@ -38,6 +38,8 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 // ignoring comment
             }
             NodeKind::Identifier { name } => {
+                let intrinsic = resolver.intrinsics.get(&node.id).copied();
+
                 if let Some(binding) =
                     bindings.iter().rev().find(|binding| binding.name == name)
                 {
@@ -45,9 +47,7 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                         index: binding.index,
                     });
                     stack.push(Type::I32);
-                } else if let Some(intrinsic) =
-                    resolver.intrinsics.get(&node.id).copied()
-                {
+                } else if let Some(intrinsic) = intrinsic {
                     let Some([inputs, outputs]) = intrinsic.signature() else {
                         unreachable!(
                             "Only requesting signature of intrinsics that can \
