@@ -48,7 +48,12 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                 } else if let Some(intrinsic) =
                     resolver.intrinsics.get(&node.id).copied()
                 {
-                    let [inputs, outputs] = intrinsic.signature();
+                    let Some([inputs, outputs]) = intrinsic.signature() else {
+                        unreachable!(
+                            "Only requesting signature of intrinsics that can \
+                            provide it."
+                        );
+                    };
 
                     body.push(Expression::Intrinsic { intrinsic });
 

@@ -38,10 +38,10 @@ pub enum Intrinsic {
 }
 
 impl Intrinsic {
-    pub fn signature(&self) -> [&[Type]; 2] {
+    pub fn signature(&self) -> Option<[&[Type]; 2]> {
         use Type::*;
 
-        match self {
+        let signature: [&[Type]; 2] = match self {
             Self::Assert => [&[I32], &[]],
             Self::Panic => [&[], &[]],
 
@@ -70,6 +70,8 @@ impl Intrinsic {
             Self::ShiftRight => [&[I32, I32], &[I32]],
             Self::TrailingZeros => [&[I32], &[I32]],
             Self::Xor => [&[I32, I32], &[I32]],
-        }
+        };
+
+        Some(signature)
     }
 }
