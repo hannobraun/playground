@@ -3,8 +3,8 @@ use crate::compiler::{
         Expression, Function, Intrinsic,
         types::{Signature, Type, Types},
     },
+    nodes::{Node, NodeKind},
     resolver::Resolver,
-    syntax::{Node, NodeKind},
 };
 
 pub fn generate(nodes: Vec<Node>, resolver: Resolver) -> Function {

@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::compiler::{
     ir::{Binding, Intrinsic, Type},
-    syntax::{Node, NodeId, NodeKind},
+    nodes::{Node, NodeId, NodeKind},
 };
 
 pub struct Resolver {

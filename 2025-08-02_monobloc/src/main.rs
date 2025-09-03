@@ -8,8 +8,8 @@ use crate::{
     compiler::{
         input_code::read_input_code,
         ir,
+        nodes::{NodeKind, Parser},
         resolver::Resolver,
-        syntax::{NodeKind, Parser},
         tokens::{IntegerFormat, Tokenizer},
         wasm,
     },
