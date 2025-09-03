@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Signature {
     pub inputs: Types,
     pub outputs: Types,
