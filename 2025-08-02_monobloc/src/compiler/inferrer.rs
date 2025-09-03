@@ -85,8 +85,15 @@ impl Stack {
 
     fn pop(&mut self, expected_type: Type) -> Option<Type> {
         if let Some(type_on_stack) = self.outputs.pop() {
-            // We're not checking yet, if the type matches. Since there's only
-            // one type so far, it would be redundant anyway.
+            // We're not checking, if the type on the stack matches the expected
+            // type. For the most part, the language is untyped, so values are
+            // treated differently, depending on the operation that consumes
+            // them.
+            //
+            // There is a nascent static type system that supports some
+            // functions of the language (like generating WebAssembly functions,
+            // or figuring out the output of `apply` operations), but overall,
+            // it's not complete enough to make a check here sensible.
             Some(type_on_stack)
         } else {
             self.inputs.push(expected_type);
