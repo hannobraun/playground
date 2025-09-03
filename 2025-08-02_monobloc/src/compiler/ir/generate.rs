@@ -7,7 +7,7 @@ use crate::compiler::{
     syntax::{Node, NodeKind},
 };
 
-pub fn generate(nodes: Vec<Node>, resolver: &Resolver) -> Function {
+pub fn generate(nodes: Vec<Node>, resolver: Resolver) -> Function {
     let mut stack = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),
