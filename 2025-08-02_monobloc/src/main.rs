@@ -147,10 +147,10 @@ fn print_node(prev_node: Option<&NodeKind>, node: &Node) {
 
             println!(".");
         }
-        NodeKind::Block { nodes: _ } => {
+        NodeKind::Block { nodes } => {
             println!("{{");
 
-            println!("    ...");
+            print_nodes(nodes);
 
             println!("}}");
         }
