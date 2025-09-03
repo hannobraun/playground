@@ -25,7 +25,7 @@ pub struct Binding {
 
 pub type Body = Vec<Expression>;
 
-#[derive(Clone, Copy)]
+#[derive(Clone)]
 pub enum Expression {
     Bind { index: u32 },
     CallBinding { index: u32 },
