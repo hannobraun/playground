@@ -28,6 +28,10 @@ impl Resolver {
             }
         }
     }
+
+    pub fn intrinsic_at(&self, node: &NodeId) -> Option<&Intrinsic> {
+        self.intrinsics.get(node)
+    }
 }
 
 fn resolve_intrinsic(name: &str) -> Option<Intrinsic> {

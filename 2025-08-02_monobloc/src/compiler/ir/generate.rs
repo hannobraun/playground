@@ -41,7 +41,7 @@ pub fn generate(nodes: Vec<Node>, resolver: &Resolver) -> Function {
                 // ignoring comment
             }
             NodeKind::Identifier { name } => {
-                let intrinsic = resolver.intrinsics.get(&node.id).copied();
+                let intrinsic = resolver.intrinsic_at(&node.id).copied();
 
                 if let Some(binding) =
                     bindings.iter().rev().find(|binding| binding.name == name)
