@@ -26,14 +26,20 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
         ir::Expression::CallBinding { index } => {
             Instruction::LocalGet { index }
         }
-        ir::Expression::Intrinsic { intrinsic } => compile_intrinsic(intrinsic),
+        ir::Expression::Intrinsic { intrinsic } => {
+            let Some(instruction) = compile_intrinsic(intrinsic) else {
+                return;
+            };
+
+            instruction
+        }
     };
 
     instruction.emit(target);
 }
 
-pub fn compile_intrinsic(intrinsic: Intrinsic) -> Instruction {
-    match intrinsic {
+pub fn compile_intrinsic(intrinsic: Intrinsic) -> Option<Instruction> {
+    let instruction = match intrinsic {
         ir::Intrinsic::Assert => Instruction::If {
             block_type: BlockType::Empty,
             then: vec![],
@@ -66,5 +72,7 @@ pub fn compile_intrinsic(intrinsic: Intrinsic) -> Instruction {
         ir::Intrinsic::ShiftRight => Instruction::I32ShrS,
         ir::Intrinsic::TrailingZeros => Instruction::I32Ctz,
         ir::Intrinsic::Xor => Instruction::I32Xor,
-    }
+    };
+
+    Some(instruction)
 }
