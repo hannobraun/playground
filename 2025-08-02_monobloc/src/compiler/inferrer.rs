@@ -36,14 +36,10 @@ impl Inferrer {
 
                 if resolver.binding_call_at(&node.id).is_some() {
                     self.stack.push(Type::I32);
-                } else if let Some(intrinsic) = intrinsic {
-                    let Some([inputs, outputs]) = intrinsic.signature() else {
-                        unreachable!(
-                            "Only requesting signature of intrinsics that can \
-                            provide it."
-                        );
-                    };
-
+                } else if let Some([inputs, outputs]) = intrinsic
+                    .as_ref()
+                    .and_then(|intrinsic| intrinsic.signature())
+                {
                     for &input in inputs {
                         self.stack.pop(input);
                     }
