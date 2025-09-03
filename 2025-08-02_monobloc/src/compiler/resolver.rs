@@ -103,6 +103,7 @@ fn resolve_intrinsic(name: &str) -> Option<Intrinsic> {
         ">" => GreaterThan,
         ">=" => GreaterThanOrEquals,
         "and" => And,
+        "apply" => Apply,
         "assert" => Assert,
         "count_ones" => CountOnes,
         "leading_zeros" => LeadingZeros,

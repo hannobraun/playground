@@ -2,6 +2,9 @@ use crate::compiler::ir::Type;
 
 #[derive(Clone, Copy)]
 pub enum Intrinsic {
+    // Apply
+    Apply,
+
     // Panics
     Assert,
     Panic,
@@ -42,6 +45,10 @@ impl Intrinsic {
         use Type::*;
 
         let signature: [&[Type]; 2] = match self {
+            Self::Apply => {
+                return None;
+            }
+
             Self::Assert => [&[I32], &[]],
             Self::Panic => [&[], &[]],
 
