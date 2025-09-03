@@ -4,10 +4,10 @@ use crate::compiler::{
         types::{Signature, Type, Types},
     },
     resolver::Resolver,
-    syntax::{NodeKind, SyntaxNode},
+    syntax::{Node, NodeKind},
 };
 
-pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
+pub fn generate(syntax: Vec<Node>, resolver: &Resolver) -> Function {
     let mut stack = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),

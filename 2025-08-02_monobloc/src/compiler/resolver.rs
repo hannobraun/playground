@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::compiler::{
     ir::Intrinsic,
-    syntax::{NodeId, NodeKind, SyntaxNode},
+    syntax::{Node, NodeId, NodeKind},
 };
 
 pub struct Resolver {
@@ -16,7 +16,7 @@ impl Resolver {
         }
     }
 
-    pub fn process_node(&mut self, syntax_node: &SyntaxNode) {
+    pub fn process_node(&mut self, syntax_node: &Node) {
         let NodeKind::Identifier { name } = &syntax_node.kind else {
             return;
         };

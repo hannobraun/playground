@@ -15,7 +15,7 @@ impl Parser {
         }
     }
 
-    pub fn process_token(&mut self, token: Token) -> Option<SyntaxNode> {
+    pub fn process_token(&mut self, token: Token) -> Option<Node> {
         let id = self.next_id;
         self.next_id.inner += 1;
 
@@ -52,7 +52,7 @@ impl Parser {
             }
         };
 
-        Some(SyntaxNode { id, kind })
+        Some(Node { id, kind })
     }
 }
 
@@ -61,7 +61,7 @@ enum State {
     Block,
 }
 
-pub struct SyntaxNode {
+pub struct Node {
     pub id: NodeId,
     pub kind: NodeKind,
 }
