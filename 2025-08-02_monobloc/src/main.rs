@@ -83,13 +83,7 @@ pub fn compile(
         }
 
         if interactive {
-            let mut prev_node: Option<&NodeKind> = None;
-
-            for node in &nodes {
-                print_node(prev_node, node);
-                prev_node = Some(&node.kind);
-            }
-            println!();
+            print_nodes(&nodes);
         }
     }
 
@@ -107,6 +101,16 @@ pub fn compile(
     };
 
     Ok(stack)
+}
+
+fn print_nodes(nodes: &[Node]) {
+    let mut prev_node: Option<&NodeKind> = None;
+
+    for node in nodes {
+        print_node(prev_node, node);
+        prev_node = Some(&node.kind);
+    }
+    println!();
 }
 
 fn print_node(prev_node: Option<&NodeKind>, node: &Node) {
