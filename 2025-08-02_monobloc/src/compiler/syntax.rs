@@ -45,7 +45,7 @@ impl Parser {
             }
             (Some(State::Block), Token::BlockClose) => {
                 self.state.pop();
-                return None;
+                NodeKind::Block
             }
             (_, token) => {
                 panic!("Unexpected token `{token:?}`");
@@ -73,6 +73,7 @@ pub struct NodeId {
 
 pub enum NodeKind {
     Binding { names: Vec<String> },
+    Block,
     Comment { text: String },
     Identifier { name: String },
     Integer { value: u32, format: IntegerFormat },

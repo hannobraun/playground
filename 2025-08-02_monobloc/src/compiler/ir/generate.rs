@@ -34,6 +34,9 @@ pub fn generate(syntax: Vec<SyntaxNode>, resolver: &Resolver) -> Function {
                     stack.pop(Type::I32);
                 }
             }
+            NodeKind::Block => {
+                // not supported yet; ignoring
+            }
             NodeKind::Comment { text: _ } => {
                 // ignoring comment
             }

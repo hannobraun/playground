@@ -112,6 +112,9 @@ pub fn compile(
 
                         println!(".");
                     }
+                    NodeKind::Block => {
+                        println!("{{ ... }}");
+                    }
                     NodeKind::Comment { text } => {
                         println!("#{text}");
                     }
