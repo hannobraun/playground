@@ -83,13 +83,13 @@ impl Stack {
         self.outputs.push(ty);
     }
 
-    fn pop(&mut self, ty: Type) {
+    fn pop(&mut self, expected_type: Type) {
         if let Some(on_stack) = self.outputs.pop() {
             // We're not checking yet, if the type matches. Since there's only
             // one type so far, it would be redundant anyway.
             let _ = on_stack;
         } else {
-            self.inputs.push(ty);
+            self.inputs.push(expected_type);
         }
     }
 }
