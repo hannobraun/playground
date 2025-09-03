@@ -21,36 +21,43 @@ impl Resolver {
             return;
         };
 
-        use Intrinsic::*;
-        let intrinsic = match name.as_str() {
-            "%" => Remainder,
-            "*" => Multiply,
-            "+" => Add,
-            "-" => Subtract,
-            "/" => Divide,
-            "<" => LessThan,
-            "<=" => LessThanOrEquals,
-            "=" => Equals,
-            ">" => GreaterThan,
-            ">=" => GreaterThanOrEquals,
-            "and" => And,
-            "assert" => Assert,
-            "count_ones" => CountOnes,
-            "leading_zeros" => LeadingZeros,
-            "not" => Not,
-            "or" => Or,
-            "rotate_left" => RotateLeft,
-            "rotate_right" => RotateRight,
-            "shift_left" => ShiftLeft,
-            "shift_right" => ShiftRight,
-            "trailing_zeros" => TrailingZeros,
-            "xor" => Xor,
-
-            _ => {
-                return;
-            }
-        };
-
-        self.intrinsics.insert(node.id, intrinsic);
+        if let Some(intrinsic) = resolve_intrinsic(name) {
+            self.intrinsics.insert(node.id, intrinsic);
+        }
     }
+}
+
+fn resolve_intrinsic(name: &str) -> Option<Intrinsic> {
+    use Intrinsic::*;
+
+    let intrinsic = match name {
+        "%" => Remainder,
+        "*" => Multiply,
+        "+" => Add,
+        "-" => Subtract,
+        "/" => Divide,
+        "<" => LessThan,
+        "<=" => LessThanOrEquals,
+        "=" => Equals,
+        ">" => GreaterThan,
+        ">=" => GreaterThanOrEquals,
+        "and" => And,
+        "assert" => Assert,
+        "count_ones" => CountOnes,
+        "leading_zeros" => LeadingZeros,
+        "not" => Not,
+        "or" => Or,
+        "rotate_left" => RotateLeft,
+        "rotate_right" => RotateRight,
+        "shift_left" => ShiftLeft,
+        "shift_right" => ShiftRight,
+        "trailing_zeros" => TrailingZeros,
+        "xor" => Xor,
+
+        _ => {
+            return None;
+        }
+    };
+
+    Some(intrinsic)
 }
