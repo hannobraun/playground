@@ -20,6 +20,10 @@ impl Parser {
         self.next_id.inner += 1;
 
         let kind = match (self.state.last_mut(), token) {
+            (Some(State::Block), Token::BlockClose) => {
+                self.state.pop();
+                NodeKind::Block
+            }
             (None, Token::Binding) => {
                 self.state.push(State::Binding { names: Vec::new() });
                 return None;
@@ -42,10 +46,6 @@ impl Parser {
 
                 self.state.pop();
                 NodeKind::Binding { names }
-            }
-            (Some(State::Block), Token::BlockClose) => {
-                self.state.pop();
-                NodeKind::Block
             }
             (_, token) => {
                 panic!("Unexpected token `{token:?}`");
