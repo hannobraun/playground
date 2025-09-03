@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Signature {
     pub inputs: Types,
     pub outputs: Types,
