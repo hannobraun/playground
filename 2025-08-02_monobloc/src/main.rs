@@ -6,6 +6,7 @@ use walkdir::WalkDir;
 use crate::{
     args::Args,
     compiler::{
+        inferrer::Inferrer,
         input_code::read_input_code,
         ir,
         nodes::{NodeKind, Parser},
@@ -57,6 +58,7 @@ pub fn compile(
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
     let mut resolver = Resolver::new();
+    let mut inferrer = Inferrer::new();
 
     let mut syntax = Vec::new();
 
@@ -69,6 +71,7 @@ pub fn compile(
             Some(token) => {
                 if let Some(node) = parser.process_token(token) {
                     resolver.process_node(&node);
+                    inferrer.process_node(&node, &resolver);
                     syntax.push(node);
                 }
             }
@@ -150,7 +153,7 @@ pub fn compile(
         }
     }
 
-    let root = ir::generate(syntax, resolver);
+    let root = ir::generate(syntax, resolver, inferrer);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,

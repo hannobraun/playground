@@ -1,3 +1,4 @@
+pub mod inferrer;
 pub mod input_code;
 pub mod ir;
 pub mod nodes;
