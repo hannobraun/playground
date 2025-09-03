@@ -149,9 +149,7 @@ fn print_node(prev_node: Option<&NodeKind>, node: &Node) {
         }
         NodeKind::Block { nodes } => {
             println!("{{");
-
             print_nodes(nodes);
-
             println!("}}");
         }
         NodeKind::Comment { text } => {
