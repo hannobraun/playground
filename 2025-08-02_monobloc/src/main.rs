@@ -156,7 +156,7 @@ pub fn compile(
             let output = "error.wasm";
             File::create(output)?.write_all(&wasm_code)?;
             return Err(err).with_context(|| {
-                format!("Error evaluating root; wrote module to `{output}`")
+                format!("Failed to evaluate root; wrote module to `{output}`")
             });
         }
     };
