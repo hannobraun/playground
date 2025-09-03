@@ -4,6 +4,7 @@ use crate::compiler::{
     resolver::Resolver,
 };
 
+/// # Infers the type of a single block
 pub struct Inferrer {
     stack: Stack,
 }
@@ -57,6 +58,7 @@ impl Inferrer {
         }
     }
 
+    /// # Compute the signature of the inferred block
     pub fn into_signature(self) -> Signature {
         Signature {
             inputs: self.stack.inputs,
