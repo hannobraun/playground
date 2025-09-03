@@ -42,11 +42,11 @@ impl Inferrer {
                     .as_ref()
                     .and_then(|intrinsic| intrinsic.signature())
                 {
-                    for &input in inputs {
-                        self.stack.pop(input);
+                    for input in inputs {
+                        self.stack.pop(input.clone());
                     }
-                    for &output in outputs {
-                        self.stack.push(output);
+                    for output in outputs {
+                        self.stack.push(output.clone());
                     }
                 }
             }
