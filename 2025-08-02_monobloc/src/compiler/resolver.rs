@@ -61,6 +61,7 @@ impl Resolver {
                     self.binding_calls_by_node.insert(node.id, binding);
                 }
             }
+
             _ => {
                 // Node is not relevant for the resolver.
             }
