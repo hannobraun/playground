@@ -7,7 +7,7 @@ use crate::compiler::{
     syntax::{Node, NodeKind},
 };
 
-pub fn generate(syntax: Vec<Node>, resolver: &Resolver) -> Function {
+pub fn generate(nodes: Vec<Node>, resolver: &Resolver) -> Function {
     let mut stack = Stack {
         inputs: Vec::new(),
         outputs: Vec::new(),
@@ -16,7 +16,7 @@ pub fn generate(syntax: Vec<Node>, resolver: &Resolver) -> Function {
     let mut bindings = Vec::new();
     let mut body = Vec::new();
 
-    for node in syntax {
+    for node in nodes {
         match node.kind {
             NodeKind::Binding { names } => {
                 for name in names.into_iter().rev() {
