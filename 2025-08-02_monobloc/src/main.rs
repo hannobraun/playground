@@ -33,7 +33,9 @@ fn main() -> anyhow::Result<()> {
             }
 
             let program = entry.path();
-            compile(program, args.interactive)?;
+            compile(program, args.interactive).with_context(|| {
+                format!("Compiling {path}", path = entry.path().display())
+            })?;
 
             println!("OK {program}", program = program.display());
         }
