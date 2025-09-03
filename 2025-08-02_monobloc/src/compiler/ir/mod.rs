@@ -8,6 +8,7 @@ pub use self::{
     types::{Signature, Type, Types},
 };
 
+#[derive(Clone)]
 pub struct Block {
     pub signature: Signature,
     pub bindings: Bindings,
