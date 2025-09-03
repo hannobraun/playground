@@ -27,7 +27,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
             Instruction::LocalGet { index }
         }
         ir::Expression::Intrinsic { intrinsic } => {
-            let Some(instruction) = compile_intrinsic(intrinsic) else {
+            let Some(instruction) = compile_intrinsic(&intrinsic) else {
                 return;
             };
 
@@ -38,7 +38,7 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     instruction.emit(target);
 }
 
-pub fn compile_intrinsic(intrinsic: Intrinsic) -> Option<Instruction> {
+pub fn compile_intrinsic(intrinsic: &Intrinsic) -> Option<Instruction> {
     let instruction = match intrinsic {
         ir::Intrinsic::Apply => {
             // not supported yet; ignoring
@@ -52,7 +52,9 @@ pub fn compile_intrinsic(intrinsic: Intrinsic) -> Option<Instruction> {
         },
         ir::Intrinsic::Panic => Instruction::Unreachable,
 
-        ir::Intrinsic::Integer { value } => Instruction::I32Const { value },
+        ir::Intrinsic::Integer { value } => {
+            Instruction::I32Const { value: *value }
+        }
 
         ir::Intrinsic::Equals => Instruction::I32Eq,
         ir::Intrinsic::GreaterThan => Instruction::I32GtS,
