@@ -24,18 +24,8 @@ impl Parser {
                 self.state.pop();
                 NodeKind::Block
             }
-            (None, Token::Binding) => {
-                self.state.push(State::Binding { names: Vec::new() });
-                return None;
-            }
-            (None, Token::BlockOpen) => {
-                self.state.push(State::Block);
-                return None;
-            }
-            (None, Token::Comment { text }) => NodeKind::Comment { text },
-            (None, Token::Identifier { name }) => NodeKind::Identifier { name },
-            (None | Some(State::Block), Token::Integer { value, format }) => {
-                NodeKind::Integer { value, format }
+            (None | Some(State::Block), token) => {
+                process_token_in_block(token, &mut self.state)?
             }
             (Some(State::Binding { names }), Token::Identifier { name }) => {
                 names.push(name);
@@ -59,6 +49,31 @@ impl Parser {
 enum State {
     Binding { names: Vec<String> },
     Block,
+}
+
+fn process_token_in_block(
+    token: Token,
+    state: &mut Vec<State>,
+) -> Option<NodeKind> {
+    let node = match token {
+        Token::Binding => {
+            state.push(State::Binding { names: Vec::new() });
+            return None;
+        }
+        Token::BlockOpen => {
+            state.push(State::Block);
+            return None;
+        }
+        Token::Comment { text } => NodeKind::Comment { text },
+        Token::Identifier { name } => NodeKind::Identifier { name },
+        Token::Integer { value, format } => NodeKind::Integer { value, format },
+
+        token => {
+            panic!("Unexpected token `{token:?}`");
+        }
+    };
+
+    Some(node)
 }
 
 pub struct Node {
