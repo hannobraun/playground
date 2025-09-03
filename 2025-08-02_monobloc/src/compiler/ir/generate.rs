@@ -52,7 +52,7 @@ pub fn generate(
     }
 
     Function {
-        signature: inferrer.into_signature_of_root(),
+        signature: inferrer.into_signature(),
         bindings: resolver.into_bindings_in_root(),
         body,
     }

@@ -57,7 +57,7 @@ impl Inferrer {
         }
     }
 
-    pub fn into_signature_of_root(self) -> Signature {
+    pub fn into_signature(self) -> Signature {
         Signature {
             inputs: self.stack.inputs,
             outputs: self.stack.outputs,
