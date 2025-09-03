@@ -119,7 +119,12 @@ fn print_node(prev_node: Option<&NodeKind>, node: &Node) {
             // Start comment on a new line.
             println!();
         }
-        (Some(NodeKind::Comment { .. }) | None, _) => {
+        (
+            Some(NodeKind::Comment { .. })
+            | Some(NodeKind::Binding { .. })
+            | None,
+            _,
+        ) => {
             // We are on a fresh line. Nothing to prepare.
         }
         (Some(_), _) => {
@@ -145,26 +150,26 @@ fn print_node(prev_node: Option<&NodeKind>, node: &Node) {
             println!("#{text}");
         }
         NodeKind::Identifier { name } => {
-            println!("{name}");
+            print!("{name}");
         }
         NodeKind::Integer {
             value,
             format: IntegerFormat::Hex,
         } => {
-            println!("{value:x}");
+            print!("{value:x}");
         }
         NodeKind::Integer {
             value,
             format: IntegerFormat::Signed,
         } => {
             let value = i32::from_le_bytes(value.to_le_bytes());
-            println!("{value}");
+            print!("{value}");
         }
         NodeKind::Integer {
             value,
             format: IntegerFormat::Unsigned,
         } => {
-            println!("{value}");
+            print!("{value}");
         }
     }
 }
