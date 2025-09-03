@@ -24,9 +24,25 @@ impl Parser {
                 self.state.pop();
                 NodeKind::Block
             }
-            (None, token) => process_token_in_block(token, &mut self.state)?,
+            (None, token) => {
+                let (kind, state) =
+                    process_token_in_block(token, &mut self.state);
+
+                if let Some(state) = state {
+                    self.state.push(state);
+                }
+
+                kind?
+            }
             (Some(State::Block), token) => {
-                process_token_in_block(token, &mut self.state)?
+                let (kind, state) =
+                    process_token_in_block(token, &mut self.state);
+
+                if let Some(state) = state {
+                    self.state.push(state);
+                }
+
+                kind?
             }
             (Some(State::Binding { names }), Token::Identifier { name }) => {
                 names.push(name);
@@ -54,16 +70,14 @@ enum State {
 
 fn process_token_in_block(
     token: Token,
-    state: &mut Vec<State>,
-) -> Option<NodeKind> {
+    _: &mut Vec<State>,
+) -> (Option<NodeKind>, Option<State>) {
     let node = match token {
         Token::Binding => {
-            state.push(State::Binding { names: Vec::new() });
-            return None;
+            return (None, Some(State::Binding { names: Vec::new() }));
         }
         Token::BlockOpen => {
-            state.push(State::Block);
-            return None;
+            return (None, Some(State::Block));
         }
         Token::Comment { text } => NodeKind::Comment { text },
         Token::Identifier { name } => NodeKind::Identifier { name },
@@ -74,7 +88,7 @@ fn process_token_in_block(
         }
     };
 
-    Some(node)
+    (Some(node), None)
 }
 
 pub struct Node {
