@@ -24,7 +24,8 @@ impl Parser {
                 self.state.pop();
                 NodeKind::Block
             }
-            (None | Some(State::Block), token) => {
+            (None, token) => process_token_in_block(token, &mut self.state)?,
+            (Some(State::Block), token) => {
                 process_token_in_block(token, &mut self.state)?
             }
             (Some(State::Binding { names }), Token::Identifier { name }) => {
