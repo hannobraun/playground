@@ -6,13 +6,13 @@ use crate::compiler::{
 };
 
 pub struct Resolver {
-    intrinsics: BTreeMap<NodeId, Intrinsic>,
+    intrinsics_by_node: BTreeMap<NodeId, Intrinsic>,
 }
 
 impl Resolver {
     pub fn new() -> Self {
         Self {
-            intrinsics: BTreeMap::new(),
+            intrinsics_by_node: BTreeMap::new(),
         }
     }
 
@@ -20,7 +20,7 @@ impl Resolver {
         match &node.kind {
             NodeKind::Identifier { name } => {
                 if let Some(intrinsic) = resolve_intrinsic(name) {
-                    self.intrinsics.insert(node.id, intrinsic);
+                    self.intrinsics_by_node.insert(node.id, intrinsic);
                 }
             }
             _ => {
@@ -30,7 +30,7 @@ impl Resolver {
     }
 
     pub fn intrinsic_at(&self, node: &NodeId) -> Option<&Intrinsic> {
-        self.intrinsics.get(node)
+        self.intrinsics_by_node.get(node)
     }
 }
 
