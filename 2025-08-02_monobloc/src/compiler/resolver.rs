@@ -17,12 +17,15 @@ impl Resolver {
     }
 
     pub fn process_node(&mut self, node: &Node) {
-        let NodeKind::Identifier { name } = &node.kind else {
-            return;
-        };
-
-        if let Some(intrinsic) = resolve_intrinsic(name) {
-            self.intrinsics.insert(node.id, intrinsic);
+        match &node.kind {
+            NodeKind::Identifier { name } => {
+                if let Some(intrinsic) = resolve_intrinsic(name) {
+                    self.intrinsics.insert(node.id, intrinsic);
+                }
+            }
+            _ => {
+                // Node is not relevant for the resolver.
+            }
         }
     }
 }
