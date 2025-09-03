@@ -6,7 +6,7 @@ use crate::compiler::{
 };
 
 pub struct Resolver {
-    pub intrinsics: BTreeMap<NodeId, Intrinsic>,
+    intrinsics: BTreeMap<NodeId, Intrinsic>,
 }
 
 impl Resolver {
