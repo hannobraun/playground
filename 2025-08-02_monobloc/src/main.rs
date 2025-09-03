@@ -60,7 +60,7 @@ pub fn compile(
     let mut resolver = Resolver::new();
     let mut inferrer = Inferrer::new();
 
-    let mut syntax = Vec::new();
+    let mut nodes = Vec::new();
 
     loop {
         let Some(ch) = input_code.next() else {
@@ -72,7 +72,7 @@ pub fn compile(
                 if let Some(node) = parser.process_token(token) {
                     resolver.process_node(&node);
                     inferrer.process_node(&node, &resolver);
-                    syntax.push(node);
+                    nodes.push(node);
                 }
             }
             None => {
@@ -85,7 +85,7 @@ pub fn compile(
         if interactive {
             let mut prev_node: Option<&NodeKind> = None;
 
-            for node in &syntax {
+            for node in &nodes {
                 print_node(prev_node, node);
                 prev_node = Some(&node.kind);
             }
@@ -93,7 +93,7 @@ pub fn compile(
         }
     }
 
-    let root = ir::generate(syntax, resolver, inferrer);
+    let root = ir::generate(nodes, resolver, inferrer);
     let wasm_code = wasm::compile_module(&root);
     let stack = match runtime::evaluate_root(&wasm_code, &root) {
         Ok(stack) => stack,
