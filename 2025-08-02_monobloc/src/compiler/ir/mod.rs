@@ -16,7 +16,7 @@ pub struct Function {
 
 pub type Bindings = Vec<Binding>;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Binding {
     pub name: String,
     pub index: u32,
