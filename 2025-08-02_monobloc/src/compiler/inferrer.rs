@@ -27,7 +27,12 @@ impl Inferrer {
                 }
             }
             NodeKind::Block { nodes } => {
-                let _ = nodes;
+                let mut inferrer = Inferrer::new();
+
+                for node in nodes {
+                    inferrer.process_node(node, resolver);
+                }
+
                 self.stack.push(Type::Block);
             }
             NodeKind::Comment { text: _ } => {
