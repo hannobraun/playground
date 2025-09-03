@@ -26,7 +26,8 @@ impl Inferrer {
                     self.stack.pop(Type::I32);
                 }
             }
-            NodeKind::Block => {
+            NodeKind::Block { nodes } => {
+                let _ = nodes;
                 self.stack.push(Type::Block);
             }
             NodeKind::Comment { text: _ } => {

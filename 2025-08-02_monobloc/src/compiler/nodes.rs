@@ -20,9 +20,11 @@ impl Parser {
         self.next_id.inner += 1;
 
         let kind = match (self.state.last_mut(), token) {
-            (Some(State::Block { nodes: _ }), Token::BlockClose) => {
+            (Some(State::Block { nodes }), Token::BlockClose) => {
+                let nodes = mem::take(nodes);
+
                 self.state.pop();
-                NodeKind::Block
+                NodeKind::Block { nodes }
             }
             (None, token) => {
                 let (kind, state) = process_token_in_block(token);
@@ -101,7 +103,7 @@ pub struct NodeId {
 
 pub enum NodeKind {
     Binding { names: Vec<String> },
-    Block,
+    Block { nodes: Vec<Node> },
     Comment { text: String },
     Identifier { name: String },
     Integer { value: u32, format: IntegerFormat },

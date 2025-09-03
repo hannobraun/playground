@@ -21,7 +21,7 @@ pub fn generate(
                     });
                 }
             }
-            NodeKind::Block => {
+            NodeKind::Block { nodes: _ } => {
                 // not supported yet; ignoring
             }
             NodeKind::Comment { text: _ } => {

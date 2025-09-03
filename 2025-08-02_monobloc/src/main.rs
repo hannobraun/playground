@@ -117,7 +117,7 @@ pub fn compile(
 
                         println!(".");
                     }
-                    NodeKind::Block => {
+                    NodeKind::Block { nodes: _ } => {
                         println!("{{ ... }}");
                     }
                     NodeKind::Comment { text } => {
