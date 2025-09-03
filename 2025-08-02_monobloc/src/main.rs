@@ -9,7 +9,7 @@ use crate::{
         inferrer::Inferrer,
         input_code::read_input_code,
         ir,
-        nodes::{NodeKind, Parser},
+        nodes::{Node, NodeKind, Parser},
         resolver::Resolver,
         tokens::{IntegerFormat, Tokenizer},
         wasm,
@@ -86,67 +86,7 @@ pub fn compile(
             let mut prev_node: Option<&NodeKind> = None;
 
             for node in &syntax {
-                match (prev_node, &node.kind) {
-                    (
-                        Some(NodeKind::Comment { .. }),
-                        NodeKind::Comment { .. },
-                    ) => {
-                        // Already printed a newline at the end of the previous
-                        // comment.
-                    }
-                    (Some(_), NodeKind::Comment { .. }) => {
-                        // Start comment on a new line.
-                        println!();
-                    }
-                    (Some(NodeKind::Comment { .. }) | None, _) => {
-                        // We are on a fresh line. Nothing to prepare.
-                    }
-                    (Some(_), _) => {
-                        // Add other tokens to the same line.
-                        print!(" ");
-                    }
-                }
-
-                match &node.kind {
-                    NodeKind::Binding { names } => {
-                        print!("=> ");
-
-                        for name in names {
-                            print!("{name} ");
-                        }
-
-                        println!(".");
-                    }
-                    NodeKind::Block { nodes: _ } => {
-                        println!("{{ ... }}");
-                    }
-                    NodeKind::Comment { text } => {
-                        println!("#{text}");
-                    }
-                    NodeKind::Identifier { name } => {
-                        println!("{name}");
-                    }
-                    NodeKind::Integer {
-                        value,
-                        format: IntegerFormat::Hex,
-                    } => {
-                        println!("{value:x}");
-                    }
-                    NodeKind::Integer {
-                        value,
-                        format: IntegerFormat::Signed,
-                    } => {
-                        let value = i32::from_le_bytes(value.to_le_bytes());
-                        println!("{value}");
-                    }
-                    NodeKind::Integer {
-                        value,
-                        format: IntegerFormat::Unsigned,
-                    } => {
-                        println!("{value}");
-                    }
-                }
-
+                print_node(prev_node, node);
                 prev_node = Some(&node.kind);
             }
             println!();
@@ -167,4 +107,64 @@ pub fn compile(
     };
 
     Ok(stack)
+}
+
+fn print_node(prev_node: Option<&NodeKind>, node: &Node) {
+    match (prev_node, &node.kind) {
+        (Some(NodeKind::Comment { .. }), NodeKind::Comment { .. }) => {
+            // Already printed a newline at the end of the previous
+            // comment.
+        }
+        (Some(_), NodeKind::Comment { .. }) => {
+            // Start comment on a new line.
+            println!();
+        }
+        (Some(NodeKind::Comment { .. }) | None, _) => {
+            // We are on a fresh line. Nothing to prepare.
+        }
+        (Some(_), _) => {
+            // Add other tokens to the same line.
+            print!(" ");
+        }
+    }
+
+    match &node.kind {
+        NodeKind::Binding { names } => {
+            print!("=> ");
+
+            for name in names {
+                print!("{name} ");
+            }
+
+            println!(".");
+        }
+        NodeKind::Block { nodes: _ } => {
+            println!("{{ ... }}");
+        }
+        NodeKind::Comment { text } => {
+            println!("#{text}");
+        }
+        NodeKind::Identifier { name } => {
+            println!("{name}");
+        }
+        NodeKind::Integer {
+            value,
+            format: IntegerFormat::Hex,
+        } => {
+            println!("{value:x}");
+        }
+        NodeKind::Integer {
+            value,
+            format: IntegerFormat::Signed,
+        } => {
+            let value = i32::from_le_bytes(value.to_le_bytes());
+            println!("{value}");
+        }
+        NodeKind::Integer {
+            value,
+            format: IntegerFormat::Unsigned,
+        } => {
+            println!("{value}");
+        }
+    }
 }
