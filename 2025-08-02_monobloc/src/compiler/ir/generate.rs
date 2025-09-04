@@ -6,12 +6,11 @@ use crate::compiler::{
 };
 
 pub fn generate(
-    node: Option<NodeId>,
     nodes: Vec<Node>,
     resolver: &Resolver,
     inferrer: &Inferrer,
 ) -> Block {
-    generate_inner(node, nodes, resolver, inferrer)
+    generate_inner(None, nodes, resolver, inferrer)
 }
 
 fn generate_inner(
