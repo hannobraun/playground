@@ -1,0 +1,9 @@
+# Putting code between `{` and `}` creates a block. Blocks can be applied by
+# calling `apply`, to execute the code within them.
+{ 1 } apply 1 = assert
+
+# TASK: Create binding from block, apply later, demonstrating that blocks are
+#       values.
+# TASK: Demonstrate nested blocks. Actually, demonstrate that any syntax on the
+#       top level is also valid within a block.
+# TASK: Demonstrate that applying a block might require type annotations.

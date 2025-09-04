@@ -58,8 +58,11 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
 pub fn compile_intrinsic(intrinsic: &Intrinsic) -> Option<Instruction> {
     let instruction = match intrinsic {
         ir::Intrinsic::Apply => {
-            // not supported yet; ignoring
-            return None;
+            Instruction::CallIndirect {
+                // TASK: Figure out where to get the type index.
+                type_idx: todo!(),
+                table_idx: TableIdx { index: 0 },
+            }
         }
 
         ir::Intrinsic::Assert => Instruction::If {

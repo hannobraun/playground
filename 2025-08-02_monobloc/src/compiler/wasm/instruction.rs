@@ -1,6 +1,6 @@
 use crate::compiler::wasm::{
     Emit,
-    indices::{LocalIdx, TableIdx},
+    indices::{LocalIdx, TableIdx, TypeIdx},
     leb128::Leb128,
 };
 
@@ -10,6 +10,10 @@ pub enum Instruction {
         block_type: BlockType,
         then: Vec<Instruction>,
         else_: Vec<Instruction>,
+    },
+    CallIndirect {
+        type_idx: TypeIdx,
+        table_idx: TableIdx,
     },
 
     LocalGet {
@@ -72,6 +76,14 @@ impl Emit for Instruction {
                     instruction.emit(target);
                 }
                 End.emit(target);
+            }
+            Self::CallIndirect {
+                type_idx,
+                table_idx,
+            } => {
+                target.push(0x11);
+                type_idx.emit(target);
+                table_idx.emit(target);
             }
 
             Self::LocalGet { index } => {
