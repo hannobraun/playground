@@ -1,23 +1,27 @@
+use std::collections::BTreeMap;
+
 use crate::compiler::{
     ir::{Intrinsic, Signature, Type, Types},
-    nodes::{Node, NodeKind},
+    nodes::{Node, NodeId, NodeKind},
     resolver::Resolver,
 };
 
 /// # Infers the type of a single block
 pub struct Inferrer {
     stack: Stack,
+    signatures: BTreeMap<NodeId, Signature>,
 }
 
 impl Inferrer {
     pub fn new() -> Self {
         Self {
             stack: Stack::new(),
+            signatures: BTreeMap::new(),
         }
     }
 
     pub fn process_node(&mut self, node: &Node, resolver: &Resolver) {
-        process_node(node, &mut self.stack, resolver);
+        process_node(node, &mut self.stack, &mut self.signatures, resolver);
     }
 
     /// # Compute the signature of the inferred block
@@ -26,7 +30,12 @@ impl Inferrer {
     }
 }
 
-fn process_node(node: &Node, stack: &mut Stack, resolver: &Resolver) {
+fn process_node(
+    node: &Node,
+    stack: &mut Stack,
+    signatures: &mut BTreeMap<NodeId, Signature>,
+    resolver: &Resolver,
+) {
     match &node.kind {
         NodeKind::Binding { names: _ } => {
             for _ in resolver.binding_definitions_at(&node.id) {
@@ -37,11 +46,12 @@ fn process_node(node: &Node, stack: &mut Stack, resolver: &Resolver) {
             let mut stack = Stack::new();
 
             for node in nodes {
-                process_node(node, &mut stack, resolver);
+                process_node(node, &mut stack, signatures, resolver);
             }
 
             let signature = stack.to_signature();
 
+            signatures.insert(node.id, signature.clone());
             stack.push(Type::Block { signature });
         }
         NodeKind::Comment { text: _ } => {
