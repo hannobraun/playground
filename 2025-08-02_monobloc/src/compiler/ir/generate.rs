@@ -52,7 +52,7 @@ pub fn generate(
     }
 
     let signature = inferrer.into_signature();
-    let bindings = resolver.into_bindings_in_root();
+    let bindings = resolver.to_bindings_in_root().clone();
 
     Block {
         signature,
