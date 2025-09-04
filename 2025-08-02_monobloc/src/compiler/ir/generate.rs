@@ -1,11 +1,12 @@
 use crate::compiler::{
     inferrer::Inferrer,
     ir::{Block, Expression, Intrinsic},
-    nodes::{Node, NodeKind},
+    nodes::{Node, NodeId, NodeKind},
     resolver::Resolver,
 };
 
 pub fn generate(
+    root: Option<NodeId>,
     nodes: Vec<Node>,
     resolver: Resolver,
     inferrer: Inferrer,
@@ -52,7 +53,9 @@ pub fn generate(
     }
 
     let signature = inferrer.into_signature();
-    let bindings = resolver.to_bindings_in_root().clone();
+    let bindings = root
+        .map(|_| unreachable!("`generate` is only called for root block"))
+        .unwrap_or_else(|| resolver.to_bindings_in_root().clone());
 
     Block {
         signature,
