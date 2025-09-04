@@ -9,7 +9,7 @@ pub fn generate(
     root: Option<NodeId>,
     nodes: Vec<Node>,
     resolver: &Resolver,
-    inferrer: Inferrer,
+    inferrer: &Inferrer,
 ) -> Block {
     let mut body = Vec::new();
 
