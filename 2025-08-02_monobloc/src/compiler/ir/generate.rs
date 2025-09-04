@@ -65,6 +65,12 @@ fn compile_block(
                     });
                 } else if let Some(intrinsic) = intrinsic {
                     body.push(Expression::Intrinsic { intrinsic });
+                } else if name == "show" {
+                    // TASK: Define a `show` import funcion that takes one
+                    //       value, displays it, then returns it.
+                    // TASK: Emit `Expression::HostFunction` and implement that
+                    //       by calling an imported function.
+                    todo!()
                 } else {
                     println!("Unknown identifier: `{name}`");
                     body.push(Expression::Intrinsic {

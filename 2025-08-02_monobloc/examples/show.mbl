@@ -1,0 +1,7 @@
+# `show` is a host function that is defined by the compiler, meaning it is only
+# available at compile time.
+#
+# It pops a value from the stack and pushes the same value back, thus having no
+# observable effect from within the program. It is a debugging tool, instructing
+# the compiler to display the value it handles.
+1 show assert
