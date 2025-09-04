@@ -34,7 +34,7 @@ impl Inferrer {
                 }
 
                 self.stack.push(Type::Block {
-                    signature: inferrer.root_signature(),
+                    signature: inferrer.signature_of_root(),
                 });
             }
             NodeKind::Comment { text: _ } => {
@@ -80,7 +80,7 @@ impl Inferrer {
     }
 
     /// # Compute the signature of the inferred block
-    pub fn root_signature(&self) -> Signature {
+    pub fn signature_of_root(&self) -> Signature {
         Signature {
             inputs: self.stack.inputs.clone(),
             outputs: self.stack.outputs.clone(),
