@@ -52,7 +52,7 @@ pub fn generate(
         }
     }
 
-    let signature = inferrer.into_signature();
+    let signature = inferrer.to_signature();
     let bindings = root
         .map(|_| unreachable!("`generate` is only called for root block"))
         .unwrap_or_else(|| resolver.to_bindings_in_root().clone());
