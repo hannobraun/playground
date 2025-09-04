@@ -6,7 +6,7 @@ use crate::compiler::{
 };
 
 pub fn generate(
-    root: Option<NodeId>,
+    node: Option<NodeId>,
     nodes: Vec<Node>,
     resolver: &Resolver,
     inferrer: &Inferrer,
@@ -53,7 +53,7 @@ pub fn generate(
     }
 
     let signature = inferrer.root_signature();
-    let bindings = root
+    let bindings = node
         .map(|_| unreachable!("`generate` is only called for root block"))
         .unwrap_or_else(|| resolver.bindings_for_root().clone());
 
