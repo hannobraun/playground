@@ -20,63 +20,7 @@ impl Inferrer {
     }
 
     pub fn process_node(&mut self, node: &Node, resolver: &Resolver) {
-        match &node.kind {
-            NodeKind::Binding { names: _ } => {
-                for _ in resolver.binding_definitions_at(&node.id) {
-                    self.stack.pop(Type::I32);
-                }
-            }
-            NodeKind::Block { nodes } => {
-                let mut inferrer = Inferrer::new();
-
-                for node in nodes {
-                    inferrer.process_node(node, resolver);
-                }
-
-                self.stack.push(Type::Block {
-                    signature: inferrer.signature_of_root(),
-                });
-            }
-            NodeKind::Comment { text: _ } => {
-                // ignoring comment
-            }
-            NodeKind::Identifier { name: _ } => {
-                let intrinsic = resolver.intrinsic_at(&node.id).copied();
-
-                if resolver.binding_call_at(&node.id).is_some() {
-                    self.stack.push(Type::I32);
-                } else if let Some(Intrinsic::Apply) = intrinsic {
-                    let Some(Type::Block { signature }) =
-                        self.stack.pop(Type::I32)
-                    else {
-                        panic!(
-                            "Expected type of `apply` argument to be known."
-                        );
-                    };
-
-                    self.stack.pop(Type::I32);
-                    for ty in signature.outputs {
-                        self.stack.push(ty);
-                    }
-                } else if let Some([inputs, outputs]) = intrinsic
-                    .as_ref()
-                    .and_then(|intrinsic| intrinsic.signature())
-                {
-                    for input in inputs {
-                        self.stack.pop(input.clone());
-                    }
-                    for output in outputs {
-                        self.stack.push(output.clone());
-                    }
-                }
-            }
-            NodeKind::Integer {
-                value: _,
-                format: _,
-            } => {
-                self.stack.push(Type::I32);
-            }
-        }
+        process_node(node, &mut self.stack, resolver);
     }
 
     /// # Compute the signature of the inferred block
@@ -84,6 +28,63 @@ impl Inferrer {
         Signature {
             inputs: self.stack.inputs.clone(),
             outputs: self.stack.outputs.clone(),
+        }
+    }
+}
+
+fn process_node(node: &Node, stack: &mut Stack, resolver: &Resolver) {
+    match &node.kind {
+        NodeKind::Binding { names: _ } => {
+            for _ in resolver.binding_definitions_at(&node.id) {
+                stack.pop(Type::I32);
+            }
+        }
+        NodeKind::Block { nodes } => {
+            let mut inferrer = Inferrer::new();
+
+            for node in nodes {
+                inferrer.process_node(node, resolver);
+            }
+
+            stack.push(Type::Block {
+                signature: inferrer.signature_of_root(),
+            });
+        }
+        NodeKind::Comment { text: _ } => {
+            // ignoring comment
+        }
+        NodeKind::Identifier { name: _ } => {
+            let intrinsic = resolver.intrinsic_at(&node.id).copied();
+
+            if resolver.binding_call_at(&node.id).is_some() {
+                stack.push(Type::I32);
+            } else if let Some(Intrinsic::Apply) = intrinsic {
+                let Some(Type::Block { signature }) = stack.pop(Type::I32)
+                else {
+                    panic!("Expected type of `apply` argument to be known.");
+                };
+
+                stack.pop(Type::I32);
+                for ty in signature.outputs {
+                    stack.push(ty);
+                }
+            } else if let Some([inputs, outputs]) = intrinsic
+                .as_ref()
+                .and_then(|intrinsic| intrinsic.signature())
+            {
+                for input in inputs {
+                    stack.pop(input.clone());
+                }
+                for output in outputs {
+                    stack.push(output.clone());
+                }
+            }
+        }
+        NodeKind::Integer {
+            value: _,
+            format: _,
+        } => {
+            stack.push(Type::I32);
         }
     }
 }
