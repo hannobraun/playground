@@ -51,8 +51,10 @@ pub fn generate(
         }
     }
 
+    let signature = inferrer.into_signature();
+
     Block {
-        signature: inferrer.into_signature(),
+        signature,
         bindings: resolver.into_bindings_in_root(),
         body,
     }
