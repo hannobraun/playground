@@ -43,16 +43,16 @@ fn process_node(
             }
         }
         NodeKind::Block { nodes } => {
-            let mut stack = Stack::new();
+            let mut stack_for_block = Stack::new();
 
             for node in nodes {
-                process_node(node, &mut stack, signatures, resolver);
+                process_node(node, &mut stack_for_block, signatures, resolver);
             }
 
-            let signature = stack.to_signature();
+            let signature = stack_for_block.to_signature();
 
             signatures.insert(node.id, signature.clone());
-            stack.push(Type::Block { signature });
+            stack_for_block.push(Type::Block { signature });
         }
         NodeKind::Comment { text: _ } => {
             // ignoring comment
