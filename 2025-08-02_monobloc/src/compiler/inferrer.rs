@@ -52,7 +52,7 @@ fn process_node(
             let signature = stack_for_block.to_signature();
 
             signatures.insert(node.id, signature.clone());
-            stack_for_block.push(Type::Block { signature });
+            stack.push(Type::Block { signature });
         }
         NodeKind::Comment { text: _ } => {
             // ignoring comment
