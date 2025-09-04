@@ -12,10 +12,7 @@ pub struct Inferrer {
 impl Inferrer {
     pub fn new() -> Self {
         Self {
-            stack: Stack {
-                inputs: Vec::new(),
-                outputs: Vec::new(),
-            },
+            stack: Stack::new(),
         }
     }
 
@@ -95,6 +92,13 @@ struct Stack {
 }
 
 impl Stack {
+    fn new() -> Self {
+        Self {
+            inputs: Vec::new(),
+            outputs: Vec::new(),
+        }
+    }
+
     fn push(&mut self, ty: Type) {
         self.outputs.push(ty);
     }
