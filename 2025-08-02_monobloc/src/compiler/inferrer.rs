@@ -6,7 +6,6 @@ use crate::compiler::{
     resolver::Resolver,
 };
 
-/// # Infers the type of a single block
 pub struct Inferrer {
     stack: Stack,
     signatures: BTreeMap<NodeId, Signature>,
@@ -24,7 +23,6 @@ impl Inferrer {
         process_node(node, &mut self.stack, &mut self.signatures, resolver);
     }
 
-    /// # Compute the signature of the inferred block
     pub fn signature_of_root(&self) -> Signature {
         self.stack.to_signature()
     }
