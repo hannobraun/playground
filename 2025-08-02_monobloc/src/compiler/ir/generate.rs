@@ -60,10 +60,14 @@ fn generate_inner(
         }
     }
 
-    let signature = inferrer.signature_of_root();
-    let bindings = node
+    let (signature, bindings) = node
         .map(|_| unreachable!("`generate_inner` is only called for root block"))
-        .unwrap_or_else(|| resolver.bindings_for_root().clone());
+        .unwrap_or_else(|| {
+            let signature = inferrer.signature_of_root();
+            let bindings = resolver.bindings_for_root().clone();
+
+            (signature, bindings)
+        });
 
     Block {
         signature,
