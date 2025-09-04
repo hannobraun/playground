@@ -11,6 +11,15 @@ pub fn generate(
     resolver: &Resolver,
     inferrer: &Inferrer,
 ) -> Block {
+    generate_inner(node, nodes, resolver, inferrer)
+}
+
+fn generate_inner(
+    node: Option<NodeId>,
+    nodes: Vec<Node>,
+    resolver: &Resolver,
+    inferrer: &Inferrer,
+) -> Block {
     let mut body = Vec::new();
 
     for node in nodes {
