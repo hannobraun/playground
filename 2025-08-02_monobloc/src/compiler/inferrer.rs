@@ -93,6 +93,7 @@ fn process_node(
     }
 }
 
+#[derive(Debug)]
 struct Stack {
     inputs: Types,
     outputs: Types,
