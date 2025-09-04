@@ -52,10 +52,11 @@ pub fn generate(
     }
 
     let signature = inferrer.into_signature();
+    let bindings = resolver.into_bindings_in_root();
 
     Block {
         signature,
-        bindings: resolver.into_bindings_in_root(),
+        bindings,
         body,
     }
 }
