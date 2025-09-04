@@ -83,7 +83,7 @@ impl Resolver {
         self.intrinsics_by_node.get(node)
     }
 
-    pub fn bindings_in_root(&self) -> &Vec<Binding> {
+    pub fn bindings_for_root(&self) -> &Vec<Binding> {
         &self.bindings
     }
 }
