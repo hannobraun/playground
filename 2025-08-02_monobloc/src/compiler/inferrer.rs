@@ -40,9 +40,9 @@ fn process_node(node: &Node, stack: &mut Stack, resolver: &Resolver) {
                 process_node(node, &mut stack, resolver);
             }
 
-            stack.push(Type::Block {
-                signature: stack.to_signature(),
-            });
+            let signature = stack.to_signature();
+
+            stack.push(Type::Block { signature });
         }
         NodeKind::Comment { text: _ } => {
             // ignoring comment
