@@ -22,10 +22,7 @@ impl Inferrer {
 
     /// # Compute the signature of the inferred block
     pub fn signature_of_root(&self) -> Signature {
-        Signature {
-            inputs: self.stack.inputs.clone(),
-            outputs: self.stack.outputs.clone(),
-        }
+        self.stack.to_signature()
     }
 }
 
@@ -118,6 +115,13 @@ impl Stack {
         } else {
             self.inputs.push(expected_type);
             None
+        }
+    }
+
+    fn to_signature(&self) -> Signature {
+        Signature {
+            inputs: self.inputs.clone(),
+            outputs: self.outputs.clone(),
         }
     }
 }
