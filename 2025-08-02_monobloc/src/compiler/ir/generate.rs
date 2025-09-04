@@ -8,7 +8,7 @@ use crate::compiler::{
 pub fn generate(
     root: Option<NodeId>,
     nodes: Vec<Node>,
-    resolver: Resolver,
+    resolver: &Resolver,
     inferrer: Inferrer,
 ) -> Block {
     let mut body = Vec::new();
