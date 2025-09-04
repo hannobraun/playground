@@ -89,6 +89,7 @@ fn process_token_in_block(token: Token) -> (Option<NodeKind>, Option<State>) {
         Token::Integer { value, format } => NodeKind::Integer { value, format },
 
         token => {
+            // TASK: Improve error handling.
             panic!("Unexpected token `{token:?}`");
         }
     };
