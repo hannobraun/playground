@@ -67,6 +67,7 @@ fn process_node(
             } else if let Some(Intrinsic::Apply) = intrinsic {
                 let Some(Type::Block { signature }) = stack.pop(Type::I32)
                 else {
+                    // TASK: Improve error handling.
                     panic!("Expected type of `apply` argument to be known.");
                 };
 
