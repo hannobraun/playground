@@ -34,14 +34,14 @@ fn process_node(node: &Node, stack: &mut Stack, resolver: &Resolver) {
             }
         }
         NodeKind::Block { nodes } => {
-            let mut inferrer = Inferrer::new();
+            let mut stack = Stack::new();
 
             for node in nodes {
-                inferrer.process_node(node, resolver);
+                process_node(node, &mut stack, resolver);
             }
 
             stack.push(Type::Block {
-                signature: inferrer.signature_of_root(),
+                signature: stack.to_signature(),
             });
         }
         NodeKind::Comment { text: _ } => {
