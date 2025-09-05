@@ -9,6 +9,9 @@ pub struct TypeSection<'r> {
 
 impl Emit for TypeSection<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
+        // Here, we emit one type per function. We could reduce code size by
+        // deduplicating function types, so we don't need one entry per
+        // function.
         let mut contents = Vec::new();
         FuncTypeVec {
             blocks: &self.package.blocks,
