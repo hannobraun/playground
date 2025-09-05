@@ -9,7 +9,7 @@ pub struct Resolver {
     bindings: Vec<Binding>,
 
     binding_calls_by_node: BTreeMap<NodeId, Binding>,
-    bindings_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
+    binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
     intrinsics_by_node: BTreeMap<NodeId, Intrinsic>,
 }
 
@@ -19,7 +19,7 @@ impl Resolver {
             bindings: Vec::new(),
 
             binding_calls_by_node: BTreeMap::new(),
-            bindings_definitions_by_node: BTreeMap::new(),
+            binding_definitions_by_node: BTreeMap::new(),
             intrinsics_by_node: BTreeMap::new(),
         }
     }
@@ -44,7 +44,7 @@ impl Resolver {
                     self.bindings.push(binding);
                 }
 
-                self.bindings_definitions_by_node.insert(node.id, bindings);
+                self.binding_definitions_by_node.insert(node.id, bindings);
             }
             NodeKind::Identifier { name } => {
                 if let Some(intrinsic) = resolve_intrinsic(name) {
@@ -73,7 +73,7 @@ impl Resolver {
     }
 
     pub fn binding_definitions_at(&self, node: &NodeId) -> &[Binding] {
-        self.bindings_definitions_by_node
+        self.binding_definitions_by_node
             .get(node)
             .map(|bindings| bindings.as_slice())
             .unwrap_or(&[])
