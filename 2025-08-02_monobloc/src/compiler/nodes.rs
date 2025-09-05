@@ -79,6 +79,8 @@ fn process_token_in_block(token: Token) -> (Option<NodeKind>, Option<State>) {
         Token::BlockOpen => {
             return (None, Some(State::Block { nodes: Vec::new() }));
         }
+        // TASK: Should multiple subsequent comment tokens get collected
+        //       into a single command node?
         Token::Comment { text } => NodeKind::Comment { text },
         Token::Identifier { name } => NodeKind::Identifier { name },
         Token::Integer { value, format } => NodeKind::Integer { value, format },

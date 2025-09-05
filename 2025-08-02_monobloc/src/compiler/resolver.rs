@@ -76,6 +76,7 @@ fn process_node(
             let mut bindings_from_this_operator = Vec::new();
 
             for name in names.iter().rev() {
+                // TASK: Improve error handling.
                 let index =
                     bindings_from_this_operator.len().try_into().expect(
                         "More than `u32::MAX` bindings per scope are not \

@@ -62,6 +62,7 @@ pub fn compile(
 
     let mut nodes = Vec::new();
 
+    // TASK: In interactive mode, stop before every token and wait for input.
     loop {
         let Some(ch) = input_code.next() else {
             break;
