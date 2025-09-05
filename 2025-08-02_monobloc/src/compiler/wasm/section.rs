@@ -7,22 +7,12 @@ pub struct Section<'a> {
 
 impl Emit for Section<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        SectionId { id: self.id }.emit(target);
+        target.push(self.id);
         SectionSize {
             size: self.contents.len(),
         }
         .emit(target);
         target.extend(self.contents);
-    }
-}
-
-struct SectionId {
-    id: u8,
-}
-
-impl Emit for SectionId {
-    fn emit(&self, target: &mut Vec<u8>) {
-        target.push(self.id);
     }
 }
 
