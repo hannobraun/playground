@@ -29,11 +29,15 @@ struct FuncTypeVec<'r> {
 
 impl Emit for FuncTypeVec<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        WasmVec {
-            items: &[FuncType {
-                signature: &self.package.root().signature,
-            }],
-        }
-        .emit(target);
+        let func_types = self
+            .package
+            .blocks
+            .iter()
+            .map(|block| FuncType {
+                signature: &block.signature,
+            })
+            .collect::<Vec<_>>();
+
+        WasmVec { items: &func_types }.emit(target);
     }
 }
