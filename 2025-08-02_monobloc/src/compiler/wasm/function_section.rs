@@ -6,8 +6,6 @@ pub struct FunctionSection;
 
 impl Emit for FunctionSection {
     fn emit(&self, target: &mut Vec<u8>) {
-        let id = 3;
-
         let mut contents = Vec::new();
         WasmVec {
             items: &[TypeIdx { index: 0 }],
@@ -15,7 +13,7 @@ impl Emit for FunctionSection {
         .emit(&mut contents);
 
         Section {
-            id,
+            id: 3,
             contents: &contents,
         }
         .emit(target);
