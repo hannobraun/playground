@@ -9,12 +9,12 @@ pub use self::{
 };
 
 pub struct Package {
-    pub root: Block,
+    pub blocks: Vec<Block>,
 }
 
 impl Package {
     pub fn root(&self) -> &Block {
-        &self.root
+        &self.blocks[0]
     }
 }
 
