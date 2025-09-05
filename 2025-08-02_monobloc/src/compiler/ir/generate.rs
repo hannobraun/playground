@@ -14,8 +14,11 @@ pub fn generate(
 
     let root = compile_block(None, nodes, resolver, inferrer);
 
-    blocks.push(root);
-    let root = 0;
+    let root = {
+        let index = blocks.len();
+        blocks.push(root);
+        index
+    };
 
     Package { blocks, root }
 }
