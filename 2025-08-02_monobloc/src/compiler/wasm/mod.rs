@@ -22,7 +22,7 @@ pub fn generate_module(package: &ir::Package) -> Vec<u8> {
     let mut target = Vec::new();
 
     Module {
-        root: &package.root,
+        root: package.root(),
     }
     .emit(&mut target);
 

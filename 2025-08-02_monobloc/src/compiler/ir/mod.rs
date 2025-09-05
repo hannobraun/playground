@@ -12,6 +12,12 @@ pub struct Package {
     pub root: Block,
 }
 
+impl Package {
+    pub fn root(&self) -> &Block {
+        &self.root
+    }
+}
+
 #[derive(Clone)]
 pub struct Block {
     pub signature: Signature,

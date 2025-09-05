@@ -19,7 +19,7 @@ pub fn evaluate_root(
         .ok_or_else(|| anyhow!("Could not find root function."))?;
 
     let mut results =
-        iter::repeat_n(Val::I32(0), package.root.signature.outputs.len())
+        iter::repeat_n(Val::I32(0), package.root().signature.outputs.len())
             .collect::<Vec<_>>();
     func.call(&mut store, &[], &mut results)?;
 
