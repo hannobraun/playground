@@ -74,7 +74,7 @@ fn compile_block(
         .map(|_| unreachable!("`generate_inner` is only called for root block"))
         .unwrap_or_else(|| {
             let signature = inferrer.signature_of_root();
-            let bindings = resolver.bindings_for_root().clone();
+            let bindings = resolver.bindings_in_root().clone();
 
             (signature, bindings)
         });
