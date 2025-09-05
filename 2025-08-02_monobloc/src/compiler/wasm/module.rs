@@ -16,7 +16,7 @@ impl Emit for Module<'_> {
         Magic.emit(target);
         Version.emit(target);
         TypeSection {
-            signature: &self.package.root().signature,
+            package: self.package,
         }
         .emit(target);
         FunctionSection.emit(target);

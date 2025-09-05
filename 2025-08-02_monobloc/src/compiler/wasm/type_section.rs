@@ -4,7 +4,7 @@ use crate::compiler::{
 };
 
 pub struct TypeSection<'a> {
-    pub signature: &'a ir::Signature,
+    pub package: &'a ir::Package,
 }
 
 impl Emit for TypeSection<'_> {
@@ -14,7 +14,7 @@ impl Emit for TypeSection<'_> {
         let mut contents = Vec::new();
         WasmVec {
             items: &[FuncType {
-                signature: self.signature,
+                signature: &self.package.root().signature,
             }],
         }
         .emit(&mut contents);
