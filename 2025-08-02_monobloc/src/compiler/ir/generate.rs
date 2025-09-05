@@ -12,14 +12,7 @@ pub fn generate(
 ) -> Package {
     let mut blocks = Vec::new();
 
-    let root = {
-        let block = compile_block(None, nodes, resolver, inferrer, &mut blocks);
-        let index = blocks.len();
-
-        blocks.push(block);
-
-        index
-    };
+    let root = compile_block(None, nodes, resolver, inferrer, &mut blocks);
 
     Package { blocks, root }
 }
@@ -29,8 +22,8 @@ fn compile_block(
     nodes: Vec<Node>,
     resolver: &Resolver,
     inferrer: &Inferrer,
-    _: &mut Vec<Block>,
-) -> Block {
+    blocks: &mut Vec<Block>,
+) -> usize {
     let mut body = Vec::new();
 
     for node in nodes {
@@ -81,9 +74,14 @@ fn compile_block(
             (signature, bindings)
         });
 
-    Block {
+    let index = blocks.len();
+    let block = Block {
         signature,
         bindings,
         body,
-    }
+    };
+
+    blocks.push(block);
+
+    index
 }
