@@ -1,4 +1,4 @@
-use crate::compiler::ir;
+use crate::compiler::{ir, wasm::module::Module};
 
 mod code_section;
 mod export;
@@ -19,8 +19,6 @@ mod vec;
 mod version;
 
 pub fn compile_module(root: &ir::Block) -> Vec<u8> {
-    use crate::compiler::wasm::module::Module;
-
     let mut target = Vec::new();
     Module { root }.emit(&mut target);
 
