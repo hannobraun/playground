@@ -9,8 +9,6 @@ pub struct TypeSection<'r> {
 
 impl Emit for TypeSection<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let id = 1;
-
         let mut contents = Vec::new();
         FuncTypeVec {
             package: self.package,
@@ -18,7 +16,7 @@ impl Emit for TypeSection<'_> {
         .emit(&mut contents);
 
         Section {
-            id,
+            id: 1,
             contents: &contents,
         }
         .emit(target);
