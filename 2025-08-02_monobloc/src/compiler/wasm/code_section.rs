@@ -56,7 +56,7 @@ impl Emit for Code<'_> {
 }
 
 struct LocalsVec<'a> {
-    pub bindings: &'a ir::Bindings,
+    bindings: &'a ir::Bindings,
 }
 
 impl Emit for LocalsVec<'_> {
