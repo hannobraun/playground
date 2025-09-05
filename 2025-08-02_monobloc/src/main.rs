@@ -70,6 +70,7 @@ pub fn compile(
     let mut parser = Parser::new();
     let mut resolver = Resolver::new();
 
+    // TASK: In interactive mode, stop before every token and wait for input.
     loop {
         let Some(ch) = input_code.next() else {
             break;

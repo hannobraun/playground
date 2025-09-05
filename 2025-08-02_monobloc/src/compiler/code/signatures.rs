@@ -45,6 +45,7 @@ impl Signatures {
     }
 
     pub fn get_for_block(&self, id: &NodeId) -> &Signature {
+        // TASK: Improve error handling.
         let index = self
             .by_block
             .get(id)

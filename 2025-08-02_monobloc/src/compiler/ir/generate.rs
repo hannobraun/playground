@@ -117,6 +117,7 @@ fn compile_block(
         (signature, bindings)
     };
 
+    // TASK: Improve error handling.
     let signature = signatures
         .index_of(&signature)
         .expect("Expecting signature to be available.");

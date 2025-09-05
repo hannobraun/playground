@@ -15,6 +15,19 @@ impl Tokenizer {
         }
     }
 
+    // TASK: Operators like `=>` and `.` should match eagerly. This should be
+    //       verified in a formatting example.
+    // TASK: Handle the last token being followed by EOF instead of
+    //       whitespace.
+    //
+    //       This might require a new type of test that has an accompanying
+    //       check in Rust code, as I don't think I can construct a test case
+    //       that fails because of a missing token.
+    //
+    //       However, once we have blocks, that should actually become possible.
+    //       The compiler should compile an unclosed block into a panic, so if
+    //       the tokenizer ignores the last token because it's followed by EOF,
+    //       that would cause the test to fail.
     pub fn process_char(&mut self, ch: char) -> Option<Token> {
         match (&self.state, ch) {
             (State::Initial, '#') => {
