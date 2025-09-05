@@ -13,9 +13,9 @@ pub fn generate(
     let mut blocks = Vec::new();
 
     let root = {
-        let root = compile_block(None, nodes, resolver, inferrer);
+        let block = compile_block(None, nodes, resolver, inferrer);
         let index = blocks.len();
-        blocks.push(root);
+        blocks.push(block);
         index
     };
 
