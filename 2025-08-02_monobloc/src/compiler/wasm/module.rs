@@ -8,7 +8,7 @@ use crate::compiler::{
 };
 
 pub struct Module<'a> {
-    pub root: &'a ir::Block,
+    pub package: &'a ir::Package,
 }
 
 impl Emit for Module<'_> {
@@ -16,11 +16,14 @@ impl Emit for Module<'_> {
         Magic.emit(target);
         Version.emit(target);
         TypeSection {
-            signature: &self.root.signature,
+            signature: &self.package.root().signature,
         }
         .emit(target);
         FunctionSection.emit(target);
         ExportSection.emit(target);
-        CodeSection { root: self.root }.emit(target);
+        CodeSection {
+            root: self.package.root(),
+        }
+        .emit(target);
     }
 }
