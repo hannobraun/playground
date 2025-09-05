@@ -26,9 +26,11 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
             Instruction::LocalSet { index: *index }
         }
         ir::Expression::Block { index } => {
-            // not supported yet; ignoring
-            let _ = index;
-            return;
+            let index: u32 = (*index)
+                .try_into()
+                .expect("Block index must fit into `u32`.");
+
+            Instruction::I32Const { value: index }
         }
         ir::Expression::CallBinding { index } => {
             Instruction::LocalGet { index: *index }
