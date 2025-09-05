@@ -12,8 +12,6 @@ pub struct CodeSection<'r> {
 
 impl Emit for CodeSection<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let id = 10;
-
         let mut contents = Vec::new();
         WasmVec {
             items: &[Code {
@@ -24,7 +22,7 @@ impl Emit for CodeSection<'_> {
         .emit(&mut contents);
 
         Section {
-            id,
+            id: 10,
             contents: &contents,
         }
         .emit(target);
