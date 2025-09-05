@@ -59,7 +59,7 @@ impl Resolver {
 
 fn process_node(
     node: &Node,
-    bindings: &mut Vec<Binding>,
+    bindings_in_current_block: &mut Vec<Binding>,
     bindings_by_block: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_definitions_by_node: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_calls_by_node: &mut BTreeMap<NodeId, Binding>,
@@ -82,7 +82,7 @@ fn process_node(
                 };
 
                 bindings_from_this_operator.push(binding.clone());
-                bindings.push(binding);
+                bindings_in_current_block.push(binding);
             }
 
             binding_definitions_by_node
@@ -109,7 +109,7 @@ fn process_node(
                 intrinsics_by_node.insert(node.id, intrinsic);
             }
 
-            if let Some(binding) = bindings
+            if let Some(binding) = bindings_in_current_block
                 .iter()
                 .rev()
                 .find(|binding| &binding.name == name)
