@@ -20,9 +20,6 @@ impl Emit for Module<'_> {
         TypeSection { blocks }.emit(target);
         FunctionSection { blocks }.emit(target);
         ExportSection.emit(target);
-        CodeSection {
-            root: self.package.root(),
-        }
-        .emit(target);
+        CodeSection { blocks }.emit(target);
     }
 }

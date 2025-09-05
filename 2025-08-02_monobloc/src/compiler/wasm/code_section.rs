@@ -1,5 +1,3 @@
-use std::slice;
-
 use crate::compiler::{
     ir,
     wasm::{
@@ -9,14 +7,14 @@ use crate::compiler::{
 };
 
 pub struct CodeSection<'r> {
-    pub root: &'r ir::Block,
+    pub blocks: &'r [ir::Block],
 }
 
 impl Emit for CodeSection<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let mut contents = Vec::new();
         CodeVec {
-            blocks: slice::from_ref(self.root),
+            blocks: self.blocks,
         }
         .emit(&mut contents);
 
