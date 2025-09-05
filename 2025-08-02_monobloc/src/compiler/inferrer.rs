@@ -23,6 +23,10 @@ impl Inferrer {
         process_node(node, &mut self.stack, &mut self.signatures, resolver);
     }
 
+    pub fn signature_of(&self, node: &NodeId) -> &Signature {
+        self.signatures.get(node).expect("Signature not available")
+    }
+
     pub fn signature_of_root(&self) -> Signature {
         self.stack.to_signature()
     }

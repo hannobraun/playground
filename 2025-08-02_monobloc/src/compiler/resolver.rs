@@ -52,6 +52,12 @@ impl Resolver {
         self.intrinsics_by_node.get(node)
     }
 
+    pub fn bindings_in(&self, node: &NodeId) -> &Vec<Binding> {
+        self.bindings_by_block
+            .get(node)
+            .expect("Bindings not available")
+    }
+
     pub fn bindings_in_root(&self) -> &Vec<Binding> {
         &self.bindings_in_root
     }
