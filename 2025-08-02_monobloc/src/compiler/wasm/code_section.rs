@@ -1,7 +1,7 @@
 use crate::compiler::{
     ir,
     wasm::{
-        Emit, expressions::Expressions, leb128::Leb128, section::emit_section,
+        Emit, expressions::Expressions, leb128::Leb128, section::Section,
         val_type::ValType, vec::WasmVec,
     },
 };
@@ -23,7 +23,11 @@ impl Emit for CodeSection<'_> {
         }
         .emit(&mut contents);
 
-        emit_section(id, &contents, target);
+        Section {
+            id,
+            contents: &contents,
+        }
+        .emit(target);
     }
 }
 

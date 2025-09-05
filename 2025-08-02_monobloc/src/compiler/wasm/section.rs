@@ -1,9 +1,16 @@
 use crate::compiler::wasm::{Emit, leb128::Leb128};
 
-pub fn emit_section(id: u8, contents: &[u8], target: &mut Vec<u8>) {
-    emit_section_id(id, target);
-    emit_section_size(contents.len(), target);
-    emit_section_contents(contents, target);
+pub struct Section<'a> {
+    pub id: u8,
+    pub contents: &'a [u8],
+}
+
+impl Emit for Section<'_> {
+    fn emit(&self, target: &mut Vec<u8>) {
+        emit_section_id(self.id, target);
+        emit_section_size(self.contents.len(), target);
+        emit_section_contents(self.contents, target);
+    }
 }
 
 fn emit_section_id(id: u8, target: &mut Vec<u8>) {
