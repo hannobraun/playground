@@ -73,8 +73,8 @@ impl Emit for LocalsVec<'_> {
 }
 
 struct Locals<'r> {
-    pub n: u32,
-    pub val_type: ValType<'r>,
+    n: u32,
+    val_type: ValType<'r>,
 }
 
 impl Emit for Locals<'_> {
