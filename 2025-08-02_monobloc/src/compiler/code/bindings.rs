@@ -21,6 +21,7 @@ impl Bindings {
     }
 }
 
+// TASK: Consider bundling this with `Stack` into a `LocalBlockState` struct.
 pub struct LocalBindings {
     inner: Vec<Binding>,
 }

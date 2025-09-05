@@ -89,6 +89,7 @@ fn compile_block(
     let signature = code.signatures.get_for_block(&id).clone();
     let bindings = resolver.bindings_in(&id).clone();
 
+    // TASK: Improve error handling.
     let signature = code
         .signatures
         .index_of(&signature)
