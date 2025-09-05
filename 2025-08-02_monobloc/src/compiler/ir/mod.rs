@@ -10,11 +10,12 @@ pub use self::{
 
 pub struct Package {
     pub blocks: Vec<Block>,
+    pub root: usize,
 }
 
 impl Package {
     pub fn root(&self) -> &Block {
-        &self.blocks[0]
+        &self.blocks[self.root]
     }
 }
 
