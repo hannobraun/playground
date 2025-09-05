@@ -30,8 +30,8 @@ impl Emit for CodeSection<'_> {
 }
 
 struct Code<'r> {
-    pub bindings: &'r ir::Bindings,
-    pub body: &'r ir::Body,
+    bindings: &'r ir::Bindings,
+    body: &'r ir::Body,
 }
 
 impl Emit for Code<'_> {
