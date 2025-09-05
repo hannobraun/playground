@@ -27,7 +27,7 @@ impl Resolver {
     pub fn process_node(&mut self, node: &Node) {
         match &node.kind {
             NodeKind::Binding { names } => {
-                let mut bindings = Vec::new();
+                let mut bindings_from_this_operator = Vec::new();
 
                 for name in names.iter().rev() {
                     let index = self.bindings.len().try_into().expect(
@@ -40,11 +40,12 @@ impl Resolver {
                         ty: Type::I32,
                     };
 
-                    bindings.push(binding.clone());
+                    bindings_from_this_operator.push(binding.clone());
                     self.bindings.push(binding);
                 }
 
-                self.binding_definitions_by_node.insert(node.id, bindings);
+                self.binding_definitions_by_node
+                    .insert(node.id, bindings_from_this_operator);
             }
             NodeKind::Identifier { name } => {
                 if let Some(intrinsic) = resolve_intrinsic(name) {
