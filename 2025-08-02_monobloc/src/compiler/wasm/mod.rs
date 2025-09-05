@@ -18,7 +18,7 @@ mod val_type;
 mod vec;
 mod version;
 
-pub fn compile_module(root: &ir::Block) -> Vec<u8> {
+pub fn generate_module(root: &ir::Block) -> Vec<u8> {
     let mut target = Vec::new();
     Module { root }.emit(&mut target);
 
