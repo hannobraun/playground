@@ -13,7 +13,7 @@ pub fn generate(
     let mut blocks = Vec::new();
 
     let root = {
-        let block = compile_block(None, nodes, resolver, inferrer);
+        let block = compile_block(None, nodes, resolver, inferrer, &mut blocks);
         let index = blocks.len();
 
         blocks.push(block);
@@ -29,6 +29,7 @@ fn compile_block(
     nodes: Vec<Node>,
     resolver: &Resolver,
     inferrer: &Inferrer,
+    _: &mut Vec<Block>,
 ) -> Block {
     let mut body = Vec::new();
 
