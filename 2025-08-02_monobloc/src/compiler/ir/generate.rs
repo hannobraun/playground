@@ -13,9 +13,11 @@ pub fn generate(
     let mut blocks = Vec::new();
 
     let root = compile_block(None, nodes, resolver, inferrer);
-    blocks.push(root);
 
-    Package { blocks, root: 0 }
+    blocks.push(root);
+    let root = 0;
+
+    Package { blocks, root }
 }
 
 fn compile_block(
