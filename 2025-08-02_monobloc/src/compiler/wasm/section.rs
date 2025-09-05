@@ -12,7 +12,7 @@ impl Emit for Section<'_> {
             size: self.contents.len(),
         }
         .emit(target);
-        emit_section_contents(self.contents, target);
+        target.extend(self.contents);
     }
 }
 
@@ -38,8 +38,4 @@ impl Emit for SectionSize {
 
         Leb128::U32 { value: size }.emit(target);
     }
-}
-
-fn emit_section_contents(contents: &[u8], target: &mut Vec<u8>) {
-    target.extend(contents);
 }
