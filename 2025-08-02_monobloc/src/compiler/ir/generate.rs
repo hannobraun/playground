@@ -10,11 +10,11 @@ pub fn generate(
     resolver: &Resolver,
     inferrer: &Inferrer,
 ) -> Package {
-    let root = generate_inner(None, nodes, resolver, inferrer);
+    let root = compile_block(None, nodes, resolver, inferrer);
     Package { root }
 }
 
-fn generate_inner(
+fn compile_block(
     node: Option<NodeId>,
     nodes: Vec<Node>,
     resolver: &Resolver,
