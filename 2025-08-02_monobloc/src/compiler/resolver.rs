@@ -84,6 +84,19 @@ fn process_node(
             binding_definitions_by_node
                 .insert(node.id, bindings_from_this_operator);
         }
+        NodeKind::Block { nodes } => {
+            let mut bindings_for_block = Vec::new();
+
+            for node in nodes {
+                process_node(
+                    node,
+                    &mut bindings_for_block,
+                    binding_definitions_by_node,
+                    binding_calls_by_node,
+                    intrinsics_by_node,
+                );
+            }
+        }
         NodeKind::Identifier { name } => {
             if let Some(intrinsic) = resolve_intrinsic(name) {
                 intrinsics_by_node.insert(node.id, intrinsic);
