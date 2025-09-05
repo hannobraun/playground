@@ -69,7 +69,7 @@ fn process_node(
                 let index =
                     bindings_from_this_operator.len().try_into().expect(
                         "More than `u32::MAX` bindings per scope are not \
-                    supported.",
+                        supported.",
                     );
                 let binding = Binding {
                     name: name.clone(),
