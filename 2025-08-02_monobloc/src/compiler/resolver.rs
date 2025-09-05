@@ -8,8 +8,8 @@ use crate::compiler::{
 pub struct Resolver {
     bindings: Vec<Binding>,
 
-    binding_calls_by_node: BTreeMap<NodeId, Binding>,
     binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
+    binding_calls_by_node: BTreeMap<NodeId, Binding>,
     intrinsics_by_node: BTreeMap<NodeId, Intrinsic>,
 }
 
@@ -18,8 +18,8 @@ impl Resolver {
         Self {
             bindings: Vec::new(),
 
-            binding_calls_by_node: BTreeMap::new(),
             binding_definitions_by_node: BTreeMap::new(),
+            binding_calls_by_node: BTreeMap::new(),
             intrinsics_by_node: BTreeMap::new(),
         }
     }
