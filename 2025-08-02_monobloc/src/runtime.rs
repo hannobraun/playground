@@ -3,9 +3,12 @@ use std::iter;
 use anyhow::anyhow;
 use wasmtime::{Engine, Instance, Module, Store, Val};
 
-use crate::compiler::ir::Block;
+use crate::compiler::ir::Package;
 
-pub fn evaluate_root(code: &[u8], root: &Block) -> anyhow::Result<Vec<i32>> {
+pub fn evaluate_root(
+    code: &[u8],
+    package: &Package,
+) -> anyhow::Result<Vec<i32>> {
     let engine = Engine::default();
     let module = Module::new(&engine, code)?;
     let mut store = Store::new(&engine, ());
@@ -15,8 +18,9 @@ pub fn evaluate_root(code: &[u8], root: &Block) -> anyhow::Result<Vec<i32>> {
         .get_func(&mut store, "root")
         .ok_or_else(|| anyhow!("Could not find root function."))?;
 
-    let mut results = iter::repeat_n(Val::I32(0), root.signature.outputs.len())
-        .collect::<Vec<_>>();
+    let mut results =
+        iter::repeat_n(Val::I32(0), package.root.signature.outputs.len())
+            .collect::<Vec<_>>();
     func.call(&mut store, &[], &mut results)?;
 
     let output = results
