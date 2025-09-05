@@ -8,7 +8,10 @@ pub struct Section<'a> {
 impl Emit for Section<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         SectionId { id: self.id }.emit(target);
-        emit_section_size(self.contents.len(), target);
+        SectionSize {
+            size: self.contents.len(),
+        }
+        .emit(target);
         emit_section_contents(self.contents, target);
     }
 }
@@ -23,12 +26,18 @@ impl Emit for SectionId {
     }
 }
 
-fn emit_section_size(size: usize, target: &mut Vec<u8>) {
-    let Ok(size) = size.try_into() else {
-        panic!("Unsupported section size: `{size}`");
-    };
+struct SectionSize {
+    size: usize,
+}
 
-    Leb128::U32 { value: size }.emit(target);
+impl Emit for SectionSize {
+    fn emit(&self, target: &mut Vec<u8>) {
+        let Ok(size) = self.size.try_into() else {
+            panic!("Unsupported section size: `{size}`", size = self.size);
+        };
+
+        Leb128::U32 { value: size }.emit(target);
+    }
 }
 
 fn emit_section_contents(contents: &[u8], target: &mut Vec<u8>) {
