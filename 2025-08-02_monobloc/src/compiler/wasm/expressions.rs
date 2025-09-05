@@ -25,6 +25,11 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
         ir::Expression::Bind { index } => {
             Instruction::LocalSet { index: *index }
         }
+        ir::Expression::Block { index } => {
+            // not supported yet; ignoring
+            let _ = index;
+            return;
+        }
         ir::Expression::CallBinding { index } => {
             Instruction::LocalGet { index: *index }
         }

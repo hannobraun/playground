@@ -33,8 +33,15 @@ fn compile_block(
                     });
                 }
             }
-            NodeKind::Block { nodes: _ } => {
-                // not supported yet; ignoring
+            NodeKind::Block { nodes } => {
+                let index = compile_block(
+                    Some(node.id),
+                    nodes,
+                    resolver,
+                    inferrer,
+                    blocks,
+                );
+                body.push(Expression::Block { index });
             }
             NodeKind::Comment { text: _ } => {
                 // ignoring comment

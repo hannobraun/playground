@@ -40,6 +40,7 @@ pub type Body = Vec<Expression>;
 #[derive(Clone)]
 pub enum Expression {
     Bind { index: u32 },
+    Block { index: usize },
     CallBinding { index: u32 },
     Intrinsic { intrinsic: Intrinsic },
 }
