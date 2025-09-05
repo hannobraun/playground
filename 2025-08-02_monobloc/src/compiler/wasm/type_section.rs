@@ -4,7 +4,7 @@ use crate::compiler::{
 };
 
 pub struct TypeSection<'r> {
-    pub package: &'r ir::Package,
+    pub blocks: &'r [ir::Block],
 }
 
 impl Emit for TypeSection<'_> {
@@ -14,7 +14,7 @@ impl Emit for TypeSection<'_> {
         // function.
         let mut contents = Vec::new();
         FuncTypeVec {
-            blocks: &self.package.blocks,
+            blocks: self.blocks,
         }
         .emit(&mut contents);
 

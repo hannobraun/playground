@@ -17,7 +17,10 @@ impl Emit for Module<'_> {
 
         Magic.emit(target);
         Version.emit(target);
-        TypeSection { package }.emit(target);
+        TypeSection {
+            blocks: &package.blocks,
+        }
+        .emit(target);
         FunctionSection.emit(target);
         ExportSection.emit(target);
         CodeSection {
