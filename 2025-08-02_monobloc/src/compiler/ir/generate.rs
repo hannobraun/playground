@@ -15,7 +15,9 @@ pub fn generate(
     let root = {
         let block = compile_block(None, nodes, resolver, inferrer);
         let index = blocks.len();
+
         blocks.push(block);
+
         index
     };
 
