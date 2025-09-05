@@ -6,7 +6,7 @@ use crate::compiler::{
 };
 
 pub struct Resolver {
-    bindings: Vec<Binding>,
+    bindings_in_root: Vec<Binding>,
 
     binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
     binding_calls_by_node: BTreeMap<NodeId, Binding>,
@@ -16,7 +16,7 @@ pub struct Resolver {
 impl Resolver {
     pub fn new() -> Self {
         Self {
-            bindings: Vec::new(),
+            bindings_in_root: Vec::new(),
 
             binding_definitions_by_node: BTreeMap::new(),
             binding_calls_by_node: BTreeMap::new(),
@@ -27,7 +27,7 @@ impl Resolver {
     pub fn process_node(&mut self, node: &Node) {
         process_node(
             node,
-            &mut self.bindings,
+            &mut self.bindings_in_root,
             &mut self.binding_definitions_by_node,
             &mut self.binding_calls_by_node,
             &mut self.intrinsics_by_node,
@@ -50,7 +50,7 @@ impl Resolver {
     }
 
     pub fn bindings_in_root(&self) -> &Vec<Binding> {
-        &self.bindings
+        &self.bindings_in_root
     }
 }
 
