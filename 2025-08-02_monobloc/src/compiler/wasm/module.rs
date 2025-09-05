@@ -13,14 +13,11 @@ pub struct Module<'r> {
 
 impl Emit for Module<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
-        let package = self.package;
+        let blocks = &self.package.blocks;
 
         Magic.emit(target);
         Version.emit(target);
-        TypeSection {
-            blocks: &package.blocks,
-        }
-        .emit(target);
+        TypeSection { blocks }.emit(target);
         FunctionSection.emit(target);
         ExportSection.emit(target);
         CodeSection {
