@@ -12,16 +12,29 @@ impl Emit for TypeSection<'_> {
         let id = 1;
 
         let mut contents = Vec::new();
-        WasmVec {
-            items: &[FuncType {
-                signature: &self.package.root().signature,
-            }],
+        FuncTypeVec {
+            package: self.package,
         }
         .emit(&mut contents);
 
         Section {
             id,
             contents: &contents,
+        }
+        .emit(target);
+    }
+}
+
+struct FuncTypeVec<'r> {
+    package: &'r ir::Package,
+}
+
+impl Emit for FuncTypeVec<'_> {
+    fn emit(&self, target: &mut Vec<u8>) {
+        WasmVec {
+            items: &[FuncType {
+                signature: &self.package.root().signature,
+            }],
         }
         .emit(target);
     }
