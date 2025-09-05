@@ -7,6 +7,7 @@ use crate::compiler::{
 
 pub struct Resolver {
     bindings_in_root: Vec<Binding>,
+    bindings_by_block: BTreeMap<NodeId, Vec<Binding>>,
 
     binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
     binding_calls_by_node: BTreeMap<NodeId, Binding>,
@@ -17,6 +18,7 @@ impl Resolver {
     pub fn new() -> Self {
         Self {
             bindings_in_root: Vec::new(),
+            bindings_by_block: BTreeMap::new(),
 
             binding_definitions_by_node: BTreeMap::new(),
             binding_calls_by_node: BTreeMap::new(),
@@ -28,6 +30,7 @@ impl Resolver {
         process_node(
             node,
             &mut self.bindings_in_root,
+            &mut self.bindings_by_block,
             &mut self.binding_definitions_by_node,
             &mut self.binding_calls_by_node,
             &mut self.intrinsics_by_node,
@@ -57,6 +60,7 @@ impl Resolver {
 fn process_node(
     node: &Node,
     bindings: &mut Vec<Binding>,
+    bindings_by_block: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_definitions_by_node: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_calls_by_node: &mut BTreeMap<NodeId, Binding>,
     intrinsics_by_node: &mut BTreeMap<NodeId, Intrinsic>,
@@ -91,11 +95,14 @@ fn process_node(
                 process_node(
                     node,
                     &mut bindings_for_block,
+                    bindings_by_block,
                     binding_definitions_by_node,
                     binding_calls_by_node,
                     intrinsics_by_node,
                 );
             }
+
+            bindings_by_block.insert(node.id, bindings_for_block);
         }
         NodeKind::Identifier { name } => {
             if let Some(intrinsic) = resolve_intrinsic(name) {
