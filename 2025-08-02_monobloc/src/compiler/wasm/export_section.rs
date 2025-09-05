@@ -10,8 +10,6 @@ pub struct ExportSection;
 
 impl Emit for ExportSection {
     fn emit(&self, target: &mut Vec<u8>) {
-        let id = 7;
-
         let mut contents = Vec::new();
         WasmVec {
             items: &[Export {
@@ -24,7 +22,7 @@ impl Emit for ExportSection {
         .emit(&mut contents);
 
         Section {
-            id,
+            id: 7,
             contents: &contents,
         }
         .emit(target);
