@@ -10,12 +10,12 @@ pub fn generate(
     resolver: &Resolver,
     inferrer: &Inferrer,
 ) -> Package {
-    let root = compile_block(None, nodes, resolver, inferrer);
+    let mut blocks = Vec::new();
 
-    Package {
-        blocks: vec![root],
-        root: 0,
-    }
+    let root = compile_block(None, nodes, resolver, inferrer);
+    blocks.push(root);
+
+    Package { blocks, root: 0 }
 }
 
 fn compile_block(
