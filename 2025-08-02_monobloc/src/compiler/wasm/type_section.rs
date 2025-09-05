@@ -11,7 +11,7 @@ impl Emit for TypeSection<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let mut contents = Vec::new();
         FuncTypeVec {
-            package: self.package,
+            blocks: &self.package.blocks,
         }
         .emit(&mut contents);
 
@@ -24,13 +24,12 @@ impl Emit for TypeSection<'_> {
 }
 
 struct FuncTypeVec<'r> {
-    package: &'r ir::Package,
+    blocks: &'r [ir::Block],
 }
 
 impl Emit for FuncTypeVec<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         let func_types = self
-            .package
             .blocks
             .iter()
             .map(|block| FuncType {
