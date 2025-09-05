@@ -14,6 +14,6 @@ impl Emit for FunctionSection {
         }
         .emit(&mut contents);
 
-        emit_section(id, contents, target);
+        emit_section(id, &contents, target);
     }
 }

@@ -19,6 +19,6 @@ impl Emit for TypeSection<'_> {
         }
         .emit(&mut contents);
 
-        emit_section(id, contents, target);
+        emit_section(id, &contents, target);
     }
 }

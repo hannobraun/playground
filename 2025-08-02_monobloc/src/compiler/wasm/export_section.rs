@@ -23,6 +23,6 @@ impl Emit for ExportSection {
         }
         .emit(&mut contents);
 
-        emit_section(id, contents, target);
+        emit_section(id, &contents, target);
     }
 }
