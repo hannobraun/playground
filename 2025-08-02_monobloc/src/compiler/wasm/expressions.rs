@@ -6,8 +6,8 @@ use crate::compiler::{
     },
 };
 
-pub struct Expressions<'a> {
-    pub body: &'a ir::Body,
+pub struct Expressions<'r> {
+    pub body: &'r ir::Body,
 }
 
 impl Emit for Expressions<'_> {

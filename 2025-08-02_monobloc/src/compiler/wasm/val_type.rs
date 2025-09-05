@@ -1,7 +1,7 @@
 use crate::compiler::{ir, wasm::Emit};
 
-pub struct ValType<'a> {
-    pub ty: &'a ir::Type,
+pub struct ValType<'r> {
+    pub ty: &'r ir::Type,
 }
 
 impl Emit for ValType<'_> {

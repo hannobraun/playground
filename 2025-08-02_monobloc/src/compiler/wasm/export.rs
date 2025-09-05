@@ -1,7 +1,7 @@
 use crate::compiler::wasm::{Emit, func_idx::FuncIdx, vec::WasmVec};
 
-pub struct Export<'a> {
-    pub name: Name<'a>,
+pub struct Export<'r> {
+    pub name: Name<'r>,
     pub desc: ExportDesc,
 }
 
@@ -12,8 +12,8 @@ impl Emit for Export<'_> {
     }
 }
 
-pub struct Name<'a> {
-    pub inner: &'a str,
+pub struct Name<'r> {
+    pub inner: &'r str,
 }
 
 impl Emit for Name<'_> {

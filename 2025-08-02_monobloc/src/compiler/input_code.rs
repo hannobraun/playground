@@ -2,10 +2,10 @@ use std::{fs::File, io::Read, iter::Peekable, path::Path, str::Chars};
 
 use anyhow::Context;
 
-pub fn read_input_code<'a>(
+pub fn read_input_code<'r>(
     path: impl AsRef<Path>,
-    buf: &'a mut String,
-) -> anyhow::Result<InputCode<'a>> {
+    buf: &'r mut String,
+) -> anyhow::Result<InputCode<'r>> {
     let path = path.as_ref();
 
     File::open(path)
@@ -18,4 +18,4 @@ pub fn read_input_code<'a>(
     Ok(buf.chars().peekable())
 }
 
-pub type InputCode<'a> = Peekable<Chars<'a>>;
+pub type InputCode<'r> = Peekable<Chars<'r>>;

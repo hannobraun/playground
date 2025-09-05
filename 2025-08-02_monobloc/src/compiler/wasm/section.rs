@@ -1,8 +1,8 @@
 use crate::compiler::wasm::{Emit, leb128::Leb128};
 
-pub struct Section<'a> {
+pub struct Section<'r> {
     pub id: u8,
-    pub contents: &'a [u8],
+    pub contents: &'r [u8],
 }
 
 impl Emit for Section<'_> {

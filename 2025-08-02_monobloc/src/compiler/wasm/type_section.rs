@@ -3,8 +3,8 @@ use crate::compiler::{
     wasm::{Emit, func_type::FuncType, section::Section, vec::WasmVec},
 };
 
-pub struct TypeSection<'a> {
-    pub package: &'a ir::Package,
+pub struct TypeSection<'r> {
+    pub package: &'r ir::Package,
 }
 
 impl Emit for TypeSection<'_> {

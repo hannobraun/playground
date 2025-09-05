@@ -7,8 +7,8 @@ use crate::compiler::{
     },
 };
 
-pub struct Module<'a> {
-    pub package: &'a ir::Package,
+pub struct Module<'r> {
+    pub package: &'r ir::Package,
 }
 
 impl Emit for Module<'_> {

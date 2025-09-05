@@ -6,8 +6,8 @@ use crate::compiler::{
     },
 };
 
-pub struct CodeSection<'a> {
-    pub root: &'a ir::Block,
+pub struct CodeSection<'r> {
+    pub root: &'r ir::Block,
 }
 
 impl Emit for CodeSection<'_> {
@@ -31,9 +31,9 @@ impl Emit for CodeSection<'_> {
     }
 }
 
-struct Code<'a> {
-    pub bindings: &'a ir::Bindings,
-    pub body: &'a ir::Body,
+struct Code<'r> {
+    pub bindings: &'r ir::Bindings,
+    pub body: &'r ir::Body,
 }
 
 impl Emit for Code<'_> {
@@ -55,8 +55,8 @@ impl Emit for Code<'_> {
     }
 }
 
-struct LocalsVec<'a> {
-    bindings: &'a ir::Bindings,
+struct LocalsVec<'r> {
+    bindings: &'r ir::Bindings,
 }
 
 impl Emit for LocalsVec<'_> {
@@ -74,9 +74,9 @@ impl Emit for LocalsVec<'_> {
     }
 }
 
-struct Locals<'a> {
+struct Locals<'r> {
     pub n: u32,
-    pub val_type: ValType<'a>,
+    pub val_type: ValType<'r>,
 }
 
 impl Emit for Locals<'_> {

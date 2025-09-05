@@ -3,8 +3,8 @@ use crate::compiler::{
     wasm::{Emit, val_type::ValType, vec::WasmVec},
 };
 
-pub struct FuncType<'a> {
-    pub signature: &'a ir::Signature,
+pub struct FuncType<'r> {
+    pub signature: &'r ir::Signature,
 }
 
 impl Emit for FuncType<'_> {
@@ -17,8 +17,8 @@ impl Emit for FuncType<'_> {
     }
 }
 
-struct ResultType<'a> {
-    types: &'a ir::Types,
+struct ResultType<'r> {
+    types: &'r ir::Types,
 }
 
 impl Emit for ResultType<'_> {
