@@ -87,9 +87,9 @@ pub fn compile(
         }
     }
 
-    let root = ir::generate(nodes, &resolver, &inferrer);
-    let wasm_code = wasm::compile_module(&root.root);
-    let stack = match runtime::evaluate_root(&wasm_code, &root.root) {
+    let package = ir::generate(nodes, &resolver, &inferrer);
+    let wasm_code = wasm::compile_module(&package.root);
+    let stack = match runtime::evaluate_root(&wasm_code, &package.root) {
         Ok(stack) => stack,
         Err(err) => {
             let output = "error.wasm";
