@@ -8,6 +8,10 @@ pub use self::{
     types::{Signature, Type, Types},
 };
 
+pub struct Package {
+    pub root: Block,
+}
+
 #[derive(Clone)]
 pub struct Block {
     pub signature: Signature,

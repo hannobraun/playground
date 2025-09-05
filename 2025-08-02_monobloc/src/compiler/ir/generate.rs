@@ -1,6 +1,6 @@
 use crate::compiler::{
     inferrer::Inferrer,
-    ir::{Block, Expression, Intrinsic},
+    ir::{Block, Expression, Intrinsic, Package},
     nodes::{Node, NodeId, NodeKind},
     resolver::Resolver,
 };
@@ -9,8 +9,9 @@ pub fn generate(
     nodes: Vec<Node>,
     resolver: &Resolver,
     inferrer: &Inferrer,
-) -> Block {
-    generate_inner(None, nodes, resolver, inferrer)
+) -> Package {
+    let root = generate_inner(None, nodes, resolver, inferrer);
+    Package { root }
 }
 
 fn generate_inner(
