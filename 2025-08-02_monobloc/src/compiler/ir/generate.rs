@@ -11,6 +11,7 @@ pub fn generate(
     inferrer: &Inferrer,
 ) -> Package {
     let root = compile_block(None, nodes, resolver, inferrer);
+
     Package {
         blocks: vec![root],
         root: 0,
