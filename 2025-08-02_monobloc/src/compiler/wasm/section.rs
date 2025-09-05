@@ -8,10 +8,12 @@ pub struct Section<'a> {
 impl Emit for Section<'_> {
     fn emit(&self, target: &mut Vec<u8>) {
         target.push(self.id);
+
         SectionSize {
             size: self.contents.len(),
         }
         .emit(target);
+
         target.extend(self.contents);
     }
 }
