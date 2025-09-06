@@ -9,7 +9,6 @@ mod leb128;
 mod module;
 mod sections;
 mod type_idx;
-mod type_section;
 mod val_type;
 mod vec;
 
