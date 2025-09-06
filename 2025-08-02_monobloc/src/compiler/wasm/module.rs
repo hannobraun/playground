@@ -2,7 +2,10 @@ use crate::compiler::{
     ir,
     wasm::{
         Emit,
-        sections::{CodeSection, ExportSection, FunctionSection, TypeSection},
+        sections::{
+            CodeSection, ExportSection, FunctionSection, TableSection,
+            TypeSection,
+        },
     },
 };
 
@@ -18,6 +21,7 @@ impl Emit for Module<'_> {
         Version.emit(target);
         TypeSection { blocks }.emit(target);
         FunctionSection { blocks }.emit(target);
+        TableSection {}.emit(target);
         ExportSection.emit(target);
         CodeSection { blocks }.emit(target);
     }

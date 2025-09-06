@@ -3,11 +3,13 @@ use crate::compiler::wasm::{Emit, leb128::Leb128};
 mod code_section;
 mod export_section;
 mod function_section;
+mod table_section;
 mod type_section;
 
 pub use self::{
     code_section::CodeSection, export_section::ExportSection,
-    function_section::FunctionSection, type_section::TypeSection,
+    function_section::FunctionSection, table_section::TableSection,
+    type_section::TypeSection,
 };
 
 pub struct Section<'r> {
