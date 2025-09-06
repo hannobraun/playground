@@ -2,8 +2,8 @@ use crate::compiler::{
     ir,
     wasm::{
         Emit, code_section::CodeSection, export_section::ExportSection,
-        function_section::FunctionSection, magic::Magic,
-        type_section::TypeSection, version::Version,
+        function_section::FunctionSection, type_section::TypeSection,
+        version::Version,
     },
 };
 
@@ -21,5 +21,13 @@ impl Emit for Module<'_> {
         FunctionSection { blocks }.emit(target);
         ExportSection.emit(target);
         CodeSection { blocks }.emit(target);
+    }
+}
+
+pub struct Magic;
+
+impl Emit for Magic {
+    fn emit(&self, target: &mut Vec<u8>) {
+        target.extend(b"\0asm");
     }
 }
