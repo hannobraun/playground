@@ -23,7 +23,7 @@ impl Emit for Module<'_> {
     }
 }
 
-pub struct Magic;
+struct Magic;
 
 impl Emit for Magic {
     fn emit(&self, target: &mut Vec<u8>) {
@@ -31,7 +31,7 @@ impl Emit for Magic {
     }
 }
 
-pub struct Version;
+struct Version;
 
 impl Emit for Version {
     fn emit(&self, target: &mut Vec<u8>) {
