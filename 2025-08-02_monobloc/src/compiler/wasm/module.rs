@@ -3,7 +3,6 @@ use crate::compiler::{
     wasm::{
         Emit, code_section::CodeSection, export_section::ExportSection,
         function_section::FunctionSection, type_section::TypeSection,
-        version::Version,
     },
 };
 
@@ -29,5 +28,13 @@ pub struct Magic;
 impl Emit for Magic {
     fn emit(&self, target: &mut Vec<u8>) {
         target.extend(b"\0asm");
+    }
+}
+
+pub struct Version;
+
+impl Emit for Version {
+    fn emit(&self, target: &mut Vec<u8>) {
+        target.extend([1, 0, 0, 0]);
     }
 }

@@ -15,7 +15,6 @@ mod type_idx;
 mod type_section;
 mod val_type;
 mod vec;
-mod version;
 
 pub fn generate_module(package: &ir::Package) -> Vec<u8> {
     let mut target = Vec::new();
