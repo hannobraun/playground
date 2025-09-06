@@ -21,7 +21,7 @@ impl Emit for Module<'_> {
         Version.emit(target);
         TypeSection { blocks }.emit(target);
         FunctionSection { blocks }.emit(target);
-        TableSection {}.emit(target);
+        TableSection { blocks }.emit(target);
         ExportSection.emit(target);
         CodeSection { blocks }.emit(target);
     }
