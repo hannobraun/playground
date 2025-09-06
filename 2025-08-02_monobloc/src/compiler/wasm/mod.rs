@@ -4,7 +4,6 @@ mod export;
 mod expressions;
 mod func_idx;
 mod func_type;
-mod function_section;
 mod instruction;
 mod leb128;
 mod module;

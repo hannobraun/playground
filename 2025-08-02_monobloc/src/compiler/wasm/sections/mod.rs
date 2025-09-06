@@ -2,8 +2,12 @@ use crate::compiler::wasm::{Emit, leb128::Leb128};
 
 mod code_section;
 mod export_section;
+mod function_section;
 
-pub use self::{code_section::CodeSection, export_section::ExportSection};
+pub use self::{
+    code_section::CodeSection, export_section::ExportSection,
+    function_section::FunctionSection,
+};
 
 pub struct Section<'r> {
     pub id: u8,
