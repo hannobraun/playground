@@ -1,6 +1,6 @@
 use crate::compiler::{
     ir,
-    wasm::{Emit, func_type::FuncType, section::Section, vec::WasmVec},
+    wasm::{Emit, func_type::FuncType, sections::Section, vec::WasmVec},
 };
 
 pub struct TypeSection<'r> {

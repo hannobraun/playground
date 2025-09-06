@@ -2,7 +2,7 @@ use crate::compiler::wasm::{
     Emit,
     export::{Export, ExportDesc, Name},
     func_idx::FuncIdx,
-    section::Section,
+    sections::Section,
     vec::WasmVec,
 };
 

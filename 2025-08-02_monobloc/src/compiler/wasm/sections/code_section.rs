@@ -1,7 +1,7 @@
 use crate::compiler::{
     ir,
     wasm::{
-        Emit, expressions::Expressions, leb128::Leb128, section::Section,
+        Emit, expressions::Expressions, leb128::Leb128, sections::Section,
         val_type::ValType, vec::WasmVec,
     },
 };
