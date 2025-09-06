@@ -1,6 +1,6 @@
 use crate::compiler::{
     ir,
-    wasm::{Emit, val_type::ValType, vec::WasmVec},
+    wasm::{Emit, types::ValType, vec::WasmVec},
 };
 
 pub struct FuncType<'r> {

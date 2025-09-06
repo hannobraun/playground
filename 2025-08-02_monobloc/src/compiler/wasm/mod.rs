@@ -3,13 +3,12 @@ use crate::compiler::{ir, wasm::module::Module};
 mod export;
 mod expressions;
 mod func_idx;
-mod func_type;
 mod instruction;
 mod leb128;
 mod module;
 mod sections;
 mod type_idx;
-mod val_type;
+mod types;
 mod vec;
 
 pub fn generate_module(package: &ir::Package) -> Vec<u8> {
