@@ -1,8 +1,8 @@
 use crate::compiler::{
     ir,
     wasm::{
-        Emit, code_section::CodeSection, export_section::ExportSection,
-        function_section::FunctionSection, type_section::TypeSection,
+        Emit, export_section::ExportSection, function_section::FunctionSection,
+        section::CodeSection, type_section::TypeSection,
     },
 };
 

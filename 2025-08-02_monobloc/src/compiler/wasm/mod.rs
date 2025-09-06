@@ -1,6 +1,5 @@
 use crate::compiler::{ir, wasm::module::Module};
 
-mod code_section;
 mod export;
 mod export_section;
 mod expressions;
