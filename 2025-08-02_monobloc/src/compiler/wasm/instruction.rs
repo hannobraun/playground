@@ -1,4 +1,4 @@
-use crate::compiler::wasm::{Emit, leb128::Leb128};
+use crate::compiler::wasm::{Emit, indices::LocalIdx, leb128::Leb128};
 
 pub enum Instruction {
     Unreachable,
@@ -9,10 +9,10 @@ pub enum Instruction {
     },
 
     LocalGet {
-        index: u32,
+        index: LocalIdx,
     },
     LocalSet {
-        index: u32,
+        index: LocalIdx,
     },
 
     I32Const {
@@ -68,11 +68,11 @@ impl Emit for Instruction {
 
             Self::LocalGet { index } => {
                 target.push(0x20);
-                Leb128::U32 { value: index }.emit(target);
+                index.emit(target);
             }
             Self::LocalSet { index } => {
                 target.push(0x21);
-                Leb128::U32 { value: index }.emit(target);
+                index.emit(target);
             }
 
             Self::I32Const { value } => {

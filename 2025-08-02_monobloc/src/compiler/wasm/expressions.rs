@@ -2,6 +2,7 @@ use crate::compiler::{
     ir::{self, Intrinsic},
     wasm::{
         Emit,
+        indices::LocalIdx,
         instruction::{BlockType, End, Instruction},
     },
 };
@@ -22,9 +23,9 @@ impl Emit for Expressions<'_> {
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     let instruction = match expression {
-        ir::Expression::Bind { index } => {
-            Instruction::LocalSet { index: *index }
-        }
+        ir::Expression::Bind { index } => Instruction::LocalSet {
+            index: LocalIdx { index: *index },
+        },
         ir::Expression::Block { index } => {
             let index: u32 = (*index)
                 .try_into()
@@ -32,9 +33,9 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
 
             Instruction::I32Const { value: index }
         }
-        ir::Expression::CallBinding { index } => {
-            Instruction::LocalGet { index: *index }
-        }
+        ir::Expression::CallBinding { index } => Instruction::LocalGet {
+            index: LocalIdx { index: *index },
+        },
         ir::Expression::Intrinsic { intrinsic } => {
             let Some(instruction) = compile_intrinsic(intrinsic) else {
                 return;
