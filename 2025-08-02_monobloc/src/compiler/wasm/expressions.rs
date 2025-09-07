@@ -2,7 +2,7 @@ use crate::compiler::{
     ir::{self, Intrinsic},
     wasm::{
         Emit,
-        indices::LocalIdx,
+        indices::{LocalIdx, TableIdx},
         instruction::{BlockType, End, Instruction},
     },
 };
@@ -31,7 +31,12 @@ fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
                 .try_into()
                 .expect("Block index must fit into `u32`.");
 
-            &[Instruction::I32Const { value: index }]
+            &[
+                Instruction::TableSet {
+                    index: TableIdx { index },
+                },
+                Instruction::I32Const { value: index },
+            ]
         }
         ir::Expression::CallBinding { index } => &[Instruction::LocalGet {
             index: LocalIdx { index: *index },

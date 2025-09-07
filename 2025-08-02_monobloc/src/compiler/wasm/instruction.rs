@@ -1,4 +1,8 @@
-use crate::compiler::wasm::{Emit, indices::LocalIdx, leb128::Leb128};
+use crate::compiler::wasm::{
+    Emit,
+    indices::{LocalIdx, TableIdx},
+    leb128::Leb128,
+};
 
 pub enum Instruction {
     Unreachable,
@@ -13,6 +17,10 @@ pub enum Instruction {
     },
     LocalSet {
         index: LocalIdx,
+    },
+
+    TableSet {
+        index: TableIdx,
     },
 
     I32Const {
@@ -72,6 +80,11 @@ impl Emit for Instruction {
             }
             Self::LocalSet { index } => {
                 target.push(0x21);
+                index.emit(target);
+            }
+
+            Self::TableSet { index } => {
+                target.push(0x26);
                 index.emit(target);
             }
 
