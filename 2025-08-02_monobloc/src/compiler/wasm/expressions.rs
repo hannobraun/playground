@@ -22,7 +22,7 @@ impl Emit for Expressions<'_> {
 }
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
-    let instructions = match expression {
+    let instructions: &[Instruction] = match expression {
         ir::Expression::Bind { index } => &[Instruction::LocalSet {
             index: LocalIdx { index: *index },
         }],
