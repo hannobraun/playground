@@ -2,12 +2,11 @@ use crate::compiler::{ir, wasm::module::Module};
 
 mod export;
 mod expressions;
-mod func_idx;
+mod indices;
 mod instruction;
 mod leb128;
 mod module;
 mod sections;
-mod type_idx;
 mod types;
 mod vec;
 

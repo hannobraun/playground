@@ -1,4 +1,4 @@
-use crate::compiler::wasm::{Emit, func_idx::FuncIdx, vec::WasmVec};
+use crate::compiler::wasm::{Emit, indices::FuncIdx, vec::WasmVec};
 
 pub struct Export<'r> {
     pub name: Name<'r>,
