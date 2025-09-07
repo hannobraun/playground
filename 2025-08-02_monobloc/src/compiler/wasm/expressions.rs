@@ -23,29 +23,31 @@ impl Emit for Expressions<'_> {
 
 fn compile_expression(expression: &ir::Expression, target: &mut Vec<u8>) {
     let instruction = match expression {
-        ir::Expression::Bind { index } => Instruction::LocalSet {
+        ir::Expression::Bind { index } => &[Instruction::LocalSet {
             index: LocalIdx { index: *index },
-        },
+        }],
         ir::Expression::Block { index } => {
             let index: u32 = (*index)
                 .try_into()
                 .expect("Block index must fit into `u32`.");
 
-            Instruction::I32Const { value: index }
+            &[Instruction::I32Const { value: index }]
         }
-        ir::Expression::CallBinding { index } => Instruction::LocalGet {
+        ir::Expression::CallBinding { index } => &[Instruction::LocalGet {
             index: LocalIdx { index: *index },
-        },
+        }],
         ir::Expression::Intrinsic { intrinsic } => {
             let Some(instruction) = compile_intrinsic(intrinsic) else {
                 return;
             };
 
-            instruction
+            &[instruction]
         }
     };
 
-    instruction.emit(target);
+    for instruction in instruction {
+        instruction.emit(target);
+    }
 }
 
 pub fn compile_intrinsic(intrinsic: &Intrinsic) -> Option<Instruction> {
