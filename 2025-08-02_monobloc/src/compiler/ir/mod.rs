@@ -9,6 +9,7 @@ pub use self::{
 };
 
 pub struct Package {
+    pub signatures: Vec<Signature>,
     pub blocks: Vec<Block>,
     pub root: usize,
 }
@@ -21,7 +22,7 @@ impl Package {
 
 #[derive(Clone)]
 pub struct Block {
-    pub signature: Signature,
+    pub signature: usize,
     pub bindings: Bindings,
     pub body: Body,
 }

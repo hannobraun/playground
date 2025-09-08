@@ -4,6 +4,7 @@ use crate::compiler::{
 };
 
 pub struct TypeSection<'r> {
+    pub signatures: &'r [ir::Signature],
     pub blocks: &'r [ir::Block],
 }
 
@@ -14,6 +15,7 @@ impl Emit for TypeSection<'_> {
         // function.
         let mut contents = Vec::new();
         FuncTypeVec {
+            signatures: self.signatures,
             blocks: self.blocks,
         }
         .emit(&mut contents);
@@ -27,6 +29,7 @@ impl Emit for TypeSection<'_> {
 }
 
 struct FuncTypeVec<'r> {
+    signatures: &'r [ir::Signature],
     blocks: &'r [ir::Block],
 }
 
@@ -36,7 +39,7 @@ impl Emit for FuncTypeVec<'_> {
             .blocks
             .iter()
             .map(|block| FuncType {
-                signature: &block.signature,
+                signature: &self.signatures[block.signature],
             })
             .collect::<Vec<_>>();
 

@@ -1,6 +1,6 @@
 use crate::compiler::{
     inferrer::Inferrer,
-    ir::{Block, Expression, Intrinsic, Package},
+    ir::{Block, Expression, Intrinsic, Package, Signature},
     nodes::{Node, NodeId, NodeKind},
     resolver::Resolver,
 };
@@ -10,10 +10,23 @@ pub fn generate(
     resolver: &Resolver,
     inferrer: &Inferrer,
 ) -> Package {
+    let mut signatures = Vec::new();
     let mut blocks = Vec::new();
-    let root = compile_block(None, nodes, resolver, inferrer, &mut blocks);
 
-    Package { blocks, root }
+    let root = compile_block(
+        None,
+        nodes,
+        resolver,
+        inferrer,
+        &mut signatures,
+        &mut blocks,
+    );
+
+    Package {
+        signatures,
+        blocks,
+        root,
+    }
 }
 
 fn compile_block(
@@ -21,6 +34,7 @@ fn compile_block(
     nodes: Vec<Node>,
     resolver: &Resolver,
     inferrer: &Inferrer,
+    signatures: &mut Vec<Signature>,
     blocks: &mut Vec<Block>,
 ) -> usize {
     let mut body = Vec::new();
@@ -40,6 +54,7 @@ fn compile_block(
                     nodes,
                     resolver,
                     inferrer,
+                    signatures,
                     blocks,
                 );
                 body.push(Expression::Block { index });
@@ -84,6 +99,12 @@ fn compile_block(
 
             (signature, bindings)
         });
+
+    let signature = {
+        let index = signatures.len();
+        signatures.push(signature);
+        index
+    };
 
     let block = blocks.len();
     blocks.push(Block {
