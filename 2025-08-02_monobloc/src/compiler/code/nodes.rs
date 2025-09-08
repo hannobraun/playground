@@ -16,6 +16,10 @@ impl Nodes {
     pub fn root(&self) -> &[Node] {
         &self.root
     }
+
+    pub fn into_root(self) -> Vec<Node> {
+        self.root
+    }
 }
 
 #[derive(Debug)]
