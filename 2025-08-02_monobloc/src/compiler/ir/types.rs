@@ -1,4 +1,4 @@
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Signature {
     pub inputs: Types,
     pub outputs: Types,
@@ -6,7 +6,7 @@ pub struct Signature {
 
 pub type Types = Vec<Type>;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum Type {
     Block { signature: Signature },
     I32,
