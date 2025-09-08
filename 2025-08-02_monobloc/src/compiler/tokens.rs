@@ -1,5 +1,7 @@
 use std::mem;
 
+use crate::compiler::code::tokens::{IntegerFormat, Token};
+
 pub struct Tokenizer {
     state: State,
     buf: String,
@@ -84,22 +86,4 @@ impl Tokenizer {
 enum State {
     Initial,
     Comment,
-}
-
-#[derive(Debug)]
-pub enum Token {
-    Binding,
-    BlockClose,
-    BlockOpen,
-    Comment { text: String },
-    Identifier { name: String },
-    Integer { value: u32, format: IntegerFormat },
-    Terminator,
-}
-
-#[derive(Debug)]
-pub enum IntegerFormat {
-    Hex,
-    Signed,
-    Unsigned,
 }

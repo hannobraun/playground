@@ -1,6 +1,6 @@
 use std::mem;
 
-use crate::compiler::tokens::{IntegerFormat, Token};
+use crate::compiler::code::tokens::{IntegerFormat, Token};
 
 pub struct Parser {
     state: Vec<State>,
