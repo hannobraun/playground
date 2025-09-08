@@ -18,7 +18,7 @@ impl Emit for FuncType<'_> {
 }
 
 struct ResultType<'r> {
-    types: &'r ir::Types,
+    types: &'r [ir::Type],
 }
 
 impl Emit for ResultType<'_> {
