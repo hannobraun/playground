@@ -1,7 +1,7 @@
 use crate::compiler::code::tokens::IntegerFormat;
 
 pub struct Nodes {
-    pub root: Vec<Node>,
+    root: Vec<Node>,
 }
 
 impl Nodes {
