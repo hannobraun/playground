@@ -6,11 +6,14 @@ use walkdir::WalkDir;
 use crate::{
     args::Args,
     compiler::{
-        code::tokens::IntegerFormat,
+        code::{
+            nodes::{Node, NodeKind},
+            tokens::IntegerFormat,
+        },
         inferrer::Inferrer,
         input_code::read_input_code,
         ir,
-        nodes::{Node, NodeKind, Parser},
+        nodes::Parser,
         resolver::Resolver,
         tokens::Tokenizer,
         wasm,

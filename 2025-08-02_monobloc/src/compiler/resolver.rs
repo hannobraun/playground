@@ -1,8 +1,8 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
+    code::nodes::{Node, NodeId, NodeKind},
     ir::{Binding, Intrinsic, Type},
-    nodes::{Node, NodeId, NodeKind},
 };
 
 pub struct Resolver {
