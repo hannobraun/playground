@@ -86,13 +86,11 @@ fn compile_block(
         });
 
     let index = blocks.len();
-    let block = Block {
+    blocks.push(Block {
         signature,
         bindings,
         body,
-    };
-
-    blocks.push(block);
+    });
 
     index
 }
