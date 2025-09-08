@@ -11,7 +11,7 @@ impl Parser {
     pub fn new() -> Self {
         Self {
             state: Vec::new(),
-            next_id: NodeId { inner: 0 },
+            next_id: NodeId { inner: 1 }, // ID `0` is reserved for root block
         }
     }
 
