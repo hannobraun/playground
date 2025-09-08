@@ -100,7 +100,13 @@ fn compile_block(
             (signature, bindings)
         });
 
-    let signature = {
+    let signature = if let Some((index, _)) = signatures
+        .iter_mut()
+        .enumerate()
+        .find(|(_, s)| **s == signature)
+    {
+        index
+    } else {
         let index = signatures.len();
         signatures.push(signature);
         index
