@@ -59,12 +59,12 @@ pub fn compile(
     let mut input_code = String::new();
     let mut input_code = read_input_code(program, &mut input_code)?;
 
+    let mut nodes = Vec::new();
+
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
     let mut resolver = Resolver::new();
     let mut inferrer = Inferrer::new();
-
-    let mut nodes = Vec::new();
 
     loop {
         let Some(ch) = input_code.next() else {
