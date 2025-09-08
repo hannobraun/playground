@@ -1,5 +1,9 @@
 use crate::compiler::code::tokens::IntegerFormat;
 
+pub struct Nodes {
+    pub nodes: Vec<Node>,
+}
+
 #[derive(Debug)]
 pub struct Node {
     pub id: NodeId,

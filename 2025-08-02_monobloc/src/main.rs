@@ -7,7 +7,7 @@ use crate::{
     args::Args,
     compiler::{
         code::{
-            nodes::{Node, NodeKind},
+            nodes::{Node, NodeKind, Nodes},
             tokens::IntegerFormat,
         },
         inferrer::Inferrer,
@@ -59,7 +59,7 @@ pub fn compile(
     let mut input_code = String::new();
     let mut input_code = read_input_code(program, &mut input_code)?;
 
-    let mut nodes = Vec::new();
+    let mut nodes = Nodes { nodes: Vec::new() };
 
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
@@ -76,7 +76,7 @@ pub fn compile(
                 if let Some(node) = parser.process_token(token) {
                     resolver.process_node(&node);
                     inferrer.process_node(&node, &resolver);
-                    nodes.push(node);
+                    nodes.nodes.push(node);
                 }
             }
             None => {
@@ -87,11 +87,11 @@ pub fn compile(
         }
 
         if interactive {
-            print_nodes(&nodes);
+            print_nodes(&nodes.nodes);
         }
     }
 
-    let package = ir::generate(nodes, &resolver, &inferrer);
+    let package = ir::generate(nodes.nodes, &resolver, &inferrer);
     let wasm_code = wasm::generate_module(&package);
     let stack = match runtime::evaluate_root(&wasm_code, &package) {
         Ok(stack) => stack,
