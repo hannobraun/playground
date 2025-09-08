@@ -1,30 +1,25 @@
 use std::mem;
 
 use crate::compiler::code::{
-    nodes::{Node, NodeId, NodeKind, Nodes},
+    nodes::{Node, NodeKind, Nodes},
     tokens::Token,
 };
 
 pub struct Parser {
     state: Vec<State>,
-    next_id: NodeId,
 }
 
 impl Parser {
     pub fn new() -> Self {
-        Self {
-            state: Vec::new(),
-            next_id: NodeId { inner: 1 }, // ID `0` is reserved for root block
-        }
+        Self { state: Vec::new() }
     }
 
     pub fn process_token(
         &mut self,
         token: Token,
-        _: &mut Nodes,
+        nodes: &mut Nodes,
     ) -> Option<Node> {
-        let id = self.next_id;
-        self.next_id.inner += 1;
+        let id = nodes.next_id();
 
         let kind = match (self.state.last_mut(), token) {
             (Some(State::Block { nodes }), Token::BlockClose) => {

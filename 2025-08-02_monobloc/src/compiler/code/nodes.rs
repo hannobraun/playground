@@ -2,11 +2,21 @@ use crate::compiler::code::tokens::IntegerFormat;
 
 pub struct Nodes {
     root: Vec<Node>,
+    next_id: NodeId,
 }
 
 impl Nodes {
     pub fn new() -> Self {
-        Self { root: Vec::new() }
+        Self {
+            root: Vec::new(),
+            next_id: NodeId { inner: 1 }, // ID `0` is reserved for root block
+        }
+    }
+
+    pub fn next_id(&mut self) -> NodeId {
+        let id = self.next_id;
+        self.next_id.inner += 1;
+        id
     }
 
     pub fn add_to_root(&mut self, node: Node) {
