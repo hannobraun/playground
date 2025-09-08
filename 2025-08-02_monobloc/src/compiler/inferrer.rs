@@ -42,7 +42,7 @@ impl Inferrer {
 fn process_node(
     node: &Node,
     stack: &mut Stack,
-    signatures: &mut BTreeMap<NodeId, Signature>,
+    signatures_by_block: &mut BTreeMap<NodeId, Signature>,
     resolver: &Resolver,
 ) {
     match &node.kind {
@@ -55,12 +55,17 @@ fn process_node(
             let mut stack_for_block = Stack::new();
 
             for node in nodes {
-                process_node(node, &mut stack_for_block, signatures, resolver);
+                process_node(
+                    node,
+                    &mut stack_for_block,
+                    signatures_by_block,
+                    resolver,
+                );
             }
 
             let signature = stack_for_block.to_signature();
 
-            signatures.insert(node.id, signature.clone());
+            signatures_by_block.insert(node.id, signature.clone());
             stack.push(Type::Block { signature });
         }
         NodeKind::Comment { text: _ } => {
