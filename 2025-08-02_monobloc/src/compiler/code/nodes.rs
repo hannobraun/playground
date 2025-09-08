@@ -1,12 +1,12 @@
 use crate::compiler::code::tokens::IntegerFormat;
 
 pub struct Nodes {
-    pub nodes: Vec<Node>,
+    pub root: Vec<Node>,
 }
 
 impl Nodes {
     pub fn new() -> Self {
-        Self { nodes: Vec::new() }
+        Self { root: Vec::new() }
     }
 }
 

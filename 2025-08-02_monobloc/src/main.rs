@@ -76,7 +76,7 @@ pub fn compile(
                 if let Some(node) = parser.process_token(token) {
                     resolver.process_node(&node);
                     inferrer.process_node(&node, &resolver);
-                    nodes.nodes.push(node);
+                    nodes.root.push(node);
                 }
             }
             None => {
@@ -87,11 +87,11 @@ pub fn compile(
         }
 
         if interactive {
-            print_nodes(&nodes.nodes);
+            print_nodes(&nodes.root);
         }
     }
 
-    let package = ir::generate(nodes.nodes, &resolver, &inferrer);
+    let package = ir::generate(nodes.root, &resolver, &inferrer);
     let wasm_code = wasm::generate_module(&package);
     let stack = match runtime::evaluate_root(&wasm_code, &package) {
         Ok(stack) => stack,
