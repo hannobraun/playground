@@ -73,7 +73,7 @@ pub fn compile(
 
         match tokenizer.process_char(ch) {
             Some(token) => {
-                if let Some(node) = parser.process_token(token) {
+                if let Some(node) = parser.process_token(token, &mut nodes) {
                     resolver.process_node(&node);
                     inferrer.process_node(&node, &resolver);
                     nodes.add_to_root(node);

@@ -1,7 +1,7 @@
 use std::mem;
 
 use crate::compiler::code::{
-    nodes::{Node, NodeId, NodeKind},
+    nodes::{Node, NodeId, NodeKind, Nodes},
     tokens::Token,
 };
 
@@ -18,7 +18,11 @@ impl Parser {
         }
     }
 
-    pub fn process_token(&mut self, token: Token) -> Option<Node> {
+    pub fn process_token(
+        &mut self,
+        token: Token,
+        _: &mut Nodes,
+    ) -> Option<Node> {
         let id = self.next_id;
         self.next_id.inner += 1;
 
