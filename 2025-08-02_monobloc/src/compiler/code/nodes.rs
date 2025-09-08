@@ -4,6 +4,12 @@ pub struct Nodes {
     pub nodes: Vec<Node>,
 }
 
+impl Nodes {
+    pub fn new() -> Self {
+        Self { nodes: Vec::new() }
+    }
+}
+
 #[derive(Debug)]
 pub struct Node {
     pub id: NodeId,

@@ -59,7 +59,7 @@ pub fn compile(
     let mut input_code = String::new();
     let mut input_code = read_input_code(program, &mut input_code)?;
 
-    let mut nodes = Nodes { nodes: Vec::new() };
+    let mut nodes = Nodes::new();
 
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
