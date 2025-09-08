@@ -1,5 +1,6 @@
 use crate::compiler::wasm::{Emit, leb128::Leb128};
 
+#[derive(Clone, Copy)]
 pub struct TypeIdx {
     pub index: u32,
 }
