@@ -8,6 +8,10 @@ impl Nodes {
     pub fn new() -> Self {
         Self { root: Vec::new() }
     }
+
+    pub fn add_to_root(&mut self, node: Node) {
+        self.root.push(node);
+    }
 }
 
 #[derive(Debug)]

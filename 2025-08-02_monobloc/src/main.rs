@@ -76,7 +76,7 @@ pub fn compile(
                 if let Some(node) = parser.process_token(token) {
                     resolver.process_node(&node);
                     inferrer.process_node(&node, &resolver);
-                    nodes.root.push(node);
+                    nodes.add_to_root(node);
                 }
             }
             None => {
