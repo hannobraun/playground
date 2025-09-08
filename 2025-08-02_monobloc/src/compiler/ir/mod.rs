@@ -5,7 +5,7 @@ mod types;
 pub use self::{
     generate::generate,
     intrinsics::Intrinsic,
-    types::{Signature, Type, Types},
+    types::{Signature, Type},
 };
 
 pub struct Package {

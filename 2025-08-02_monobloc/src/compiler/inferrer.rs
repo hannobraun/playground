@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    ir::{Intrinsic, Signature, Type, Types},
+    ir::{Intrinsic, Signature, Type},
     nodes::{Node, NodeId, NodeKind},
     resolver::Resolver,
 };
@@ -108,8 +108,8 @@ fn process_node(
 
 #[derive(Debug)]
 struct Stack {
-    inputs: Types,
-    outputs: Types,
+    inputs: Vec<Type>,
+    outputs: Vec<Type>,
 }
 
 impl Stack {

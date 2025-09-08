@@ -1,10 +1,8 @@
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Signature {
-    pub inputs: Types,
-    pub outputs: Types,
+    pub inputs: Vec<Type>,
+    pub outputs: Vec<Type>,
 }
-
-pub type Types = Vec<Type>;
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum Type {
