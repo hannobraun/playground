@@ -9,7 +9,6 @@ use crate::compiler::{
 pub struct Inferrer {
     stack: Stack,
     signatures_by_block: BTreeMap<NodeId, Signature>,
-    blocks_by_signature: BTreeMap<Signature, Vec<NodeId>>,
 }
 
 impl Inferrer {
@@ -17,7 +16,6 @@ impl Inferrer {
         Self {
             stack: Stack::new(),
             signatures_by_block: BTreeMap::new(),
-            blocks_by_signature: BTreeMap::new(),
         }
     }
 
@@ -26,7 +24,6 @@ impl Inferrer {
             node,
             &mut self.stack,
             &mut self.signatures_by_block,
-            &mut self.blocks_by_signature,
             resolver,
         );
     }
@@ -46,7 +43,6 @@ fn process_node(
     node: &Node,
     stack: &mut Stack,
     signatures_by_block: &mut BTreeMap<NodeId, Signature>,
-    blocks_by_signature: &mut BTreeMap<Signature, Vec<NodeId>>,
     resolver: &Resolver,
 ) {
     match &node.kind {
@@ -63,7 +59,6 @@ fn process_node(
                     node,
                     &mut stack_for_block,
                     signatures_by_block,
-                    blocks_by_signature,
                     resolver,
                 );
             }
@@ -71,10 +66,6 @@ fn process_node(
             let signature = stack_for_block.to_signature();
 
             signatures_by_block.insert(node.id, signature.clone());
-            blocks_by_signature
-                .entry(signature.clone())
-                .or_default()
-                .push(node.id);
 
             stack.push(Type::Block { signature });
         }
