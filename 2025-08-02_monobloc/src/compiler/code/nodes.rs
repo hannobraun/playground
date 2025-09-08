@@ -12,6 +12,10 @@ impl Nodes {
     pub fn add_to_root(&mut self, node: Node) {
         self.root.push(node);
     }
+
+    pub fn root(&self) -> &[Node] {
+        &self.root
+    }
 }
 
 #[derive(Debug)]

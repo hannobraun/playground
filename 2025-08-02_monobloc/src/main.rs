@@ -87,7 +87,7 @@ pub fn compile(
         }
 
         if interactive {
-            print_nodes(&nodes.root);
+            print_nodes(nodes.root());
         }
     }
 
