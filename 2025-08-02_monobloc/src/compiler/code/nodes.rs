@@ -27,8 +27,8 @@ impl Nodes {
         &self.root
     }
 
-    pub fn into_root(self) -> Vec<Node> {
-        self.root.nodes
+    pub fn into_root(self) -> Block {
+        self.root
     }
 }
 
