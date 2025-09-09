@@ -23,12 +23,10 @@ impl Parser {
 
         let kind = match (self.state.last_mut(), token) {
             (Some(State::Block { block }), Token::BlockClose) => {
-                let nodes = mem::take(&mut block.nodes);
+                let block = mem::take(block);
 
                 self.state.pop();
-                NodeKind::Block {
-                    block: Block { nodes },
-                }
+                NodeKind::Block { block }
             }
             (None, token) => {
                 let (kind, state) = process_token_in_block(token);
