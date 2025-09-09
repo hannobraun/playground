@@ -82,7 +82,7 @@ fn process_token_in_block(token: Token) -> (Option<NodeKind>, Option<State>) {
             return (
                 None,
                 Some(State::Block {
-                    block: Block { nodes: Vec::new() },
+                    block: Block::default(),
                 }),
             );
         }
