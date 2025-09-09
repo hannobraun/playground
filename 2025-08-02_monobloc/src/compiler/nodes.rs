@@ -22,13 +22,8 @@ impl Parser {
         let id = nodes.next_id();
 
         let kind = match (self.state.last_mut(), token) {
-            (
-                Some(State::Block {
-                    block: Block { nodes },
-                }),
-                Token::BlockClose,
-            ) => {
-                let nodes = mem::take(nodes);
+            (Some(State::Block { block }), Token::BlockClose) => {
+                let nodes = mem::take(&mut block.nodes);
 
                 self.state.pop();
                 NodeKind::Block {
