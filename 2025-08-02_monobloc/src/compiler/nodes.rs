@@ -22,7 +22,12 @@ impl Parser {
         let id = nodes.next_id();
 
         let kind = match (self.state.last_mut(), token) {
-            (Some(State::Block { nodes }), Token::BlockClose) => {
+            (
+                Some(State::Block {
+                    block: Block { nodes },
+                }),
+                Token::BlockClose,
+            ) => {
                 let nodes = mem::take(nodes);
 
                 self.state.pop();
@@ -39,7 +44,12 @@ impl Parser {
 
                 kind?
             }
-            (Some(State::Block { nodes }), token) => {
+            (
+                Some(State::Block {
+                    block: Block { nodes },
+                }),
+                token,
+            ) => {
                 let (kind, state) = process_token_in_block(token);
 
                 if let Some(kind) = kind {
@@ -72,7 +82,7 @@ impl Parser {
 
 enum State {
     Binding { names: Vec<String> },
-    Block { nodes: Vec<Node> },
+    Block { block: Block },
 }
 
 fn process_token_in_block(token: Token) -> (Option<NodeKind>, Option<State>) {
@@ -81,7 +91,12 @@ fn process_token_in_block(token: Token) -> (Option<NodeKind>, Option<State>) {
             return (None, Some(State::Binding { names: Vec::new() }));
         }
         Token::BlockOpen => {
-            return (None, Some(State::Block { nodes: Vec::new() }));
+            return (
+                None,
+                Some(State::Block {
+                    block: Block { nodes: Vec::new() },
+                }),
+            );
         }
         Token::Comment { text } => NodeKind::Comment { text },
         Token::Identifier { name } => NodeKind::Identifier { name },
