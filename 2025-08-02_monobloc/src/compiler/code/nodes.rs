@@ -1,14 +1,14 @@
 use crate::compiler::code::tokens::IntegerFormat;
 
 pub struct Nodes {
-    root: Vec<Node>,
+    root: Block,
     next_id: NodeId,
 }
 
 impl Nodes {
     pub fn new() -> Self {
         Self {
-            root: Vec::new(),
+            root: Block { nodes: Vec::new() },
             next_id: NodeId { inner: 1 }, // ID `0` is reserved for root block
         }
     }
@@ -20,15 +20,15 @@ impl Nodes {
     }
 
     pub fn add_to_root(&mut self, node: Node) {
-        self.root.push(node);
+        self.root.nodes.push(node);
     }
 
     pub fn root(&self) -> &[Node] {
-        &self.root
+        &self.root.nodes
     }
 
     pub fn into_root(self) -> Vec<Node> {
-        self.root
+        self.root.nodes
     }
 }
 
