@@ -13,14 +13,10 @@ impl Nodes {
         }
     }
 
-    fn next_id(&mut self) -> NodeId {
+    pub fn make_node(&mut self, kind: NodeKind) -> Node {
         let id = self.next_id;
         self.next_id.inner += 1;
-        id
-    }
 
-    pub fn make_node(&mut self, kind: NodeKind) -> Node {
-        let id = self.next_id();
         Node { id, kind }
     }
 
