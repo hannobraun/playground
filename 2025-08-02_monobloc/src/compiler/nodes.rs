@@ -37,16 +37,11 @@ impl Parser {
 
                 kind?
             }
-            (
-                Some(State::Block {
-                    block: Block { nodes },
-                }),
-                token,
-            ) => {
+            (Some(State::Block { block }), token) => {
                 let (kind, state) = process_token_in_block(token);
 
                 if let Some(kind) = kind {
-                    nodes.push(Node { id, kind });
+                    block.nodes.push(Node { id, kind });
                 }
                 if let Some(state) = state {
                     self.state.push(state);
