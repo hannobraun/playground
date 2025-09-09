@@ -52,7 +52,7 @@ pub enum NodeKind {
     Integer { value: u32, format: IntegerFormat },
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Block {
     pub nodes: Vec<Node>,
 }
