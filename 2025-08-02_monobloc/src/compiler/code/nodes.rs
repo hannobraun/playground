@@ -23,8 +23,8 @@ impl Nodes {
         self.root.nodes.push(node);
     }
 
-    pub fn root(&self) -> &[Node] {
-        &self.root.nodes
+    pub fn root(&self) -> &Block {
+        &self.root
     }
 
     pub fn into_root(self) -> Vec<Node> {
