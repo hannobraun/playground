@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    code::nodes::{Node, NodeId, NodeKind},
+    code::nodes::{Block, Node, NodeId, NodeKind},
     ir::{Binding, Intrinsic, Type},
 };
 
@@ -94,7 +94,9 @@ fn process_node(
             binding_definitions_by_node
                 .insert(node.id, bindings_from_this_operator);
         }
-        NodeKind::Block { nodes } => {
+        NodeKind::Block {
+            block: Block { nodes },
+        } => {
             let mut bindings_in_this_block = Vec::new();
 
             for node in nodes {

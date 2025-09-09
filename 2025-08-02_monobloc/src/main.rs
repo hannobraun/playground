@@ -7,7 +7,7 @@ use crate::{
     args::Args,
     compiler::{
         code::{
-            nodes::{Node, NodeKind, Nodes},
+            nodes::{Block, Node, NodeKind, Nodes},
             tokens::IntegerFormat,
         },
         inferrer::Inferrer,
@@ -151,7 +151,9 @@ fn print_node(prev_node: Option<&NodeKind>, node: &Node) {
 
             println!(".");
         }
-        NodeKind::Block { nodes } => {
+        NodeKind::Block {
+            block: Block { nodes },
+        } => {
             println!("{{");
             print_nodes(nodes);
             println!("}}");

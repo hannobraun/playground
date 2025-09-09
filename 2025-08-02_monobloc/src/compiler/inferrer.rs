@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    code::nodes::{Node, NodeId, NodeKind},
+    code::nodes::{Block, Node, NodeId, NodeKind},
     ir::{Intrinsic, Signature, Type},
     resolver::Resolver,
 };
@@ -51,7 +51,9 @@ fn process_node(
                 stack.pop(Type::I32);
             }
         }
-        NodeKind::Block { nodes } => {
+        NodeKind::Block {
+            block: Block { nodes },
+        } => {
             let mut stack_for_block = Stack::new();
 
             for node in nodes {

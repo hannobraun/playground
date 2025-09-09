@@ -1,5 +1,5 @@
 use crate::compiler::{
-    code::nodes::{Node, NodeId, NodeKind},
+    code::nodes::{self, Node, NodeId, NodeKind},
     inferrer::Inferrer,
     ir::{Block, Expression, Intrinsic, Package, Signature},
     resolver::Resolver,
@@ -48,7 +48,9 @@ fn compile_block(
                     });
                 }
             }
-            NodeKind::Block { nodes } => {
+            NodeKind::Block {
+                block: nodes::Block { nodes },
+            } => {
                 let index = compile_block(
                     Some(node.id),
                     nodes,

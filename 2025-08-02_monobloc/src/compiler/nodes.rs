@@ -1,7 +1,7 @@
 use std::mem;
 
 use crate::compiler::code::{
-    nodes::{Node, NodeKind, Nodes},
+    nodes::{Block, Node, NodeKind, Nodes},
     tokens::Token,
 };
 
@@ -26,7 +26,9 @@ impl Parser {
                 let nodes = mem::take(nodes);
 
                 self.state.pop();
-                NodeKind::Block { nodes }
+                NodeKind::Block {
+                    block: Block { nodes },
+                }
             }
             (None, token) => {
                 let (kind, state) = process_token_in_block(token);

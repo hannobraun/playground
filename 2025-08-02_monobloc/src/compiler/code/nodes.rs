@@ -46,8 +46,13 @@ pub struct NodeId {
 #[derive(Debug)]
 pub enum NodeKind {
     Binding { names: Vec<String> },
-    Block { nodes: Vec<Node> },
+    Block { block: Block },
     Comment { text: String },
     Identifier { name: String },
     Integer { value: u32, format: IntegerFormat },
+}
+
+#[derive(Debug)]
+pub struct Block {
+    pub nodes: Vec<Node>,
 }
