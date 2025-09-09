@@ -13,7 +13,7 @@ impl Nodes {
         }
     }
 
-    pub fn next_id(&mut self) -> NodeId {
+    fn next_id(&mut self) -> NodeId {
         let id = self.next_id;
         self.next_id.inner += 1;
         id
