@@ -15,7 +15,7 @@ impl Nodes {
 
     pub fn make_node(&mut self, kind: NodeKind) -> Node {
         let id = self.next_id;
-        self.next_id.inner += 1;
+        self.next_id = self.next_id.next();
 
         Node { id, kind }
     }
@@ -42,6 +42,14 @@ pub struct Node {
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct NodeId {
     pub inner: u64,
+}
+
+impl NodeId {
+    pub fn next(self) -> Self {
+        Self {
+            inner: self.inner + 1,
+        }
+    }
 }
 
 #[derive(Debug)]
