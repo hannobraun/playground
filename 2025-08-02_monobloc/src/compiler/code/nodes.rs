@@ -9,7 +9,7 @@ impl Nodes {
     pub fn new() -> Self {
         Self {
             root: Block { nodes: Vec::new() },
-            next_id: NodeId { inner: 1 }, // ID `0` is reserved for root block
+            next_id: NodeId::root().next(),
         }
     }
 
@@ -45,6 +45,10 @@ pub struct NodeId {
 }
 
 impl NodeId {
+    pub fn root() -> Self {
+        Self { inner: 0 }
+    }
+
     pub fn next(self) -> Self {
         Self {
             inner: self.inner + 1,
