@@ -19,8 +19,6 @@ impl Parser {
         token: Token,
         nodes: &mut Nodes,
     ) -> Option<Node> {
-        let id = nodes.next_id();
-
         let kind = match (self.state.last_mut(), token) {
             (Some(State::Block { block }), Token::BlockClose) => {
                 let block = mem::take(block);
@@ -41,7 +39,7 @@ impl Parser {
                 let (kind, state) = process_token_in_block(token);
 
                 if let Some(kind) = kind {
-                    block.nodes.push(Node { id, kind });
+                    block.nodes.push(nodes.make_node(kind));
                 }
                 if let Some(state) = state {
                     self.state.push(state);
@@ -64,7 +62,7 @@ impl Parser {
             }
         };
 
-        Some(Node { id, kind })
+        Some(nodes.make_node(kind))
     }
 }
 

@@ -19,6 +19,11 @@ impl Nodes {
         id
     }
 
+    pub fn make_node(&mut self, kind: NodeKind) -> Node {
+        let id = self.next_id();
+        Node { id, kind }
+    }
+
     pub fn add_to_root(&mut self, node: Node) {
         self.root.nodes.push(node);
     }
