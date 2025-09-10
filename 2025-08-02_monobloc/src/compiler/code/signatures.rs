@@ -3,21 +3,32 @@ use std::collections::BTreeMap;
 use crate::compiler::{code::nodes::NodeId, ir::Signature};
 
 pub struct Signatures {
-    by_block: BTreeMap<NodeId, Signature>,
+    inner: Vec<Signature>,
+    by_block: BTreeMap<NodeId, usize>,
 }
 
 impl Signatures {
     pub fn new() -> Self {
         Self {
+            inner: Vec::new(),
             by_block: BTreeMap::new(),
         }
     }
 
     pub fn insert(&mut self, block: NodeId, signature: Signature) {
-        self.by_block.insert(block, signature);
+        let index = self.inner.len();
+        self.inner.push(signature);
+
+        self.by_block.insert(block, index);
     }
 
     pub fn get(&self, id: &NodeId) -> &Signature {
-        self.by_block.get(id).expect("Signature not available")
+        let index = self
+            .by_block
+            .get(id)
+            .copied()
+            .expect("Signature not available");
+
+        &self.inner[index]
     }
 }
