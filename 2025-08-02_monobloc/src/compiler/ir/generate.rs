@@ -1,11 +1,15 @@
 use crate::compiler::{
-    code::nodes::{Node, NodeId, NodeKind},
+    code::{
+        nodes::{Node, NodeId, NodeKind},
+        stack::Stack,
+    },
     ir::{Block, Expression, Intrinsic, Package, Signature},
     passes::{Inferrer, Resolver},
 };
 
 pub fn generate(
     nodes: Vec<Node>,
+    stack: &Stack,
     resolver: &Resolver,
     inferrer: &Inferrer,
 ) -> Package {
@@ -15,6 +19,7 @@ pub fn generate(
     let root = compile_block(
         None,
         nodes,
+        stack,
         resolver,
         inferrer,
         &mut signatures,
@@ -31,6 +36,7 @@ pub fn generate(
 fn compile_block(
     node: Option<NodeId>,
     nodes: Vec<Node>,
+    stack: &Stack,
     resolver: &Resolver,
     inferrer: &Inferrer,
     signatures: &mut Vec<Signature>,
@@ -51,6 +57,7 @@ fn compile_block(
                 let index = compile_block(
                     Some(node.id),
                     block.nodes,
+                    stack,
                     resolver,
                     inferrer,
                     signatures,
@@ -93,7 +100,7 @@ fn compile_block(
             (signature, bindings)
         })
         .unwrap_or_else(|| {
-            let signature = inferrer.signature_of_root();
+            let signature = stack.to_signature();
             let bindings = resolver.bindings_in_root().clone();
 
             (signature, bindings)

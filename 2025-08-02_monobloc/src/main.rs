@@ -8,6 +8,7 @@ use crate::{
     compiler::{
         code::{
             nodes::{Node, NodeKind, Nodes},
+            stack::Stack,
             tokens::IntegerFormat,
         },
         input::read_input_code,
@@ -57,6 +58,7 @@ pub fn compile(
     let mut input_code = read_input_code(program, &mut input_code)?;
 
     let mut nodes = Nodes::new();
+    let mut stack = Stack::new();
 
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
@@ -72,7 +74,7 @@ pub fn compile(
             Some(token) => {
                 if let Some(node) = parser.process_token(token, &mut nodes) {
                     resolver.process_node(&node);
-                    inferrer.process_node(&node, &resolver);
+                    inferrer.process_node(&node, &resolver, &mut stack);
                     nodes.add_to_root(node);
                 }
             }
@@ -88,7 +90,8 @@ pub fn compile(
         }
     }
 
-    let package = ir::generate(nodes.into_root().nodes, &resolver, &inferrer);
+    let package =
+        ir::generate(nodes.into_root().nodes, &stack, &resolver, &inferrer);
     let wasm_code = wasm::generate_module(&package);
     let stack = match runtime::evaluate_root(&wasm_code, &package) {
         Ok(stack) => stack,

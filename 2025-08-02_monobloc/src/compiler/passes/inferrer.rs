@@ -10,35 +10,29 @@ use crate::compiler::{
 };
 
 pub struct Inferrer {
-    stack: Stack,
     signatures_by_block: BTreeMap<NodeId, Signature>,
 }
 
 impl Inferrer {
     pub fn new() -> Self {
         Self {
-            stack: Stack::new(),
             signatures_by_block: BTreeMap::new(),
         }
     }
 
-    pub fn process_node(&mut self, node: &Node, resolver: &Resolver) {
-        process_node(
-            node,
-            &mut self.stack,
-            &mut self.signatures_by_block,
-            resolver,
-        );
+    pub fn process_node(
+        &mut self,
+        node: &Node,
+        resolver: &Resolver,
+        stack: &mut Stack,
+    ) {
+        process_node(node, stack, &mut self.signatures_by_block, resolver);
     }
 
     pub fn signature_of(&self, node: &NodeId) -> &Signature {
         self.signatures_by_block
             .get(node)
             .expect("Signature not available")
-    }
-
-    pub fn signature_of_root(&self) -> Signature {
-        self.stack.to_signature()
     }
 }
 
