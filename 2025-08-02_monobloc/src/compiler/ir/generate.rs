@@ -1,7 +1,7 @@
 use crate::compiler::{
     code::nodes::{Node, NodeId, NodeKind},
-    inferrer::Inferrer,
     ir::{Block, Expression, Intrinsic, Package, Signature},
+    passes::Inferrer,
     resolver::Resolver,
 };
 
