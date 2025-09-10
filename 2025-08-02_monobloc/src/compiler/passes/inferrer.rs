@@ -11,13 +11,13 @@ use crate::compiler::{
 };
 
 pub struct Inferrer {
-    signatures_by_block: Signatures,
+    signatures: Signatures,
 }
 
 impl Inferrer {
     pub fn new() -> Self {
         Self {
-            signatures_by_block: Signatures::new(),
+            signatures: Signatures::new(),
         }
     }
 
@@ -30,13 +30,13 @@ impl Inferrer {
         process_node(
             node,
             stack,
-            &mut self.signatures_by_block.signatures_by_block,
+            &mut self.signatures.signatures_by_block,
             resolver,
         );
     }
 
     pub fn signature_of(&self, node: &NodeId) -> &Signature {
-        self.signatures_by_block
+        self.signatures
             .signatures_by_block
             .get(node)
             .expect("Signature not available")
