@@ -27,7 +27,7 @@ impl Intrinsics {
 #[derive(Clone, Copy)]
 pub enum Intrinsic {
     // Apply
-    Apply,
+    Apply { signature: usize },
 
     // Panics
     Assert,
@@ -67,7 +67,7 @@ pub enum Intrinsic {
 impl Intrinsic {
     pub fn resolve(
         name: &str,
-        _: &Stack,
+        stack: &Stack,
         _: &mut Signatures,
     ) -> Option<Intrinsic> {
         use Intrinsic::*;
@@ -84,7 +84,11 @@ impl Intrinsic {
             ">" => GreaterThan,
             ">=" => GreaterThanOrEquals,
             "and" => And,
-            "apply" => Apply,
+            "apply" => {
+                let signature = stack.to_signature();
+
+                Apply { signature }
+            }
             "assert" => Assert,
             "count_ones" => CountOnes,
             "leading_zeros" => LeadingZeros,
@@ -105,11 +109,14 @@ impl Intrinsic {
         Some(intrinsic)
     }
 
+    // TASK: Simplify return type.
     pub fn signature(&self) -> Option<[&[Type]; 2]> {
         use Type::*;
 
         let signature: [&[Type]; 2] = match self {
-            Self::Apply => {
+            Self::Apply { signature: _ } => {
+                // TASK: Return the actual signature here. This requires access
+                //       to `&Signatures`.
                 return None;
             }
 
