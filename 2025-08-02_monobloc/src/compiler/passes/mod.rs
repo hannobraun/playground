@@ -1,4 +1,4 @@
-mod parse;
+mod parser;
 mod tokens;
 
-pub use self::{parse::Parser, tokens::Tokenizer};
+pub use self::{parser::Parser, tokens::Tokenizer};
