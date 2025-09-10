@@ -1,6 +1,9 @@
 mod inferrer;
 mod parser;
+mod resolver;
 mod tokenizer;
 
-pub use self::{inferrer::Inferrer, parser::Parser, tokenizer::Tokenizer};
-pub use super::resolver::Resolver;
+pub use self::{
+    inferrer::Inferrer, parser::Parser, resolver::Resolver,
+    tokenizer::Tokenizer,
+};
