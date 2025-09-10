@@ -21,7 +21,7 @@ impl Signatures {
     ) -> usize {
         if let Some(index) = self
             .inner
-            .iter_mut()
+            .iter()
             .enumerate()
             .find_map(|(i, s)| (*s == signature).then_some(i))
         {
