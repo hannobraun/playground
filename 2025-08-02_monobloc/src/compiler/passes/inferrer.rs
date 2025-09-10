@@ -9,7 +9,7 @@ use crate::compiler::{
 };
 
 pub struct Inferrer {
-    signatures: Signatures,
+    pub signatures: Signatures,
 }
 
 impl Inferrer {
