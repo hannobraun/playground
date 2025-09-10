@@ -35,7 +35,7 @@ impl Signatures {
         self.by_block.insert(block, index);
     }
 
-    pub fn get(&self, id: &NodeId) -> &Signature {
+    pub fn get_for_block(&self, id: &NodeId) -> &Signature {
         let index = self
             .by_block
             .get(id)
