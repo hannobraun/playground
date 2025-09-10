@@ -30,7 +30,7 @@ impl Signatures {
         }
     }
 
-    pub fn insert(&mut self, block: NodeId, signature: Signature) {
+    pub fn insert_and_assign_to_block(&mut self, block: NodeId, signature: Signature) {
         let index = self.index_of(signature);
         self.by_block.insert(block, index);
     }

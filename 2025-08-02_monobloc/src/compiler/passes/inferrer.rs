@@ -49,7 +49,7 @@ fn process_node(
             }
 
             let signature = stack_for_block.to_signature();
-            signatures.insert(node.id, signature.clone());
+            signatures.insert_and_assign_to_block(node.id, signature.clone());
             stack.push(Type::Block { signature });
         }
         NodeKind::Comment { text: _ } => {
