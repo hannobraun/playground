@@ -13,8 +13,8 @@ impl Signatures {
         }
     }
 
-    pub fn insert(&mut self, id: NodeId, signature: Signature) {
-        self.by_block.insert(id, signature);
+    pub fn insert(&mut self, block: NodeId, signature: Signature) {
+        self.by_block.insert(block, signature);
     }
 
     pub fn get(&self, id: &NodeId) -> &Signature {
