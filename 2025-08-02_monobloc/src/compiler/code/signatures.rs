@@ -7,6 +7,14 @@ pub struct Signatures {
 }
 
 impl Signatures {
+    pub fn signature_of_block(&self, id: &NodeId) -> &Signature {
+        self.signatures_by_block
+            .get(id)
+            .expect("Block not available")
+    }
+}
+
+impl Signatures {
     pub fn new() -> Self {
         Self {
             signatures_by_block: BTreeMap::new(),

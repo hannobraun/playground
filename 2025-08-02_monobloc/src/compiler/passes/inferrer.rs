@@ -29,10 +29,7 @@ impl Inferrer {
     }
 
     pub fn signature_of(&self, node: &NodeId) -> &Signature {
-        self.signatures
-            .signatures_by_block
-            .get(node)
-            .expect("Signature not available")
+        self.signatures.signature_of_block(node)
     }
 }
 
