@@ -19,11 +19,11 @@ impl Signatures {
         &mut self,
         signature: Signature,
     ) -> usize {
-        if let Some((index, _)) = self
+        if let Some(index) = self
             .inner
             .iter_mut()
             .enumerate()
-            .find(|(_, s)| **s == signature)
+            .find_map(|(i, s)| (*s == signature).then_some(i))
         {
             index
         } else {
