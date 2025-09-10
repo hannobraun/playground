@@ -7,19 +7,17 @@ pub struct Signatures {
 }
 
 impl Signatures {
+    pub fn new() -> Self {
+        Self {
+            inner: BTreeMap::new(),
+        }
+    }
+
     pub fn insert(&mut self, id: NodeId, signature: Signature) {
         self.inner.insert(id, signature);
     }
 
     pub fn signature_of_block(&self, id: &NodeId) -> &Signature {
         self.inner.get(id).expect("Block not available")
-    }
-}
-
-impl Signatures {
-    pub fn new() -> Self {
-        Self {
-            inner: BTreeMap::new(),
-        }
     }
 }
