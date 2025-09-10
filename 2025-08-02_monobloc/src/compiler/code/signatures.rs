@@ -15,7 +15,10 @@ impl Signatures {
         }
     }
 
-    pub fn index_of(&mut self, signature: Signature) -> usize {
+    pub fn insert_if_necessary_and_return_index(
+        &mut self,
+        signature: Signature,
+    ) -> usize {
         if let Some((index, _)) = self
             .inner
             .iter_mut()
@@ -35,7 +38,7 @@ impl Signatures {
         block: NodeId,
         signature: Signature,
     ) {
-        let index = self.index_of(signature);
+        let index = self.insert_if_necessary_and_return_index(signature);
         self.by_block.insert(block, index);
     }
 
