@@ -15,8 +15,8 @@ impl Signatures {
         }
     }
 
-    pub fn insert(&mut self, block: NodeId, signature: Signature) {
-        let index = if let Some((index, _)) = self
+    pub fn index_of(&mut self, signature: Signature) -> usize {
+        if let Some((index, _)) = self
             .inner
             .iter_mut()
             .enumerate()
@@ -27,7 +27,11 @@ impl Signatures {
             let index = self.inner.len();
             self.inner.push(signature);
             index
-        };
+        }
+    }
+
+    pub fn insert(&mut self, block: NodeId, signature: Signature) {
+        let index = self.index_of(signature);
 
         self.by_block.insert(block, index);
     }
