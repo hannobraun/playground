@@ -17,7 +17,7 @@ impl Signatures {
         self.inner.insert(id, signature);
     }
 
-    pub fn signature_of_block(&self, id: &NodeId) -> &Signature {
+    pub fn get(&self, id: &NodeId) -> &Signature {
         self.inner.get(id).expect("Block not available")
     }
 }
