@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use crate::compiler::{
     code::nodes::{Node, NodeId, NodeKind},
     ir::{Intrinsic, Signature, Type},
-    resolver::Resolver,
+    passes::Resolver,
 };
 
 pub struct Inferrer {

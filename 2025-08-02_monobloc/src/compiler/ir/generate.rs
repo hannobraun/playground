@@ -1,8 +1,7 @@
 use crate::compiler::{
     code::nodes::{Node, NodeId, NodeKind},
     ir::{Block, Expression, Intrinsic, Package, Signature},
-    passes::Inferrer,
-    resolver::Resolver,
+    passes::{Inferrer, Resolver},
 };
 
 pub fn generate(

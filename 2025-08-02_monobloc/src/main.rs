@@ -12,8 +12,7 @@ use crate::{
         },
         input_code::read_input_code,
         ir,
-        passes::{Inferrer, Parser, Tokenizer},
-        resolver::Resolver,
+        passes::{Inferrer, Parser, Resolver, Tokenizer},
         wasm,
     },
 };
