@@ -1,5 +1,3 @@
-use std::collections::BTreeMap;
-
 use crate::compiler::{
     code::{
         nodes::{Node, NodeId, NodeKind},
@@ -27,12 +25,7 @@ impl Inferrer {
         resolver: &Resolver,
         stack: &mut Stack,
     ) {
-        process_node(
-            node,
-            stack,
-            &mut self.signatures.signatures_by_block,
-            resolver,
-        );
+        process_node(node, stack, &mut self.signatures, resolver);
     }
 
     pub fn signature_of(&self, node: &NodeId) -> &Signature {
@@ -46,7 +39,7 @@ impl Inferrer {
 fn process_node(
     node: &Node,
     stack: &mut Stack,
-    signatures_by_block: &mut BTreeMap<NodeId, Signature>,
+    signatures_by_block: &mut Signatures,
     resolver: &Resolver,
 ) {
     match &node.kind {
@@ -68,7 +61,9 @@ fn process_node(
             }
 
             let signature = stack_for_block.to_signature();
-            signatures_by_block.insert(node.id, signature.clone());
+            signatures_by_block
+                .signatures_by_block
+                .insert(node.id, signature.clone());
             stack.push(Type::Block { signature });
         }
         NodeKind::Comment { text: _ } => {
