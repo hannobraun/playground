@@ -7,6 +7,10 @@ pub struct Signatures {
 }
 
 impl Signatures {
+    pub fn insert(&mut self, id: NodeId, signature: Signature) {
+        self.signatures_by_block.insert(id, signature);
+    }
+
     pub fn signature_of_block(&self, id: &NodeId) -> &Signature {
         self.signatures_by_block
             .get(id)
