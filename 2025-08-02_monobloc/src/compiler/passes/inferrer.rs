@@ -107,24 +107,24 @@ fn process_node(
 }
 
 #[derive(Debug)]
-struct Stack {
-    inputs: Vec<Type>,
-    outputs: Vec<Type>,
+pub struct Stack {
+    pub inputs: Vec<Type>,
+    pub outputs: Vec<Type>,
 }
 
 impl Stack {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             inputs: Vec::new(),
             outputs: Vec::new(),
         }
     }
 
-    fn push(&mut self, ty: Type) {
+    pub fn push(&mut self, ty: Type) {
         self.outputs.push(ty);
     }
 
-    fn pop(&mut self, expected_type: Type) -> Option<Type> {
+    pub fn pop(&mut self, expected_type: Type) -> Option<Type> {
         if let Some(type_on_stack) = self.outputs.pop() {
             // We're not checking, if the type on the stack matches the expected
             // type. For the most part, the language is untyped, so values are
@@ -142,7 +142,7 @@ impl Stack {
         }
     }
 
-    fn to_signature(&self) -> Signature {
+    pub fn to_signature(&self) -> Signature {
         Signature {
             inputs: self.inputs.clone(),
             outputs: self.outputs.clone(),
