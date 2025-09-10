@@ -15,16 +15,18 @@ impl Signatures {
         }
     }
 
+    pub fn index_of(&self, signature: &Signature) -> Option<usize> {
+        self.inner
+            .iter()
+            .enumerate()
+            .find_map(|(i, s)| (s == signature).then_some(i))
+    }
+
     pub fn insert_if_necessary_and_return_index(
         &mut self,
         signature: Signature,
     ) -> usize {
-        if let Some(index) = self
-            .inner
-            .iter()
-            .enumerate()
-            .find_map(|(i, s)| (*s == signature).then_some(i))
-        {
+        if let Some(index) = self.index_of(&signature) {
             index
         } else {
             let index = self.inner.len();
