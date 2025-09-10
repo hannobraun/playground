@@ -18,6 +18,6 @@ impl Signatures {
     }
 
     pub fn get(&self, id: &NodeId) -> &Signature {
-        self.by_block.get(id).expect("Block not available")
+        self.by_block.get(id).expect("Signature not available")
     }
 }
