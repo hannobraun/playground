@@ -1,10 +1,10 @@
 use crate::compiler::{
     code::{
-        nodes::{Node, NodeId, NodeKind},
+        nodes::{Node, NodeKind},
         signatures::Signatures,
         stack::Stack,
     },
-    ir::{Intrinsic, Signature, Type},
+    ir::{Intrinsic, Type},
     passes::Resolver,
 };
 
@@ -26,10 +26,6 @@ impl Inferrer {
         stack: &mut Stack,
     ) {
         process_node(node, stack, &mut self.signatures, resolver);
-    }
-
-    pub fn signature_of(&self, node: &NodeId) -> &Signature {
-        self.signatures.signature_of_block(node)
     }
 }
 

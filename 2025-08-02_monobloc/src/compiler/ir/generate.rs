@@ -94,7 +94,7 @@ fn compile_block(
 
     let (signature, bindings) = node
         .map(|id| {
-            let signature = inferrer.signature_of(&id).clone();
+            let signature = inferrer.signatures.signature_of_block(&id).clone();
             let bindings = resolver.bindings_in(&id).clone();
 
             (signature, bindings)
