@@ -10,7 +10,7 @@ use crate::{
             nodes::{Node, NodeKind, Nodes},
             tokens::IntegerFormat,
         },
-        input_code::read_input_code,
+        input::read_input_code,
         ir,
         passes::{Inferrer, Parser, Resolver, Tokenizer},
         wasm,
