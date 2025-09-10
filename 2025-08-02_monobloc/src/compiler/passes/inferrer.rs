@@ -3,6 +3,7 @@ use std::collections::BTreeMap;
 use crate::compiler::{
     code::{
         nodes::{Node, NodeId, NodeKind},
+        signatures::Signatures,
         stack::Stack,
     },
     ir::{Intrinsic, Signature, Type},
@@ -10,13 +11,13 @@ use crate::compiler::{
 };
 
 pub struct Inferrer {
-    signatures_by_block: BTreeMap<NodeId, Signature>,
+    signatures_by_block: Signatures,
 }
 
 impl Inferrer {
     pub fn new() -> Self {
         Self {
-            signatures_by_block: BTreeMap::new(),
+            signatures_by_block: Signatures::new(),
         }
     }
 
@@ -26,11 +27,17 @@ impl Inferrer {
         resolver: &Resolver,
         stack: &mut Stack,
     ) {
-        process_node(node, stack, &mut self.signatures_by_block, resolver);
+        process_node(
+            node,
+            stack,
+            &mut self.signatures_by_block.signatures_by_block,
+            resolver,
+        );
     }
 
     pub fn signature_of(&self, node: &NodeId) -> &Signature {
         self.signatures_by_block
+            .signatures_by_block
             .get(node)
             .expect("Signature not available")
     }
