@@ -22,15 +22,15 @@ impl Inferrer {
         stack: &mut Stack,
         signatures: &mut Signatures,
     ) {
-        infer_types(node, stack, signatures, resolver);
+        infer_types(node, resolver, stack, signatures);
     }
 }
 
 pub fn infer_types(
     node: &Node,
+    resolver: &Resolver,
     stack: &mut Stack,
     signatures: &mut Signatures,
-    resolver: &Resolver,
 ) {
     match &node.kind {
         NodeKind::Binding { names: _ } => {
@@ -42,7 +42,7 @@ pub fn infer_types(
             let mut stack_for_block = Stack::new();
 
             for node in &block.nodes {
-                infer_types(node, &mut stack_for_block, signatures, resolver);
+                infer_types(node, resolver, &mut stack_for_block, signatures);
             }
 
             let signature = stack_for_block.to_signature();
