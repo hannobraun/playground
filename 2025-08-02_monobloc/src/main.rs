@@ -99,13 +99,8 @@ pub fn compile(
 
     signatures.insert_and_assign_to_block(NodeId::root(), stack.to_signature());
 
-    let package = ir::generate(
-        nodes.into_root().nodes,
-        &stack,
-        &signatures,
-        &resolver,
-        &inferrer,
-    );
+    let package =
+        ir::generate(nodes.into_root().nodes, &stack, &signatures, &resolver);
     let wasm_code = wasm::generate_module(&package);
     let stack = match runtime::evaluate_root(&wasm_code, &package) {
         Ok(stack) => stack,

@@ -5,7 +5,7 @@ use crate::compiler::{
         stack::Stack,
     },
     ir::{Block, Expression, Intrinsic, Package},
-    passes::{Inferrer, Resolver},
+    passes::Resolver,
 };
 
 pub fn generate(
@@ -13,7 +13,6 @@ pub fn generate(
     stack: &Stack,
     signatures: &Signatures,
     resolver: &Resolver,
-    _: &Inferrer,
 ) -> Package {
     let mut blocks = Vec::new();
 
