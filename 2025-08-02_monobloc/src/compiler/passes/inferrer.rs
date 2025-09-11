@@ -22,11 +22,11 @@ impl Inferrer {
         stack: &mut Stack,
         signatures: &mut Signatures,
     ) {
-        process_node(node, stack, signatures, resolver);
+        infer_types(node, stack, signatures, resolver);
     }
 }
 
-fn process_node(
+fn infer_types(
     node: &Node,
     stack: &mut Stack,
     signatures: &mut Signatures,
@@ -42,7 +42,7 @@ fn process_node(
             let mut stack_for_block = Stack::new();
 
             for node in &block.nodes {
-                process_node(node, &mut stack_for_block, signatures, resolver);
+                infer_types(node, &mut stack_for_block, signatures, resolver);
             }
 
             let signature = stack_for_block.to_signature();
