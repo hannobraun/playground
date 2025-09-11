@@ -14,7 +14,7 @@ use crate::{
         },
         input::read_input_code,
         ir,
-        passes::{Inferrer, Parser, Resolver, Tokenizer},
+        passes::{Parser, Resolver, Tokenizer, infer_types},
         wasm,
     },
 };
@@ -65,7 +65,6 @@ pub fn compile(
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
     let mut resolver = Resolver::new();
-    let mut inferrer = Inferrer::new();
 
     loop {
         let Some(ch) = input_code.next() else {
@@ -76,12 +75,7 @@ pub fn compile(
             Some(token) => {
                 if let Some(node) = parser.process_token(token, &mut nodes) {
                     resolver.process_node(&node);
-                    inferrer.process_node(
-                        &node,
-                        &resolver,
-                        &mut stack,
-                        &mut signatures,
-                    );
+                    infer_types(&node, &resolver, &mut stack, &mut signatures);
                     nodes.add_to_root(node);
                 }
             }

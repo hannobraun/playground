@@ -4,6 +4,6 @@ mod resolver;
 mod tokenizer;
 
 pub use self::{
-    inferrer::Inferrer, parser::Parser, resolver::Resolver,
+    inferrer::infer_types, parser::Parser, resolver::Resolver,
     tokenizer::Tokenizer,
 };

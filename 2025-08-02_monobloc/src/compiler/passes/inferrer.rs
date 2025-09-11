@@ -8,24 +8,6 @@ use crate::compiler::{
     passes::Resolver,
 };
 
-pub struct Inferrer {}
-
-impl Inferrer {
-    pub fn new() -> Self {
-        Self {}
-    }
-
-    pub fn process_node(
-        &mut self,
-        node: &Node,
-        resolver: &Resolver,
-        stack: &mut Stack,
-        signatures: &mut Signatures,
-    ) {
-        infer_types(node, resolver, stack, signatures);
-    }
-}
-
 pub fn infer_types(
     node: &Node,
     resolver: &Resolver,
