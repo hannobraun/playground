@@ -7,7 +7,7 @@ use crate::{
     args::Args,
     compiler::{
         code::{
-            nodes::{Node, NodeKind, Nodes},
+            nodes::{Node, NodeId, NodeKind, Nodes},
             stack::Stack,
             tokens::IntegerFormat,
         },
@@ -89,6 +89,10 @@ pub fn compile(
             print_nodes(&nodes.root().nodes);
         }
     }
+
+    inferrer
+        .signatures
+        .insert_and_assign_to_block(NodeId::root(), stack.to_signature());
 
     let package =
         ir::generate(nodes.into_root().nodes, &stack, &resolver, &inferrer);
