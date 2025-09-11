@@ -26,7 +26,7 @@ impl Inferrer {
     }
 }
 
-fn infer_types(
+pub fn infer_types(
     node: &Node,
     stack: &mut Stack,
     signatures: &mut Signatures,
