@@ -34,7 +34,7 @@ pub fn generate(
 }
 
 fn compile_block(
-    node: Option<NodeId>,
+    id: Option<NodeId>,
     nodes: Vec<Node>,
     stack: &Stack,
     resolver: &Resolver,
@@ -92,7 +92,7 @@ fn compile_block(
         }
     }
 
-    let (signature, bindings) = node
+    let (signature, bindings) = id
         .map(|id| {
             let signature = inferrer.signatures.get_for_block(&id).clone();
             let bindings = resolver.bindings_in(&id).clone();
