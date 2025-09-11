@@ -37,11 +37,11 @@ impl Signatures {
 
     pub fn insert_and_assign_to_block(
         &mut self,
-        block: NodeId,
+        id: NodeId,
         signature: Signature,
     ) {
         let index = self.insert_if_necessary_and_return_index(signature);
-        self.by_block.insert(block, index);
+        self.by_block.insert(id, index);
     }
 
     pub fn get_for_block(&self, id: &NodeId) -> &Signature {
