@@ -1,6 +1,7 @@
 use crate::compiler::{
     code::{
         nodes::{Node, NodeId, NodeKind},
+        signatures::Signatures,
         stack::Stack,
     },
     ir::{Block, Expression, Intrinsic, Package},
@@ -10,8 +11,9 @@ use crate::compiler::{
 pub fn generate(
     nodes: Vec<Node>,
     stack: &Stack,
+    signatures: &Signatures,
     resolver: &Resolver,
-    inferrer: &Inferrer,
+    _: &Inferrer,
 ) -> Package {
     let mut blocks = Vec::new();
 
@@ -19,13 +21,13 @@ pub fn generate(
         NodeId::root(),
         nodes,
         stack,
+        signatures,
         resolver,
-        inferrer,
         &mut blocks,
     );
 
     Package {
-        signatures: inferrer.signatures.inner(),
+        signatures: signatures.inner(),
         blocks,
         root,
     }
@@ -35,8 +37,8 @@ fn compile_block(
     id: NodeId,
     nodes: Vec<Node>,
     stack: &Stack,
+    signatures: &Signatures,
     resolver: &Resolver,
-    inferrer: &Inferrer,
     blocks: &mut Vec<Block>,
 ) -> usize {
     let mut body = Vec::new();
@@ -55,8 +57,8 @@ fn compile_block(
                     node.id,
                     block.nodes,
                     stack,
+                    signatures,
                     resolver,
-                    inferrer,
                     blocks,
                 );
                 body.push(Expression::Block { index });
@@ -94,14 +96,13 @@ fn compile_block(
 
         (signature, bindings)
     } else {
-        let signature = inferrer.signatures.get_for_block(&id).clone();
+        let signature = signatures.get_for_block(&id).clone();
         let bindings = resolver.bindings_in(&id).clone();
 
         (signature, bindings)
     };
 
-    let signature = inferrer
-        .signatures
+    let signature = signatures
         .index_of(&signature)
         .expect("Expecting signature to be available.");
 

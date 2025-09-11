@@ -8,15 +8,11 @@ use crate::compiler::{
     passes::Resolver,
 };
 
-pub struct Inferrer {
-    pub signatures: Signatures,
-}
+pub struct Inferrer {}
 
 impl Inferrer {
     pub fn new() -> Self {
-        Self {
-            signatures: Signatures::new(),
-        }
+        Self {}
     }
 
     pub fn process_node(
@@ -24,8 +20,9 @@ impl Inferrer {
         node: &Node,
         resolver: &Resolver,
         stack: &mut Stack,
+        signatures: &mut Signatures,
     ) {
-        process_node(node, stack, &mut self.signatures, resolver);
+        process_node(node, stack, signatures, resolver);
     }
 }
 
