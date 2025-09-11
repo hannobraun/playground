@@ -17,7 +17,7 @@ pub fn generate(
     let mut blocks = Vec::new();
 
     let root = compile_block(
-        None,
+        NodeId::root(),
         nodes,
         stack,
         resolver,
@@ -34,7 +34,7 @@ pub fn generate(
 }
 
 fn compile_block(
-    id: Option<NodeId>,
+    id: NodeId,
     nodes: Vec<Node>,
     stack: &Stack,
     resolver: &Resolver,
@@ -55,7 +55,7 @@ fn compile_block(
             }
             NodeKind::Block { block } => {
                 let index = compile_block(
-                    Some(node.id),
+                    node.id,
                     block.nodes,
                     stack,
                     resolver,
@@ -92,19 +92,17 @@ fn compile_block(
         }
     }
 
-    let (signature, bindings) = id
-        .map(|id| {
-            let signature = inferrer.signatures.get_for_block(&id).clone();
-            let bindings = resolver.bindings_in(&id).clone();
+    let (signature, bindings) = if id == NodeId::root() {
+        let signature = stack.to_signature();
+        let bindings = resolver.bindings_in_root().clone();
 
-            (signature, bindings)
-        })
-        .unwrap_or_else(|| {
-            let signature = stack.to_signature();
-            let bindings = resolver.bindings_in_root().clone();
+        (signature, bindings)
+    } else {
+        let signature = inferrer.signatures.get_for_block(&id).clone();
+        let bindings = resolver.bindings_in(&id).clone();
 
-            (signature, bindings)
-        });
+        (signature, bindings)
+    };
 
     let signature = if let Some((index, _)) = signatures
         .iter_mut()
