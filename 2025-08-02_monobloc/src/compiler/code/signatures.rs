@@ -53,4 +53,8 @@ impl Signatures {
 
         &self.inner[index]
     }
+
+    pub fn inner(&self) -> Vec<Signature> {
+        self.inner.clone()
+    }
 }
