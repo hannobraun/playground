@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use crate::compiler::code::{nodes::NodeId, types::Type};
+use crate::compiler::code::{nodes::NodeId, stack::Stack, types::Type};
 
 pub struct Intrinsics {
     by_node: BTreeMap<NodeId, Intrinsic>,
@@ -63,6 +63,42 @@ pub enum Intrinsic {
 }
 
 impl Intrinsic {
+    pub fn resolve(name: &str, _: &Stack) -> Option<Intrinsic> {
+        use Intrinsic::*;
+
+        let intrinsic = match name {
+            "%" => Remainder,
+            "*" => Multiply,
+            "+" => Add,
+            "-" => Subtract,
+            "/" => Divide,
+            "<" => LessThan,
+            "<=" => LessThanOrEquals,
+            "=" => Equals,
+            ">" => GreaterThan,
+            ">=" => GreaterThanOrEquals,
+            "and" => And,
+            "apply" => Apply,
+            "assert" => Assert,
+            "count_ones" => CountOnes,
+            "leading_zeros" => LeadingZeros,
+            "not" => Not,
+            "or" => Or,
+            "rotate_left" => RotateLeft,
+            "rotate_right" => RotateRight,
+            "shift_left" => ShiftLeft,
+            "shift_right" => ShiftRight,
+            "trailing_zeros" => TrailingZeros,
+            "xor" => Xor,
+
+            _ => {
+                return None;
+            }
+        };
+
+        Some(intrinsic)
+    }
+
     pub fn signature(&self) -> Option<[&[Type]; 2]> {
         use Type::*;
 

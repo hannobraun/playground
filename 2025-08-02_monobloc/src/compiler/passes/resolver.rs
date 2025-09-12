@@ -124,7 +124,7 @@ fn process_node(
             bindings_by_block.insert(node.id, bindings_in_this_block);
         }
         NodeKind::Identifier { name } => {
-            if let Some(intrinsic) = resolve_intrinsic(name, stack) {
+            if let Some(intrinsic) = Intrinsic::resolve(name, stack) {
                 intrinsics.insert(node.id, intrinsic);
             }
 
@@ -142,40 +142,4 @@ fn process_node(
             // Node is not relevant for the resolver.
         }
     }
-}
-
-fn resolve_intrinsic(name: &str, _: &Stack) -> Option<Intrinsic> {
-    use Intrinsic::*;
-
-    let intrinsic = match name {
-        "%" => Remainder,
-        "*" => Multiply,
-        "+" => Add,
-        "-" => Subtract,
-        "/" => Divide,
-        "<" => LessThan,
-        "<=" => LessThanOrEquals,
-        "=" => Equals,
-        ">" => GreaterThan,
-        ">=" => GreaterThanOrEquals,
-        "and" => And,
-        "apply" => Apply,
-        "assert" => Assert,
-        "count_ones" => CountOnes,
-        "leading_zeros" => LeadingZeros,
-        "not" => Not,
-        "or" => Or,
-        "rotate_left" => RotateLeft,
-        "rotate_right" => RotateRight,
-        "shift_left" => ShiftLeft,
-        "shift_right" => ShiftRight,
-        "trailing_zeros" => TrailingZeros,
-        "xor" => Xor,
-
-        _ => {
-            return None;
-        }
-    };
-
-    Some(intrinsic)
 }
