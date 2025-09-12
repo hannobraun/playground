@@ -74,7 +74,7 @@ pub fn compile(
         match tokenizer.process_char(ch) {
             Some(token) => {
                 if let Some(node) = parser.process_token(token, &mut nodes) {
-                    resolver.process_node(&node);
+                    resolver.process_node(&node, &stack);
                     infer_types(&node, &resolver, &mut stack, &mut signatures);
                     nodes.add_to_root(node);
                 }

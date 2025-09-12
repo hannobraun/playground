@@ -1,7 +1,10 @@
 use std::collections::BTreeMap;
 
 use crate::compiler::{
-    code::nodes::{Node, NodeId, NodeKind},
+    code::{
+        nodes::{Node, NodeId, NodeKind},
+        stack::Stack,
+    },
     ir::{Binding, Intrinsic, Type},
 };
 
@@ -26,7 +29,7 @@ impl Resolver {
         }
     }
 
-    pub fn process_node(&mut self, node: &Node) {
+    pub fn process_node(&mut self, node: &Node, _: &Stack) {
         process_node(
             node,
             &mut self.bindings_in_root,
