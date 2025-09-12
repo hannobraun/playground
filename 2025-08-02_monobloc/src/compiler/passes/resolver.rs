@@ -2,6 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::compiler::{
     code::{
+        bindings::Bindings,
         intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
         signatures::Signatures,
@@ -11,21 +12,19 @@ use crate::compiler::{
 };
 
 pub struct Resolver {
-    bindings_in_root: Vec<Binding>,
-    bindings_by_block: BTreeMap<NodeId, Vec<Binding>>,
-
-    binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
-    binding_calls_by_node: BTreeMap<NodeId, Binding>,
+    bindings: Bindings,
 }
 
 impl Resolver {
     pub fn new() -> Self {
         Self {
-            bindings_in_root: Vec::new(),
-            bindings_by_block: BTreeMap::new(),
+            bindings: Bindings {
+                bindings_in_root: Vec::new(),
+                bindings_by_block: BTreeMap::new(),
 
-            binding_definitions_by_node: BTreeMap::new(),
-            binding_calls_by_node: BTreeMap::new(),
+                binding_definitions_by_node: BTreeMap::new(),
+                binding_calls_by_node: BTreeMap::new(),
+            },
         }
     }
 
@@ -39,20 +38,21 @@ impl Resolver {
         process_node(
             node,
             stack,
-            &mut self.bindings_in_root,
-            &mut self.bindings_by_block,
-            &mut self.binding_definitions_by_node,
-            &mut self.binding_calls_by_node,
+            &mut self.bindings.bindings_in_root,
+            &mut self.bindings.bindings_by_block,
+            &mut self.bindings.binding_definitions_by_node,
+            &mut self.bindings.binding_calls_by_node,
             intrinsics,
         );
     }
 
     pub fn binding_call_at(&self, node: &NodeId) -> Option<&Binding> {
-        self.binding_calls_by_node.get(node)
+        self.bindings.binding_calls_by_node.get(node)
     }
 
     pub fn binding_definitions_at(&self, node: &NodeId) -> &[Binding] {
-        self.binding_definitions_by_node
+        self.bindings
+            .binding_definitions_by_node
             .get(node)
             .map(|bindings| bindings.as_slice())
             .unwrap_or(&[])
@@ -60,9 +60,10 @@ impl Resolver {
 
     pub fn bindings_in(&self, id: &NodeId) -> &Vec<Binding> {
         if *id == NodeId::root() {
-            &self.bindings_in_root
+            &self.bindings.bindings_in_root
         } else {
-            self.bindings_by_block
+            self.bindings
+                .bindings_by_block
                 .get(id)
                 .expect("Bindings not available")
         }
