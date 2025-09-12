@@ -28,11 +28,12 @@ impl Resolver {
         stack: &Stack,
         bindings_in_root: &mut LocalBindings,
         intrinsics: &mut Intrinsics,
-        _: &mut Signatures,
+        signatures: &mut Signatures,
     ) {
         process_node(
             node,
             stack,
+            signatures,
             bindings_in_root,
             &mut self.bindings.by_block,
             &mut self.bindings.definitions_by_node,
@@ -72,6 +73,7 @@ impl Resolver {
 fn process_node(
     node: &Node,
     stack: &Stack,
+    signatures: &mut Signatures,
     bindings_in_current_block: &mut LocalBindings,
     bindings_by_block: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_definitions_by_node: &mut BTreeMap<NodeId, Vec<Binding>>,
@@ -108,6 +110,7 @@ fn process_node(
                 process_node(
                     node,
                     stack,
+                    signatures,
                     &mut bindings_in_this_block,
                     bindings_by_block,
                     binding_definitions_by_node,
@@ -120,7 +123,8 @@ fn process_node(
                 .insert(node.id, bindings_in_this_block.into_inner());
         }
         NodeKind::Identifier { name } => {
-            if let Some(intrinsic) = Intrinsic::resolve(name, stack) {
+            if let Some(intrinsic) = Intrinsic::resolve(name, stack, signatures)
+            {
                 intrinsics.insert(node.id, intrinsic);
             }
 
