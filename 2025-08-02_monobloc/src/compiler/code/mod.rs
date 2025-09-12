@@ -1,3 +1,4 @@
+pub mod intrinsics;
 pub mod nodes;
 pub mod signatures;
 pub mod stack;
