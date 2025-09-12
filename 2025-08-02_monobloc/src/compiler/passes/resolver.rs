@@ -3,6 +3,7 @@ use std::collections::BTreeMap;
 use crate::compiler::{
     code::{
         nodes::{Node, NodeId, NodeKind},
+        signatures::Signatures,
         stack::Stack,
     },
     ir::{Binding, Intrinsic, Type},
@@ -29,7 +30,12 @@ impl Resolver {
         }
     }
 
-    pub fn process_node(&mut self, node: &Node, stack: &Stack) {
+    pub fn process_node(
+        &mut self,
+        node: &Node,
+        stack: &Stack,
+        _: &mut Signatures,
+    ) {
         process_node(
             node,
             stack,
