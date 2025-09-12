@@ -59,9 +59,13 @@ impl Resolver {
     }
 
     pub fn bindings_in(&self, id: &NodeId) -> &Vec<Binding> {
-        self.bindings_by_block
-            .get(id)
-            .expect("Bindings not available")
+        if *id == NodeId::root() {
+            self.bindings_in_root()
+        } else {
+            self.bindings_by_block
+                .get(id)
+                .expect("Bindings not available")
+        }
     }
 
     pub fn bindings_in_root(&self) -> &Vec<Binding> {

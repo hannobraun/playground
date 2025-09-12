@@ -96,7 +96,7 @@ fn compile_block(
 
     let (signature, bindings) = if id == NodeId::root() {
         let signature = stack.to_signature();
-        let bindings = resolver.bindings_in_root().clone();
+        let bindings = resolver.bindings_in(&id).clone();
 
         (signature, bindings)
     } else {
