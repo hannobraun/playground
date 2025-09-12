@@ -33,7 +33,7 @@ impl Resolver {
             node,
             stack,
             &mut self.bindings.in_root,
-            &mut self.bindings.bindings_by_block,
+            &mut self.bindings.by_block,
             &mut self.bindings.binding_definitions_by_node,
             &mut self.bindings.binding_calls_by_node,
             intrinsics,
@@ -57,7 +57,7 @@ impl Resolver {
             &self.bindings.in_root
         } else {
             self.bindings
-                .bindings_by_block
+                .by_block
                 .get(id)
                 .expect("Bindings not available")
         }
