@@ -1,3 +1,4 @@
+pub mod bindings;
 pub mod intrinsics;
 pub mod nodes;
 pub mod signatures;

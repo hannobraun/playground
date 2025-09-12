@@ -1,7 +1,8 @@
 mod generate;
 
 pub use crate::compiler::code::{
-    intrinsics::Intrinsic, signatures::Signature, types::Type,
+    bindings::Binding, intrinsics::Intrinsic, signatures::Signature,
+    types::Type,
 };
 
 pub use self::generate::generate;
@@ -23,13 +24,6 @@ pub struct Block {
     pub signature: usize,
     pub bindings: Vec<Binding>,
     pub body: Body,
-}
-
-#[derive(Clone, Debug)]
-pub struct Binding {
-    pub name: String,
-    pub index: u32,
-    pub ty: Type,
 }
 
 pub type Body = Vec<Expression>;
