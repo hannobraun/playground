@@ -1,12 +1,9 @@
 mod generate;
 mod intrinsics;
-mod types;
 
-pub use self::{
-    generate::generate,
-    intrinsics::Intrinsic,
-    types::{Signature, Type},
-};
+pub use crate::compiler::code::types::{Signature, Type};
+
+pub use self::{generate::generate, intrinsics::Intrinsic};
 
 pub struct Package {
     pub signatures: Vec<Signature>,
