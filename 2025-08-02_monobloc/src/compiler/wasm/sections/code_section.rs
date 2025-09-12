@@ -49,7 +49,7 @@ impl Emit for CodeVec<'_> {
 }
 
 struct Code<'r> {
-    bindings: &'r ir::Bindings,
+    bindings: &'r [ir::Binding],
     body: &'r ir::Body,
 }
 
