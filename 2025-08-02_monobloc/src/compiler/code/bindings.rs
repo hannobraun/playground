@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use crate::compiler::code::{nodes::NodeId, types::Type};
 
 pub struct Bindings {
-    pub bindings_in_root: Vec<Binding>,
+    pub in_root: Vec<Binding>,
     pub bindings_by_block: BTreeMap<NodeId, Vec<Binding>>,
 
     pub binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
@@ -13,7 +13,7 @@ pub struct Bindings {
 impl Bindings {
     pub fn new() -> Self {
         Self {
-            bindings_in_root: Vec::new(),
+            in_root: Vec::new(),
             bindings_by_block: BTreeMap::new(),
 
             binding_definitions_by_node: BTreeMap::new(),
