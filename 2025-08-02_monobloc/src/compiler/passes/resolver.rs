@@ -16,7 +16,6 @@ pub struct Resolver {
 
     binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
     binding_calls_by_node: BTreeMap<NodeId, Binding>,
-    intrinsics: Intrinsics,
 }
 
 impl Resolver {
@@ -27,7 +26,6 @@ impl Resolver {
 
             binding_definitions_by_node: BTreeMap::new(),
             binding_calls_by_node: BTreeMap::new(),
-            intrinsics: Intrinsics::new(),
         }
     }
 
@@ -35,6 +33,7 @@ impl Resolver {
         &mut self,
         node: &Node,
         stack: &Stack,
+        intrinsics: &mut Intrinsics,
         _: &mut Signatures,
     ) {
         process_node(
@@ -44,7 +43,7 @@ impl Resolver {
             &mut self.bindings_by_block,
             &mut self.binding_definitions_by_node,
             &mut self.binding_calls_by_node,
-            &mut self.intrinsics,
+            intrinsics,
         );
     }
 
@@ -57,10 +56,6 @@ impl Resolver {
             .get(node)
             .map(|bindings| bindings.as_slice())
             .unwrap_or(&[])
-    }
-
-    pub fn intrinsic_at(&self, node: &NodeId) -> Option<&Intrinsic> {
-        self.intrinsics.get(node)
     }
 
     pub fn bindings_in(&self, node: &NodeId) -> &Vec<Binding> {

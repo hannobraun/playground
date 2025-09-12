@@ -1,5 +1,6 @@
 use crate::compiler::{
     code::{
+        intrinsics::Intrinsics,
         nodes::{Node, NodeKind},
         signatures::Signatures,
         stack::Stack,
@@ -10,6 +11,7 @@ use crate::compiler::{
 
 pub fn infer_types(
     node: &Node,
+    intrinsics: &Intrinsics,
     resolver: &Resolver,
     stack: &mut Stack,
     signatures: &mut Signatures,
@@ -24,7 +26,13 @@ pub fn infer_types(
             let mut stack_for_block = Stack::new();
 
             for node in &block.nodes {
-                infer_types(node, resolver, &mut stack_for_block, signatures);
+                infer_types(
+                    node,
+                    intrinsics,
+                    resolver,
+                    &mut stack_for_block,
+                    signatures,
+                );
             }
 
             let signature = stack_for_block.to_signature();
@@ -35,7 +43,7 @@ pub fn infer_types(
             // ignoring comment
         }
         NodeKind::Identifier { name: _ } => {
-            let intrinsic = resolver.intrinsic_at(&node.id).copied();
+            let intrinsic = intrinsics.get(&node.id).copied();
 
             if resolver.binding_call_at(&node.id).is_some() {
                 stack.push(Type::I32);

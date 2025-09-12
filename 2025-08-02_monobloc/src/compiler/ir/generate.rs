@@ -1,5 +1,6 @@
 use crate::compiler::{
     code::{
+        intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
         signatures::Signatures,
         stack::Stack,
@@ -10,6 +11,7 @@ use crate::compiler::{
 
 pub fn generate(
     nodes: Vec<Node>,
+    intrinsics: &Intrinsics,
     stack: &Stack,
     signatures: &Signatures,
     resolver: &Resolver,
@@ -19,6 +21,7 @@ pub fn generate(
     let root = compile_block(
         NodeId::root(),
         nodes,
+        intrinsics,
         stack,
         signatures,
         resolver,
@@ -35,6 +38,7 @@ pub fn generate(
 fn compile_block(
     id: NodeId,
     nodes: Vec<Node>,
+    intrinsics: &Intrinsics,
     stack: &Stack,
     signatures: &Signatures,
     resolver: &Resolver,
@@ -55,6 +59,7 @@ fn compile_block(
                 let index = compile_block(
                     node.id,
                     block.nodes,
+                    intrinsics,
                     stack,
                     signatures,
                     resolver,
@@ -66,7 +71,7 @@ fn compile_block(
                 // ignoring comment
             }
             NodeKind::Identifier { name } => {
-                let intrinsic = resolver.intrinsic_at(&node.id).copied();
+                let intrinsic = intrinsics.get(&node.id).copied();
 
                 if let Some(binding) = resolver.binding_call_at(&node.id) {
                     body.push(Expression::CallBinding {
