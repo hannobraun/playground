@@ -26,13 +26,14 @@ impl Resolver {
         &mut self,
         node: &Node,
         stack: &Stack,
+        bindings_in_root: &mut LocalBindings,
         intrinsics: &mut Intrinsics,
         _: &mut Signatures,
     ) {
         process_node(
             node,
             stack,
-            &mut self.bindings.in_root,
+            bindings_in_root,
             &mut self.bindings.by_block,
             &mut self.bindings.definitions_by_node,
             &mut self.bindings.calls_by_node,
@@ -52,9 +53,13 @@ impl Resolver {
             .unwrap_or(&[])
     }
 
-    pub fn bindings_in(&self, id: &NodeId) -> &Vec<Binding> {
+    pub fn bindings_in<'r>(
+        &'r self,
+        id: &NodeId,
+        bindings_in_root: &'r LocalBindings,
+    ) -> &'r Vec<Binding> {
         if *id == NodeId::root() {
-            self.bindings.in_root.inner()
+            bindings_in_root.inner()
         } else {
             self.bindings
                 .by_block

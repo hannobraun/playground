@@ -7,6 +7,7 @@ use crate::{
     args::Args,
     compiler::{
         code::{
+            bindings::LocalBindings,
             intrinsics::Intrinsics,
             nodes::{Node, NodeId, NodeKind, Nodes},
             signatures::Signatures,
@@ -61,6 +62,7 @@ pub fn compile(
 
     let mut nodes = Nodes::new();
     let mut intrinsics = Intrinsics::new();
+    let mut bindings_in_root = LocalBindings::new();
     let mut stack = Stack::new();
     let mut signatures = Signatures::new();
 
@@ -79,6 +81,7 @@ pub fn compile(
                     resolver.process_node(
                         &node,
                         &stack,
+                        &mut bindings_in_root,
                         &mut intrinsics,
                         &mut signatures,
                     );
@@ -109,6 +112,7 @@ pub fn compile(
     let package = ir::generate(
         nodes.into_root().nodes,
         &intrinsics,
+        &bindings_in_root,
         &stack,
         &signatures,
         &resolver,

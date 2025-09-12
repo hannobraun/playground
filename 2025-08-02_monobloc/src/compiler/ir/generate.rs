@@ -1,5 +1,6 @@
 use crate::compiler::{
     code::{
+        bindings::LocalBindings,
         intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
         signatures::Signatures,
@@ -12,6 +13,7 @@ use crate::compiler::{
 pub fn generate(
     nodes: Vec<Node>,
     intrinsics: &Intrinsics,
+    bindings_in_root: &LocalBindings,
     stack: &Stack,
     signatures: &Signatures,
     resolver: &Resolver,
@@ -22,6 +24,7 @@ pub fn generate(
         NodeId::root(),
         nodes,
         intrinsics,
+        bindings_in_root,
         stack,
         signatures,
         resolver,
@@ -39,6 +42,7 @@ fn compile_block(
     id: NodeId,
     nodes: Vec<Node>,
     intrinsics: &Intrinsics,
+    bindings_in_root: &LocalBindings,
     stack: &Stack,
     signatures: &Signatures,
     resolver: &Resolver,
@@ -60,6 +64,7 @@ fn compile_block(
                     node.id,
                     block.nodes,
                     intrinsics,
+                    bindings_in_root,
                     stack,
                     signatures,
                     resolver,
@@ -96,12 +101,12 @@ fn compile_block(
 
     let (signature, bindings) = if id == NodeId::root() {
         let signature = stack.to_signature();
-        let bindings = resolver.bindings_in(&id).clone();
+        let bindings = resolver.bindings_in(&id, bindings_in_root).clone();
 
         (signature, bindings)
     } else {
         let signature = signatures.get_for_block(&id).clone();
-        let bindings = resolver.bindings_in(&id).clone();
+        let bindings = resolver.bindings_in(&id, bindings_in_root).clone();
 
         (signature, bindings)
     };
