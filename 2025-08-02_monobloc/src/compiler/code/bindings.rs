@@ -2,10 +2,10 @@ use std::collections::BTreeMap;
 
 use crate::compiler::code::{nodes::NodeId, types::Type};
 
+// TASK: Make fields private.
 pub struct Bindings {
-    pub in_root: LocalBindings,
     pub by_block: BTreeMap<NodeId, Vec<Binding>>,
-
+    // TASK: Remove this line.
     pub definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
     pub calls_by_node: BTreeMap<NodeId, Binding>,
 }
@@ -13,9 +13,8 @@ pub struct Bindings {
 impl Bindings {
     pub fn new() -> Self {
         Self {
-            in_root: LocalBindings::new(),
             by_block: BTreeMap::new(),
-
+            // TASK: Remove this line.
             definitions_by_node: BTreeMap::new(),
             calls_by_node: BTreeMap::new(),
         }
