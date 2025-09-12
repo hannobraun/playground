@@ -1,6 +1,8 @@
 use std::collections::BTreeMap;
 
-use crate::compiler::code::{nodes::NodeId, stack::Stack, types::Type};
+use crate::compiler::code::{
+    nodes::NodeId, signatures::Signatures, stack::Stack, types::Type,
+};
 
 pub struct Intrinsics {
     by_node: BTreeMap<NodeId, Intrinsic>,
@@ -63,7 +65,11 @@ pub enum Intrinsic {
 }
 
 impl Intrinsic {
-    pub fn resolve(name: &str, _: &Stack) -> Option<Intrinsic> {
+    pub fn resolve(
+        name: &str,
+        _: &Stack,
+        _: &mut Signatures,
+    ) -> Option<Intrinsic> {
         use Intrinsic::*;
 
         let intrinsic = match name {
