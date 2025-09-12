@@ -35,13 +35,13 @@ impl Resolver {
             &mut self.bindings.in_root,
             &mut self.bindings.by_block,
             &mut self.bindings.definitions_by_node,
-            &mut self.bindings.binding_calls_by_node,
+            &mut self.bindings.calls_by_node,
             intrinsics,
         );
     }
 
     pub fn binding_call_at(&self, node: &NodeId) -> Option<&Binding> {
-        self.bindings.binding_calls_by_node.get(node)
+        self.bindings.calls_by_node.get(node)
     }
 
     pub fn binding_definitions_at(&self, node: &NodeId) -> &[Binding] {

@@ -7,7 +7,7 @@ pub struct Bindings {
     pub by_block: BTreeMap<NodeId, Vec<Binding>>,
 
     pub definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
-    pub binding_calls_by_node: BTreeMap<NodeId, Binding>,
+    pub calls_by_node: BTreeMap<NodeId, Binding>,
 }
 
 impl Bindings {
@@ -17,7 +17,7 @@ impl Bindings {
             by_block: BTreeMap::new(),
 
             definitions_by_node: BTreeMap::new(),
-            binding_calls_by_node: BTreeMap::new(),
+            calls_by_node: BTreeMap::new(),
         }
     }
 }
