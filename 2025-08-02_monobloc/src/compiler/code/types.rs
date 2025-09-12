@@ -1,8 +1,4 @@
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub struct Signature {
-    pub inputs: Vec<Type>,
-    pub outputs: Vec<Type>,
-}
+use crate::compiler::code::signatures::Signature;
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum Type {

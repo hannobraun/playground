@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use crate::compiler::{code::nodes::NodeId, ir::Signature};
+use crate::compiler::code::{nodes::NodeId, types::Type};
 
 pub struct Signatures {
     inner: Vec<Signature>,
@@ -57,4 +57,10 @@ impl Signatures {
     pub fn inner(&self) -> Vec<Signature> {
         self.inner.clone()
     }
+}
+
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub struct Signature {
+    pub inputs: Vec<Type>,
+    pub outputs: Vec<Type>,
 }

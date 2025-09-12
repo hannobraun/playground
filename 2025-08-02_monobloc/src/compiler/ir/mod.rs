@@ -1,8 +1,7 @@
 mod generate;
 
 pub use crate::compiler::code::{
-    intrinsics::Intrinsic,
-    types::{Signature, Type},
+    intrinsics::Intrinsic, signatures::Signature, types::Type,
 };
 
 pub use self::generate::generate;
