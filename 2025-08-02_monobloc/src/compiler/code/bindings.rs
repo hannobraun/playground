@@ -6,7 +6,7 @@ pub struct Bindings {
     pub in_root: Vec<Binding>,
     pub by_block: BTreeMap<NodeId, Vec<Binding>>,
 
-    pub binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
+    pub definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
     pub binding_calls_by_node: BTreeMap<NodeId, Binding>,
 }
 
@@ -16,7 +16,7 @@ impl Bindings {
             in_root: Vec::new(),
             by_block: BTreeMap::new(),
 
-            binding_definitions_by_node: BTreeMap::new(),
+            definitions_by_node: BTreeMap::new(),
             binding_calls_by_node: BTreeMap::new(),
         }
     }

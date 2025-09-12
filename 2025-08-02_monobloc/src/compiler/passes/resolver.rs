@@ -34,7 +34,7 @@ impl Resolver {
             stack,
             &mut self.bindings.in_root,
             &mut self.bindings.by_block,
-            &mut self.bindings.binding_definitions_by_node,
+            &mut self.bindings.definitions_by_node,
             &mut self.bindings.binding_calls_by_node,
             intrinsics,
         );
@@ -46,7 +46,7 @@ impl Resolver {
 
     pub fn binding_definitions_at(&self, node: &NodeId) -> &[Binding] {
         self.bindings
-            .binding_definitions_by_node
+            .definitions_by_node
             .get(node)
             .map(|bindings| bindings.as_slice())
             .unwrap_or(&[])
