@@ -1,4 +1,10 @@
-use crate::compiler::code::types::Type;
+use std::collections::BTreeMap;
+
+use crate::compiler::code::{nodes::NodeId, types::Type};
+
+pub struct Intrinsics {
+    pub by_node: BTreeMap<NodeId, Intrinsic>,
+}
 
 #[derive(Clone, Copy)]
 pub enum Intrinsic {

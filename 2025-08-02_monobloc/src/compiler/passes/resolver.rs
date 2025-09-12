@@ -2,6 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::compiler::{
     code::{
+        intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
         signatures::Signatures,
         stack::Stack,
@@ -15,7 +16,7 @@ pub struct Resolver {
 
     binding_definitions_by_node: BTreeMap<NodeId, Vec<Binding>>,
     binding_calls_by_node: BTreeMap<NodeId, Binding>,
-    intrinsics_by_node: BTreeMap<NodeId, Intrinsic>,
+    intrinsics: Intrinsics,
 }
 
 impl Resolver {
@@ -26,7 +27,9 @@ impl Resolver {
 
             binding_definitions_by_node: BTreeMap::new(),
             binding_calls_by_node: BTreeMap::new(),
-            intrinsics_by_node: BTreeMap::new(),
+            intrinsics: Intrinsics {
+                by_node: BTreeMap::new(),
+            },
         }
     }
 
@@ -43,7 +46,7 @@ impl Resolver {
             &mut self.bindings_by_block,
             &mut self.binding_definitions_by_node,
             &mut self.binding_calls_by_node,
-            &mut self.intrinsics_by_node,
+            &mut self.intrinsics.by_node,
         );
     }
 
@@ -59,7 +62,7 @@ impl Resolver {
     }
 
     pub fn intrinsic_at(&self, node: &NodeId) -> Option<&Intrinsic> {
-        self.intrinsics_by_node.get(node)
+        self.intrinsics.by_node.get(node)
     }
 
     pub fn bindings_in(&self, node: &NodeId) -> &Vec<Binding> {
