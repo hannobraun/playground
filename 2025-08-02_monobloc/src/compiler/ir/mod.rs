@@ -22,11 +22,9 @@ impl Package {
 #[derive(Clone)]
 pub struct Block {
     pub signature: usize,
-    pub bindings: Bindings,
+    pub bindings: Vec<Binding>,
     pub body: Body,
 }
-
-pub type Bindings = Vec<Binding>;
 
 #[derive(Clone, Debug)]
 pub struct Binding {
