@@ -58,9 +58,9 @@ impl Resolver {
             .unwrap_or(&[])
     }
 
-    pub fn bindings_in(&self, node: &NodeId) -> &Vec<Binding> {
+    pub fn bindings_in(&self, id: &NodeId) -> &Vec<Binding> {
         self.bindings_by_block
-            .get(node)
+            .get(id)
             .expect("Bindings not available")
     }
 
