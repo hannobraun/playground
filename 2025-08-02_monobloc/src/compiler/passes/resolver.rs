@@ -29,9 +29,10 @@ impl Resolver {
         }
     }
 
-    pub fn process_node(&mut self, node: &Node, _: &Stack) {
+    pub fn process_node(&mut self, node: &Node, stack: &Stack) {
         process_node(
             node,
+            stack,
             &mut self.bindings_in_root,
             &mut self.bindings_by_block,
             &mut self.binding_definitions_by_node,
@@ -68,6 +69,7 @@ impl Resolver {
 
 fn process_node(
     node: &Node,
+    stack: &Stack,
     bindings_in_current_block: &mut Vec<Binding>,
     bindings_by_block: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_definitions_by_node: &mut BTreeMap<NodeId, Vec<Binding>>,
@@ -103,6 +105,7 @@ fn process_node(
             for node in &block.nodes {
                 process_node(
                     node,
+                    stack,
                     &mut bindings_in_this_block,
                     bindings_by_block,
                     binding_definitions_by_node,
@@ -114,7 +117,7 @@ fn process_node(
             bindings_by_block.insert(node.id, bindings_in_this_block);
         }
         NodeKind::Identifier { name } => {
-            if let Some(intrinsic) = resolve_intrinsic(name) {
+            if let Some(intrinsic) = resolve_intrinsic(name, stack) {
                 intrinsics_by_node.insert(node.id, intrinsic);
             }
 
@@ -134,7 +137,7 @@ fn process_node(
     }
 }
 
-fn resolve_intrinsic(name: &str) -> Option<Intrinsic> {
+fn resolve_intrinsic(name: &str, _: &Stack) -> Option<Intrinsic> {
     use Intrinsic::*;
 
     let intrinsic = match name {
