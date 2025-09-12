@@ -27,9 +27,7 @@ impl Resolver {
 
             binding_definitions_by_node: BTreeMap::new(),
             binding_calls_by_node: BTreeMap::new(),
-            intrinsics: Intrinsics {
-                by_node: BTreeMap::new(),
-            },
+            intrinsics: Intrinsics ::new(),
         }
     }
 

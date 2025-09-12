@@ -6,6 +6,14 @@ pub struct Intrinsics {
     pub by_node: BTreeMap<NodeId, Intrinsic>,
 }
 
+impl Intrinsics {
+    pub fn new() -> Self {
+        Self {
+            by_node: BTreeMap::new(),
+        }
+    }
+}
+
 #[derive(Clone, Copy)]
 pub enum Intrinsic {
     // Apply
