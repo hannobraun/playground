@@ -125,7 +125,7 @@ fn process_node(
         }
         NodeKind::Identifier { name } => {
             if let Some(intrinsic) = resolve_intrinsic(name, stack) {
-                intrinsics.by_node.insert(node.id, intrinsic);
+                intrinsics.insert(node.id, intrinsic);
             }
 
             if let Some(binding) = bindings_in_current_block

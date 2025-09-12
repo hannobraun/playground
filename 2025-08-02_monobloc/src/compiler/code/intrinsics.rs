@@ -13,6 +13,10 @@ impl Intrinsics {
         }
     }
 
+    pub fn insert(&mut self, id: NodeId, intrinsic: Intrinsic) {
+        self.by_node.insert(id, intrinsic);
+    }
+
     pub fn get(&self, id: &NodeId) -> Option<&Intrinsic> {
         self.by_node.get(id)
     }
