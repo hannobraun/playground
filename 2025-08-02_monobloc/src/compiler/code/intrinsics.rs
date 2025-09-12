@@ -12,6 +12,10 @@ impl Intrinsics {
             by_node: BTreeMap::new(),
         }
     }
+
+    pub fn get(&self, id: &NodeId) -> Option<&Intrinsic> {
+        self.by_node.get(id)
+    }
 }
 
 #[derive(Clone, Copy)]

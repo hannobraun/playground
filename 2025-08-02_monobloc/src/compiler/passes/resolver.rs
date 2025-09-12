@@ -60,7 +60,7 @@ impl Resolver {
     }
 
     pub fn intrinsic_at(&self, node: &NodeId) -> Option<&Intrinsic> {
-        self.intrinsics.by_node.get(node)
+        self.intrinsics.get(node)
     }
 
     pub fn bindings_in(&self, node: &NodeId) -> &Vec<Binding> {
