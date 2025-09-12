@@ -1,4 +1,4 @@
-use crate::compiler::ir::Type;
+use crate::compiler::code::types::Type;
 
 #[derive(Clone, Copy)]
 pub enum Intrinsic {
