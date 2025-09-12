@@ -10,6 +10,18 @@ pub struct Bindings {
     pub binding_calls_by_node: BTreeMap<NodeId, Binding>,
 }
 
+impl Bindings {
+    pub fn new() -> Self {
+        Self {
+            bindings_in_root: Vec::new(),
+            bindings_by_block: BTreeMap::new(),
+
+            binding_definitions_by_node: BTreeMap::new(),
+            binding_calls_by_node: BTreeMap::new(),
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct Binding {
     pub name: String,

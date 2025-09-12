@@ -18,13 +18,7 @@ pub struct Resolver {
 impl Resolver {
     pub fn new() -> Self {
         Self {
-            bindings: Bindings {
-                bindings_in_root: Vec::new(),
-                bindings_by_block: BTreeMap::new(),
-
-                binding_definitions_by_node: BTreeMap::new(),
-                binding_calls_by_node: BTreeMap::new(),
-            },
+            bindings: Bindings::new(),
         }
     }
 
