@@ -73,7 +73,7 @@ impl Emit for Code<'_> {
 }
 
 struct LocalsVec<'r> {
-    bindings: &'r ir::Bindings,
+    bindings: &'r [ir::Binding],
 }
 
 impl Emit for LocalsVec<'_> {
