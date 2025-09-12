@@ -27,7 +27,7 @@ impl Resolver {
 
             binding_definitions_by_node: BTreeMap::new(),
             binding_calls_by_node: BTreeMap::new(),
-            intrinsics: Intrinsics ::new(),
+            intrinsics: Intrinsics::new(),
         }
     }
 
@@ -44,7 +44,7 @@ impl Resolver {
             &mut self.bindings_by_block,
             &mut self.binding_definitions_by_node,
             &mut self.binding_calls_by_node,
-            &mut self.intrinsics.by_node,
+            &mut self.intrinsics,
         );
     }
 
@@ -81,7 +81,7 @@ fn process_node(
     bindings_by_block: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_definitions_by_node: &mut BTreeMap<NodeId, Vec<Binding>>,
     binding_calls_by_node: &mut BTreeMap<NodeId, Binding>,
-    intrinsics_by_node: &mut BTreeMap<NodeId, Intrinsic>,
+    intrinsics: &mut Intrinsics,
 ) {
     match &node.kind {
         NodeKind::Binding { names } => {
@@ -117,7 +117,7 @@ fn process_node(
                     bindings_by_block,
                     binding_definitions_by_node,
                     binding_calls_by_node,
-                    intrinsics_by_node,
+                    intrinsics,
                 );
             }
 
@@ -125,7 +125,7 @@ fn process_node(
         }
         NodeKind::Identifier { name } => {
             if let Some(intrinsic) = resolve_intrinsic(name, stack) {
-                intrinsics_by_node.insert(node.id, intrinsic);
+                intrinsics.by_node.insert(node.id, intrinsic);
             }
 
             if let Some(binding) = bindings_in_current_block
