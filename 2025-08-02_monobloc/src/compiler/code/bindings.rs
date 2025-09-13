@@ -23,7 +23,7 @@ impl Bindings {
 }
 
 pub struct LocalBindings {
-    pub inner: Vec<Binding>,
+    inner: Vec<Binding>,
 }
 
 impl LocalBindings {
