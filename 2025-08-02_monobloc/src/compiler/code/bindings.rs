@@ -13,7 +13,7 @@ pub struct Bindings {
 impl Bindings {
     pub fn new() -> Self {
         Self {
-            in_root: LocalBindings { inner: Vec::new() },
+            in_root: LocalBindings::new(),
             by_block: BTreeMap::new(),
 
             definitions_by_node: BTreeMap::new(),
@@ -24,6 +24,12 @@ impl Bindings {
 
 pub struct LocalBindings {
     pub inner: Vec<Binding>,
+}
+
+impl LocalBindings {
+    pub fn new() -> Self {
+        Self { inner: Vec::new() }
+    }
 }
 
 #[derive(Clone, Debug)]
