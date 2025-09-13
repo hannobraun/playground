@@ -54,7 +54,7 @@ impl Resolver {
 
     pub fn bindings_in(&self, id: &NodeId) -> &Vec<Binding> {
         if *id == NodeId::root() {
-            &self.bindings.in_root.inner
+            self.bindings.in_root.inner()
         } else {
             self.bindings
                 .by_block
@@ -119,7 +119,7 @@ fn process_node(
             }
 
             if let Some(binding) = bindings_in_current_block
-                .inner
+                .inner()
                 .iter()
                 .rev()
                 .find(|binding| &binding.name == name)
