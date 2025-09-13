@@ -32,7 +32,7 @@ impl Resolver {
         process_node(
             node,
             stack,
-            &mut self.bindings.in_root,
+            &mut self.bindings.in_root.inner,
             &mut self.bindings.by_block,
             &mut self.bindings.definitions_by_node,
             &mut self.bindings.calls_by_node,
@@ -54,7 +54,7 @@ impl Resolver {
 
     pub fn bindings_in(&self, id: &NodeId) -> &Vec<Binding> {
         if *id == NodeId::root() {
-            &self.bindings.in_root
+            &self.bindings.in_root.inner
         } else {
             self.bindings
                 .by_block
