@@ -111,7 +111,8 @@ fn process_node(
                 );
             }
 
-            bindings_by_block.insert(node.id, bindings_in_this_block.inner);
+            bindings_by_block
+                .insert(node.id, bindings_in_this_block.into_inner());
         }
         NodeKind::Identifier { name } => {
             if let Some(intrinsic) = Intrinsic::resolve(name, stack) {

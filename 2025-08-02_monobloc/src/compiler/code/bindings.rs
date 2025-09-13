@@ -38,6 +38,10 @@ impl LocalBindings {
     pub fn inner(&self) -> &Vec<Binding> {
         &self.inner
     }
+
+    pub fn into_inner(self) -> Vec<Binding> {
+        self.inner
+    }
 }
 
 #[derive(Clone, Debug)]
