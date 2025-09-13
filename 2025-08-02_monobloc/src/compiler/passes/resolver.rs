@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::compiler::{
     code::{
-        bindings::Bindings,
+        bindings::{Bindings, LocalBindings},
         intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
         signatures::Signatures,
@@ -97,13 +97,13 @@ fn process_node(
                 .insert(node.id, bindings_from_this_operator);
         }
         NodeKind::Block { block } => {
-            let mut bindings_in_this_block = Vec::new();
+            let mut bindings_in_this_block = LocalBindings::new();
 
             for node in &block.nodes {
                 process_node(
                     node,
                     stack,
-                    &mut bindings_in_this_block,
+                    &mut bindings_in_this_block.inner,
                     bindings_by_block,
                     binding_definitions_by_node,
                     binding_calls_by_node,
@@ -111,7 +111,7 @@ fn process_node(
                 );
             }
 
-            bindings_by_block.insert(node.id, bindings_in_this_block);
+            bindings_by_block.insert(node.id, bindings_in_this_block.inner);
         }
         NodeKind::Identifier { name } => {
             if let Some(intrinsic) = Intrinsic::resolve(name, stack) {
