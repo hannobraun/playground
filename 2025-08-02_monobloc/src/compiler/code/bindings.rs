@@ -30,6 +30,10 @@ impl LocalBindings {
     pub fn new() -> Self {
         Self { inner: Vec::new() }
     }
+
+    pub fn push(&mut self, binding: Binding) {
+        self.inner.push(binding);
+    }
 }
 
 #[derive(Clone, Debug)]

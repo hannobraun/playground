@@ -90,7 +90,7 @@ fn process_node(
                 };
 
                 bindings_from_this_operator.push(binding.clone());
-                bindings_in_current_block.inner.push(binding);
+                bindings_in_current_block.push(binding);
             }
 
             binding_definitions_by_node
