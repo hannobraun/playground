@@ -16,3 +16,14 @@ pub struct Code {
     pub stack_for_root: Stack,
     pub signatures: Signatures,
 }
+
+impl Code {
+    pub fn new() -> Self {
+        Self {
+            nodes: Nodes::new(),
+            intrinsics: Intrinsics::new(),
+            stack_for_root: Stack::new(),
+            signatures: Signatures::new(),
+        }
+    }
+}

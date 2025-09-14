@@ -8,10 +8,7 @@ use crate::{
     compiler::{
         code::{
             Code,
-            intrinsics::Intrinsics,
-            nodes::{Node, NodeId, NodeKind, Nodes},
-            signatures::Signatures,
-            stack::Stack,
+            nodes::{Node, NodeId, NodeKind},
             tokens::IntegerFormat,
         },
         input::read_input_code,
@@ -60,12 +57,7 @@ pub fn compile(
     let mut input_code = String::new();
     let mut input_code = read_input_code(program, &mut input_code)?;
 
-    let mut code = Code {
-        nodes: Nodes::new(),
-        intrinsics: Intrinsics::new(),
-        stack_for_root: Stack::new(),
-        signatures: Signatures::new(),
-    };
+    let mut code = Code::new();
 
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
@@ -108,8 +100,10 @@ pub fn compile(
         }
     }
 
-    code.signatures
-        .insert_and_assign_to_block(NodeId::root(), code.stack_for_root.to_signature());
+    code.signatures.insert_and_assign_to_block(
+        NodeId::root(),
+        code.stack_for_root.to_signature(),
+    );
 
     let package = ir::generate(
         code.nodes.into_root().nodes,
