@@ -7,6 +7,7 @@ use crate::{
     args::Args,
     compiler::{
         code::{
+            Code,
             intrinsics::Intrinsics,
             nodes::{Node, NodeId, NodeKind, Nodes},
             signatures::Signatures,
@@ -59,10 +60,12 @@ pub fn compile(
     let mut input_code = String::new();
     let mut input_code = read_input_code(program, &mut input_code)?;
 
-    let mut nodes = Nodes::new();
-    let mut intrinsics = Intrinsics::new();
-    let mut stack = Stack::new();
-    let mut signatures = Signatures::new();
+    let mut code = Code {
+        nodes: Nodes::new(),
+        intrinsics: Intrinsics::new(),
+        stack: Stack::new(),
+        signatures: Signatures::new(),
+    };
 
     let mut tokenizer = Tokenizer::new();
     let mut parser = Parser::new();
@@ -75,21 +78,22 @@ pub fn compile(
 
         match tokenizer.process_char(ch) {
             Some(token) => {
-                if let Some(node) = parser.process_token(token, &mut nodes) {
+                if let Some(node) = parser.process_token(token, &mut code.nodes)
+                {
                     resolver.process_node(
                         &node,
-                        &stack,
-                        &mut intrinsics,
-                        &mut signatures,
+                        &code.stack,
+                        &mut code.intrinsics,
+                        &mut code.signatures,
                     );
                     infer_types(
                         &node,
-                        &intrinsics,
+                        &code.intrinsics,
                         &resolver,
-                        &mut stack,
-                        &mut signatures,
+                        &mut code.stack,
+                        &mut code.signatures,
                     );
-                    nodes.add_to_root(node);
+                    code.nodes.add_to_root(node);
                 }
             }
             None => {
@@ -100,17 +104,18 @@ pub fn compile(
         }
 
         if interactive {
-            print_nodes(&nodes.root().nodes);
+            print_nodes(&code.nodes.root().nodes);
         }
     }
 
-    signatures.insert_and_assign_to_block(NodeId::root(), stack.to_signature());
+    code.signatures
+        .insert_and_assign_to_block(NodeId::root(), code.stack.to_signature());
 
     let package = ir::generate(
-        nodes.into_root().nodes,
-        &intrinsics,
-        &stack,
-        &signatures,
+        code.nodes.into_root().nodes,
+        &code.intrinsics,
+        &code.stack,
+        &code.signatures,
         &resolver,
     );
     let wasm_code = wasm::generate_module(&package);
