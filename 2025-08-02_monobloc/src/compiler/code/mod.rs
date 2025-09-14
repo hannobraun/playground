@@ -13,6 +13,6 @@ pub mod types;
 pub struct Code {
     pub nodes: Nodes,
     pub intrinsics: Intrinsics,
-    pub stack: Stack,
+    pub stack_for_root: Stack,
     pub signatures: Signatures,
 }

@@ -63,7 +63,7 @@ pub fn compile(
     let mut code = Code {
         nodes: Nodes::new(),
         intrinsics: Intrinsics::new(),
-        stack: Stack::new(),
+        stack_for_root: Stack::new(),
         signatures: Signatures::new(),
     };
 
@@ -82,7 +82,7 @@ pub fn compile(
                 {
                     resolver.process_node(
                         &node,
-                        &code.stack,
+                        &code.stack_for_root,
                         &mut code.intrinsics,
                         &mut code.signatures,
                     );
@@ -90,7 +90,7 @@ pub fn compile(
                         &node,
                         &code.intrinsics,
                         &resolver,
-                        &mut code.stack,
+                        &mut code.stack_for_root,
                         &mut code.signatures,
                     );
                     code.nodes.add_to_root(node);
@@ -109,12 +109,12 @@ pub fn compile(
     }
 
     code.signatures
-        .insert_and_assign_to_block(NodeId::root(), code.stack.to_signature());
+        .insert_and_assign_to_block(NodeId::root(), code.stack_for_root.to_signature());
 
     let package = ir::generate(
         code.nodes.into_root().nodes,
         &code.intrinsics,
-        &code.stack,
+        &code.stack_for_root,
         &code.signatures,
         &resolver,
     );
