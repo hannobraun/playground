@@ -1,9 +1,7 @@
 use crate::compiler::{
     code::{
         Code,
-        intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
-        signatures::Signatures,
     },
     ir::{Block, Expression, Intrinsic, Package},
     passes::Resolver,
@@ -15,8 +13,7 @@ pub fn generate(code: Code, resolver: &Resolver) -> Package {
     let root = compile_block(
         NodeId::root(),
         &code.nodes.root().nodes,
-        &code.intrinsics,
-        &code.signatures,
+        &code,
         resolver,
         &mut blocks,
     );
@@ -31,8 +28,7 @@ pub fn generate(code: Code, resolver: &Resolver) -> Package {
 fn compile_block(
     id: NodeId,
     nodes: &[Node],
-    intrinsics: &Intrinsics,
-    signatures: &Signatures,
+    code: &Code,
     resolver: &Resolver,
     blocks: &mut Vec<Block>,
 ) -> usize {
@@ -51,8 +47,7 @@ fn compile_block(
                 let index = compile_block(
                     node.id,
                     &block.nodes,
-                    intrinsics,
-                    signatures,
+                    code,
                     resolver,
                     blocks,
                 );
@@ -62,7 +57,7 @@ fn compile_block(
                 // ignoring comment
             }
             NodeKind::Identifier { ref name } => {
-                let intrinsic = intrinsics.get(&node.id).copied();
+                let intrinsic = code.intrinsics.get(&node.id).copied();
 
                 if let Some(binding) = resolver.binding_call_at(&node.id) {
                     body.push(Expression::CallBinding {
@@ -85,10 +80,11 @@ fn compile_block(
         }
     }
 
-    let signature = signatures.get_for_block(&id).clone();
+    let signature = code.signatures.get_for_block(&id).clone();
     let bindings = resolver.bindings_in(&id).clone();
 
-    let signature = signatures
+    let signature = code
+        .signatures
         .index_of(&signature)
         .expect("Expecting signature to be available.");
 
