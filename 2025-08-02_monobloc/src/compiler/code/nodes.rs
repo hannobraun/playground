@@ -27,10 +27,6 @@ impl Nodes {
     pub fn root(&self) -> &Block {
         &self.root
     }
-
-    pub fn into_root(self) -> Block {
-        self.root
-    }
 }
 
 #[derive(Debug)]

@@ -15,7 +15,7 @@ pub fn generate(code: Code, resolver: &Resolver) -> Package {
 
     let root = compile_block(
         NodeId::root(),
-        code.nodes.into_root().nodes,
+        &code.nodes.root().nodes,
         &code.intrinsics,
         &code.stack_for_root,
         &code.signatures,
@@ -32,7 +32,7 @@ pub fn generate(code: Code, resolver: &Resolver) -> Package {
 
 fn compile_block(
     id: NodeId,
-    nodes: Vec<Node>,
+    nodes: &[Node],
     intrinsics: &Intrinsics,
     stack: &Stack,
     signatures: &Signatures,
@@ -50,10 +50,10 @@ fn compile_block(
                     });
                 }
             }
-            NodeKind::Block { block } => {
+            NodeKind::Block { ref block } => {
                 let index = compile_block(
                     node.id,
-                    block.nodes,
+                    &block.nodes,
                     intrinsics,
                     stack,
                     signatures,
@@ -65,7 +65,7 @@ fn compile_block(
             NodeKind::Comment { text: _ } => {
                 // ignoring comment
             }
-            NodeKind::Identifier { name } => {
+            NodeKind::Identifier { ref name } => {
                 let intrinsic = intrinsics.get(&node.id).copied();
 
                 if let Some(binding) = resolver.binding_call_at(&node.id) {
