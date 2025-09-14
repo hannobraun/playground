@@ -85,12 +85,8 @@ fn compile_block(
         }
     }
 
-    let (signature, bindings) = {
-        let signature = signatures.get_for_block(&id).clone();
-        let bindings = resolver.bindings_in(&id).clone();
-
-        (signature, bindings)
-    };
+    let signature = signatures.get_for_block(&id).clone();
+    let bindings = resolver.bindings_in(&id).clone();
 
     let signature = signatures
         .index_of(&signature)
