@@ -105,13 +105,7 @@ pub fn compile(
         code.stack_for_root.to_signature(),
     );
 
-    let package = ir::generate(
-        code.nodes.into_root().nodes,
-        &code.intrinsics,
-        &code.stack_for_root,
-        &code.signatures,
-        &resolver,
-    );
+    let package = ir::generate(code, &resolver);
     let wasm_code = wasm::generate_module(&package);
     let stack = match runtime::evaluate_root(&wasm_code, &package) {
         Ok(stack) => stack,

@@ -1,5 +1,6 @@
 use crate::compiler::{
     code::{
+        Code,
         intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
         signatures::Signatures,
@@ -9,27 +10,21 @@ use crate::compiler::{
     passes::Resolver,
 };
 
-pub fn generate(
-    nodes: Vec<Node>,
-    intrinsics: &Intrinsics,
-    stack_for_root: &Stack,
-    signatures: &Signatures,
-    resolver: &Resolver,
-) -> Package {
+pub fn generate(code: Code, resolver: &Resolver) -> Package {
     let mut blocks = Vec::new();
 
     let root = compile_block(
         NodeId::root(),
-        nodes,
-        intrinsics,
-        stack_for_root,
-        signatures,
+        code.nodes.into_root().nodes,
+        &code.intrinsics,
+        &code.stack_for_root,
+        &code.signatures,
         resolver,
         &mut blocks,
     );
 
     Package {
-        signatures: signatures.inner(),
+        signatures: code.signatures.inner(),
         blocks,
         root,
     }
