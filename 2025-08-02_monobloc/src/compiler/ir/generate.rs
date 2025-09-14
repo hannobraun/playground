@@ -12,7 +12,7 @@ use crate::compiler::{
 pub fn generate(
     nodes: Vec<Node>,
     intrinsics: &Intrinsics,
-    stack: &Stack,
+    stack_for_root: &Stack,
     signatures: &Signatures,
     resolver: &Resolver,
 ) -> Package {
@@ -22,7 +22,7 @@ pub fn generate(
         NodeId::root(),
         nodes,
         intrinsics,
-        stack,
+        stack_for_root,
         signatures,
         resolver,
         &mut blocks,
