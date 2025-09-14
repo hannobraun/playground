@@ -4,7 +4,6 @@ use crate::compiler::{
         intrinsics::Intrinsics,
         nodes::{Node, NodeId, NodeKind},
         signatures::Signatures,
-        stack::Stack,
     },
     ir::{Block, Expression, Intrinsic, Package},
     passes::Resolver,
@@ -17,7 +16,6 @@ pub fn generate(code: Code, resolver: &Resolver) -> Package {
         NodeId::root(),
         &code.nodes.root().nodes,
         &code.intrinsics,
-        &code.stack_for_root,
         &code.signatures,
         resolver,
         &mut blocks,
@@ -34,7 +32,6 @@ fn compile_block(
     id: NodeId,
     nodes: &[Node],
     intrinsics: &Intrinsics,
-    stack: &Stack,
     signatures: &Signatures,
     resolver: &Resolver,
     blocks: &mut Vec<Block>,
@@ -55,7 +52,6 @@ fn compile_block(
                     node.id,
                     &block.nodes,
                     intrinsics,
-                    stack,
                     signatures,
                     resolver,
                     blocks,
@@ -89,12 +85,7 @@ fn compile_block(
         }
     }
 
-    let (signature, bindings) = if id == NodeId::root() {
-        let signature = stack.to_signature();
-        let bindings = resolver.bindings_in(&id).clone();
-
-        (signature, bindings)
-    } else {
+    let (signature, bindings) = {
         let signature = signatures.get_for_block(&id).clone();
         let bindings = resolver.bindings_in(&id).clone();
 
