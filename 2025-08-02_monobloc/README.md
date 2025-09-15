@@ -664,3 +664,14 @@ expect to be available everywhere. Stuff like `+`.
 
 As an alternative to the `mod` intrinsics, there could be a rule that blocks
 bound to CamelCase names become modules.
+
+### Compiler Actions
+
+I expect that it would be pretty normal to call compiler-provided functions in
+compile-time code, to do various things. Like generating code in another
+language for FFI bindings, for example. The compiler would provide functions to
+write those files.
+
+Given that, it might make sense to view compile-time language constructs through
+that same lense: What am I telling the compiler to do here? An example of that
+would be an `export` function, to export a binding explicitly.
