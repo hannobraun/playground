@@ -675,3 +675,34 @@ write those files.
 Given that, it might make sense to view compile-time language constructs through
 that same lense: What am I telling the compiler to do here? An example of that
 would be an `export` function, to export a binding explicitly.
+
+### Type Annotations
+
+Once the language becomes statically typed, it becomes necessary to have type
+annotations. This could naturally fit into the binding syntax:
+
+```
+=> value: Type .
+```
+
+There are cases, where inferring a type would be impossible. For example, I
+might decide to go with untyped integer literals that can coerce into a specific
+integer type. In that case, it might be necessary to have a type annotation,
+despite not wanting to bind the integer to a value.
+
+```
+1 => n: s32 . n
+```
+
+There could be a shorthand syntax for this kind of thing, with the same
+semantics as this binding:
+
+```
+1: s32 .
+```
+
+That syntax could expand to multiple values:
+
+```
+1 2 : s32 s32 .
+```
