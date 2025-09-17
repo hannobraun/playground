@@ -3,4 +3,5 @@ name = "stack-assembly"
 edition = "2024"
 
 [dependencies]
+anyhow = "*"
 walkdir = "*"
