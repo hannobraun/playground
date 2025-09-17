@@ -10,11 +10,12 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
 
+        use SpecScriptOutcome::*;
         match run_spec_script(entry.path())? {
-            SpecScriptOutcome::Pass => {
+            Pass => {
                 print!("PASS");
             }
-            SpecScriptOutcome::Fail => {
+            Fail => {
                 print!("FAIL");
             }
         }
