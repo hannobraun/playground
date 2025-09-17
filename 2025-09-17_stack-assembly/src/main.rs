@@ -1,5 +1,6 @@
 use std::{fs::File, io::Read};
 
+use crossterm::style::{Color, Stylize};
 use walkdir::WalkDir;
 
 fn main() -> anyhow::Result<()> {
@@ -14,8 +15,8 @@ fn main() -> anyhow::Result<()> {
         File::open(entry.path())?.read_to_string(&mut code)?;
 
         match run_spec_script(&code) {
-            Ok(()) => print!("PASS"),
-            Err(()) => print!("FAIL"),
+            Ok(()) => print!("{}", "PASS".bold().with(Color::DarkGreen)),
+            Err(()) => print!("{}", "FAIL".bold().with(Color::DarkRed)),
         }
         println!(" {path}", path = entry.path().display());
     }
