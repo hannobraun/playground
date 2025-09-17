@@ -54,8 +54,8 @@ fn run_spec_script(code: &str) -> Result<(), ()> {
             "2" => {
                 stack.push(2);
             }
-            token => {
-                panic!("Unexpected token: {token}");
+            _ => {
+                return Err(());
             }
         }
     }
