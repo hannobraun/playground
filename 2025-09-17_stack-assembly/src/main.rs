@@ -13,8 +13,40 @@ fn main() -> anyhow::Result<()> {
         let mut code = String::new();
         File::open(entry.path())?.read_to_string(&mut code)?;
 
+        let mut stack = Vec::new();
+
         for token in code.split_whitespace() {
-            dbg!(token);
+            match token {
+                "=" => {
+                    let b = stack.pop().unwrap();
+                    let a = stack.pop().unwrap();
+
+                    match a == b {
+                        false => {
+                            stack.push(0);
+                        }
+                        true => {
+                            stack.push(1);
+                        }
+                    }
+                }
+                "assert" => {
+                    let a = stack.pop().unwrap();
+
+                    if a == 0 {
+                        panic!("assertion failed");
+                    }
+                }
+                "1" => {
+                    stack.push(1);
+                }
+                "2" => {
+                    stack.push(2);
+                }
+                token => {
+                    panic!("Unexpected token: {token}");
+                }
+            }
         }
     }
 
