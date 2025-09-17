@@ -20,8 +20,10 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
             "2" => {
                 nodes.inner.push(Node::Integer { value: 2 });
             }
-            _ => {
-                nodes.inner.push(Node::UnknownIdentifier);
+            unknown => {
+                nodes.inner.push(Node::UnknownIdentifier {
+                    name: unknown.to_string(),
+                });
             }
         }
     }
@@ -54,7 +56,8 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
                 stack.push(value);
             }
 
-            Node::UnknownIdentifier => {
+            Node::UnknownIdentifier { name } => {
+                let _ = name;
                 return Err(EvaluateError::Other);
             }
         }

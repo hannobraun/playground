@@ -14,5 +14,5 @@ pub enum Node {
     Equals,
     Integer { value: i32 },
 
-    UnknownIdentifier,
+    UnknownIdentifier { name: String },
 }
