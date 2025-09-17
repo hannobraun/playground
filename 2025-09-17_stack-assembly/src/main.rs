@@ -39,10 +39,10 @@ fn run_spec_script(code: &str) -> Result<(), ()> {
 
                 match a == b {
                     false => {
-                        stack.inner.push(0);
+                        stack.push(0);
                     }
                     true => {
-                        stack.inner.push(1);
+                        stack.push(1);
                     }
                 }
             }
@@ -54,10 +54,10 @@ fn run_spec_script(code: &str) -> Result<(), ()> {
                 }
             }
             "1" => {
-                stack.inner.push(1);
+                stack.push(1);
             }
             "2" => {
-                stack.inner.push(2);
+                stack.push(2);
             }
             _ => {
                 return Err(());
