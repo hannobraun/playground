@@ -28,7 +28,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn evaluate(code: &str) -> Result<(), ()> {
+fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut stack = Stack::new();
 
     for token in code.split_whitespace() {
@@ -50,7 +50,7 @@ fn evaluate(code: &str) -> Result<(), ()> {
                 let a = stack.pop();
 
                 if a == 0 {
-                    return Err(());
+                    return Err(EvaluateError::Other);
                 }
             }
             "1" => {
@@ -60,10 +60,14 @@ fn evaluate(code: &str) -> Result<(), ()> {
                 stack.push(2);
             }
             _ => {
-                return Err(());
+                return Err(EvaluateError::Other);
             }
         }
     }
 
     Ok(())
+}
+
+enum EvaluateError {
+    Other,
 }
