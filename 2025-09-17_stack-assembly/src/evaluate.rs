@@ -9,26 +9,26 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     for token in code.split_whitespace() {
         match token {
             "=" => {
-                nodes.push(Node::Equals);
+                nodes.inner.push(Node::Equals);
             }
             "assert" => {
-                nodes.push(Node::Assert);
+                nodes.inner.push(Node::Assert);
             }
             "1" => {
-                nodes.push(Node::Integer { value: 1 });
+                nodes.inner.push(Node::Integer { value: 1 });
             }
             "2" => {
-                nodes.push(Node::Integer { value: 2 });
+                nodes.inner.push(Node::Integer { value: 2 });
             }
             _ => {
-                nodes.push(Node::UnknownIdentifier);
+                nodes.inner.push(Node::UnknownIdentifier);
             }
         }
     }
 
     let mut stack = Stack::new();
 
-    for node in nodes {
+    for node in nodes.inner {
         match node {
             Node::Assert => {
                 let a = stack.pop()?;
