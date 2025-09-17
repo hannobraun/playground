@@ -21,16 +21,10 @@ impl IntoIterator for Nodes {
     type IntoIter = iter::Chain<vec::IntoIter<Node>, option::IntoIter<Node>>;
 
     fn into_iter(self) -> Self::IntoIter {
-        let Node::UnknownIdentifier { name: identifier } = self.last else {
-            unreachable!(
-                "Only ever setting `self.last` to `UnknownIdentifier`."
-            );
-        };
-
-        let last = if identifier.is_empty() {
+        let last = if self.last.to_string().is_empty() {
             None
         } else {
-            Some(Node::UnknownIdentifier { name: identifier })
+            Some(self.last)
         };
 
         self.inner.into_iter().chain(last)
