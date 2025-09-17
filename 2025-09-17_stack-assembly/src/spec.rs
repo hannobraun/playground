@@ -2,8 +2,26 @@ use std::{fs::File, io::Read, path::Path};
 
 use anyhow::bail;
 use crossterm::style::{Color, Stylize};
+use walkdir::WalkDir;
 
 use crate::evaluate::evaluate;
+
+pub fn run_all_tests() -> anyhow::Result<()> {
+    let spec_dir = Path::new("spec");
+
+    for entry in WalkDir::new(spec_dir) {
+        let entry = entry?;
+        let path = entry.path();
+
+        if path.is_dir() {
+            continue;
+        }
+
+        run_test(spec_dir, path)?;
+    }
+
+    Ok(())
+}
 
 pub fn run_test(spec_dir: &Path, test_file: &Path) -> anyhow::Result<()> {
     assert!(!test_file.is_dir());
