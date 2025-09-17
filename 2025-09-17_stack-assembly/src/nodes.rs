@@ -1,4 +1,4 @@
-use std::{fmt, iter, option, vec};
+use std::{array, fmt, iter, vec};
 
 #[derive(Debug)]
 pub struct Nodes {
@@ -17,10 +17,10 @@ impl Nodes {
 
 impl IntoIterator for Nodes {
     type Item = Node;
-    type IntoIter = iter::Chain<vec::IntoIter<Node>, option::IntoIter<Node>>;
+    type IntoIter = iter::Chain<vec::IntoIter<Node>, array::IntoIter<Node, 1>>;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.inner.into_iter().chain(Some(self.last))
+        self.inner.into_iter().chain([self.last])
     }
 }
 
