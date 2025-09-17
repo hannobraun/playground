@@ -34,8 +34,8 @@ fn run_spec_script(code: &str) -> Result<(), ()> {
     for token in code.split_whitespace() {
         match token {
             "=" => {
-                let b = stack.inner.pop().unwrap();
-                let a = stack.inner.pop().unwrap();
+                let b = stack.pop();
+                let a = stack.pop();
 
                 match a == b {
                     false => {
@@ -47,7 +47,7 @@ fn run_spec_script(code: &str) -> Result<(), ()> {
                 }
             }
             "assert" => {
-                let a = stack.inner.pop().unwrap();
+                let a = stack.pop();
 
                 if a == 0 {
                     return Err(());

@@ -10,4 +10,8 @@ impl Stack {
     pub fn push(&mut self, value: i32) {
         self.inner.push(value);
     }
+
+    pub fn pop(&mut self) -> i32 {
+        self.inner.pop().unwrap()
+    }
 }
