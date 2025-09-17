@@ -1,4 +1,4 @@
-use std::{fs::File, io::Read};
+use std::{fs::File, io::Read, path::Path};
 
 use walkdir::WalkDir;
 
@@ -10,42 +10,48 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
 
-        let mut code = String::new();
-        File::open(entry.path())?.read_to_string(&mut code)?;
+        run_spec_script(entry.path())?;
+    }
 
-        let mut stack = Vec::new();
+    Ok(())
+}
 
-        for token in code.split_whitespace() {
-            match token {
-                "=" => {
-                    let b = stack.pop().unwrap();
-                    let a = stack.pop().unwrap();
+fn run_spec_script(path: &Path) -> anyhow::Result<()> {
+    let mut code = String::new();
+    File::open(path)?.read_to_string(&mut code)?;
 
-                    match a == b {
-                        false => {
-                            stack.push(0);
-                        }
-                        true => {
-                            stack.push(1);
-                        }
+    let mut stack = Vec::new();
+
+    for token in code.split_whitespace() {
+        match token {
+            "=" => {
+                let b = stack.pop().unwrap();
+                let a = stack.pop().unwrap();
+
+                match a == b {
+                    false => {
+                        stack.push(0);
+                    }
+                    true => {
+                        stack.push(1);
                     }
                 }
-                "assert" => {
-                    let a = stack.pop().unwrap();
+            }
+            "assert" => {
+                let a = stack.pop().unwrap();
 
-                    if a == 0 {
-                        panic!("assertion failed");
-                    }
+                if a == 0 {
+                    panic!("assertion failed");
                 }
-                "1" => {
-                    stack.push(1);
-                }
-                "2" => {
-                    stack.push(2);
-                }
-                token => {
-                    panic!("Unexpected token: {token}");
-                }
+            }
+            "1" => {
+                stack.push(1);
+            }
+            "2" => {
+                stack.push(2);
+            }
+            token => {
+                panic!("Unexpected token: {token}");
             }
         }
     }
