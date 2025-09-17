@@ -9,9 +9,12 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     for ch in code.chars() {
         let mut token = nodes.last.to_string();
 
-        if !ch.is_whitespace() {
+        let finalize = if !ch.is_whitespace() {
             token.push(ch);
-        }
+            false
+        } else {
+            true
+        };
 
         let node = match token.as_str() {
             "=" => Node::Equals,
@@ -23,7 +26,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
             _ => Node::UnknownIdentifier { name: token },
         };
 
-        if ch.is_whitespace() {
+        if finalize {
             nodes.inner.push(node);
             nodes.last = Node::Empty;
         } else {
