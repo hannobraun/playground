@@ -1,3 +1,5 @@
+use std::{fs::File, io::Read};
+
 use walkdir::WalkDir;
 
 fn main() -> anyhow::Result<()> {
@@ -8,7 +10,10 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
 
-        dbg!(entry);
+        let mut code = String::new();
+        File::open(entry.path())?.read_to_string(&mut code)?;
+
+        dbg!(code);
     }
 
     Ok(())
