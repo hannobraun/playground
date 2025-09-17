@@ -7,6 +7,8 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut nodes = Nodes::new();
 
     for ch in code.chars() {
+        // TASK: Make sure that comments can contain `#`.
+        // TASK: Make sure comments at the end of non-comment lines work.
         if ch == '#' {
             nodes.last = Node::Comment {
                 text: String::new(),

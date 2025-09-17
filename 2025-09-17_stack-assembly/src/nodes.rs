@@ -1,5 +1,6 @@
 use std::{array, fmt, iter, vec};
 
+// TASK: Make fields private.
 #[derive(Debug)]
 pub struct Nodes {
     pub inner: Vec<Node>,
