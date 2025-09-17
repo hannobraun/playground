@@ -22,7 +22,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
 
     let mut stack = Stack::new();
 
-    for node in nodes.inner {
+    for node in nodes {
         match node {
             Node::Assert => {
                 let a = stack.pop()?;
