@@ -26,14 +26,14 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-pub fn run_test(spec_dir: &Path, path: &Path) -> anyhow::Result<()> {
+pub fn run_test(spec_dir: &Path, test_file: &Path) -> anyhow::Result<()> {
     let mut code = String::new();
-    File::open(path)?.read_to_string(&mut code)?;
+    File::open(test_file)?.read_to_string(&mut code)?;
 
     use SpecTestOutcome::*;
 
     let expected_outcome = {
-        let Some(file_name) = path.file_name() else {
+        let Some(file_name) = test_file.file_name() else {
             unreachable!(
                 "Path is not a directory, but has no file name either."
             );
@@ -71,7 +71,7 @@ pub fn run_test(spec_dir: &Path, path: &Path) -> anyhow::Result<()> {
         }
     }
 
-    let path = path.strip_prefix(spec_dir)?;
+    let path = test_file.strip_prefix(spec_dir)?;
     println!(" {path}", path = path.display());
 
     Ok(())
