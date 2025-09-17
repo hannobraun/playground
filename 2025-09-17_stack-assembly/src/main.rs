@@ -1,4 +1,10 @@
+use walkdir::WalkDir;
+
 fn main() -> anyhow::Result<()> {
-    println!("Hello, world!");
+    for entry in WalkDir::new("spec") {
+        let entry = entry?;
+        dbg!(entry);
+    }
+
     Ok(())
 }
