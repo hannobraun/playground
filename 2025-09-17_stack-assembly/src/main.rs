@@ -20,7 +20,7 @@ fn main() -> anyhow::Result<()> {
 
         match evaluate(&code) {
             Ok(()) => print!("{}", "PASS".bold().with(Color::DarkGreen)),
-            Err(()) => print!("{}", "FAIL".bold().with(Color::DarkRed)),
+            Err(_) => print!("{}", "FAIL".bold().with(Color::DarkRed)),
         }
         println!(" {path}", path = entry.path().display());
     }
