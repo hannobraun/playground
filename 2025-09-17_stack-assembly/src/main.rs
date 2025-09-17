@@ -18,7 +18,7 @@ fn main() -> anyhow::Result<()> {
         let mut code = String::new();
         File::open(entry.path())?.read_to_string(&mut code)?;
 
-        match run_spec_script(&code) {
+        match evaluate(&code) {
             Ok(()) => print!("{}", "PASS".bold().with(Color::DarkGreen)),
             Err(()) => print!("{}", "FAIL".bold().with(Color::DarkRed)),
         }
@@ -28,7 +28,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run_spec_script(code: &str) -> Result<(), ()> {
+fn evaluate(code: &str) -> Result<(), ()> {
     let mut stack = Stack::new();
 
     for token in code.split_whitespace() {
