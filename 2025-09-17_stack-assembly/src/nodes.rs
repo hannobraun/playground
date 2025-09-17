@@ -26,6 +26,7 @@ impl IntoIterator for Nodes {
 
 #[derive(Debug)]
 pub enum Node {
+    Comment { text: String },
     Empty,
 
     Assert,
@@ -40,6 +41,7 @@ pub enum Node {
 impl fmt::Display for Node {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::Comment { text } => write!(f, "#{text}"),
             Self::Empty => write!(f, ""),
 
             Self::Assert => write!(f, "assert"),

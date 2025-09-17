@@ -7,6 +7,23 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut nodes = Nodes::new();
 
     for ch in code.chars() {
+        if ch == '#' {
+            nodes.last = Node::Comment {
+                text: String::new(),
+            };
+            continue;
+        }
+        if let Node::Comment { text } = &mut nodes.last {
+            if ch == '\n' {
+                nodes.inner.push(nodes.last);
+                nodes.last = Node::Empty;
+            } else {
+                text.push(ch);
+            }
+
+            continue;
+        }
+
         let mut token = nodes.last.to_string();
 
         let finalize = if ch.is_whitespace() {
@@ -38,7 +55,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
 
     for node in nodes {
         match node {
-            Node::Empty => {
+            Node::Comment { text: _ } | Node::Empty => {
                 // no effect at runtime
             }
 
