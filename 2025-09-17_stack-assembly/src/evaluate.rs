@@ -1,5 +1,5 @@
 use crate::{
-    node::{Node, Nodes},
+    nodes::{Node, Nodes},
     stack::{Stack, StackIsEmpty},
 };
 
