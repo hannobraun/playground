@@ -1,5 +1,6 @@
 use std::{fmt, iter, option, vec};
 
+#[derive(Debug)]
 pub struct Nodes {
     pub inner: Vec<Node>,
     pub last: Node,
