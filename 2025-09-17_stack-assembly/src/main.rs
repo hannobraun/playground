@@ -10,13 +10,17 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
 
-        run_spec_script(entry.path())?;
+        match run_spec_script(entry.path())? {
+            SpecScriptOutcome::Pass => {
+                println!("PASS {path}", path = entry.path().display());
+            }
+        }
     }
 
     Ok(())
 }
 
-fn run_spec_script(path: &Path) -> anyhow::Result<()> {
+fn run_spec_script(path: &Path) -> anyhow::Result<SpecScriptOutcome> {
     let mut code = String::new();
     File::open(path)?.read_to_string(&mut code)?;
 
@@ -56,5 +60,9 @@ fn run_spec_script(path: &Path) -> anyhow::Result<()> {
         }
     }
 
-    Ok(())
+    Ok(SpecScriptOutcome::Pass)
+}
+
+enum SpecScriptOutcome {
+    Pass,
 }
