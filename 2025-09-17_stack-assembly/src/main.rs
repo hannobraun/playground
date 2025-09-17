@@ -25,35 +25,35 @@ fn main() -> anyhow::Result<()> {
 }
 
 fn run_spec_script(code: &str) -> Result<(), ()> {
-    let mut stack = Vec::new();
+    let mut stack = Stack { inner: Vec::new() };
 
     for token in code.split_whitespace() {
         match token {
             "=" => {
-                let b = stack.pop().unwrap();
-                let a = stack.pop().unwrap();
+                let b = stack.inner.pop().unwrap();
+                let a = stack.inner.pop().unwrap();
 
                 match a == b {
                     false => {
-                        stack.push(0);
+                        stack.inner.push(0);
                     }
                     true => {
-                        stack.push(1);
+                        stack.inner.push(1);
                     }
                 }
             }
             "assert" => {
-                let a = stack.pop().unwrap();
+                let a = stack.inner.pop().unwrap();
 
                 if a == 0 {
                     return Err(());
                 }
             }
             "1" => {
-                stack.push(1);
+                stack.inner.push(1);
             }
             "2" => {
-                stack.push(2);
+                stack.inner.push(2);
             }
             _ => {
                 return Err(());
@@ -62,4 +62,8 @@ fn run_spec_script(code: &str) -> Result<(), ()> {
     }
 
     Ok(())
+}
+
+pub struct Stack {
+    pub inner: Vec<i32>,
 }
