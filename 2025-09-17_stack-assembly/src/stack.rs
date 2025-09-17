@@ -11,7 +11,12 @@ impl Stack {
         self.inner.push(value);
     }
 
-    pub fn pop(&mut self) -> i32 {
-        self.inner.pop().unwrap()
+    pub fn pop(&mut self) -> Result<i32, StackIsEmpty> {
+        let value = self.inner.pop().unwrap();
+        Ok(value)
     }
 }
+
+#[derive(Debug, thiserror::Error)]
+#[error("Stack is empty")]
+pub struct StackIsEmpty;

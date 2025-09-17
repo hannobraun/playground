@@ -4,7 +4,7 @@ use anyhow::bail;
 use crossterm::style::{Color, Stylize};
 use walkdir::WalkDir;
 
-use crate::stack::Stack;
+use crate::stack::{Stack, StackIsEmpty};
 
 mod stack;
 
@@ -79,8 +79,8 @@ fn evaluate(code: &str) -> Result<(), EvaluateError> {
     for token in code.split_whitespace() {
         match token {
             "=" => {
-                let b = stack.pop();
-                let a = stack.pop();
+                let b = stack.pop()?;
+                let a = stack.pop()?;
 
                 match a == b {
                     false => {
@@ -92,7 +92,7 @@ fn evaluate(code: &str) -> Result<(), EvaluateError> {
                 }
             }
             "assert" => {
-                let a = stack.pop();
+                let a = stack.pop()?;
 
                 if a == 0 {
                     return Err(EvaluateError::Other);
@@ -115,6 +115,9 @@ fn evaluate(code: &str) -> Result<(), EvaluateError> {
 
 #[derive(Debug, thiserror::Error)]
 enum EvaluateError {
+    #[error(transparent)]
+    StackIsEmpty(#[from] StackIsEmpty),
+
     #[error("Other error while evaluating")]
     Other,
 }
