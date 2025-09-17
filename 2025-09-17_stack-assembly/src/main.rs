@@ -1,4 +1,4 @@
-use std::{fs::File, io::Read, path::Path};
+use std::{fs::File, io::Read};
 
 use walkdir::WalkDir;
 
@@ -10,8 +10,11 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
 
+        let mut code = String::new();
+        File::open(entry.path())?.read_to_string(&mut code)?;
+
         use SpecScriptOutcome::*;
-        match run_spec_script(entry.path())? {
+        match run_spec_script(&code)? {
             Pass => print!("PASS"),
             Fail => print!("FAIL"),
         }
@@ -21,10 +24,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run_spec_script(path: &Path) -> anyhow::Result<SpecScriptOutcome> {
-    let mut code = String::new();
-    File::open(path)?.read_to_string(&mut code)?;
-
+fn run_spec_script(code: &str) -> anyhow::Result<SpecScriptOutcome> {
     let mut stack = Vec::new();
 
     for token in code.split_whitespace() {
