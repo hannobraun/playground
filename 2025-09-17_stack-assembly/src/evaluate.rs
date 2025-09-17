@@ -7,11 +7,17 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut nodes = Nodes::new();
 
     for ch in code.chars() {
+        let Node::UnknownIdentifier { name: token } = &mut nodes.last else {
+            unreachable!(
+                "Only ever setting `self.last` to `UnknownIdentifier`."
+            );
+        };
+
         if !ch.is_whitespace() {
-            nodes.last.push(ch);
+            token.push(ch);
         }
 
-        let node = match nodes.last.as_str() {
+        let node = match token.as_str() {
             "=" => Node::Equals,
             "assert" => Node::Assert,
             "1" => Node::Integer { value: 1 },
@@ -25,7 +31,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
         };
 
         nodes.inner.push(node);
-        nodes.last.clear();
+        token.clear();
     }
 
     let mut stack = Stack::new();

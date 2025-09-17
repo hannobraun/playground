@@ -2,14 +2,16 @@ use std::{iter, option, vec};
 
 pub struct Nodes {
     pub inner: Vec<Node>,
-    pub last: String,
+    pub last: Node,
 }
 
 impl Nodes {
     pub fn new() -> Self {
         Self {
             inner: Vec::new(),
-            last: String::new(),
+            last: Node::UnknownIdentifier {
+                name: String::new(),
+            },
         }
     }
 }
@@ -19,10 +21,16 @@ impl IntoIterator for Nodes {
     type IntoIter = iter::Chain<vec::IntoIter<Node>, option::IntoIter<Node>>;
 
     fn into_iter(self) -> Self::IntoIter {
-        let last = if self.last.is_empty() {
+        let Node::UnknownIdentifier { name: identifier } = self.last else {
+            unreachable!(
+                "Only ever setting `self.last` to `UnknownIdentifier`."
+            );
+        };
+
+        let last = if identifier.is_empty() {
             None
         } else {
-            Some(Node::UnknownIdentifier { name: self.last })
+            Some(Node::UnknownIdentifier { name: identifier })
         };
 
         self.inner.into_iter().chain(last)
