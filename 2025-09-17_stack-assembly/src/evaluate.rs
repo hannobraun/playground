@@ -9,11 +9,11 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     for ch in code.chars() {
         let mut token = nodes.last.to_string();
 
-        let finalize = if !ch.is_whitespace() {
+        let finalize = if ch.is_whitespace() {
+            true
+        } else {
             token.push(ch);
             false
-        } else {
-            true
         };
 
         let node = match token.as_str() {
