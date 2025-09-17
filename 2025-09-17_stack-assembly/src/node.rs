@@ -20,6 +20,7 @@ impl IntoIterator for Nodes {
     }
 }
 
+#[derive(Debug)]
 pub enum Node {
     Assert,
     Equals,
