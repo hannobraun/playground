@@ -1,10 +1,10 @@
 use crate::{
-    node::Node,
+    node::{Node, Nodes},
     stack::{Stack, StackIsEmpty},
 };
 
 pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
-    let mut nodes = Vec::new();
+    let mut nodes = Nodes::new();
 
     for token in code.split_whitespace() {
         match token {
