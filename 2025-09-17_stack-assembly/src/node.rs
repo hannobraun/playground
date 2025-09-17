@@ -4,7 +4,8 @@ pub struct Nodes {
 
 impl Nodes {
     pub fn new() -> Self {
-        Self { inner: Vec::new() }
+        let inner = Vec::new();
+        Self { inner }
     }
 }
 
