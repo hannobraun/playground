@@ -3,6 +3,10 @@ use std::{fs::File, io::Read};
 use crossterm::style::{Color, Stylize};
 use walkdir::WalkDir;
 
+use crate::stack::Stack;
+
+mod stack;
+
 fn main() -> anyhow::Result<()> {
     for entry in WalkDir::new("spec") {
         let entry = entry?;
@@ -62,8 +66,4 @@ fn run_spec_script(code: &str) -> Result<(), ()> {
     }
 
     Ok(())
-}
-
-pub struct Stack {
-    pub inner: Vec<i32>,
 }
