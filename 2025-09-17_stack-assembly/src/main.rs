@@ -14,6 +14,9 @@ fn main() -> anyhow::Result<()> {
             SpecScriptOutcome::Pass => {
                 print!("PASS ");
             }
+            SpecScriptOutcome::Fail => {
+                print!("FAIL ");
+            }
         }
         println!("{path}", path = entry.path().display());
     }
@@ -46,7 +49,7 @@ fn run_spec_script(path: &Path) -> anyhow::Result<SpecScriptOutcome> {
                 let a = stack.pop().unwrap();
 
                 if a == 0 {
-                    panic!("assertion failed");
+                    return Ok(SpecScriptOutcome::Fail);
                 }
             }
             "1" => {
@@ -66,4 +69,5 @@ fn run_spec_script(path: &Path) -> anyhow::Result<SpecScriptOutcome> {
 
 enum SpecScriptOutcome {
     Pass,
+    Fail,
 }
