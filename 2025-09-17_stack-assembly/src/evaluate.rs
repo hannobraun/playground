@@ -35,6 +35,10 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
 
     for node in nodes {
         match node {
+            Node::Empty => {
+                // no effect at runtime
+            }
+
             Node::Assert => {
                 let a = stack.pop()?;
 
@@ -63,9 +67,6 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
                 stack.push(value);
             }
 
-            Node::Empty => {
-                // no effect at runtime
-            }
             Node::UnknownIdentifier { name: _ } => {
                 return Err(EvaluateError::Other);
             }

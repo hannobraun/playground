@@ -26,26 +26,28 @@ impl IntoIterator for Nodes {
 
 #[derive(Debug)]
 pub enum Node {
+    Empty,
+
     Assert,
     Equals,
     Nop,
 
     Integer { value: i32 },
 
-    Empty,
     UnknownIdentifier { name: String },
 }
 
 impl fmt::Display for Node {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::Empty => write!(f, ""),
+
             Self::Assert => write!(f, "assert"),
             Self::Equals => write!(f, "="),
             Self::Nop => write!(f, "nop"),
 
             Self::Integer { value } => write!(f, "{value}"),
 
-            Self::Empty => write!(f, ""),
             Self::UnknownIdentifier { name } => write!(f, "{name}"),
         }
     }
