@@ -1,4 +1,4 @@
-use std::{iter, option, vec};
+use std::{fmt, iter, option, vec};
 
 pub struct Nodes {
     pub inner: Vec<Node>,
@@ -44,4 +44,15 @@ pub enum Node {
     Integer { value: i32 },
 
     UnknownIdentifier { name: String },
+}
+
+impl fmt::Display for Node {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Assert => write!(f, "assert"),
+            Self::Equals => write!(f, "="),
+            Self::Integer { value } => write!(f, "{value}"),
+            Self::UnknownIdentifier { name } => write!(f, "{name}"),
+        }
+    }
 }
