@@ -2,8 +2,6 @@ use std::path::Path;
 
 use walkdir::WalkDir;
 
-use crate::spec::run_test;
-
 mod evaluate;
 mod spec;
 mod stack;
@@ -19,7 +17,7 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
 
-        run_test(spec_dir, path)?;
+        spec::run_test(spec_dir, path)?;
     }
 
     Ok(())
