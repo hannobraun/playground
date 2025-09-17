@@ -1,11 +1,36 @@
-use crate::stack::{Stack, StackIsEmpty};
+use crate::{
+    node::Node,
+    stack::{Stack, StackIsEmpty},
+};
 
 pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
-    let mut stack = Stack::new();
+    let mut nodes = Vec::new();
 
     for token in code.split_whitespace() {
         match token {
             "=" => {
+                nodes.push(Node::Equals);
+            }
+            "assert" => {
+                nodes.push(Node::Assert);
+            }
+            "1" => {
+                nodes.push(Node::Integer { value: 1 });
+            }
+            "2" => {
+                nodes.push(Node::Integer { value: 2 });
+            }
+            _ => {
+                return Err(EvaluateError::Other);
+            }
+        }
+    }
+
+    let mut stack = Stack::new();
+
+    for node in nodes {
+        match node {
+            Node::Equals => {
                 let b = stack.pop()?;
                 let a = stack.pop()?;
 
@@ -18,21 +43,15 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
                     }
                 }
             }
-            "assert" => {
+            Node::Assert => {
                 let a = stack.pop()?;
 
                 if a == 0 {
                     return Err(EvaluateError::Other);
                 }
             }
-            "1" => {
-                stack.push(1);
-            }
-            "2" => {
-                stack.push(2);
-            }
-            _ => {
-                return Err(EvaluateError::Other);
+            Node::Integer { value } => {
+                stack.push(value);
             }
         }
     }
