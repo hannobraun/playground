@@ -5,4 +5,5 @@ edition = "2024"
 [dependencies]
 anyhow = "*"
 crossterm = "*"
+thiserror = "*"
 walkdir = "*"
