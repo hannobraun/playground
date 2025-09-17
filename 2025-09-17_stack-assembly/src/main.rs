@@ -12,9 +12,10 @@ fn main() -> anyhow::Result<()> {
 
         match run_spec_script(entry.path())? {
             SpecScriptOutcome::Pass => {
-                println!("PASS {path}", path = entry.path().display());
+                print!("PASS ");
             }
         }
+        println!("{path}", path = entry.path().display());
     }
 
     Ok(())
