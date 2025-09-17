@@ -7,9 +7,8 @@ pub struct Nodes {
 
 impl Nodes {
     pub fn new() -> Self {
-        let inner = Vec::new();
         Self {
-            inner,
+            inner: Vec::new(),
             last: String::new(),
         }
     }
