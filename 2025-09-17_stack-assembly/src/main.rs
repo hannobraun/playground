@@ -20,56 +20,59 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
 
-        let mut code = String::new();
-        File::open(path)?.read_to_string(&mut code)?;
+        run_test(spec_dir, path)?;
+    }
 
-        use SpecTestOutcome::*;
+    Ok(())
+}
 
-        let expected_outcome = {
-            let Some(file_name) = path.file_name() else {
-                unreachable!(
-                    "Path is not a directory, but has no file name either."
-                );
-            };
-            let Some(file_name) = file_name.to_str() else {
-                bail!("Can't represent test file name as UTF-8.");
-            };
+pub fn run_test(spec_dir: &Path, path: &Path) -> anyhow::Result<()> {
+    let mut code = String::new();
+    File::open(path)?.read_to_string(&mut code)?;
 
-            let Some((file_name_without_extension, _)) =
-                file_name.rsplit_once(".")
-            else {
-                bail!("Expecting test file name to have an extension.");
-            };
-            let Some((_, pass_or_fail)) =
-                file_name_without_extension.rsplit_once(".")
-            else {
-                panic!(
-                    "Expecting test file name to have a pass/fail specifier."
-                );
-            };
+    use SpecTestOutcome::*;
 
-            match pass_or_fail {
-                "pass" => Pass,
-                "fail" => Fail,
-
-                unexpected => {
-                    bail!("Unexpected pass/fail specifier (`{unexpected}`).");
-                }
-            }
+    let expected_outcome = {
+        let Some(file_name) = path.file_name() else {
+            unreachable!(
+                "Path is not a directory, but has no file name either."
+            );
+        };
+        let Some(file_name) = file_name.to_str() else {
+            bail!("Can't represent test file name as UTF-8.");
         };
 
-        match (evaluate(&code), expected_outcome) {
-            (Ok(()), Pass) | (Err(_), Fail) => {
-                print!("{}", "PASS".bold().with(Color::DarkGreen))
-            }
-            (Ok(()), Fail) | (Err(_), Pass) => {
-                print!("{}", "FAIL".bold().with(Color::DarkRed))
+        let Some((file_name_without_extension, _)) = file_name.rsplit_once(".")
+        else {
+            bail!("Expecting test file name to have an extension.");
+        };
+        let Some((_, pass_or_fail)) =
+            file_name_without_extension.rsplit_once(".")
+        else {
+            panic!("Expecting test file name to have a pass/fail specifier.");
+        };
+
+        match pass_or_fail {
+            "pass" => Pass,
+            "fail" => Fail,
+
+            unexpected => {
+                bail!("Unexpected pass/fail specifier (`{unexpected}`).");
             }
         }
+    };
 
-        let path = path.strip_prefix(spec_dir)?;
-        println!(" {path}", path = path.display());
+    match (evaluate(&code), expected_outcome) {
+        (Ok(()), Pass) | (Err(_), Fail) => {
+            print!("{}", "PASS".bold().with(Color::DarkGreen))
+        }
+        (Ok(()), Fail) | (Err(_), Pass) => {
+            print!("{}", "FAIL".bold().with(Color::DarkRed))
+        }
     }
+
+    let path = path.strip_prefix(spec_dir)?;
+    println!(" {path}", path = path.display());
 
     Ok(())
 }
