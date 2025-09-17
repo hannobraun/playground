@@ -12,19 +12,20 @@ fn main() -> anyhow::Result<()> {
 
     for entry in WalkDir::new(spec_dir) {
         let entry = entry?;
+        let path = entry.path();
 
-        if entry.path().is_dir() {
+        if path.is_dir() {
             continue;
         }
 
         let mut code = String::new();
-        File::open(entry.path())?.read_to_string(&mut code)?;
+        File::open(path)?.read_to_string(&mut code)?;
 
         match evaluate(&code) {
             Ok(()) => print!("{}", "PASS".bold().with(Color::DarkGreen)),
             Err(_) => print!("{}", "FAIL".bold().with(Color::DarkRed)),
         }
-        println!(" {path}", path = entry.path().display());
+        println!(" {path}", path = path.display());
     }
 
     Ok(())
