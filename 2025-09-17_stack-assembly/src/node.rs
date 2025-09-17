@@ -1,22 +1,32 @@
-use std::vec;
+use std::{iter, option, vec};
 
 pub struct Nodes {
     pub inner: Vec<Node>,
+    pub last: String,
 }
 
 impl Nodes {
     pub fn new() -> Self {
         let inner = Vec::new();
-        Self { inner }
+        Self {
+            inner,
+            last: String::new(),
+        }
     }
 }
 
 impl IntoIterator for Nodes {
     type Item = Node;
-    type IntoIter = vec::IntoIter<Node>;
+    type IntoIter = iter::Chain<vec::IntoIter<Node>, option::IntoIter<Node>>;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.inner.into_iter()
+        let last = if self.last.is_empty() {
+            None
+        } else {
+            Some(Node::UnknownIdentifier { name: self.last })
+        };
+
+        self.inner.into_iter().chain(last)
     }
 }
 
