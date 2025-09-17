@@ -32,7 +32,11 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
             }
         };
 
-        nodes.inner.push(node);
+        if ch.is_whitespace() {
+            nodes.inner.push(node);
+        } else {
+            nodes.last = node;
+        }
     }
 
     let mut stack = Stack::new();
