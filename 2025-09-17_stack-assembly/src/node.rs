@@ -46,6 +46,7 @@ impl fmt::Display for Node {
             Self::Assert => write!(f, "assert"),
             Self::Equals => write!(f, "="),
             Self::Integer { value } => write!(f, "{value}"),
+
             Self::UnknownIdentifier { name } => write!(f, "{name}"),
         }
     }
