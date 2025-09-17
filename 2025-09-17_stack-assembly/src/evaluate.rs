@@ -7,11 +7,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut nodes = Nodes::new();
 
     for ch in code.chars() {
-        let Node::UnknownIdentifier { name: token } = &mut nodes.last else {
-            unreachable!(
-                "Only ever setting `self.last` to `UnknownIdentifier`."
-            );
-        };
+        let mut token = nodes.last.to_string();
 
         if !ch.is_whitespace() {
             token.push(ch);
@@ -26,12 +22,15 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
                 // The last node is already treated as an unknown identifier.
                 // Since we haven't figured out yet what it's supposed to be, we
                 // can keep it that way.
+                nodes.last = Node::UnknownIdentifier { name: token };
                 continue;
             }
         };
 
         nodes.inner.push(node);
-        token.clear();
+        nodes.last = Node::UnknownIdentifier {
+            name: String::new(),
+        };
     }
 
     let mut stack = Stack::new();
