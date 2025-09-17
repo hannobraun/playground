@@ -20,9 +20,7 @@ impl IntoIterator for Nodes {
     type IntoIter = iter::Chain<vec::IntoIter<Node>, option::IntoIter<Node>>;
 
     fn into_iter(self) -> Self::IntoIter {
-        let last = Some(self.last);
-
-        self.inner.into_iter().chain(last)
+        self.inner.into_iter().chain(Some(self.last))
     }
 }
 
