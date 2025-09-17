@@ -13,10 +13,9 @@ fn main() -> anyhow::Result<()> {
         let mut code = String::new();
         File::open(entry.path())?.read_to_string(&mut code)?;
 
-        use SpecScriptOutcome::*;
-        match run_spec_script(&code)? {
-            Pass => print!("PASS"),
-            Fail => print!("FAIL"),
+        match run_spec_script(&code) {
+            Ok(()) => print!("PASS"),
+            Err(()) => print!("FAIL"),
         }
         println!(" {path}", path = entry.path().display());
     }
@@ -24,7 +23,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run_spec_script(code: &str) -> anyhow::Result<SpecScriptOutcome> {
+fn run_spec_script(code: &str) -> Result<(), ()> {
     let mut stack = Vec::new();
 
     for token in code.split_whitespace() {
@@ -46,7 +45,7 @@ fn run_spec_script(code: &str) -> anyhow::Result<SpecScriptOutcome> {
                 let a = stack.pop().unwrap();
 
                 if a == 0 {
-                    return Ok(SpecScriptOutcome::Fail);
+                    return Err(());
                 }
             }
             "1" => {
@@ -61,10 +60,5 @@ fn run_spec_script(code: &str) -> anyhow::Result<SpecScriptOutcome> {
         }
     }
 
-    Ok(SpecScriptOutcome::Pass)
-}
-
-enum SpecScriptOutcome {
-    Pass,
-    Fail,
+    Ok(())
 }
