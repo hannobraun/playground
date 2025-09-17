@@ -19,13 +19,8 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
             "nop" => Node::Nop,
             "1" => Node::Integer { value: 1 },
             "2" => Node::Integer { value: 2 },
-            _ => {
-                // The last node is already treated as an unknown identifier.
-                // Since we haven't figured out yet what it's supposed to be, we
-                // can keep it that way.
-                nodes.last = Node::UnknownIdentifier { name: token };
-                continue;
-            }
+            "" => Node::Empty,
+            _ => Node::UnknownIdentifier { name: token },
         };
 
         if ch.is_whitespace() {
