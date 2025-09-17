@@ -7,25 +7,17 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut nodes = Nodes::new();
 
     for token in code.split_whitespace() {
-        match token {
-            "=" => {
-                nodes.inner.push(Node::Equals);
-            }
-            "assert" => {
-                nodes.inner.push(Node::Assert);
-            }
-            "1" => {
-                nodes.inner.push(Node::Integer { value: 1 });
-            }
-            "2" => {
-                nodes.inner.push(Node::Integer { value: 2 });
-            }
-            unknown => {
-                nodes.inner.push(Node::UnknownIdentifier {
-                    name: unknown.to_string(),
-                });
-            }
-        }
+        let node = match token {
+            "=" => Node::Equals,
+            "assert" => Node::Assert,
+            "1" => Node::Integer { value: 1 },
+            "2" => Node::Integer { value: 2 },
+            unknown => Node::UnknownIdentifier {
+                name: unknown.to_string(),
+            },
+        };
+
+        nodes.inner.push(node);
     }
 
     let mut stack = Stack::new();
