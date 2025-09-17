@@ -13,7 +13,9 @@ fn main() -> anyhow::Result<()> {
         let mut code = String::new();
         File::open(entry.path())?.read_to_string(&mut code)?;
 
-        dbg!(code);
+        for token in code.split_whitespace() {
+            dbg!(token);
+        }
     }
 
     Ok(())
