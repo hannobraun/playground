@@ -29,7 +29,7 @@ fn main() -> anyhow::Result<()> {
 }
 
 fn run_spec_script(code: &str) -> Result<(), ()> {
-    let mut stack = Stack { inner: Vec::new() };
+    let mut stack = Stack::new();
 
     for token in code.split_whitespace() {
         match token {
