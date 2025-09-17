@@ -9,6 +9,10 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     for ch in code.chars() {
         let mut token = nodes.last.to_string();
 
+        nodes.last = Node::UnknownIdentifier {
+            name: String::new(),
+        };
+
         if !ch.is_whitespace() {
             token.push(ch);
         }
@@ -29,9 +33,6 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
         };
 
         nodes.inner.push(node);
-        nodes.last = Node::UnknownIdentifier {
-            name: String::new(),
-        };
     }
 
     let mut stack = Stack::new();
