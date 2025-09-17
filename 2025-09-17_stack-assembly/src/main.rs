@@ -1,4 +1,4 @@
-use std::{fs::File, io::Read};
+use std::{fs::File, io::Read, path::Path};
 
 use crossterm::style::{Color, Stylize};
 use walkdir::WalkDir;
@@ -8,7 +8,9 @@ use crate::stack::Stack;
 mod stack;
 
 fn main() -> anyhow::Result<()> {
-    for entry in WalkDir::new("spec") {
+    let spec_dir = Path::new("spec");
+
+    for entry in WalkDir::new(spec_dir) {
         let entry = entry?;
 
         if entry.path().is_dir() {
