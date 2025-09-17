@@ -30,6 +30,13 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
 
     for node in nodes {
         match node {
+            Node::Assert => {
+                let a = stack.pop()?;
+
+                if a == 0 {
+                    return Err(EvaluateError::Other);
+                }
+            }
             Node::Equals => {
                 let b = stack.pop()?;
                 let a = stack.pop()?;
@@ -41,13 +48,6 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
                     true => {
                         stack.push(1);
                     }
-                }
-            }
-            Node::Assert => {
-                let a = stack.pop()?;
-
-                if a == 0 {
-                    return Err(EvaluateError::Other);
                 }
             }
             Node::Integer { value } => {
