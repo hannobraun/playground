@@ -66,8 +66,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
             Node::Empty => {
                 // no effect at runtime
             }
-            Node::UnknownIdentifier { name } => {
-                let _ = name;
+            Node::UnknownIdentifier { name: _ } => {
                 return Err(EvaluateError::Other);
             }
         }
