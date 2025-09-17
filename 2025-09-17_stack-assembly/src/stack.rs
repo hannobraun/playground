@@ -12,8 +12,7 @@ impl Stack {
     }
 
     pub fn pop(&mut self) -> Result<i32, StackIsEmpty> {
-        let value = self.inner.pop().unwrap();
-        Ok(value)
+        self.inner.pop().ok_or(StackIsEmpty)
     }
 }
 
