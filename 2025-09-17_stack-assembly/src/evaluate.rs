@@ -53,6 +53,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
             Node::Integer { value } => {
                 stack.push(value);
             }
+
             Node::UnknownIdentifier => {
                 return Err(EvaluateError::Other);
             }
