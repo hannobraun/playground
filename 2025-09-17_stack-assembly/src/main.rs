@@ -73,7 +73,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn evaluate(code: &str) -> Result<(), EvaluateError> {
+pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut stack = Stack::new();
 
     for token in code.split_whitespace() {
@@ -114,7 +114,7 @@ fn evaluate(code: &str) -> Result<(), EvaluateError> {
 }
 
 #[derive(Debug, thiserror::Error)]
-enum EvaluateError {
+pub enum EvaluateError {
     #[error(transparent)]
     StackIsEmpty(#[from] StackIsEmpty),
 
