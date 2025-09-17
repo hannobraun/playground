@@ -27,6 +27,8 @@ fn main() -> anyhow::Result<()> {
 }
 
 pub fn run_test(spec_dir: &Path, test_file: &Path) -> anyhow::Result<()> {
+    assert!(!test_file.is_dir());
+
     let mut code = String::new();
     File::open(test_file)?.read_to_string(&mut code)?;
 
