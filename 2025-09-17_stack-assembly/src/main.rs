@@ -25,6 +25,8 @@ fn main() -> anyhow::Result<()> {
             Ok(()) => print!("{}", "PASS".bold().with(Color::DarkGreen)),
             Err(_) => print!("{}", "FAIL".bold().with(Color::DarkRed)),
         }
+
+        let path = path.strip_prefix(spec_dir)?;
         println!(" {path}", path = path.display());
     }
 
