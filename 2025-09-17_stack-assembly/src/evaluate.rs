@@ -6,18 +6,26 @@ use crate::{
 pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
     let mut nodes = Nodes::new();
 
-    for token in code.split_whitespace() {
-        let node = match token {
+    for ch in code.chars() {
+        if !ch.is_whitespace() {
+            nodes.last.push(ch);
+        }
+
+        let node = match nodes.last.as_str() {
             "=" => Node::Equals,
             "assert" => Node::Assert,
             "1" => Node::Integer { value: 1 },
             "2" => Node::Integer { value: 2 },
-            unknown => Node::UnknownIdentifier {
-                name: unknown.to_string(),
-            },
+            _ => {
+                // The last node is already treated as an unknown identifier.
+                // Since we haven't figured out yet what it's supposed to be, we
+                // can keep it that way.
+                continue;
+            }
         };
 
         nodes.inner.push(node);
+        nodes.last.clear();
     }
 
     let mut stack = Stack::new();
