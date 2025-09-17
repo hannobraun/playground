@@ -113,7 +113,9 @@ fn evaluate(code: &str) -> Result<(), EvaluateError> {
     Ok(())
 }
 
+#[derive(Debug, thiserror::Error)]
 enum EvaluateError {
+    #[error("Other error while evaluating")]
     Other,
 }
 
