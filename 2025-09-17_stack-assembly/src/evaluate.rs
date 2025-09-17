@@ -30,9 +30,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
 
         if ch.is_whitespace() {
             nodes.inner.push(node);
-            nodes.last = Node::UnknownIdentifier {
-                name: String::new(),
-            };
+            nodes.last = Node::Empty;
         } else {
             nodes.last = node;
         }
@@ -70,6 +68,9 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
                 stack.push(value);
             }
 
+            Node::Empty => {
+                // no effect at runtime
+            }
             Node::UnknownIdentifier { name } => {
                 let _ = name;
                 return Err(EvaluateError::Other);

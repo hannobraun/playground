@@ -10,9 +10,7 @@ impl Nodes {
     pub fn new() -> Self {
         Self {
             inner: Vec::new(),
-            last: Node::UnknownIdentifier {
-                name: String::new(),
-            },
+            last: Node::Empty,
         }
     }
 }
@@ -40,6 +38,7 @@ pub enum Node {
 
     Integer { value: i32 },
 
+    Empty,
     UnknownIdentifier { name: String },
 }
 
@@ -52,6 +51,7 @@ impl fmt::Display for Node {
 
             Self::Integer { value } => write!(f, "{value}"),
 
+            Self::Empty => write!(f, ""),
             Self::UnknownIdentifier { name } => write!(f, "{name}"),
         }
     }
