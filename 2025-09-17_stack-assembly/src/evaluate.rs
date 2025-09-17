@@ -16,6 +16,7 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
         let node = match token.as_str() {
             "=" => Node::Equals,
             "assert" => Node::Assert,
+            "nop" => Node::Nop,
             "1" => Node::Integer { value: 1 },
             "2" => Node::Integer { value: 2 },
             _ => {
@@ -57,6 +58,10 @@ pub fn evaluate(code: &str) -> Result<(), EvaluateError> {
                     }
                 }
             }
+            Node::Nop => {
+                // does nothing
+            }
+
             Node::Integer { value } => {
                 stack.push(value);
             }

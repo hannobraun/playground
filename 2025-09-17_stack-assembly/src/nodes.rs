@@ -36,6 +36,8 @@ impl IntoIterator for Nodes {
 pub enum Node {
     Assert,
     Equals,
+    Nop,
+
     Integer { value: i32 },
 
     UnknownIdentifier { name: String },
@@ -46,6 +48,8 @@ impl fmt::Display for Node {
         match self {
             Self::Assert => write!(f, "assert"),
             Self::Equals => write!(f, "="),
+            Self::Nop => write!(f, "nop"),
+
             Self::Integer { value } => write!(f, "{value}"),
 
             Self::UnknownIdentifier { name } => write!(f, "{name}"),
