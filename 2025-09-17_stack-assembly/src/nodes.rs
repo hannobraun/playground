@@ -20,11 +20,7 @@ impl IntoIterator for Nodes {
     type IntoIter = iter::Chain<vec::IntoIter<Node>, option::IntoIter<Node>>;
 
     fn into_iter(self) -> Self::IntoIter {
-        let last = if self.last.to_string().is_empty() {
-            None
-        } else {
-            Some(self.last)
-        };
+        let last = Some(self.last);
 
         self.inner.into_iter().chain(last)
     }
