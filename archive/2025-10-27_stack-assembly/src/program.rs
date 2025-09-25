@@ -29,11 +29,11 @@ impl Program {
     /// # Run the program until completion
     pub fn run(&mut self) {
         for word in self.code.split_whitespace() {
-            if let Ok(value) = word.parse() {
-                self.stack.push(value);
-            } else {
+            let Ok(value) = word.parse() else {
                 break;
-            }
+            };
+
+            self.stack.push(value);
         }
     }
 }
