@@ -20,6 +20,9 @@ impl Program {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Drop0,
                 });
+            } else if let Some((_label, "")) = word.rsplit_once(":") {
+                // So far, we support parsing labels, but don't know how to deal
+                // with them otherwise.
             } else if let Ok(value) = word.parse() {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Integer { value },

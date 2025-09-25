@@ -1,5 +1,6 @@
 use crate::{Effect, Program};
 
+mod control_flow;
 mod empty_program;
 mod operands;
 
