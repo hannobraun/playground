@@ -7,6 +7,12 @@ fn empty_program_exits_with_empty_stack() {
 }
 
 #[test]
+fn empty_program_should_not_trigger_effect() {
+    let program = Program::compile_and_run("");
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
 fn stack_stays_empty_if_program_never_starts() {
     let program = Program::compile("3");
     assert_eq!(program.stack(), &vec![]);

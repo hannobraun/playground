@@ -26,6 +26,11 @@ impl Program {
         &self.stack
     }
 
+    /// # Access the currently triggered effect
+    pub fn effect(&self) -> Option<&Effect> {
+        None
+    }
+
     /// # Run the program until completion
     pub fn run(&mut self) {
         for word in self.code.split_whitespace() {
