@@ -7,3 +7,9 @@ fn empty_program_exits_with_empty_stack() {
 
     assert_eq!(program.stack(), &vec![]);
 }
+
+#[test]
+fn stack_stays_empty_if_program_never_starts() {
+    let program = Program::compile("3");
+    assert_eq!(program.stack(), &vec![]);
+}
