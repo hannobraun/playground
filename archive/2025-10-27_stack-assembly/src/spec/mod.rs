@@ -13,7 +13,7 @@ fn stack_stays_empty_if_program_never_starts() {
 }
 
 #[test]
-fn evaluate_single_integer() {
-    let program = Program::compile_and_run("3");
-    assert_eq!(program.stack(), &vec![3]);
+fn evaluate_integers() {
+    let program = Program::compile_and_run("3 5");
+    assert_eq!(program.stack(), &vec![3, 5]);
 }

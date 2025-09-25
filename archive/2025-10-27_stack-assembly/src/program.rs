@@ -28,8 +28,10 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        if let Ok(value) = self.code.parse() {
-            self.stack.push(value);
+        for word in self.code.split_whitespace() {
+            if let Ok(value) = word.parse() {
+                self.stack.push(value);
+            }
         }
     }
 }
