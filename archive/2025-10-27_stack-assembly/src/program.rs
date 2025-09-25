@@ -23,7 +23,7 @@ impl Program {
         program
     }
 
-    /// # Access the program's stack
+    /// # Access the operand stack
     pub fn stack(&self) -> &Vec<i32> {
         &self.stack
     }
