@@ -17,3 +17,9 @@ fn evaluate_integers() {
     let program = Program::compile_and_run("3 5");
     assert_eq!(program.stack(), &vec![3, 5]);
 }
+
+#[test]
+fn unknown_operator_should_stop_program() {
+    let program = Program::compile_and_run("3 unknown_operator 5");
+    assert_eq!(program.stack(), &vec![3]);
+}

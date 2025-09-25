@@ -31,6 +31,8 @@ impl Program {
         for word in self.code.split_whitespace() {
             if let Ok(value) = word.parse() {
                 self.stack.push(value);
+            } else {
+                break;
             }
         }
     }
