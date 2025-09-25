@@ -37,6 +37,7 @@ impl Program {
     pub fn run(&mut self) {
         for word in self.code.split_whitespace() {
             let Ok(value) = word.parse() else {
+                self.effect = Some(Effect::UnknownOperator);
                 break;
             };
 
@@ -47,4 +48,7 @@ impl Program {
 
 /// An effect that may be triggered by a program
 #[derive(Debug, Eq, PartialEq)]
-pub enum Effect {}
+pub enum Effect {
+    /// # Evaluated an unknown operator
+    UnknownOperator,
+}

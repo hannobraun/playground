@@ -1,4 +1,4 @@
-use crate::Program;
+use crate::{Effect, Program};
 
 #[test]
 fn empty_program_exits_with_empty_stack() {
@@ -25,7 +25,8 @@ fn evaluate_integers() {
 }
 
 #[test]
-fn unknown_operator_should_stop_program() {
+fn unknown_operator_should_stop_trigger_effect() {
     let program = Program::compile_and_run("3 unknown_operator 5");
     assert_eq!(program.stack(), &vec![3]);
+    assert_eq!(program.effect(), Some(&Effect::UnknownOperator));
 }
