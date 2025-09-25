@@ -2,6 +2,7 @@
 pub struct Program {
     code: String,
     stack: Vec<i32>,
+    effect: Option<Effect>,
 }
 
 impl Program {
@@ -10,6 +11,7 @@ impl Program {
         Self {
             code: code.to_string(),
             stack: Vec::new(),
+            effect: None,
         }
     }
 
@@ -26,14 +28,27 @@ impl Program {
         &self.stack
     }
 
+    /// # Access the currently triggered effect
+    pub fn effect(&self) -> Option<&Effect> {
+        self.effect.as_ref()
+    }
+
     /// # Run the program until completion
     pub fn run(&mut self) {
         for word in self.code.split_whitespace() {
             let Ok(value) = word.parse() else {
+                self.effect = Some(Effect::UnknownOperator);
                 break;
             };
 
             self.stack.push(value);
         }
     }
+}
+
+/// An effect that may be triggered by a program
+#[derive(Debug, Eq, PartialEq)]
+pub enum Effect {
+    /// # Evaluated an unknown operator
+    UnknownOperator,
 }

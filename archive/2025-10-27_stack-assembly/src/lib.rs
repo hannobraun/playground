@@ -7,4 +7,4 @@ mod spec;
 
 mod program;
 
-pub use self::program::Program;
+pub use self::program::{Effect, Program};
