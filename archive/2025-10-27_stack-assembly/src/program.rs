@@ -2,6 +2,7 @@
 pub struct Program {
     code: String,
     stack: Vec<i32>,
+    effect: Option<Effect>,
 }
 
 impl Program {
@@ -10,6 +11,7 @@ impl Program {
         Self {
             code: code.to_string(),
             stack: Vec::new(),
+            effect: None,
         }
     }
 
@@ -28,7 +30,7 @@ impl Program {
 
     /// # Access the currently triggered effect
     pub fn effect(&self) -> Option<&Effect> {
-        None
+        self.effect.as_ref()
     }
 
     /// # Run the program until completion
