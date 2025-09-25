@@ -1,12 +1,16 @@
 /// # A StackAssembly program
 pub struct Program {
+    code: String,
     stack: Vec<i32>,
 }
 
 impl Program {
     /// # Create a `Program` instance by compiling the provided code
-    pub fn compile(_code: &str) -> Self {
-        Self { stack: Vec::new() }
+    pub fn compile(code: &str) -> Self {
+        Self {
+            code: code.to_string(),
+            stack: Vec::new(),
+        }
     }
 
     /// # Call [`Program::compile`], then [`Program::run`]
@@ -23,5 +27,9 @@ impl Program {
     }
 
     /// # Run the program until completion
-    pub fn run(&mut self) {}
+    pub fn run(&mut self) {
+        if let Ok(value) = self.code.parse() {
+            self.stack.push(value);
+        }
+    }
 }
