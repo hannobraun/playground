@@ -21,8 +21,11 @@ impl Program {
                     operator: Operator::Drop0,
                 });
             } else if let Some((_label, "")) = word.rsplit_once(":") {
-                // So far, we support parsing labels, but don't know how to deal
-                // with them otherwise.
+                // Encountering a label means that the previous function has
+                // ended.
+                instructions.push(Instruction::Return);
+
+                // Otherwise, labels are not supported yet.
             } else if let Ok(value) = word.parse() {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Integer { value },

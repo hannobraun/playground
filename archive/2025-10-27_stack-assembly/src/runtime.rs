@@ -35,6 +35,11 @@ impl Evaluator {
             } => {
                 return Err(Effect::UnknownOperator);
             }
+            Instruction::Return => {
+                // So far, we don't support nested function applications, so any
+                // return will just end the program.
+                return Ok(StepOutcome::Finished);
+            }
         }
 
         self.current_instruction += 1;
@@ -49,6 +54,7 @@ pub enum StepOutcome {
 
 pub enum Instruction {
     Operator { operator: Operator },
+    Return,
 }
 
 pub enum Operator {

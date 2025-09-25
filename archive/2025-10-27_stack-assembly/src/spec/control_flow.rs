@@ -2,7 +2,7 @@ use crate::Program;
 
 #[test]
 fn functions_have_no_effect_if_not_applied() {
-    let program = Program::compile_and_run("3 f:");
+    let program = Program::compile_and_run("3 f: 5");
     assert_eq!(program.operands(), &vec![3]);
     assert_eq!(program.effect(), None);
 }
