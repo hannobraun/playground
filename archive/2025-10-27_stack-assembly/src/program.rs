@@ -49,7 +49,13 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        for instruction in &self.instructions {
+        let mut current_instruction = 0;
+
+        loop {
+            let Some(instruction) = self.instructions.get(current_instruction) else {
+                break;
+            };
+
             match instruction {
                 Instruction::Operator {
                     operator: Operator::Integer { value },
@@ -63,6 +69,8 @@ impl Program {
                     break;
                 }
             }
+
+            current_instruction += 1;
         }
     }
 }
