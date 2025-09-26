@@ -8,18 +8,18 @@ pub struct Program {
 impl Program {
     /// # Create a `Program` instance by compiling the provided code
     pub fn compile(input: &str) -> Self {
-        let mut code = Vec::new();
+        let mut instructions = Vec::new();
 
         for word in input.split_whitespace() {
             if let Ok(value) = word.parse() {
-                code.push(Instruction::Integer { value });
+                instructions.push(Instruction::Integer { value });
             } else {
-                code.push(Instruction::Unknown);
+                instructions.push(Instruction::Unknown);
             }
         }
 
         Self {
-            instructions: code,
+            instructions,
             stack: Vec::new(),
             effect: None,
         }
