@@ -35,6 +35,11 @@ impl Evaluator {
             } => {
                 return Err(Effect::UnknownOperator);
             }
+            Instruction::Reference => {
+                // While we don't resolve references yet, there's little we can
+                // do to evaluate them.
+                return Err(Effect::InvalidReference);
+            }
             Instruction::Return => {
                 // So far, we don't support nested function applications, so any
                 // return will just end the program.
@@ -54,6 +59,7 @@ pub enum StepOutcome {
 
 pub enum Instruction {
     Operator { operator: Operator },
+    Reference,
     Return,
 }
 
@@ -90,6 +96,9 @@ pub struct StackUnderflow;
 /// An effect that may be triggered by a program
 #[derive(Debug, Eq, PartialEq)]
 pub enum Effect {
+    /// # Tried to evaluate an invalid reference
+    InvalidReference,
+
     /// # Tried popping a value from empty operand stack
     StackUnderflow,
 

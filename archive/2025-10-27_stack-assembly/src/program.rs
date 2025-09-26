@@ -20,6 +20,10 @@ impl Program {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Drop0,
                 });
+            } else if let Some(("", _reference)) = word.split_once("@") {
+                // So far, there is limited support for references. They are
+                // parsed, but not resolved yet.
+                instructions.push(Instruction::Reference);
             } else if let Some((_label, "")) = word.rsplit_once(":") {
                 // Encountering a label means that the previous function has
                 // ended.
