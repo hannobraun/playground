@@ -7,17 +7,17 @@ pub struct Program {
 
 impl Program {
     /// # Create a `Program` instance by compiling the provided code
-    pub fn compile(code: &str) -> Self {
+    pub fn compile(input: &str) -> Self {
         Self {
-            code: code.to_string(),
+            code: input.to_string(),
             stack: Vec::new(),
             effect: None,
         }
     }
 
     /// # Call [`Program::compile`], then [`Program::run`]
-    pub fn compile_and_run(code: &str) -> Self {
-        let mut program = Self::compile(code);
+    pub fn compile_and_run(input: &str) -> Self {
+        let mut program = Self::compile(input);
         program.run();
 
         program
