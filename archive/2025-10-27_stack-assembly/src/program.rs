@@ -1,23 +1,37 @@
 /// # A StackAssembly program
 pub struct Program {
-    code: String,
+    instructions: Vec<Instruction>,
     stack: Vec<i32>,
     effect: Option<Effect>,
 }
 
 impl Program {
     /// # Create a `Program` instance by compiling the provided code
-    pub fn compile(code: &str) -> Self {
+    pub fn compile(input: &str) -> Self {
+        let mut instructions = Vec::new();
+
+        for word in input.split_whitespace() {
+            if let Ok(value) = word.parse() {
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Integer { value },
+                });
+            } else {
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Unknown,
+                });
+            }
+        }
+
         Self {
-            code: code.to_string(),
+            instructions,
             stack: Vec::new(),
             effect: None,
         }
     }
 
     /// # Call [`Program::compile`], then [`Program::run`]
-    pub fn compile_and_run(code: &str) -> Self {
-        let mut program = Self::compile(code);
+    pub fn compile_and_run(input: &str) -> Self {
+        let mut program = Self::compile(input);
         program.run();
 
         program
@@ -35,13 +49,28 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        for word in self.code.split_whitespace() {
-            let Ok(value) = word.parse() else {
-                self.effect = Some(Effect::UnknownOperator);
+        let mut current_instruction = 0;
+
+        loop {
+            let Some(instruction) = self.instructions.get(current_instruction) else {
                 break;
             };
 
-            self.stack.push(value);
+            match instruction {
+                Instruction::Operator {
+                    operator: Operator::Integer { value },
+                } => {
+                    self.stack.push(*value);
+                }
+                Instruction::Operator {
+                    operator: Operator::Unknown,
+                } => {
+                    self.effect = Some(Effect::UnknownOperator);
+                    break;
+                }
+            }
+
+            current_instruction += 1;
         }
     }
 }
@@ -51,4 +80,13 @@ impl Program {
 pub enum Effect {
     /// # Tried to evaluate an unknown operator
     UnknownOperator,
+}
+
+enum Instruction {
+    Operator { operator: Operator },
+}
+
+enum Operator {
+    Integer { value: i32 },
+    Unknown,
 }
