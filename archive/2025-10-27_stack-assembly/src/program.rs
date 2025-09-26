@@ -1,6 +1,6 @@
 /// # A StackAssembly program
 pub struct Program {
-    code: Vec<Instruction>,
+    instructions: Vec<Instruction>,
     stack: Vec<i32>,
     effect: Option<Effect>,
 }
@@ -19,7 +19,7 @@ impl Program {
         }
 
         Self {
-            code,
+            instructions: code,
             stack: Vec::new(),
             effect: None,
         }
@@ -45,7 +45,7 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        for instruction in &self.code {
+        for instruction in &self.instructions {
             match instruction {
                 Instruction::Integer { value } => {
                     self.stack.push(*value);
