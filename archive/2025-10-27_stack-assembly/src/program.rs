@@ -1,6 +1,6 @@
 /// # A StackAssembly program
 pub struct Program {
-    code: String,
+    code: Vec<Instruction>,
     stack: Vec<i32>,
     effect: Option<Effect>,
 }
@@ -8,8 +8,18 @@ pub struct Program {
 impl Program {
     /// # Create a `Program` instance by compiling the provided code
     pub fn compile(input: &str) -> Self {
+        let mut code = Vec::new();
+
+        for word in input.split_whitespace() {
+            if let Ok(value) = word.parse() {
+                code.push(Instruction::Integer { value });
+            } else {
+                code.push(Instruction::Unknown);
+            }
+        }
+
         Self {
-            code: input.to_string(),
+            code,
             stack: Vec::new(),
             effect: None,
         }
@@ -35,13 +45,16 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        for word in self.code.split_whitespace() {
-            let Ok(value) = word.parse() else {
-                self.effect = Some(Effect::UnknownOperator);
-                break;
-            };
-
-            self.stack.push(value);
+        for instruction in &self.code {
+            match instruction {
+                Instruction::Integer { value } => {
+                    self.stack.push(*value);
+                }
+                Instruction::Unknown => {
+                    self.effect = Some(Effect::UnknownOperator);
+                    break;
+                }
+            }
         }
     }
 }
@@ -51,4 +64,9 @@ impl Program {
 pub enum Effect {
     /// # Tried to evaluate an unknown operator
     UnknownOperator,
+}
+
+enum Instruction {
+    Integer { value: i32 },
+    Unknown,
 }
