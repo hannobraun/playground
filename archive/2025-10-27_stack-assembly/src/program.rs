@@ -1,6 +1,6 @@
 use crate::{
     Effect,
-    runtime::{Instruction, Operator},
+    runtime::{Evaluator, Instruction, Operator, StepOutcome},
 };
 
 /// # A StackAssembly program
@@ -54,29 +54,21 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        let mut current_instruction = 0;
+        let mut evaluator = Evaluator::new();
 
         loop {
-            let Some(instruction) = self.instructions.get(current_instruction)
-            else {
-                break;
-            };
-
-            match instruction {
-                Instruction::Operator {
-                    operator: Operator::Integer { value },
-                } => {
-                    self.operands.push(*value);
+            match evaluator.step(&self.instructions, &mut self.operands) {
+                Ok(StepOutcome::Ready) => {
+                    continue;
                 }
-                Instruction::Operator {
-                    operator: Operator::Unknown,
-                } => {
-                    self.effect = Some(Effect::UnknownOperator);
+                Ok(StepOutcome::Finished) => {
+                    break;
+                }
+                Err(effect) => {
+                    self.effect = Some(effect);
                     break;
                 }
             }
-
-            current_instruction += 1;
         }
     }
 }
