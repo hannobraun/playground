@@ -38,7 +38,7 @@ impl Program {
     }
 
     /// # Access the operand stack
-    pub fn stack(&self) -> &Vec<i32> {
+    pub fn operands(&self) -> &Vec<i32> {
         &self.stack
     }
 
