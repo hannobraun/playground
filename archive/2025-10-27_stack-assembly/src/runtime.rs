@@ -26,6 +26,11 @@ impl Evaluator {
                 operands.push(*value);
             }
             Instruction::Operator {
+                operator: Operator::Drop0,
+            } => {
+                operands.pop();
+            }
+            Instruction::Operator {
                 operator: Operator::Unknown,
             } => {
                 return Err(Effect::UnknownOperator);
@@ -48,6 +53,7 @@ pub enum Instruction {
 
 pub enum Operator {
     Integer { value: i32 },
+    Drop0,
     Unknown,
 }
 

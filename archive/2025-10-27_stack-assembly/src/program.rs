@@ -16,7 +16,11 @@ impl Program {
         let mut instructions = Vec::new();
 
         for word in input.split_whitespace() {
-            if let Ok(value) = word.parse() {
+            if word == "drop0" {
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Drop0,
+                });
+            } else if let Ok(value) = word.parse() {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Integer { value },
                 });
