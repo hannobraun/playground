@@ -12,9 +12,13 @@ impl Program {
 
         for word in input.split_whitespace() {
             if let Ok(value) = word.parse() {
-                instructions.push(Instruction::Integer { value });
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Integer { value },
+                });
             } else {
-                instructions.push(Instruction::Unknown);
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Unknown,
+                });
             }
         }
 
@@ -47,10 +51,14 @@ impl Program {
     pub fn run(&mut self) {
         for instruction in &self.instructions {
             match instruction {
-                Instruction::Integer { value } => {
+                Instruction::Operator {
+                    operator: Operator::Integer { value },
+                } => {
                     self.stack.push(*value);
                 }
-                Instruction::Unknown => {
+                Instruction::Operator {
+                    operator: Operator::Unknown,
+                } => {
                     self.effect = Some(Effect::UnknownOperator);
                     break;
                 }
@@ -67,6 +75,10 @@ pub enum Effect {
 }
 
 enum Instruction {
+    Operator { operator: Operator },
+}
+
+enum Operator {
     Integer { value: i32 },
     Unknown,
 }
