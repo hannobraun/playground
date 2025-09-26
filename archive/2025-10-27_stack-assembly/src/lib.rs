@@ -6,5 +6,6 @@
 mod spec;
 
 mod program;
+mod runtime;
 
-pub use self::program::{Effect, Program};
+pub use self::{program::Program, runtime::Effect};

@@ -1,3 +1,8 @@
+use crate::{
+    Effect,
+    runtime::{Instruction, Operator},
+};
+
 /// # A StackAssembly program
 pub struct Program {
     instructions: Vec<Instruction>,
@@ -74,20 +79,4 @@ impl Program {
             current_instruction += 1;
         }
     }
-}
-
-/// An effect that may be triggered by a program
-#[derive(Debug, Eq, PartialEq)]
-pub enum Effect {
-    /// # Tried to evaluate an unknown operator
-    UnknownOperator,
-}
-
-enum Instruction {
-    Operator { operator: Operator },
-}
-
-enum Operator {
-    Integer { value: i32 },
-    Unknown,
 }
