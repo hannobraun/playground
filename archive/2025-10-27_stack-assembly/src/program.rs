@@ -49,6 +49,6 @@ impl Program {
 /// An effect that may be triggered by a program
 #[derive(Debug, Eq, PartialEq)]
 pub enum Effect {
-    /// # Evaluated an unknown operator
+    /// # Tried to evaluate an unknown operator
     UnknownOperator,
 }
