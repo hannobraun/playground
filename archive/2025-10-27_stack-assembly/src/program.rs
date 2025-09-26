@@ -1,7 +1,7 @@
 /// # A StackAssembly program
 pub struct Program {
     instructions: Vec<Instruction>,
-    stack: Vec<i32>,
+    operands: Vec<i32>,
     effect: Option<Effect>,
 }
 
@@ -24,7 +24,7 @@ impl Program {
 
         Self {
             instructions,
-            stack: Vec::new(),
+            operands: Vec::new(),
             effect: None,
         }
     }
@@ -38,8 +38,8 @@ impl Program {
     }
 
     /// # Access the operand stack
-    pub fn stack(&self) -> &Vec<i32> {
-        &self.stack
+    pub fn operands(&self) -> &Vec<i32> {
+        &self.operands
     }
 
     /// # Access the currently triggered effect
@@ -61,7 +61,7 @@ impl Program {
                 Instruction::Operator {
                     operator: Operator::Integer { value },
                 } => {
-                    self.stack.push(*value);
+                    self.operands.push(*value);
                 }
                 Instruction::Operator {
                     operator: Operator::Unknown,
