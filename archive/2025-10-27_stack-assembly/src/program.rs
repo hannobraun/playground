@@ -52,7 +52,8 @@ impl Program {
         let mut current_instruction = 0;
 
         loop {
-            let Some(instruction) = self.instructions.get(current_instruction) else {
+            let Some(instruction) = self.instructions.get(current_instruction)
+            else {
                 break;
             };
 
