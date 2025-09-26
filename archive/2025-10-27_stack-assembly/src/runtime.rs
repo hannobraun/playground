@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 pub struct Evaluator {
     current_instruction: usize,
 }
@@ -12,6 +14,7 @@ impl Evaluator {
     pub fn step(
         &mut self,
         instructions: &[Instruction],
+        labels: &BTreeMap<String, ()>,
         operands: &mut Operands,
     ) -> Result<StepOutcome, Effect> {
         let Some(instruction) = instructions.get(self.current_instruction)
@@ -35,10 +38,14 @@ impl Evaluator {
             } => {
                 return Err(Effect::UnknownOperator);
             }
-            Instruction::Reference => {
-                // While we don't resolve references yet, there's little we can
-                // do to evaluate them.
-                return Err(Effect::InvalidReference);
+            Instruction::Reference { name } => {
+                if let Some(()) = labels.get(name) {
+                    // So far, we don't track the actual addresses of
+                    // functions. Let's push a placeholder for now.
+                    operands.push(0);
+                } else {
+                    return Err(Effect::InvalidReference);
+                }
             }
             Instruction::Return => {
                 // So far, we don't support nested function applications, so any
@@ -59,7 +66,7 @@ pub enum StepOutcome {
 
 pub enum Instruction {
     Operator { operator: Operator },
-    Reference,
+    Reference { name: String },
     Return,
 }
 

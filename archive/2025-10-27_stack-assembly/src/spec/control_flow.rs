@@ -13,3 +13,10 @@ fn invalid_reference_triggers_effect() {
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidReference));
 }
+
+#[test]
+fn evaluating_reference_pushes_address_to_stack() {
+    let program = Program::compile_and_run("@f f:");
+    assert_eq!(program.operands().len(), 1);
+    assert_eq!(program.effect(), None);
+}
