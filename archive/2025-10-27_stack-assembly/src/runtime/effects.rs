@@ -1,4 +1,6 @@
-use crate::runtime::operands::StackUnderflow;
+use crate::runtime::{
+    call_stack::InvalidInstructionAddress, operands::StackUnderflow,
+};
 
 /// An effect that may be triggered by a program
 #[derive(Debug, Eq, PartialEq)]
@@ -14,6 +16,12 @@ pub enum Effect {
 
     /// # Tried to evaluate an unknown operator
     UnknownOperator,
+}
+
+impl From<InvalidInstructionAddress> for Effect {
+    fn from(InvalidInstructionAddress: InvalidInstructionAddress) -> Self {
+        Self::InvalidInstructionAddress
+    }
 }
 
 impl From<StackUnderflow> for Effect {

@@ -11,11 +11,26 @@ impl CallStack {
         self.inner.last_mut()
     }
 
-    pub fn push(&mut self, address: usize) {
+    pub fn push(
+        &mut self,
+        address: i32,
+    ) -> Result<(), InvalidInstructionAddress> {
+        let Ok(address) = address.try_into() else {
+            return Err(InvalidInstructionAddress);
+        };
+
+        if let Some(current_instruction) = self.current_instruction() {
+            *current_instruction += 1;
+        }
+
         self.inner.push(address);
+
+        Ok(())
     }
 
     pub fn pop(&mut self) {
         self.inner.pop();
     }
 }
+
+pub struct InvalidInstructionAddress;

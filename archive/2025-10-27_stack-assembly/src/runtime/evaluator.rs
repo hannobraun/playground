@@ -22,7 +22,8 @@ impl Evaluator {
         labels: &BTreeMap<String, i32>,
         operands: &mut Operands,
     ) -> Result<StepOutcome, Effect> {
-        let Some(current_instruction) = self.call_stack.current_instruction() else {
+        let Some(current_instruction) = self.call_stack.current_instruction()
+        else {
             return Ok(StepOutcome::Finished);
         };
         let Some(instruction) = instructions.get(*current_instruction) else {
@@ -39,13 +40,8 @@ impl Evaluator {
                 operator: Operator::Apply,
             } => {
                 let address = operands.pop()?;
-                if let Ok(address) = address.try_into() {
-                    *current_instruction += 1;
-                    self.call_stack.push(address);
-                    return Ok(StepOutcome::Ready);
-                } else {
-                    return Err(Effect::InvalidInstructionAddress);
-                }
+                self.call_stack.push(address)?;
+                return Ok(StepOutcome::Ready);
             }
             Instruction::Operator {
                 operator: Operator::Drop0,
