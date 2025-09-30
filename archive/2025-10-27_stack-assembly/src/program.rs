@@ -1,12 +1,12 @@
 use crate::{
     Effect,
-    runtime::{Evaluator, Instruction, Operator, StepOutcome},
+    runtime::{Evaluator, Instruction, Operands, Operator, StepOutcome},
 };
 
 /// # A StackAssembly program
 pub struct Program {
     instructions: Vec<Instruction>,
-    operands: Vec<i32>,
+    operands: Operands,
     effect: Option<Effect>,
 }
 
@@ -33,7 +33,7 @@ impl Program {
 
         Self {
             instructions,
-            operands: Vec::new(),
+            operands: Operands::new(),
             effect: None,
         }
     }
@@ -48,7 +48,7 @@ impl Program {
 
     /// # Access the operand stack
     pub fn operands(&self) -> &Vec<i32> {
-        &self.operands
+        self.operands.inner()
     }
 
     /// # Access the currently triggered effect

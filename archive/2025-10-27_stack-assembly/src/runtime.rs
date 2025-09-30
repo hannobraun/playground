@@ -12,7 +12,7 @@ impl Evaluator {
     pub fn step(
         &mut self,
         instructions: &[Instruction],
-        operands: &mut Vec<i32>,
+        operands: &mut Operands,
     ) -> Result<StepOutcome, Effect> {
         let Some(instruction) = instructions.get(self.current_instruction)
         else {
@@ -55,6 +55,28 @@ pub enum Operator {
     Integer { value: i32 },
     Drop0,
     Unknown,
+}
+
+pub struct Operands {
+    inner: Vec<i32>,
+}
+
+impl Operands {
+    pub fn new() -> Self {
+        Self { inner: Vec::new() }
+    }
+
+    pub fn push(&mut self, value: i32) {
+        self.inner.push(value);
+    }
+
+    pub fn pop(&mut self) -> Option<i32> {
+        self.inner.pop()
+    }
+
+    pub fn inner(&self) -> &Vec<i32> {
+        &self.inner
+    }
 }
 
 /// An effect that may be triggered by a program
