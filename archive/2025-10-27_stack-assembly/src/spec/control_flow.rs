@@ -44,3 +44,10 @@ fn apply_should_trigger_effect_on_invalid_address() {
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidInstructionAddress));
 }
+
+#[test]
+fn apply_function_because_of_condition() {
+    let program = Program::compile_and_run("1 @f apply_if f: 3");
+    assert_eq!(program.operands(), &vec![3]);
+    assert_eq!(program.effect(), None);
+}

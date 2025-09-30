@@ -10,6 +10,7 @@ pub enum Operator {
     Integer { value: i32 },
 
     Apply,
+    ApplyIf,
     Drop0,
 
     Unknown,

@@ -44,6 +44,16 @@ impl Evaluator {
                 return Ok(StepOutcome::Ready);
             }
             Instruction::Operator {
+                operator: Operator::ApplyIf,
+            } => {
+                let address = operands.pop()?;
+                let _condition = operands.pop()?;
+
+                self.call_stack.push(address)?;
+
+                return Ok(StepOutcome::Ready);
+            }
+            Instruction::Operator {
                 operator: Operator::Drop0,
             } => {
                 operands.pop()?;
