@@ -29,6 +29,12 @@ impl Evaluator {
                 operands.push(*value);
             }
             Instruction::Operator {
+                operator: Operator::Apply,
+            } => {
+                operands.pop()?;
+                return Err(Effect::InvalidInstructionAddress);
+            }
+            Instruction::Operator {
                 operator: Operator::Drop0,
             } => {
                 operands.pop()?;
@@ -72,7 +78,10 @@ pub enum Instruction {
 
 pub enum Operator {
     Integer { value: i32 },
+
+    Apply,
     Drop0,
+
     Unknown,
 }
 
@@ -103,6 +112,9 @@ pub struct StackUnderflow;
 /// An effect that may be triggered by a program
 #[derive(Debug, Eq, PartialEq)]
 pub enum Effect {
+    /// # Tried to apply a function based on an invalid address
+    InvalidInstructionAddress,
+
     /// # Tried to evaluate an invalid reference
     InvalidReference,
 

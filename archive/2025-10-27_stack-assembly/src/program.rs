@@ -20,7 +20,11 @@ impl Program {
         let mut labels = BTreeMap::new();
 
         for word in input.split_whitespace() {
-            if word == "drop0" {
+            if word == "apply" {
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Apply,
+                });
+            } else if word == "drop0" {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Drop0,
                 });

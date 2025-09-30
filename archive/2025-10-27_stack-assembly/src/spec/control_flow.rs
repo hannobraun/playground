@@ -20,3 +20,10 @@ fn evaluating_reference_pushes_address_to_stack() {
     assert_eq!(program.operands().len(), 1);
     assert_eq!(program.effect(), None);
 }
+
+#[test]
+fn apply_should_trigger_effect_on_invalid_address() {
+    let program = Program::compile_and_run("-1 apply 3");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::InvalidInstructionAddress));
+}
