@@ -2,17 +2,17 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    runtime::{Instruction, Operands, Operator},
+    runtime::{Instruction, Operands, Operator, call_stack::CallStack},
 };
 
 pub struct Evaluator {
-    call_stack: Vec<usize>,
+    call_stack: CallStack,
 }
 
 impl Evaluator {
     pub fn new() -> Self {
         Self {
-            call_stack: vec![0],
+            call_stack: CallStack::new(),
         }
     }
 
