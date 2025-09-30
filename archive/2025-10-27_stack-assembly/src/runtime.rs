@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 pub struct Evaluator {
     current_instruction: usize,
 }
@@ -12,6 +14,7 @@ impl Evaluator {
     pub fn step(
         &mut self,
         instructions: &[Instruction],
+        labels: &BTreeMap<String, i32>,
         operands: &mut Operands,
     ) -> Result<StepOutcome, Effect> {
         let Some(instruction) = instructions.get(self.current_instruction)
@@ -26,6 +29,17 @@ impl Evaluator {
                 operands.push(*value);
             }
             Instruction::Operator {
+                operator: Operator::Apply,
+            } => {
+                let address = operands.pop()?;
+                if let Ok(address) = address.try_into() {
+                    self.current_instruction = address;
+                    return Ok(StepOutcome::Ready);
+                } else {
+                    return Err(Effect::InvalidInstructionAddress);
+                }
+            }
+            Instruction::Operator {
                 operator: Operator::Drop0,
             } => {
                 operands.pop()?;
@@ -34,6 +48,20 @@ impl Evaluator {
                 operator: Operator::Unknown,
             } => {
                 return Err(Effect::UnknownOperator);
+            }
+            Instruction::Reference { name } => {
+                if let Some(&address) = labels.get(name) {
+                    // So far, we don't track the actual addresses of
+                    // functions. Let's push a placeholder for now.
+                    operands.push(address);
+                } else {
+                    return Err(Effect::InvalidReference);
+                }
+            }
+            Instruction::Return => {
+                // So far, we don't support nested function applications, so any
+                // return will just end the program.
+                return Ok(StepOutcome::Finished);
             }
         }
 
@@ -49,11 +77,16 @@ pub enum StepOutcome {
 
 pub enum Instruction {
     Operator { operator: Operator },
+    Reference { name: String },
+    Return,
 }
 
 pub enum Operator {
     Integer { value: i32 },
+
+    Apply,
     Drop0,
+
     Unknown,
 }
 
@@ -84,6 +117,12 @@ pub struct StackUnderflow;
 /// An effect that may be triggered by a program
 #[derive(Debug, Eq, PartialEq)]
 pub enum Effect {
+    /// # Tried to apply a function based on an invalid address
+    InvalidInstructionAddress,
+
+    /// # Tried to evaluate an invalid reference
+    InvalidReference,
+
     /// # Tried popping a value from empty operand stack
     StackUnderflow,
 
