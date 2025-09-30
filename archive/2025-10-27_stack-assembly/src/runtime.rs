@@ -14,7 +14,7 @@ impl Evaluator {
     pub fn step(
         &mut self,
         instructions: &[Instruction],
-        labels: &BTreeMap<String, ()>,
+        labels: &BTreeMap<String, i32>,
         operands: &mut Operands,
     ) -> Result<StepOutcome, Effect> {
         let Some(instruction) = instructions.get(self.current_instruction)
@@ -31,8 +31,13 @@ impl Evaluator {
             Instruction::Operator {
                 operator: Operator::Apply,
             } => {
-                operands.pop()?;
-                return Err(Effect::InvalidInstructionAddress);
+                let address = operands.pop()?;
+                if let Ok(address) = address.try_into() {
+                    self.current_instruction = address;
+                    return Ok(StepOutcome::Ready);
+                } else {
+                    return Err(Effect::InvalidInstructionAddress);
+                }
             }
             Instruction::Operator {
                 operator: Operator::Drop0,
@@ -45,10 +50,10 @@ impl Evaluator {
                 return Err(Effect::UnknownOperator);
             }
             Instruction::Reference { name } => {
-                if let Some(()) = labels.get(name) {
+                if let Some(&address) = labels.get(name) {
                     // So far, we don't track the actual addresses of
                     // functions. Let's push a placeholder for now.
-                    operands.push(0);
+                    operands.push(address);
                 } else {
                     return Err(Effect::InvalidReference);
                 }

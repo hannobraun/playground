@@ -8,7 +8,7 @@ use crate::{
 /// # A StackAssembly program
 pub struct Program {
     instructions: Vec<Instruction>,
-    labels: BTreeMap<String, ()>,
+    labels: BTreeMap<String, i32>,
     operands: Operands,
     effect: Option<Effect>,
 }
@@ -37,7 +37,25 @@ impl Program {
                 // ended.
                 instructions.push(Instruction::Return);
 
-                labels.insert(label.to_string(), ());
+                let address = {
+                    let address = instructions.len();
+
+                    let Ok(address) = address.try_into() else {
+                        // This is okay for now, but it would be nicer to reject
+                        // this when pushing to `instructions`.
+                        panic!(
+                            "Label `{label}` points to address `{address}`, \
+                            which can't be represented as a signed 32-bit \
+                            integer. Too much code!"
+                        );
+                    };
+
+                    address
+                };
+
+                // This overwrites any previous label of the same name. Fine for
+                // now, but it would be better if this were an error.
+                labels.insert(label.to_string(), address);
             } else if let Ok(value) = word.parse() {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Integer { value },
