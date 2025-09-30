@@ -24,6 +24,10 @@ impl Program {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Apply,
                 });
+            } else if word == "apply_if" {
+                instructions.push(Instruction::Operator {
+                    operator: Operator::ApplyIf,
+                });
             } else if word == "drop0" {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Drop0,
