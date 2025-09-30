@@ -2,12 +2,14 @@ use std::collections::BTreeMap;
 
 pub struct Evaluator {
     current_instruction: usize,
+    call_stack: Vec<usize>,
 }
 
 impl Evaluator {
     pub fn new() -> Self {
         Self {
             current_instruction: 0,
+            call_stack: Vec::new(),
         }
     }
 
@@ -33,6 +35,7 @@ impl Evaluator {
             } => {
                 let address = operands.pop()?;
                 if let Ok(address) = address.try_into() {
+                    self.call_stack.push(self.current_instruction);
                     self.current_instruction = address;
                     return Ok(StepOutcome::Ready);
                 } else {
@@ -59,9 +62,11 @@ impl Evaluator {
                 }
             }
             Instruction::Return => {
-                // So far, we don't support nested function applications, so any
-                // return will just end the program.
-                return Ok(StepOutcome::Finished);
+                let Some(address) = self.call_stack.pop() else {
+                    return Ok(StepOutcome::Finished);
+                };
+
+                self.current_instruction = address;
             }
         }
 
