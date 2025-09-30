@@ -1,15 +1,13 @@
 use std::collections::BTreeMap;
 
 pub struct Evaluator {
-    current_instruction: usize,
     call_stack: Vec<usize>,
 }
 
 impl Evaluator {
     pub fn new() -> Self {
         Self {
-            current_instruction: 0,
-            call_stack: Vec::new(),
+            call_stack: vec![0],
         }
     }
 
@@ -19,8 +17,10 @@ impl Evaluator {
         labels: &BTreeMap<String, i32>,
         operands: &mut Operands,
     ) -> Result<StepOutcome, Effect> {
-        let Some(instruction) = instructions.get(self.current_instruction)
-        else {
+        let Some(current_instruction) = self.call_stack.last_mut() else {
+            return Ok(StepOutcome::Finished);
+        };
+        let Some(instruction) = instructions.get(*current_instruction) else {
             return Ok(StepOutcome::Finished);
         };
 
@@ -35,8 +35,8 @@ impl Evaluator {
             } => {
                 let address = operands.pop()?;
                 if let Ok(address) = address.try_into() {
-                    self.call_stack.push(self.current_instruction);
-                    self.current_instruction = address;
+                    *current_instruction += 1;
+                    self.call_stack.push(address);
                     return Ok(StepOutcome::Ready);
                 } else {
                     return Err(Effect::InvalidInstructionAddress);
@@ -62,15 +62,12 @@ impl Evaluator {
                 }
             }
             Instruction::Return => {
-                let Some(address) = self.call_stack.pop() else {
-                    return Ok(StepOutcome::Finished);
-                };
-
-                self.current_instruction = address;
+                self.call_stack.pop();
+                return Ok(StepOutcome::Ready);
             }
         }
 
-        self.current_instruction += 1;
+        *current_instruction += 1;
         Ok(StepOutcome::Ready)
     }
 }
