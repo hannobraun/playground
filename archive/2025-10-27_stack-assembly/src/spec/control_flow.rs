@@ -23,7 +23,13 @@ fn evaluating_reference_pushes_address_to_stack() {
 
 #[test]
 fn apply_function_unconditionally() {
-    let program = Program::compile_and_run("@f apply f: 3");
+    let program = Program::compile_and_run(
+        "
+        @f apply
+        f:
+            3
+        ",
+    );
     assert_eq!(program.operands(), &vec![3]);
     assert_eq!(program.effect(), None);
 }
