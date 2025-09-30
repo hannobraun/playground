@@ -47,11 +47,12 @@ impl Evaluator {
                 operator: Operator::ApplyIf,
             } => {
                 let address = operands.pop()?;
-                let _condition = operands.pop()?;
+                let condition = operands.pop()?;
 
-                self.call_stack.push(address)?;
-
-                return Ok(StepOutcome::Ready);
+                if condition != 0 {
+                    self.call_stack.push(address)?;
+                    return Ok(StepOutcome::Ready);
+                }
             }
             Instruction::Operator {
                 operator: Operator::Drop0,
