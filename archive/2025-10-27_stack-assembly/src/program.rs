@@ -1,7 +1,12 @@
+use crate::{
+    Effect,
+    runtime::{Evaluator, Instruction, Operands, Operator, StepOutcome},
+};
+
 /// # A StackAssembly program
 pub struct Program {
     instructions: Vec<Instruction>,
-    operands: Vec<i32>,
+    operands: Operands,
     effect: Option<Effect>,
 }
 
@@ -11,7 +16,11 @@ impl Program {
         let mut instructions = Vec::new();
 
         for word in input.split_whitespace() {
-            if let Ok(value) = word.parse() {
+            if word == "drop0" {
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Drop0,
+                });
+            } else if let Ok(value) = word.parse() {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Integer { value },
                 });
@@ -24,7 +33,7 @@ impl Program {
 
         Self {
             instructions,
-            operands: Vec::new(),
+            operands: Operands::new(),
             effect: None,
         }
     }
@@ -39,7 +48,7 @@ impl Program {
 
     /// # Access the operand stack
     pub fn operands(&self) -> &Vec<i32> {
-        &self.operands
+        self.operands.inner()
     }
 
     /// # Access the currently triggered effect
@@ -49,45 +58,21 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        let mut current_instruction = 0;
+        let mut evaluator = Evaluator::new();
 
         loop {
-            let Some(instruction) = self.instructions.get(current_instruction)
-            else {
-                break;
-            };
-
-            match instruction {
-                Instruction::Operator {
-                    operator: Operator::Integer { value },
-                } => {
-                    self.operands.push(*value);
+            match evaluator.step(&self.instructions, &mut self.operands) {
+                Ok(StepOutcome::Ready) => {
+                    continue;
                 }
-                Instruction::Operator {
-                    operator: Operator::Unknown,
-                } => {
-                    self.effect = Some(Effect::UnknownOperator);
+                Ok(StepOutcome::Finished) => {
+                    break;
+                }
+                Err(effect) => {
+                    self.effect = Some(effect);
                     break;
                 }
             }
-
-            current_instruction += 1;
         }
     }
-}
-
-/// An effect that may be triggered by a program
-#[derive(Debug, Eq, PartialEq)]
-pub enum Effect {
-    /// # Tried to evaluate an unknown operator
-    UnknownOperator,
-}
-
-enum Instruction {
-    Operator { operator: Operator },
-}
-
-enum Operator {
-    Integer { value: i32 },
-    Unknown,
 }
