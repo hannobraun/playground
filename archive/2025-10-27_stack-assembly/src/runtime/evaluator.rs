@@ -22,7 +22,7 @@ impl Evaluator {
         labels: &BTreeMap<String, i32>,
         operands: &mut Operands,
     ) -> Result<StepOutcome, Effect> {
-        let Some(current_instruction) = self.call_stack.last_mut() else {
+        let Some(current_instruction) = self.call_stack.current_instruction() else {
             return Ok(StepOutcome::Finished);
         };
         let Some(instruction) = instructions.get(*current_instruction) else {

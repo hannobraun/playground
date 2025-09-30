@@ -7,7 +7,7 @@ impl CallStack {
         Self { inner: vec![0] }
     }
 
-    pub fn last_mut(&mut self) -> Option<&mut usize> {
+    pub fn current_instruction(&mut self) -> Option<&mut usize> {
         self.inner.last_mut()
     }
 
