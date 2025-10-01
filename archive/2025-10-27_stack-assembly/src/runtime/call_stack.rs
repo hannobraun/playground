@@ -11,6 +11,12 @@ impl CallStack {
         self.inner.last_mut()
     }
 
+    pub fn advance(&mut self) {
+        if let Some(address) = self.inner.last_mut() {
+            *address += 1;
+        }
+    }
+
     pub fn push(
         &mut self,
         address: i32,
@@ -19,10 +25,7 @@ impl CallStack {
             return Err(InvalidInstructionAddress);
         };
 
-        if let Some(current_instruction) = self.current_instruction() {
-            *current_instruction += 1;
-        }
-
+        self.advance();
         self.inner.push(address);
 
         Ok(())

@@ -67,7 +67,7 @@ pub fn step(
         }
     }
 
-    *current_instruction += 1;
+    call_stack.advance();
     Ok(StepOutcome::Ready)
 }
 
