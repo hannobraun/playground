@@ -5,15 +5,11 @@ use crate::{
     runtime::{Instruction, Operands, Operator, call_stack::CallStack},
 };
 
-pub struct Evaluator {
-    call_stack: CallStack,
-}
+pub struct Evaluator {}
 
 impl Evaluator {
     pub fn new() -> Self {
-        Self {
-            call_stack: CallStack::new(),
-        }
+        Self {}
     }
 
     pub fn step(
@@ -21,9 +17,9 @@ impl Evaluator {
         instructions: &[Instruction],
         labels: &BTreeMap<String, i32>,
         operands: &mut Operands,
+        call_stack: &mut CallStack,
     ) -> Result<StepOutcome, Effect> {
-        let Some(current_instruction) = self.call_stack.current_instruction()
-        else {
+        let Some(current_instruction) = call_stack.current_instruction() else {
             return Ok(StepOutcome::Finished);
         };
         let Some(instruction) = instructions.get(*current_instruction) else {
@@ -40,7 +36,7 @@ impl Evaluator {
                 operator: Operator::Call,
             } => {
                 let address = operands.pop()?;
-                self.call_stack.push(address)?;
+                call_stack.push(address)?;
                 return Ok(StepOutcome::Ready);
             }
             Instruction::Operator {
@@ -50,7 +46,7 @@ impl Evaluator {
                 let condition = operands.pop()?;
 
                 if condition != 0 {
-                    self.call_stack.push(address)?;
+                    call_stack.push(address)?;
                     return Ok(StepOutcome::Ready);
                 }
             }
@@ -74,7 +70,7 @@ impl Evaluator {
                 }
             }
             Instruction::Return => {
-                self.call_stack.pop();
+                call_stack.pop();
                 return Ok(StepOutcome::Ready);
             }
         }

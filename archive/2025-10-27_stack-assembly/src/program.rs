@@ -2,7 +2,9 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    runtime::{Evaluator, Instruction, Operands, Operator, StepOutcome},
+    runtime::{
+        CallStack, Evaluator, Instruction, Operands, Operator, StepOutcome,
+    },
 };
 
 /// # A StackAssembly program
@@ -10,6 +12,7 @@ pub struct Program {
     instructions: Vec<Instruction>,
     labels: BTreeMap<String, i32>,
     operands: Operands,
+    call_stack: CallStack,
     effect: Option<Effect>,
 }
 
@@ -75,6 +78,7 @@ impl Program {
             instructions,
             labels,
             operands: Operands::new(),
+            call_stack: CallStack::new(),
             effect: None,
         }
     }
@@ -106,6 +110,7 @@ impl Program {
                 &self.instructions,
                 &self.labels,
                 &mut self.operands,
+                &mut self.call_stack,
             ) {
                 Ok(StepOutcome::Ready) => {
                     continue;
