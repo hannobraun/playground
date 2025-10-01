@@ -51,11 +51,6 @@ pub fn step(
         } => {
             return Err(Effect::Yield);
         }
-        Instruction::Operator {
-            operator: Operator::Unknown,
-        } => {
-            return Err(Effect::UnknownOperator);
-        }
         Instruction::Reference { name } => {
             if let Some(&address) = labels.get(name) {
                 // So far, we don't track the actual addresses of
@@ -68,6 +63,9 @@ pub fn step(
         Instruction::Return => {
             call_stack.pop();
             return Ok(StepOutcome::Ready);
+        }
+        Instruction::Trigger { effect } => {
+            return Err(*effect);
         }
     }
 

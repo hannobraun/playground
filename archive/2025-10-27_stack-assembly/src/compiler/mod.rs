@@ -1,4 +1,7 @@
-use crate::instructions::{Instruction, Instructions, Labels, Operator};
+use crate::{
+    Effect,
+    instructions::{Instruction, Instructions, Labels, Operator},
+};
 
 pub fn compile(input: &str) -> (Instructions, Labels) {
     let mut instructions = Vec::new();
@@ -33,10 +36,12 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
             // This overwrites any previous label of the same name. Fine for
             // now, but it would be better if this were an error.
             labels.insert(label.to_string(), address);
+        } else if let Some(operator) = parse_operator(token) {
+            instructions.push(Instruction::Operator { operator });
         } else {
-            instructions.push(Instruction::Operator {
-                operator: parse_operator(token),
-            });
+            instructions.push(Instruction::Trigger {
+                effect: Effect::UnknownOperator,
+            })
         }
     }
 
@@ -51,8 +56,8 @@ fn parse_label(token: &str) -> Option<&str> {
     }
 }
 
-fn parse_operator(token: &str) -> Operator {
-    if token == "call" {
+fn parse_operator(token: &str) -> Option<Operator> {
+    let operator = if token == "call" {
         Operator::Call
     } else if token == "call_if" {
         Operator::CallIf
@@ -63,8 +68,10 @@ fn parse_operator(token: &str) -> Operator {
     } else if let Ok(value) = token.parse() {
         Operator::Integer { value }
     } else {
-        Operator::Unknown
-    }
+        return None;
+    };
+
+    Some(operator)
 }
 
 fn parse_reference(token: &str) -> Option<&str> {
