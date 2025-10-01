@@ -5,6 +5,7 @@
 #[cfg(test)]
 mod spec;
 
+mod compiler;
 mod instructions;
 mod program;
 mod runtime;
