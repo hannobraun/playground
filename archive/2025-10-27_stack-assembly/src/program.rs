@@ -81,10 +81,10 @@ impl Program {
         }
     }
 
-    /// # Call [`Program::compile`], then [`Program::run`]
+    /// # Call [`Program::compile`], then [`Program::continue_`]
     pub fn compile_and_run(input: &str) -> Self {
         let mut program = Self::compile(input);
-        program.run();
+        program.continue_();
 
         program
     }
@@ -104,8 +104,8 @@ impl Program {
         self.effect.as_ref()
     }
 
-    /// # Run the program until completion
-    pub fn run(&mut self) {
+    /// # Continue the program until it finishes or triggers an effect
+    pub fn continue_(&mut self) {
         loop {
             match step(
                 &self.instructions,
