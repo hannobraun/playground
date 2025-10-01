@@ -104,7 +104,7 @@ impl Program {
         self.effect.as_ref()
     }
 
-    /// # Run the program until completion
+    /// # Continue the program until it finishes or triggers an effect
     pub fn continue_(&mut self) {
         loop {
             match step(
