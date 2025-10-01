@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    runtime::{Evaluator, Instruction, Operands, Operator, StepOutcome},
+    runtime::{CallStack, Instruction, Operands, Operator, StepOutcome, step},
 };
 
 /// # A StackAssembly program
@@ -10,6 +10,7 @@ pub struct Program {
     instructions: Vec<Instruction>,
     labels: BTreeMap<String, i32>,
     operands: Operands,
+    call_stack: CallStack,
     effect: Option<Effect>,
 }
 
@@ -75,6 +76,7 @@ impl Program {
             instructions,
             labels,
             operands: Operands::new(),
+            call_stack: CallStack::new(),
             effect: None,
         }
     }
@@ -92,6 +94,11 @@ impl Program {
         self.operands.inner()
     }
 
+    /// # Access the call stack
+    pub fn call_stack(&self) -> &Vec<usize> {
+        self.call_stack.inner()
+    }
+
     /// # Access the currently triggered effect
     pub fn effect(&self) -> Option<&Effect> {
         self.effect.as_ref()
@@ -99,13 +106,12 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        let mut evaluator = Evaluator::new();
-
         loop {
-            match evaluator.step(
+            match step(
                 &self.instructions,
                 &self.labels,
                 &mut self.operands,
+                &mut self.call_stack,
             ) {
                 Ok(StepOutcome::Ready) => {
                     continue;
