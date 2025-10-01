@@ -4,28 +4,28 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
     let mut instructions = Vec::new();
     let mut labels = Labels::new();
 
-    for word in input.split_whitespace() {
-        if word == "call" {
+    for token in input.split_whitespace() {
+        if token == "call" {
             instructions.push(Instruction::Operator {
                 operator: Operator::Call,
             });
-        } else if word == "call_if" {
+        } else if token == "call_if" {
             instructions.push(Instruction::Operator {
                 operator: Operator::CallIf,
             });
-        } else if word == "drop0" {
+        } else if token == "drop0" {
             instructions.push(Instruction::Operator {
                 operator: Operator::Drop0,
             });
-        } else if word == "yield" {
+        } else if token == "yield" {
             instructions.push(Instruction::Operator {
                 operator: Operator::Yield,
             });
-        } else if let Some(("", reference)) = word.split_once("@") {
+        } else if let Some(("", reference)) = token.split_once("@") {
             instructions.push(Instruction::Reference {
                 name: reference.to_string(),
             });
-        } else if let Some((label, "")) = word.rsplit_once(":") {
+        } else if let Some((label, "")) = token.rsplit_once(":") {
             // Encountering a label means that the previous function has
             // ended.
             instructions.push(Instruction::Return);
@@ -49,7 +49,7 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
             // This overwrites any previous label of the same name. Fine for
             // now, but it would be better if this were an error.
             labels.insert(label.to_string(), address);
-        } else if let Ok(value) = word.parse() {
+        } else if let Ok(value) = token.parse() {
             instructions.push(Instruction::Operator {
                 operator: Operator::Integer { value },
             });
