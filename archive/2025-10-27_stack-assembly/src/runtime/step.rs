@@ -48,6 +48,11 @@ pub fn step(
             operands.pop()?;
         }
         Instruction::Operator {
+            operator: Operator::Yield,
+        } => {
+            return Err(Effect::Yield);
+        }
+        Instruction::Operator {
             operator: Operator::Unknown,
         } => {
             return Err(Effect::UnknownOperator);

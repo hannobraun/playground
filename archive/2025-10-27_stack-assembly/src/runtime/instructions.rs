@@ -12,6 +12,7 @@ pub enum Operator {
     Call,
     CallIf,
     Drop0,
+    Yield,
 
     Unknown,
 }

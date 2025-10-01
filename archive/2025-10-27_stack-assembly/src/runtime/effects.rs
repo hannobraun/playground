@@ -16,6 +16,9 @@ pub enum Effect {
 
     /// # Tried to evaluate an unknown operator
     UnknownOperator,
+
+    /// # The program has yielded control to the host
+    Yield,
 }
 
 impl From<InvalidInstructionAddress> for Effect {
