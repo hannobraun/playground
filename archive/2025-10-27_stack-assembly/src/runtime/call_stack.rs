@@ -7,8 +7,14 @@ impl CallStack {
         Self { inner: vec![0] }
     }
 
-    pub fn current_instruction(&mut self) -> Option<&mut usize> {
-        self.inner.last_mut()
+    pub fn current_instruction(&self) -> Option<usize> {
+        self.inner.last().copied()
+    }
+
+    pub fn advance(&mut self) {
+        if let Some(address) = self.inner.last_mut() {
+            *address += 1;
+        }
     }
 
     pub fn push(
@@ -19,10 +25,7 @@ impl CallStack {
             return Err(InvalidInstructionAddress);
         };
 
-        if let Some(current_instruction) = self.current_instruction() {
-            *current_instruction += 1;
-        }
-
+        self.advance();
         self.inner.push(address);
 
         Ok(())
