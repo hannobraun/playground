@@ -94,6 +94,11 @@ impl Program {
         self.operands.inner()
     }
 
+    /// # Access the call stack
+    pub fn call_stack(&self) -> &Vec<usize> {
+        self.call_stack.inner()
+    }
+
     /// # Access the currently triggered effect
     pub fn effect(&self) -> Option<&Effect> {
         self.effect.as_ref()

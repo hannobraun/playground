@@ -31,6 +31,10 @@ impl CallStack {
     pub fn pop(&mut self) {
         self.inner.pop();
     }
+
+    pub fn inner(&self) -> &Vec<usize> {
+        &self.inner
+    }
 }
 
 pub struct InvalidInstructionAddress;
