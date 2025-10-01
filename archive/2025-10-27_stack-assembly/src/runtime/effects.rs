@@ -1,7 +1,3 @@
-use crate::runtime::{
-    call_stack::InvalidInstructionAddress, operands::StackUnderflow,
-};
-
 /// An effect that may be triggered by a program
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Effect {
@@ -19,16 +15,4 @@ pub enum Effect {
 
     /// # The program has yielded control to the host
     Yield,
-}
-
-impl From<InvalidInstructionAddress> for Effect {
-    fn from(InvalidInstructionAddress: InvalidInstructionAddress) -> Self {
-        Self::InvalidInstructionAddress
-    }
-}
-
-impl From<StackUnderflow> for Effect {
-    fn from(StackUnderflow: StackUnderflow) -> Self {
-        Self::StackUnderflow
-    }
 }

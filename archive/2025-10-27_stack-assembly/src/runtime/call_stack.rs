@@ -1,3 +1,5 @@
+use crate::Effect;
+
 pub struct CallStack {
     inner: Vec<usize>,
 }
@@ -41,3 +43,9 @@ impl CallStack {
 }
 
 pub struct InvalidInstructionAddress;
+
+impl From<InvalidInstructionAddress> for Effect {
+    fn from(InvalidInstructionAddress: InvalidInstructionAddress) -> Self {
+        Self::InvalidInstructionAddress
+    }
+}

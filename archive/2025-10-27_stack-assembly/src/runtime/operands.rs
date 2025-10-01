@@ -1,3 +1,5 @@
+use crate::Effect;
+
 pub struct Operands {
     inner: Vec<i32>,
 }
@@ -21,3 +23,9 @@ impl Operands {
 }
 
 pub struct StackUnderflow;
+
+impl From<StackUnderflow> for Effect {
+    fn from(StackUnderflow: StackUnderflow) -> Self {
+        Self::StackUnderflow
+    }
+}
