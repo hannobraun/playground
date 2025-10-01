@@ -2,7 +2,8 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    runtime::{CallStack, Instruction, Operands, Operator, StepOutcome, step},
+    instructions::{Instruction, Operator},
+    runtime::{CallStack, Operands, StepOutcome, step},
 };
 
 /// # A StackAssembly program

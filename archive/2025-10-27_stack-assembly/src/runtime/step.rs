@@ -2,7 +2,8 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    runtime::{Instruction, Operands, Operator, call_stack::CallStack},
+    instructions::{Instruction, Operator},
+    runtime::{Operands, call_stack::CallStack},
 };
 
 pub fn step(
