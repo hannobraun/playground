@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 pub type Instructions = Vec<Instruction>;
 
 #[derive(Debug)]
@@ -18,3 +20,5 @@ pub enum Operator {
 
     Unknown,
 }
+
+pub type Labels = BTreeMap<String, i32>;

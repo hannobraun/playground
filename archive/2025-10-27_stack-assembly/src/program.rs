@@ -1,15 +1,13 @@
-use std::collections::BTreeMap;
-
 use crate::{
     Effect,
-    instructions::{Instruction, Instructions, Operator},
+    instructions::{Instruction, Instructions, Labels, Operator},
     runtime::{CallStack, Operands, StepOutcome, step},
 };
 
 /// # A StackAssembly program
 pub struct Program {
     instructions: Instructions,
-    labels: BTreeMap<String, i32>,
+    labels: Labels,
     operands: Operands,
     call_stack: CallStack,
     effect: Option<Effect>,
@@ -19,7 +17,7 @@ impl Program {
     /// # Create a `Program` instance by compiling the provided code
     pub fn compile(input: &str) -> Self {
         let mut instructions = Vec::new();
-        let mut labels = BTreeMap::new();
+        let mut labels = Labels::new();
 
         for word in input.split_whitespace() {
             if word == "call" {
