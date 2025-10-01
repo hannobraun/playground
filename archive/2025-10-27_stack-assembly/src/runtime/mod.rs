@@ -7,7 +7,7 @@ mod operands;
 pub use self::{
     call_stack::CallStack,
     effects::Effect,
-    evaluator::{Evaluator, StepOutcome},
+    evaluator::{StepOutcome, step},
     instructions::{Instruction, Operator},
     operands::Operands,
 };

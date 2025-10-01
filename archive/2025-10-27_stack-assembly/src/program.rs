@@ -2,9 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    runtime::{
-        CallStack, Evaluator, Instruction, Operands, Operator, StepOutcome,
-    },
+    runtime::{CallStack, Instruction, Operands, Operator, StepOutcome, step},
 };
 
 /// # A StackAssembly program
@@ -103,10 +101,8 @@ impl Program {
 
     /// # Run the program until completion
     pub fn run(&mut self) {
-        let mut evaluator = Evaluator::new();
-
         loop {
-            match evaluator.step(
+            match step(
                 &self.instructions,
                 &self.labels,
                 &mut self.operands,
