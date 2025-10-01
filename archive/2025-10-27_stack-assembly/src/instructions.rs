@@ -1,3 +1,5 @@
+pub type Instructions = Vec<Instruction>;
+
 #[derive(Debug)]
 pub enum Instruction {
     Operator { operator: Operator },

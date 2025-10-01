@@ -2,13 +2,13 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    instructions::{Instruction, Operator},
+    instructions::{Instruction, Instructions, Operator},
     runtime::{CallStack, Operands, StepOutcome, step},
 };
 
 /// # A StackAssembly program
 pub struct Program {
-    instructions: Vec<Instruction>,
+    instructions: Instructions,
     labels: BTreeMap<String, i32>,
     operands: Operands,
     call_stack: CallStack,

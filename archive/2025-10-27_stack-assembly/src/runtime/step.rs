@@ -2,12 +2,12 @@ use std::collections::BTreeMap;
 
 use crate::{
     Effect,
-    instructions::{Instruction, Operator},
+    instructions::{Instruction, Instructions, Operator},
     runtime::{Operands, call_stack::CallStack},
 };
 
 pub fn step(
-    instructions: &[Instruction],
+    instructions: &Instructions,
     labels: &BTreeMap<String, i32>,
     operands: &mut Operands,
     call_stack: &mut CallStack,
