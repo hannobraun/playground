@@ -25,8 +25,8 @@ fn evaluating_reference_pushes_address_to_stack() {
 fn apply_functions_unconditionally() {
     let program = Program::compile_and_run(
         "
-        @f apply
-        @g apply
+        @f call
+        @g call
 
         f:
             3
@@ -40,7 +40,7 @@ fn apply_functions_unconditionally() {
 
 #[test]
 fn apply_should_trigger_effect_on_invalid_address() {
-    let program = Program::compile_and_run("-1 apply 3");
+    let program = Program::compile_and_run("-1 call 3");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidInstructionAddress));
 }
