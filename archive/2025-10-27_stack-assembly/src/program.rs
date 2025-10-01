@@ -24,7 +24,7 @@ impl Program {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Apply,
                 });
-            } else if word == "apply_if" {
+            } else if word == "call_if" {
                 instructions.push(Instruction::Operator {
                     operator: Operator::ApplyIf,
                 });
