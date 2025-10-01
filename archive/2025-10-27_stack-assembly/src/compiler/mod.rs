@@ -5,11 +5,11 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
     let mut labels = Labels::new();
 
     for token in input.split_whitespace() {
-        if let Some(("", reference)) = token.split_once("@") {
+        if let Some(reference) = parse_reference(token) {
             instructions.push(Instruction::Reference {
                 name: reference.to_string(),
             });
-        } else if let Some((label, "")) = token.rsplit_once(":") {
+        } else if let Some(label) = parse_label(token) {
             // Encountering a label means that the previous function has
             // ended.
             instructions.push(Instruction::Return);
@@ -43,6 +43,14 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
     (instructions, labels)
 }
 
+fn parse_label(token: &str) -> Option<&str> {
+    if let Some((label, "")) = token.rsplit_once(":") {
+        Some(label)
+    } else {
+        None
+    }
+}
+
 fn parse_operator(token: &str) -> Operator {
     if token == "call" {
         Operator::Call
@@ -56,5 +64,13 @@ fn parse_operator(token: &str) -> Operator {
         Operator::Integer { value }
     } else {
         Operator::Unknown
+    }
+}
+
+fn parse_reference(token: &str) -> Option<&str> {
+    if let Some(("", reference)) = token.split_once("@") {
+        Some(reference)
+    } else {
+        None
     }
 }
