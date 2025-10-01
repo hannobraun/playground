@@ -14,7 +14,7 @@ pub fn step(
     let Some(current_instruction) = call_stack.current_instruction() else {
         return Ok(StepOutcome::Finished);
     };
-    let Some(instruction) = instructions.get(*current_instruction) else {
+    let Some(instruction) = instructions.get(current_instruction) else {
         return Ok(StepOutcome::Finished);
     };
 
