@@ -22,11 +22,11 @@ impl Program {
         for word in input.split_whitespace() {
             if word == "call" {
                 instructions.push(Instruction::Operator {
-                    operator: Operator::Apply,
+                    operator: Operator::Call,
                 });
             } else if word == "call_if" {
                 instructions.push(Instruction::Operator {
-                    operator: Operator::ApplyIf,
+                    operator: Operator::CallIf,
                 });
             } else if word == "drop0" {
                 instructions.push(Instruction::Operator {

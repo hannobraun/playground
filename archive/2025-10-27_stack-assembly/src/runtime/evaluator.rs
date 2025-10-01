@@ -37,14 +37,14 @@ impl Evaluator {
                 operands.push(*value);
             }
             Instruction::Operator {
-                operator: Operator::Apply,
+                operator: Operator::Call,
             } => {
                 let address = operands.pop()?;
                 self.call_stack.push(address)?;
                 return Ok(StepOutcome::Ready);
             }
             Instruction::Operator {
-                operator: Operator::ApplyIf,
+                operator: Operator::CallIf,
             } => {
                 let address = operands.pop()?;
                 let condition = operands.pop()?;
