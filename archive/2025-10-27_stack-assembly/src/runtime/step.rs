@@ -11,10 +11,10 @@ pub fn step(
     operands: &mut Operands,
     call_stack: &mut CallStack,
 ) -> Result<StepOutcome, Effect> {
-    let Some(current_instruction) = call_stack.current_instruction() else {
-        return Ok(StepOutcome::Finished);
-    };
-    let Some(instruction) = instructions.get(current_instruction) else {
+    let Some(instruction) = call_stack
+        .current_instruction()
+        .and_then(|current_instruction| instructions.get(current_instruction))
+    else {
         return Ok(StepOutcome::Finished);
     };
 
