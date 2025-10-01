@@ -5,7 +5,7 @@ use crate::runtime::{
 /// An effect that may be triggered by a program
 #[derive(Debug, Eq, PartialEq)]
 pub enum Effect {
-    /// # Tried to apply a function based on an invalid address
+    /// # Tried to call a function based on an invalid address
     InvalidInstructionAddress,
 
     /// # Tried to evaluate an invalid reference

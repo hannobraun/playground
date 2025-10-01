@@ -9,8 +9,8 @@ pub enum Instruction {
 pub enum Operator {
     Integer { value: i32 },
 
-    Apply,
-    ApplyIf,
+    Call,
+    CallIf,
     Drop0,
 
     Unknown,

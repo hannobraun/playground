@@ -1,7 +1,7 @@
 use crate::{Effect, Program};
 
 #[test]
-fn functions_have_no_effect_if_not_applied() {
+fn functions_have_no_effect_if_not_called() {
     let program = Program::compile_and_run("3 f: 5");
     assert_eq!(program.operands(), &vec![3]);
     assert_eq!(program.effect(), None);
@@ -22,11 +22,11 @@ fn evaluating_reference_pushes_address_to_stack() {
 }
 
 #[test]
-fn apply_functions_unconditionally() {
+fn call_functions_unconditionally() {
     let program = Program::compile_and_run(
         "
-        @f apply
-        @g apply
+        @f call
+        @g call
 
         f:
             3
@@ -39,22 +39,22 @@ fn apply_functions_unconditionally() {
 }
 
 #[test]
-fn apply_should_trigger_effect_on_invalid_address() {
-    let program = Program::compile_and_run("-1 apply 3");
+fn call_should_trigger_effect_on_invalid_address() {
+    let program = Program::compile_and_run("-1 call 3");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidInstructionAddress));
 }
 
 #[test]
-fn apply_function_because_of_condition() {
-    let program = Program::compile_and_run("1 @f apply_if f: 3");
+fn call_function_because_of_condition() {
+    let program = Program::compile_and_run("1 @f call_if f: 3");
     assert_eq!(program.operands(), &vec![3]);
     assert_eq!(program.effect(), None);
 }
 
 #[test]
-fn do_not_apply_function_because_of_condition() {
-    let program = Program::compile_and_run("0 @f apply_if f: 3");
+fn do_not_call_function_because_of_condition() {
+    let program = Program::compile_and_run("0 @f call_if f: 3");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), None);
 }

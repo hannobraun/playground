@@ -20,13 +20,13 @@ impl Program {
         let mut labels = BTreeMap::new();
 
         for word in input.split_whitespace() {
-            if word == "apply" {
+            if word == "call" {
                 instructions.push(Instruction::Operator {
-                    operator: Operator::Apply,
+                    operator: Operator::Call,
                 });
-            } else if word == "apply_if" {
+            } else if word == "call_if" {
                 instructions.push(Instruction::Operator {
-                    operator: Operator::ApplyIf,
+                    operator: Operator::CallIf,
                 });
             } else if word == "drop0" {
                 instructions.push(Instruction::Operator {
