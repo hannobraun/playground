@@ -5,23 +5,7 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
     let mut labels = Labels::new();
 
     for token in input.split_whitespace() {
-        if token == "call" {
-            instructions.push(Instruction::Operator {
-                operator: Operator::Call,
-            });
-        } else if token == "call_if" {
-            instructions.push(Instruction::Operator {
-                operator: Operator::CallIf,
-            });
-        } else if token == "drop0" {
-            instructions.push(Instruction::Operator {
-                operator: Operator::Drop0,
-            });
-        } else if token == "yield" {
-            instructions.push(Instruction::Operator {
-                operator: Operator::Yield,
-            });
-        } else if let Some(("", reference)) = token.split_once("@") {
+        if let Some(("", reference)) = token.split_once("@") {
             instructions.push(Instruction::Reference {
                 name: reference.to_string(),
             });
@@ -49,16 +33,28 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
             // This overwrites any previous label of the same name. Fine for
             // now, but it would be better if this were an error.
             labels.insert(label.to_string(), address);
-        } else if let Ok(value) = token.parse() {
-            instructions.push(Instruction::Operator {
-                operator: Operator::Integer { value },
-            });
         } else {
             instructions.push(Instruction::Operator {
-                operator: Operator::Unknown,
+                operator: parse_operator(token),
             });
         }
     }
 
     (instructions, labels)
+}
+
+fn parse_operator(token: &str) -> Operator {
+    if token == "call" {
+        Operator::Call
+    } else if token == "call_if" {
+        Operator::CallIf
+    } else if token == "drop0" {
+        Operator::Drop0
+    } else if token == "yield" {
+        Operator::Yield
+    } else if let Ok(value) = token.parse() {
+        Operator::Integer { value }
+    } else {
+        Operator::Unknown
+    }
 }
