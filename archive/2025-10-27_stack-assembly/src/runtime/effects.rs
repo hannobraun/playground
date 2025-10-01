@@ -3,7 +3,7 @@ use crate::runtime::{
 };
 
 /// An effect that may be triggered by a program
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Effect {
     /// # Tried to call a function based on an invalid address
     InvalidInstructionAddress,
