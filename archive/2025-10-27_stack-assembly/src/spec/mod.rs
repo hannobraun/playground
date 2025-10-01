@@ -3,6 +3,7 @@ use crate::{Effect, Program};
 mod control_flow;
 mod empty_program;
 mod operands;
+mod yield_;
 
 #[test]
 fn stack_stays_empty_if_program_never_starts() {

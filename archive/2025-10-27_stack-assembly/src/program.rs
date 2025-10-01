@@ -33,6 +33,10 @@ impl Program {
                 instructions.push(Instruction::Operator {
                     operator: Operator::Drop0,
                 });
+            } else if word == "yield" {
+                instructions.push(Instruction::Operator {
+                    operator: Operator::Yield,
+                });
             } else if let Some(("", reference)) = word.split_once("@") {
                 instructions.push(Instruction::Reference {
                     name: reference.to_string(),
