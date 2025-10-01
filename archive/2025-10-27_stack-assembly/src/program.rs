@@ -110,6 +110,14 @@ impl Program {
 
     /// # Continue the program until it finishes or triggers an effect
     pub fn continue_(&mut self) {
+        // If an effect had been triggered before, continuing the program clears
+        // it.
+        if self.effect.take().is_some() {
+            // To continue, we need to advance beyond the instruction that
+            // triggered the effect.
+            self.call_stack.advance();
+        }
+
         loop {
             match step(
                 &self.instructions,
