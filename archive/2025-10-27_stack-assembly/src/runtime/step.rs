@@ -13,7 +13,7 @@ pub fn step(
 ) -> Result<StepOutcome, Effect> {
     let Some(instruction) = call_stack
         .current_instruction()
-        .and_then(|current_instruction| instructions.get(current_instruction))
+        .and_then(|address| instructions.get(address))
     else {
         return Ok(StepOutcome::Finished);
     };
