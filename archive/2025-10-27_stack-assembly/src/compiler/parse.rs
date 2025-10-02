@@ -44,10 +44,7 @@ impl<'r> Function<'r> {
                     return (function, Some(name));
                 }
 
-                Token::Operator { name } => {
-                    let operator = parse_operator(name);
-                    Expression::Operator { operator }
-                }
+                Token::Operator { name } => Expression::parse_operator(name),
                 Token::Reference { name } => Expression::Reference { name },
             };
 
@@ -61,20 +58,22 @@ pub enum Expression<'r> {
     Reference { name: &'r str },
 }
 
-pub fn parse_operator(token: &str) -> Option<Operator> {
-    let operator = if token == "call" {
-        Operator::Call
-    } else if token == "call_if" {
-        Operator::CallIf
-    } else if token == "drop0" {
-        Operator::Drop0
-    } else if token == "yield" {
-        Operator::Yield
-    } else if let Ok(value) = token.parse() {
-        Operator::Integer { value }
-    } else {
-        return None;
-    };
+impl Expression<'_> {
+    fn parse_operator(token: &str) -> Self {
+        let operator = if token == "call" {
+            Some(Operator::Call)
+        } else if token == "call_if" {
+            Some(Operator::CallIf)
+        } else if token == "drop0" {
+            Some(Operator::Drop0)
+        } else if token == "yield" {
+            Some(Operator::Yield)
+        } else if let Ok(value) = token.parse() {
+            Some(Operator::Integer { value })
+        } else {
+            None
+        };
 
-    Some(operator)
+        Self::Operator { operator }
+    }
 }
