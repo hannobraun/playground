@@ -4,7 +4,7 @@ use crate::{
 };
 
 pub fn compile(input: &str) -> (Instructions, Labels) {
-    let mut instructions = Vec::new();
+    let mut instructions = Instructions::new();
     let mut labels = Labels::new();
 
     for token in input.split_whitespace() {
