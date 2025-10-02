@@ -14,10 +14,10 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
     let mut labels = Labels::new();
 
     for token in input.split_whitespace() {
-        if let Some(reference) = parse_reference(token) {
-            translate_reference(reference, &mut instructions);
-        } else if let Some(label) = parse_label(token) {
-            translate_label(label, &mut instructions, &mut labels);
+        if let Some(name) = parse_reference(token) {
+            translate_reference(name, &mut instructions);
+        } else if let Some(name) = parse_label(token) {
+            translate_label(name, &mut instructions, &mut labels);
         } else {
             let operator = parse_operator(token);
             translate_operator(operator, &mut instructions);
