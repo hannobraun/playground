@@ -1,8 +1,27 @@
 use crate::{
     Effect,
-    compiler::parse::{Expression, Function},
+    compiler::parse::{Expression, Function, Script},
     instructions::{Instruction, Instructions, Labels, Operator},
 };
+
+pub fn translate_script(script: Script) -> (Instructions, Labels) {
+    let mut instructions = Instructions::new();
+    let mut labels = Labels::new();
+
+    let name = None;
+    translate_function(name, script.root, &mut instructions, &mut labels);
+
+    for (name, function) in script.functions {
+        translate_function(
+            Some(name),
+            function,
+            &mut instructions,
+            &mut labels,
+        );
+    }
+
+    (instructions, labels)
+}
 
 pub fn translate_function(
     name: Option<&str>,
