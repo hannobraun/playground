@@ -1,9 +1,27 @@
-use crate::runtime::{
-    call_stack::InvalidInstructionAddress, operands::StackUnderflow,
-};
+use std::collections::BTreeMap;
+
+pub type Instructions = Vec<Instruction>;
+
+#[derive(Debug)]
+pub enum Instruction {
+    Operator { operator: Operator },
+    Reference { name: String },
+    Return,
+    Trigger { effect: Effect },
+}
+
+#[derive(Debug)]
+pub enum Operator {
+    Integer { value: i32 },
+
+    Call,
+    CallIf,
+    Drop0,
+    Yield,
+}
 
 /// An effect that may be triggered by a program
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Effect {
     /// # Tried to call a function based on an invalid address
     InvalidInstructionAddress,
@@ -21,14 +39,4 @@ pub enum Effect {
     Yield,
 }
 
-impl From<InvalidInstructionAddress> for Effect {
-    fn from(InvalidInstructionAddress: InvalidInstructionAddress) -> Self {
-        Self::InvalidInstructionAddress
-    }
-}
-
-impl From<StackUnderflow> for Effect {
-    fn from(StackUnderflow: StackUnderflow) -> Self {
-        Self::StackUnderflow
-    }
-}
+pub type Labels = BTreeMap<String, i32>;

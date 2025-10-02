@@ -5,7 +5,9 @@
 #[cfg(test)]
 mod spec;
 
+mod compiler;
+mod instructions;
 mod program;
 mod runtime;
 
-pub use self::{program::Program, runtime::Effect};
+pub use self::{instructions::Effect, program::Program};

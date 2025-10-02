@@ -1,13 +1,12 @@
-use std::collections::BTreeMap;
-
 use crate::{
     Effect,
-    runtime::{Instruction, Operands, Operator, call_stack::CallStack},
+    instructions::{Instruction, Instructions, Labels, Operator},
+    runtime::{Operands, call_stack::CallStack},
 };
 
 pub fn step(
-    instructions: &[Instruction],
-    labels: &BTreeMap<String, i32>,
+    instructions: &Instructions,
+    labels: &Labels,
     operands: &mut Operands,
     call_stack: &mut CallStack,
 ) -> Result<StepOutcome, Effect> {
@@ -52,11 +51,6 @@ pub fn step(
         } => {
             return Err(Effect::Yield);
         }
-        Instruction::Operator {
-            operator: Operator::Unknown,
-        } => {
-            return Err(Effect::UnknownOperator);
-        }
         Instruction::Reference { name } => {
             if let Some(&address) = labels.get(name) {
                 // So far, we don't track the actual addresses of
@@ -69,6 +63,9 @@ pub fn step(
         Instruction::Return => {
             call_stack.pop();
             return Ok(StepOutcome::Ready);
+        }
+        Instruction::Trigger { effect } => {
+            return Err(*effect);
         }
     }
 
