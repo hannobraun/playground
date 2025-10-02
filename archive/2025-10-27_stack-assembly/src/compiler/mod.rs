@@ -9,39 +9,12 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
 
     for token in input.split_whitespace() {
         if let Some(reference) = parse_reference(token) {
-            instructions.push(Instruction::Reference {
-                name: reference.to_string(),
-            });
+            translate_reference(reference, &mut instructions);
         } else if let Some(label) = parse_label(token) {
-            // Encountering a label means that the previous function has
-            // ended.
-            instructions.push(Instruction::Return);
-
-            let address = {
-                let address = instructions.len();
-
-                let Ok(address) = address.try_into() else {
-                    // This is okay for now, but it would be nicer to reject
-                    // this when pushing to `instructions`.
-                    panic!(
-                        "Label `{label}` points to address `{address}`, \
-                        which can't be represented as a signed 32-bit \
-                        integer. Too much code!"
-                    );
-                };
-
-                address
-            };
-
-            // This overwrites any previous label of the same name. Fine for
-            // now, but it would be better if this were an error.
-            labels.insert(label.to_string(), address);
-        } else if let Some(operator) = parse_operator(token) {
-            instructions.push(Instruction::Operator { operator });
+            translate_label(label, &mut instructions, &mut labels);
         } else {
-            instructions.push(Instruction::Trigger {
-                effect: Effect::UnknownOperator,
-            })
+            let operator = parse_operator(token);
+            translate_operator(operator, &mut instructions);
         }
     }
 
@@ -80,4 +53,50 @@ fn parse_reference(token: &str) -> Option<&str> {
     } else {
         None
     }
+}
+
+fn translate_label(
+    name: &str,
+    instructions: &mut Instructions,
+    labels: &mut Labels,
+) {
+    // Encountering a label means that the previous function has ended.
+    instructions.push(Instruction::Return);
+
+    let address = {
+        let address = instructions.len();
+
+        let Ok(address) = address.try_into() else {
+            // This is okay for now, but it would be nicer to reject
+            // this when pushing to `instructions`.
+            panic!(
+                "Label `{name}` points to address `{address}`, which can't be \
+                represented as a signed 32-bit integer. Too much code!"
+            );
+        };
+
+        address
+    };
+
+    // This overwrites any previous label of the same name. Fine for now, but it
+    // would be better if this were an error.
+    labels.insert(name.to_string(), address);
+}
+
+fn translate_operator(
+    operator: Option<Operator>,
+    instructions: &mut Instructions,
+) {
+    if let Some(operator) = operator {
+        instructions.push(Instruction::Operator { operator });
+    } else {
+        instructions.push(Instruction::Trigger {
+            effect: Effect::UnknownOperator,
+        })
+    }
+}
+
+fn translate_reference(name: &str, instructions: &mut Instructions) {
+    let name = name.to_string();
+    instructions.push(Instruction::Reference { name });
 }
