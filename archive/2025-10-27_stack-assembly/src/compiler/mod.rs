@@ -4,9 +4,7 @@ mod translate;
 
 use crate::{
     compiler::{
-        parse::{Expression, parse_script},
-        tokenize::tokenize,
-        translate::{translate_label, translate_operator, translate_reference},
+        parse::parse_script, tokenize::tokenize, translate::translate_function,
     },
     instructions::{Instructions, Labels},
 };
@@ -29,20 +27,7 @@ pub fn compile(input: &str) -> (Instructions, Labels) {
         );
 
     for (name, function) in all_functions {
-        if let Some(name) = name {
-            translate_label(name, &mut instructions, &mut labels);
-        }
-
-        for expression in function.body {
-            match expression {
-                Expression::Operator { operator } => {
-                    translate_operator(operator, &mut instructions);
-                }
-                Expression::Reference { name } => {
-                    translate_reference(name, &mut instructions);
-                }
-            }
-        }
+        translate_function(name, function, &mut instructions, &mut labels);
     }
 
     (instructions, labels)

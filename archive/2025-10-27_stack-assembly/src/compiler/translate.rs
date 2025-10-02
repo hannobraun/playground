@@ -1,7 +1,30 @@
 use crate::{
     Effect,
+    compiler::parse::{Expression, Function},
     instructions::{Instruction, Instructions, Labels, Operator},
 };
+
+pub fn translate_function(
+    name: Option<&str>,
+    function: Function,
+    instructions: &mut Instructions,
+    labels: &mut Labels,
+) {
+    if let Some(name) = name {
+        translate_label(name, instructions, labels);
+    }
+
+    for expression in function.body {
+        match expression {
+            Expression::Operator { operator } => {
+                translate_operator(operator, instructions);
+            }
+            Expression::Reference { name } => {
+                translate_reference(name, instructions);
+            }
+        }
+    }
+}
 
 pub fn translate_label(
     name: &str,
