@@ -23,7 +23,7 @@ pub fn translate_script(script: Script) -> (Instructions, Labels) {
     (instructions, labels)
 }
 
-pub fn translate_function(
+fn translate_function(
     name: Option<&str>,
     function: Function,
     instructions: &mut Instructions,
@@ -45,7 +45,7 @@ pub fn translate_function(
     }
 }
 
-pub fn translate_label(
+fn translate_label(
     name: &str,
     instructions: &mut Instructions,
     labels: &mut Labels,
@@ -73,7 +73,7 @@ pub fn translate_label(
     labels.insert(name.to_string(), address);
 }
 
-pub fn translate_operator(
+fn translate_operator(
     operator: Option<Operator>,
     instructions: &mut Instructions,
 ) {
@@ -86,7 +86,7 @@ pub fn translate_operator(
     }
 }
 
-pub fn translate_reference(name: &str, instructions: &mut Instructions) {
+fn translate_reference(name: &str, instructions: &mut Instructions) {
     let name = name.to_string();
     instructions.push(Instruction::Reference { name });
 }
