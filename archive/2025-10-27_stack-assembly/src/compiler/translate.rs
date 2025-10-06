@@ -44,6 +44,8 @@ fn translate_function(
             }
         }
     }
+
+    instructions.push(Instruction::Return);
 }
 
 fn translate_label(
@@ -51,9 +53,6 @@ fn translate_label(
     instructions: &mut Instructions,
     labels: &mut Labels,
 ) {
-    // Encountering a label means that the previous function has ended.
-    instructions.push(Instruction::Return);
-
     let address = {
         let address = instructions.len();
 
