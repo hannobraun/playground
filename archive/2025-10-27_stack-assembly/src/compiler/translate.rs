@@ -84,7 +84,23 @@ fn translate_operator(
         return;
     };
 
-    instructions.push(Instruction::Operator { operator });
+    match operator {
+        Operator::Integer { value } => {
+            instructions.push(Instruction::PushValue { value });
+        }
+        Operator::Call => {
+            instructions.push(Instruction::Call);
+        }
+        Operator::CallIf => {
+            instructions.push(Instruction::CallIf);
+        }
+        Operator::Drop0 => {
+            instructions.push(Instruction::Drop0);
+        }
+        Operator::Yield => {
+            instructions.push(Instruction::Yield);
+        }
+    }
 }
 
 fn translate_reference(name: &str, instructions: &mut Instructions) {

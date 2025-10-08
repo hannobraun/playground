@@ -4,10 +4,14 @@ pub type Instructions = Vec<Instruction>;
 
 #[derive(Debug)]
 pub enum Instruction {
-    Operator { operator: Operator },
+    Call,
+    CallIf,
+    Drop0,
+    PushValue { value: i32 },
     Reference { name: String },
     Return,
     Trigger { effect: Effect },
+    Yield,
 }
 
 #[derive(Debug)]
