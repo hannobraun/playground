@@ -53,8 +53,6 @@ pub fn step(
         }
         Instruction::Reference { name } => {
             if let Some(&address) = labels.get(name) {
-                // So far, we don't track the actual addresses of
-                // functions. Let's push a placeholder for now.
                 operands.push(address);
             } else {
                 return Err(Effect::InvalidReference);
