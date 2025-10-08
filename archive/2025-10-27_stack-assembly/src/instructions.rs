@@ -11,7 +11,6 @@ pub enum Instruction {
     Reference { name: String },
     Return,
     Trigger { effect: Effect },
-    Yield,
 }
 
 #[derive(Debug)]

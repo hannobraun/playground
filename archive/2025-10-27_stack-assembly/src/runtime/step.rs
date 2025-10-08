@@ -38,9 +38,6 @@ pub fn step(
         Instruction::Drop0 => {
             operands.pop()?;
         }
-        Instruction::Yield => {
-            return Err(Effect::Yield);
-        }
         Instruction::Reference { name } => {
             if let Some(&address) = labels.get(name) {
                 operands.push(address);

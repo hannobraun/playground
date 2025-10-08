@@ -98,7 +98,9 @@ fn translate_operator(
             instructions.push(Instruction::Drop0);
         }
         Operator::Yield => {
-            instructions.push(Instruction::Yield);
+            instructions.push(Instruction::Trigger {
+                effect: Effect::Yield,
+            });
         }
     }
 }
