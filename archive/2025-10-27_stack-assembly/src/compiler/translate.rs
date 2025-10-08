@@ -77,13 +77,14 @@ fn translate_operator(
     operator: Option<Operator>,
     instructions: &mut Instructions,
 ) {
-    if let Some(operator) = operator {
-        instructions.push(Instruction::Operator { operator });
-    } else {
+    let Some(operator) = operator else {
         instructions.push(Instruction::Trigger {
             effect: Effect::UnknownOperator,
-        })
-    }
+        });
+        return;
+    };
+
+    instructions.push(Instruction::Operator { operator });
 }
 
 fn translate_reference(name: &str, instructions: &mut Instructions) {
