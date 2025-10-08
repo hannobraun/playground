@@ -13,16 +13,6 @@ pub enum Instruction {
     Trigger { effect: Effect },
 }
 
-#[derive(Debug)]
-pub enum Operator {
-    Integer { value: i32 },
-
-    Call,
-    CallIf,
-    Drop0,
-    Yield,
-}
-
 /// An effect that may be triggered by a program
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Effect {

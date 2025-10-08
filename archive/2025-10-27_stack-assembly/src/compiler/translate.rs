@@ -1,7 +1,7 @@
 use crate::{
     Effect,
-    compiler::parse::{Expression, Function, Script},
-    instructions::{Instruction, Instructions, Labels, Operator},
+    compiler::parse::{Expression, Function, Operator, Script},
+    instructions::{Instruction, Instructions, Labels},
 };
 
 pub fn translate_script(script: Script) -> (Instructions, Labels) {
