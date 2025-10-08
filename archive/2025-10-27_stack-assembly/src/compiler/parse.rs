@@ -1,4 +1,4 @@
-use crate::{compiler::tokenize::Token, instructions::Operator};
+use crate::compiler::tokenize::Token;
 
 pub fn parse_script<'r>(
     tokens: impl IntoIterator<Item = Token<'r>>,
@@ -76,4 +76,14 @@ impl Expression<'_> {
 
         Self::Operator { operator }
     }
+}
+
+#[derive(Debug)]
+pub enum Operator {
+    Integer { value: i32 },
+
+    Call,
+    CallIf,
+    Drop0,
+    Yield,
 }

@@ -4,20 +4,13 @@ pub type Instructions = Vec<Instruction>;
 
 #[derive(Debug)]
 pub enum Instruction {
-    Operator { operator: Operator },
-    Reference { name: String },
-    Return,
-    Trigger { effect: Effect },
-}
-
-#[derive(Debug)]
-pub enum Operator {
-    Integer { value: i32 },
-
     Call,
     CallIf,
     Drop0,
-    Yield,
+    PushValue { value: i32 },
+    Reference { name: String },
+    Return,
+    Trigger { effect: Effect },
 }
 
 /// An effect that may be triggered by a program

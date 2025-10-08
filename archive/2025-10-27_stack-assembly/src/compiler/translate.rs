@@ -1,7 +1,7 @@
 use crate::{
     Effect,
-    compiler::parse::{Expression, Function, Script},
-    instructions::{Instruction, Instructions, Labels, Operator},
+    compiler::parse::{Expression, Function, Operator, Script},
+    instructions::{Instruction, Instructions, Labels},
 };
 
 pub fn translate_script(script: Script) -> (Instructions, Labels) {
@@ -77,12 +77,31 @@ fn translate_operator(
     operator: Option<Operator>,
     instructions: &mut Instructions,
 ) {
-    if let Some(operator) = operator {
-        instructions.push(Instruction::Operator { operator });
-    } else {
+    let Some(operator) = operator else {
         instructions.push(Instruction::Trigger {
             effect: Effect::UnknownOperator,
-        })
+        });
+        return;
+    };
+
+    match operator {
+        Operator::Integer { value } => {
+            instructions.push(Instruction::PushValue { value });
+        }
+        Operator::Call => {
+            instructions.push(Instruction::Call);
+        }
+        Operator::CallIf => {
+            instructions.push(Instruction::CallIf);
+        }
+        Operator::Drop0 => {
+            instructions.push(Instruction::Drop0);
+        }
+        Operator::Yield => {
+            instructions.push(Instruction::Trigger {
+                effect: Effect::Yield,
+            });
+        }
     }
 }
 

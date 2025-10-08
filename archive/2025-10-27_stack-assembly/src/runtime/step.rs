@@ -1,6 +1,6 @@
 use crate::{
     Effect,
-    instructions::{Instruction, Instructions, Labels, Operator},
+    instructions::{Instruction, Instructions, Labels},
     runtime::{Operands, call_stack::CallStack},
 };
 
@@ -18,21 +18,12 @@ pub fn step(
     };
 
     match instruction {
-        Instruction::Operator {
-            operator: Operator::Integer { value },
-        } => {
-            operands.push(*value);
-        }
-        Instruction::Operator {
-            operator: Operator::Call,
-        } => {
+        Instruction::Call => {
             let address = operands.pop()?;
             call_stack.push(address)?;
             return Ok(StepOutcome::Ready);
         }
-        Instruction::Operator {
-            operator: Operator::CallIf,
-        } => {
+        Instruction::CallIf => {
             let address = operands.pop()?;
             let condition = operands.pop()?;
 
@@ -41,15 +32,11 @@ pub fn step(
                 return Ok(StepOutcome::Ready);
             }
         }
-        Instruction::Operator {
-            operator: Operator::Drop0,
-        } => {
+        Instruction::Drop0 => {
             operands.pop()?;
         }
-        Instruction::Operator {
-            operator: Operator::Yield,
-        } => {
-            return Err(Effect::Yield);
+        Instruction::PushValue { value } => {
+            operands.push(*value);
         }
         Instruction::Reference { name } => {
             if let Some(&address) = labels.get(name) {
