@@ -18,9 +18,6 @@ pub fn step(
     };
 
     match instruction {
-        Instruction::PushValue { value } => {
-            operands.push(*value);
-        }
         Instruction::Call => {
             let address = operands.pop()?;
             call_stack.push(address)?;
@@ -37,6 +34,9 @@ pub fn step(
         }
         Instruction::Drop0 => {
             operands.pop()?;
+        }
+        Instruction::PushValue { value } => {
+            operands.push(*value);
         }
         Instruction::Reference { name } => {
             if let Some(&address) = labels.get(name) {
