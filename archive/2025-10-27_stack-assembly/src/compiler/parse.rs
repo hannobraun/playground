@@ -65,7 +65,7 @@ impl Expression<'_> {
         } else if token == "call_if" {
             Some(Operator::CallIf)
         } else if token == "drop0" {
-            Some(Operator::Drop0)
+            Some(Operator::Drop { index: 0 })
         } else if token == "yield" {
             Some(Operator::Yield)
         } else if let Ok(value) = token.parse() {
@@ -86,6 +86,6 @@ pub enum Operator {
 
     Call,
     CallIf,
-    Drop0,
+    Drop { index: usize },
     Yield,
 }
