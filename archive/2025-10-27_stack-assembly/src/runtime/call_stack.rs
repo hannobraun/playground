@@ -1,4 +1,4 @@
-use crate::{Effect, value::Value};
+use crate::value::{InvalidInstructionAddress, Value};
 
 pub struct CallStack {
     inner: Vec<usize>,
@@ -23,9 +23,7 @@ impl CallStack {
         &mut self,
         address: Value,
     ) -> Result<(), InvalidInstructionAddress> {
-        let Ok(address) = address.inner.try_into() else {
-            return Err(InvalidInstructionAddress);
-        };
+        let address = address.into_address()?;
 
         self.advance();
         self.inner.push(address);
@@ -39,13 +37,5 @@ impl CallStack {
 
     pub fn inner(&self) -> &Vec<usize> {
         &self.inner
-    }
-}
-
-pub struct InvalidInstructionAddress;
-
-impl From<InvalidInstructionAddress> for Effect {
-    fn from(InvalidInstructionAddress: InvalidInstructionAddress) -> Self {
-        Self::InvalidInstructionAddress
     }
 }
