@@ -1,39 +1,50 @@
 use crate::{
     Effect,
     instructions::{Instruction, Instructions, Labels},
-    runtime::{Operands, call_stack::CallStack},
+    runtime::{
+        Operands,
+        call_stack::{CallStack, CallStackUnderflow},
+    },
 };
 
 pub fn step(
     instructions: &Instructions,
     labels: &Labels,
     operands: &mut Operands,
+    current_instruction: &mut usize,
     call_stack: &mut CallStack,
 ) -> Result<StepOutcome, Effect> {
-    let Some(instruction) = call_stack
-        .current_instruction()
-        .and_then(|address| instructions.get(address))
-    else {
+    let Some(instruction) = instructions.get(*current_instruction) else {
         return Ok(StepOutcome::Finished);
     };
 
     match instruction {
-        Instruction::Call => {
+        Instruction::Drop0 => {
+            operands.pop()?;
+        }
+        Instruction::Jump => {
             let address = operands.pop()?;
-            call_stack.push(address)?;
+
+            let address = address.into_address()?;
+            *current_instruction = address;
+
             return Ok(StepOutcome::Ready);
         }
-        Instruction::CallIf => {
+        Instruction::JumpIf => {
             let address = operands.pop()?;
             let condition = operands.pop()?;
 
             if condition.inner != 0 {
-                call_stack.push(address)?;
+                let address = address.into_address()?;
+                *current_instruction = address;
+
                 return Ok(StepOutcome::Ready);
             }
         }
-        Instruction::Drop0 => {
-            operands.pop()?;
+        Instruction::PushReturnAddress => {
+            *current_instruction += 1;
+            call_stack.push(*current_instruction);
+            return Ok(StepOutcome::Ready);
         }
         Instruction::PushValue { value } => {
             operands.push(*value);
@@ -45,16 +56,20 @@ pub fn step(
                 return Err(Effect::InvalidReference);
             }
         }
-        Instruction::Return => {
-            call_stack.pop();
-            return Ok(StepOutcome::Ready);
-        }
+        Instruction::Return => match call_stack.pop() {
+            Ok(address) => {
+                *current_instruction = address;
+            }
+            Err(CallStackUnderflow) => {
+                return Ok(StepOutcome::Finished);
+            }
+        },
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }
     }
 
-    call_stack.advance();
+    *current_instruction += 1;
     Ok(StepOutcome::Ready)
 }
 
