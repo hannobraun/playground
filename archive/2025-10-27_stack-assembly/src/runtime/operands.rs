@@ -1,6 +1,10 @@
-use crate::Effect;
+use crate::{Effect, value::Value};
 
 pub struct Operands {
+    /// # The operand stack
+    ///
+    /// This uses `i32` instead of `Value`, as this gets exposed to the host,
+    /// and the host doesn't have access to `Value` yet.
     inner: Vec<i32>,
 }
 
@@ -9,12 +13,15 @@ impl Operands {
         Self { inner: Vec::new() }
     }
 
-    pub fn push(&mut self, value: i32) {
-        self.inner.push(value);
+    pub fn push(&mut self, value: Value) {
+        self.inner.push(value.inner);
     }
 
-    pub fn pop(&mut self) -> Result<i32, StackUnderflow> {
-        self.inner.pop().ok_or(StackUnderflow)
+    pub fn pop(&mut self) -> Result<Value, StackUnderflow> {
+        self.inner
+            .pop()
+            .map(|value| Value { inner: value })
+            .ok_or(StackUnderflow)
     }
 
     pub fn inner(&self) -> &Vec<i32> {

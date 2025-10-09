@@ -2,6 +2,7 @@ use crate::{
     Effect,
     compiler::parse::{Expression, Function, Operator, Script},
     instructions::{Instruction, Instructions, Labels},
+    value::Value,
 };
 
 pub fn translate_script(script: Script) -> (Instructions, Labels) {
@@ -65,7 +66,7 @@ fn translate_label(
             );
         };
 
-        address
+        Value { inner: address }
     };
 
     // This overwrites any previous label of the same name. Fine for now, but it

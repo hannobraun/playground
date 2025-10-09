@@ -1,4 +1,4 @@
-use crate::compiler::tokenize::Token;
+use crate::{compiler::tokenize::Token, value::Value};
 
 pub fn parse_script<'r>(
     tokens: impl IntoIterator<Item = Token<'r>>,
@@ -69,7 +69,9 @@ impl Expression<'_> {
         } else if token == "yield" {
             Some(Operator::Yield)
         } else if let Ok(value) = token.parse() {
-            Some(Operator::Integer { value })
+            Some(Operator::Integer {
+                value: Value { inner: value },
+            })
         } else {
             None
         };
@@ -80,7 +82,7 @@ impl Expression<'_> {
 
 #[derive(Debug)]
 pub enum Operator {
-    Integer { value: i32 },
+    Integer { value: Value },
 
     Call,
     CallIf,
