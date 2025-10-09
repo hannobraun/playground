@@ -49,6 +49,13 @@ fn translate_function(
         }
     }
 
+    // If the last expression in the function is a tail call, then this return
+    // instruction is dead code. We could reduce the size of the generated code,
+    // by only emitting it when necessary.
+    //
+    // However, it seems prudent to put infrastructure for measuring the code
+    // size (and tracking these measurements over time) into place first, before
+    // complicating the compiler with these kinds of optimizations.
     instructions.push(Instruction::Return);
 }
 
