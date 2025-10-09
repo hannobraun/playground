@@ -10,6 +10,7 @@ pub struct Program {
     instructions: Instructions,
     labels: Labels,
     operands: Operands,
+    current_instruction: usize,
     call_stack: CallStack,
     effect: Option<Effect>,
 }
@@ -23,6 +24,7 @@ impl Program {
             instructions,
             labels,
             operands: Operands::new(),
+            current_instruction: 0,
             call_stack: CallStack::new(),
             effect: None,
         }
@@ -58,7 +60,7 @@ impl Program {
         if self.effect.take().is_some() {
             // To continue, we need to advance beyond the instruction that
             // triggered the effect.
-            self.call_stack.advance();
+            self.current_instruction += 1;
         }
 
         loop {
@@ -66,6 +68,7 @@ impl Program {
                 &self.instructions,
                 &self.labels,
                 &mut self.operands,
+                &mut self.current_instruction,
                 &mut self.call_stack,
             ) {
                 Ok(StepOutcome::Ready) => {

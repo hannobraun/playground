@@ -11,31 +11,33 @@ pub fn step(
     instructions: &Instructions,
     labels: &Labels,
     operands: &mut Operands,
+    current_instruction: &mut usize,
     call_stack: &mut CallStack,
 ) -> Result<StepOutcome, Effect> {
-    let Some(instruction) = call_stack
-        .current_instruction()
-        .and_then(|address| instructions.get(address))
-    else {
+    let Some(instruction) = instructions.get(*current_instruction) else {
         return Ok(StepOutcome::Finished);
     };
 
     match instruction {
         Instruction::Call => {
+            call_stack.push(*current_instruction);
+
             let address = operands.pop()?;
 
             let address = address.into_address()?;
-            call_stack.push(address);
+            *current_instruction = address;
 
             return Ok(StepOutcome::Ready);
         }
         Instruction::CallIf => {
+            call_stack.push(*current_instruction);
+
             let address = operands.pop()?;
             let condition = operands.pop()?;
 
             if condition.inner != 0 {
                 let address = address.into_address()?;
-                call_stack.push(address);
+                *current_instruction = address;
 
                 return Ok(StepOutcome::Ready);
             }
@@ -54,11 +56,11 @@ pub fn step(
             }
         }
         Instruction::Return => match call_stack.pop() {
-            Ok(_) => {
-                return Ok(StepOutcome::Ready);
+            Ok(address) => {
+                *current_instruction = address;
             }
             Err(CallStackUnderflow) => {
-                return Ok(StepOutcome::Ready);
+                return Ok(StepOutcome::Finished);
             }
         },
         Instruction::Trigger { effect } => {
@@ -66,7 +68,7 @@ pub fn step(
         }
     }
 
-    call_stack.advance();
+    *current_instruction += 1;
     Ok(StepOutcome::Ready)
 }
 

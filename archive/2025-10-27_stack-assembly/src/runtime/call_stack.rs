@@ -4,21 +4,10 @@ pub struct CallStack {
 
 impl CallStack {
     pub fn new() -> Self {
-        Self { inner: vec![0] }
-    }
-
-    pub fn current_instruction(&self) -> Option<usize> {
-        self.inner.last().copied()
-    }
-
-    pub fn advance(&mut self) {
-        if let Some(address) = self.inner.last_mut() {
-            *address += 1;
-        }
+        Self { inner: Vec::new() }
     }
 
     pub fn push(&mut self, address: usize) {
-        self.advance();
         self.inner.push(address);
     }
 
