@@ -34,16 +34,29 @@ fn translate_function(
         translate_label(name, instructions, labels);
     }
 
-    for expression in function.body {
+    let mut body = function.body.into_iter().peekable();
+
+    while let Some(expression) = body.next() {
+        let is_tail = body.peek().is_none();
+
         match expression {
             Expression::Operator { operator } => {
-                translate_operator(operator, instructions);
+                translate_operator(operator, is_tail, instructions);
             }
             Expression::Reference { name } => {
                 translate_reference(name, instructions);
             }
         }
     }
+
+    // If the last expression in the function is a tail call, then this return
+    // instruction is dead code. We could reduce the size of the generated code,
+    // by only emitting it when necessary.
+    //
+    // However, it seems prudent to put infrastructure for measuring the code
+    // size (and tracking these measurements over time) into place first, before
+    // complicating the compiler with these kinds of optimizations.
+    instructions.push(Instruction::Return);
 }
 
 fn translate_label(
@@ -51,9 +64,6 @@ fn translate_label(
     instructions: &mut Instructions,
     labels: &mut Labels,
 ) {
-    // Encountering a label means that the previous function has ended.
-    instructions.push(Instruction::Return);
-
     let address = {
         let address = instructions.len();
 
@@ -76,6 +86,7 @@ fn translate_label(
 
 fn translate_operator(
     operator: Option<Operator>,
+    is_tail: bool,
     instructions: &mut Instructions,
 ) {
     let Some(operator) = operator else {
@@ -90,11 +101,15 @@ fn translate_operator(
             instructions.push(Instruction::PushValue { value });
         }
         Operator::Call => {
-            instructions.push(Instruction::PushReturnAddress);
+            if !is_tail {
+                instructions.push(Instruction::PushReturnAddress);
+            }
             instructions.push(Instruction::Jump);
         }
         Operator::CallIf => {
-            instructions.push(Instruction::PushReturnAddress);
+            if !is_tail {
+                instructions.push(Instruction::PushReturnAddress);
+            }
             instructions.push(Instruction::JumpIf);
         }
         Operator::Drop0 => {

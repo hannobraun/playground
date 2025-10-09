@@ -58,3 +58,29 @@ fn do_not_call_function_because_of_condition() {
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), None);
 }
+
+#[test]
+fn tail_call_optimization_should_work_for_unconditional_calls() {
+    let mut program = Program::compile_and_run("@f call f: yield @f call");
+
+    assert_eq!(program.call_stack().len(), 0);
+    assert_eq!(program.effect(), Some(&Effect::Yield));
+
+    program.continue_();
+
+    assert_eq!(program.call_stack().len(), 0);
+    assert_eq!(program.effect(), Some(&Effect::Yield));
+}
+
+#[test]
+fn tail_call_optimization_should_work_for_conditional_calls() {
+    let mut program = Program::compile_and_run("@f call f: yield 1 @f call_if");
+
+    assert_eq!(program.call_stack().len(), 0);
+    assert_eq!(program.effect(), Some(&Effect::Yield));
+
+    program.continue_();
+
+    assert_eq!(program.call_stack().len(), 0);
+    assert_eq!(program.effect(), Some(&Effect::Yield));
+}
