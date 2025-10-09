@@ -113,7 +113,7 @@ fn translate_operator(
             instructions.push(Instruction::JumpIf);
         }
         Operator::Drop0 => {
-            instructions.push(Instruction::Drop0);
+            instructions.push(Instruction::Drop { index: 0 });
         }
         Operator::Yield => {
             instructions.push(Instruction::Trigger {
