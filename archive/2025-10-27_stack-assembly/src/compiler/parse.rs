@@ -66,6 +66,10 @@ impl Expression<'_> {
             Some(Operator::CallIf)
         } else if token == "drop0" {
             Some(Operator::Drop { index: 0 })
+        } else if token == "drop1" {
+            Some(Operator::Drop { index: 1 })
+        } else if token == "drop2" {
+            Some(Operator::Drop { index: 2 })
         } else if token == "yield" {
             Some(Operator::Yield)
         } else if let Ok(value) = token.parse() {
