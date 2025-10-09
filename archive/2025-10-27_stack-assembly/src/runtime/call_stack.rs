@@ -31,11 +31,13 @@ impl CallStack {
         Ok(())
     }
 
-    pub fn pop(&mut self) {
-        self.inner.pop();
+    pub fn pop(&mut self) -> Result<usize, CallStackUnderflow> {
+        self.inner.pop().ok_or(CallStackUnderflow)
     }
 
     pub fn inner(&self) -> &Vec<usize> {
         &self.inner
     }
 }
+
+pub struct CallStackUnderflow;

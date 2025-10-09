@@ -1,7 +1,10 @@
 use crate::{
     Effect,
     instructions::{Instruction, Instructions, Labels},
-    runtime::{Operands, call_stack::CallStack},
+    runtime::{
+        Operands,
+        call_stack::{CallStack, CallStackUnderflow},
+    },
 };
 
 pub fn step(
@@ -45,10 +48,14 @@ pub fn step(
                 return Err(Effect::InvalidReference);
             }
         }
-        Instruction::Return => {
-            call_stack.pop();
-            return Ok(StepOutcome::Ready);
-        }
+        Instruction::Return => match call_stack.pop() {
+            Ok(_) => {
+                return Ok(StepOutcome::Ready);
+            }
+            Err(CallStackUnderflow) => {
+                return Ok(StepOutcome::Ready);
+            }
+        },
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }
