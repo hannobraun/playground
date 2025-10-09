@@ -27,7 +27,7 @@ pub fn step(
             let address = operands.pop()?;
             let condition = operands.pop()?;
 
-            if condition != 0 {
+            if condition.inner != 0 {
                 call_stack.push(address)?;
                 return Ok(StepOutcome::Ready);
             }

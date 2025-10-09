@@ -9,5 +9,6 @@ mod compiler;
 mod instructions;
 mod program;
 mod runtime;
+mod value;
 
 pub use self::{instructions::Effect, program::Program};

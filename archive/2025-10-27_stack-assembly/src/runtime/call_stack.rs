@@ -1,4 +1,4 @@
-use crate::Effect;
+use crate::{Effect, value::Value};
 
 pub struct CallStack {
     inner: Vec<usize>,
@@ -21,9 +21,9 @@ impl CallStack {
 
     pub fn push(
         &mut self,
-        address: i32,
+        address: Value,
     ) -> Result<(), InvalidInstructionAddress> {
-        let Ok(address) = address.try_into() else {
+        let Ok(address) = address.inner.try_into() else {
             return Err(InvalidInstructionAddress);
         };
 

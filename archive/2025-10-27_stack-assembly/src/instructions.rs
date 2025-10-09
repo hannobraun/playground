@@ -1,5 +1,7 @@
 use std::collections::BTreeMap;
 
+use crate::value::Value;
+
 pub type Instructions = Vec<Instruction>;
 
 #[derive(Debug)]
@@ -7,7 +9,7 @@ pub enum Instruction {
     Call,
     CallIf,
     Drop0,
-    PushValue { value: i32 },
+    PushValue { value: Value },
     Reference { name: String },
     Return,
     Trigger { effect: Effect },
@@ -32,4 +34,4 @@ pub enum Effect {
     Yield,
 }
 
-pub type Labels = BTreeMap<String, i32>;
+pub type Labels = BTreeMap<String, Value>;
