@@ -34,10 +34,14 @@ fn translate_function(
         translate_label(name, instructions, labels);
     }
 
-    for expression in function.body {
+    let mut body = function.body.into_iter().peekable();
+
+    while let Some(expression) = body.next() {
+        let is_tail = body.peek().is_none();
+
         match expression {
             Expression::Operator { operator } => {
-                translate_operator(operator, instructions);
+                translate_operator(operator, is_tail, instructions);
             }
             Expression::Reference { name } => {
                 translate_reference(name, instructions);
@@ -75,6 +79,7 @@ fn translate_label(
 
 fn translate_operator(
     operator: Option<Operator>,
+    is_tail: bool,
     instructions: &mut Instructions,
 ) {
     let Some(operator) = operator else {
@@ -89,11 +94,15 @@ fn translate_operator(
             instructions.push(Instruction::PushValue { value });
         }
         Operator::Call => {
-            instructions.push(Instruction::PushReturnAddress);
+            if !is_tail {
+                instructions.push(Instruction::PushReturnAddress);
+            }
             instructions.push(Instruction::Jump);
         }
         Operator::CallIf => {
-            instructions.push(Instruction::PushReturnAddress);
+            if !is_tail {
+                instructions.push(Instruction::PushReturnAddress);
+            }
             instructions.push(Instruction::JumpIf);
         }
         Operator::Drop0 => {
