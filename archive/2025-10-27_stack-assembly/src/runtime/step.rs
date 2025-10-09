@@ -19,9 +19,10 @@ pub fn step(
     };
 
     match instruction {
-        Instruction::Call => {
-            call_stack.push(*current_instruction);
-
+        Instruction::Drop0 => {
+            operands.pop()?;
+        }
+        Instruction::Jump => {
             let address = operands.pop()?;
 
             let address = address.into_address()?;
@@ -29,9 +30,7 @@ pub fn step(
 
             return Ok(StepOutcome::Ready);
         }
-        Instruction::CallIf => {
-            call_stack.push(*current_instruction);
-
+        Instruction::JumpIf => {
             let address = operands.pop()?;
             let condition = operands.pop()?;
 
@@ -42,8 +41,10 @@ pub fn step(
                 return Ok(StepOutcome::Ready);
             }
         }
-        Instruction::Drop0 => {
-            operands.pop()?;
+        Instruction::PushReturnAddress => {
+            *current_instruction += 1;
+            call_stack.push(*current_instruction);
+            return Ok(StepOutcome::Ready);
         }
         Instruction::PushValue { value } => {
             operands.push(*value);

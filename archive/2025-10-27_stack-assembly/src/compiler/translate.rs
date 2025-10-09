@@ -90,10 +90,12 @@ fn translate_operator(
             instructions.push(Instruction::PushValue { value });
         }
         Operator::Call => {
-            instructions.push(Instruction::Call);
+            instructions.push(Instruction::PushReturnAddress);
+            instructions.push(Instruction::Jump);
         }
         Operator::CallIf => {
-            instructions.push(Instruction::CallIf);
+            instructions.push(Instruction::PushReturnAddress);
+            instructions.push(Instruction::JumpIf);
         }
         Operator::Drop0 => {
             instructions.push(Instruction::Drop0);
