@@ -1,5 +1,3 @@
-use crate::value::{InvalidInstructionAddress, Value};
-
 pub struct CallStack {
     inner: Vec<usize>,
 }
@@ -19,16 +17,9 @@ impl CallStack {
         }
     }
 
-    pub fn push(
-        &mut self,
-        address: Value,
-    ) -> Result<(), InvalidInstructionAddress> {
-        let address = address.into_address()?;
-
+    pub fn push(&mut self, address: usize) {
         self.advance();
         self.inner.push(address);
-
-        Ok(())
     }
 
     pub fn pop(&mut self) -> Result<usize, CallStackUnderflow> {

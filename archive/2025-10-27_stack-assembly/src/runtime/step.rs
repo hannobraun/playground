@@ -23,7 +23,10 @@ pub fn step(
     match instruction {
         Instruction::Call => {
             let address = operands.pop()?;
-            call_stack.push(address)?;
+
+            let address = address.into_address()?;
+            call_stack.push(address);
+
             return Ok(StepOutcome::Ready);
         }
         Instruction::CallIf => {
@@ -31,7 +34,9 @@ pub fn step(
             let condition = operands.pop()?;
 
             if condition.inner != 0 {
-                call_stack.push(address)?;
+                let address = address.into_address()?;
+                call_stack.push(address);
+
                 return Ok(StepOutcome::Ready);
             }
         }
