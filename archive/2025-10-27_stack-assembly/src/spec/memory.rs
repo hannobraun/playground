@@ -10,3 +10,16 @@ fn memory_should_be_zero_initialized() {
         assert_eq!(*word, 0);
     }
 }
+
+#[test]
+fn read_from_memory() {
+    let mut program = Program::compile("0 read 1 read");
+
+    program.memory()[0] = 3;
+    program.memory()[1] = 5;
+
+    program.continue_();
+
+    assert_eq!(program.operands(), &vec![3, 5]);
+    assert_eq!(program.effect(), None);
+}

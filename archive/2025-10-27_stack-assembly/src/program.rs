@@ -75,6 +75,7 @@ impl Program {
                 &self.instructions,
                 &self.labels,
                 &mut self.operands,
+                &mut self.memory,
                 &mut self.current_instruction,
                 &mut self.call_stack,
             ) {

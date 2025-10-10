@@ -76,6 +76,8 @@ impl Expression<'_> {
             Some(Operator::Pick { index: 1 })
         } else if token == "pick2" {
             Some(Operator::Pick { index: 2 })
+        } else if token == "read" {
+            Some(Operator::Read)
         } else if token == "roll2" {
             Some(Operator::Roll { num_operands: 2 })
         } else if token == "roll3" {
@@ -104,6 +106,7 @@ pub enum Operator {
     CallIf,
     Drop { index: usize },
     Pick { index: usize },
+    Read,
     Roll { num_operands: usize },
     Yield,
 }
