@@ -10,6 +10,7 @@ pub struct Program {
     instructions: Instructions,
     labels: Labels,
     operands: Operands,
+    memory: [i32; 1024],
     current_instruction: usize,
     call_stack: CallStack,
     effect: Option<Effect>,
@@ -24,6 +25,7 @@ impl Program {
             instructions,
             labels,
             operands: Operands::new(),
+            memory: [0; 1024],
             current_instruction: 0,
             call_stack: CallStack::new(),
             effect: None,
@@ -41,6 +43,11 @@ impl Program {
     /// # Access the operand stack
     pub fn operands(&mut self) -> &mut Vec<i32> {
         self.operands.inner()
+    }
+
+    /// # Access the memory
+    pub fn memory(&mut self) -> &mut [i32] {
+        &mut self.memory
     }
 
     /// # Access the call stack
