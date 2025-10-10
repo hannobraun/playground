@@ -19,6 +19,6 @@ pub struct InvalidInstructionAddress;
 
 impl From<InvalidInstructionAddress> for Effect {
     fn from(InvalidInstructionAddress: InvalidInstructionAddress) -> Self {
-        Self::InvalidInstructionAddress
+        Self::InvalidAddress
     }
 }
