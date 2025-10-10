@@ -23,6 +23,9 @@ pub enum Instruction {
 /// An effect that may be triggered by a program
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Effect {
+    /// # The program has aborted its run
+    Abort,
+
     /// # Tried to use a negative value as a code or memory address
     InvalidAddress,
 
