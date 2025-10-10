@@ -1,4 +1,4 @@
-use crate::Program;
+use crate::{Effect, Program};
 
 #[test]
 fn memory_should_be_zero_initialized() {
@@ -22,4 +22,11 @@ fn read_from_memory() {
 
     assert_eq!(program.operands(), &vec![3, 5]);
     assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn trigger_effect_on_read_from_invalid_address() {
+    let mut program = Program::compile_and_run("-1 read");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::InvalidAddress));
 }
