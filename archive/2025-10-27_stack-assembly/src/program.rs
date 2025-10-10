@@ -39,7 +39,7 @@ impl Program {
     }
 
     /// # Access the operand stack
-    pub fn operands(&self) -> &Vec<i32> {
+    pub fn operands(&mut self) -> &mut Vec<i32> {
         self.operands.inner()
     }
 

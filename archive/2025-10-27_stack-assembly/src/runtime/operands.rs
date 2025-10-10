@@ -24,8 +24,8 @@ impl Operands {
             .ok_or(StackUnderflow)
     }
 
-    pub fn inner(&self) -> &Vec<i32> {
-        &self.inner
+    pub fn inner(&mut self) -> &mut Vec<i32> {
+        &mut self.inner
     }
 }
 
