@@ -9,6 +9,7 @@ pub enum Instruction {
     Drop { index: usize },
     Jump,
     JumpIf,
+    Pick { index: usize },
     PushReturnAddress,
     PushValue { value: Value },
     Reference { name: String },

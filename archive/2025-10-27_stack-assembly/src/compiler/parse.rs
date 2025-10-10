@@ -70,6 +70,12 @@ impl Expression<'_> {
             Some(Operator::Drop { index: 1 })
         } else if token == "drop2" {
             Some(Operator::Drop { index: 2 })
+        } else if token == "pick0" {
+            Some(Operator::Pick { index: 0 })
+        } else if token == "pick1" {
+            Some(Operator::Pick { index: 1 })
+        } else if token == "pick2" {
+            Some(Operator::Pick { index: 2 })
         } else if token == "yield" {
             Some(Operator::Yield)
         } else if let Ok(value) = token.parse() {
@@ -91,5 +97,6 @@ pub enum Operator {
     Call,
     CallIf,
     Drop { index: usize },
+    Pick { index: usize },
     Yield,
 }

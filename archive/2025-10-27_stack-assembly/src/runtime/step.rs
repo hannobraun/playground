@@ -61,6 +61,26 @@ pub fn step(
                 return Ok(StepOutcome::Ready);
             }
         }
+        Instruction::Pick { index } => {
+            // The comment from the `Drop` implementation applies here too.
+
+            let index = *index;
+
+            let mut side_stack = Vec::new();
+
+            for _ in 0..=index {
+                let value = operands.pop()?;
+                side_stack.push(value);
+            }
+
+            let value = side_stack[index];
+
+            for value in side_stack.into_iter().rev() {
+                operands.push(value);
+            }
+
+            operands.push(value);
+        }
         Instruction::PushReturnAddress => {
             *current_instruction += 1;
             call_stack.push(*current_instruction);

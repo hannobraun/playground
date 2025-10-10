@@ -115,6 +115,9 @@ fn translate_operator(
         Operator::Drop { index } => {
             instructions.push(Instruction::Drop { index });
         }
+        Operator::Pick { index } => {
+            instructions.push(Instruction::Pick { index });
+        }
         Operator::Yield => {
             instructions.push(Instruction::Trigger {
                 effect: Effect::Yield,
