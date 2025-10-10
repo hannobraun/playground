@@ -137,6 +137,17 @@ pub fn step(
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }
+        Instruction::Write => {
+            let address = operands.pop()?;
+            let value = operands.pop()?;
+
+            let address = address.into_address()?;
+            let Some(slot) = memory.get_mut(address) else {
+                return Err(Effect::OutOfBoundsAddress);
+            };
+
+            *slot = value.inner;
+        }
     }
 
     *current_instruction += 1;

@@ -17,6 +17,7 @@ pub enum Instruction {
     Return,
     Roll { num_operands: usize },
     Trigger { effect: Effect },
+    Write,
 }
 
 /// An effect that may be triggered by a program
