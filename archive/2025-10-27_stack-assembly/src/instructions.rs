@@ -28,6 +28,9 @@ pub enum Effect {
     /// # Tried to evaluate an invalid reference
     InvalidReference,
 
+    /// # Tried to use address that is out of bounds
+    OutOfBoundsAddress,
+
     /// # Tried popping a value from empty operand stack
     StackUnderflow,
 

@@ -25,6 +25,17 @@ fn read_from_memory() {
 }
 
 #[test]
+fn trigger_effect_on_read_from_out_of_bounds_address() {
+    let mut program = Program::compile("1024 read");
+
+    assert!(program.memory().len() >= 1024);
+    program.continue_();
+
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::OutOfBoundsAddress));
+}
+
+#[test]
 fn trigger_effect_on_read_from_invalid_address() {
     let mut program = Program::compile_and_run("-1 read");
     assert_eq!(program.operands(), &vec![]);

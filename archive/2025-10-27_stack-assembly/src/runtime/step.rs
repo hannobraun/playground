@@ -95,7 +95,9 @@ pub fn step(
             let address = operands.pop()?;
 
             let address = address.into_address()?;
-            let value = memory[address];
+            let Some(value) = memory.get(address).copied() else {
+                return Err(Effect::OutOfBoundsAddress);
+            };
 
             operands.push(Value { inner: value });
         }
