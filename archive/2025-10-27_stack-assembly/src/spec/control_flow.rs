@@ -2,28 +2,28 @@ use crate::{Effect, Program};
 
 #[test]
 fn functions_have_no_effect_if_not_called() {
-    let program = Program::compile_and_run("3 f: 5");
+    let mut program = Program::compile_and_run("3 f: 5");
     assert_eq!(program.operands(), &vec![3]);
     assert_eq!(program.effect(), None);
 }
 
 #[test]
 fn invalid_reference_triggers_effect() {
-    let program = Program::compile_and_run("@g 3");
+    let mut program = Program::compile_and_run("@g 3");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidReference));
 }
 
 #[test]
 fn evaluating_reference_pushes_address_to_stack() {
-    let program = Program::compile_and_run("@f f:");
+    let mut program = Program::compile_and_run("@f f:");
     assert_eq!(program.operands().len(), 1);
     assert_eq!(program.effect(), None);
 }
 
 #[test]
 fn call_functions_unconditionally() {
-    let program = Program::compile_and_run(
+    let mut program = Program::compile_and_run(
         "
         @f call
         @g call
@@ -40,21 +40,21 @@ fn call_functions_unconditionally() {
 
 #[test]
 fn call_should_trigger_effect_on_invalid_address() {
-    let program = Program::compile_and_run("-1 call 3");
+    let mut program = Program::compile_and_run("-1 call 3");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidInstructionAddress));
 }
 
 #[test]
 fn call_function_because_of_condition() {
-    let program = Program::compile_and_run("1 @f call_if f: 3");
+    let mut program = Program::compile_and_run("1 @f call_if f: 3");
     assert_eq!(program.operands(), &vec![3]);
     assert_eq!(program.effect(), None);
 }
 
 #[test]
 fn do_not_call_function_because_of_condition() {
-    let program = Program::compile_and_run("0 @f call_if f: 3");
+    let mut program = Program::compile_and_run("0 @f call_if f: 3");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), None);
 }
