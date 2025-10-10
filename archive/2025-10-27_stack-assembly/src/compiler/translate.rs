@@ -100,6 +100,7 @@ fn translate_operator(
         Operator::Integer { value } => {
             instructions.push(Instruction::PushValue { value });
         }
+
         Operator::Call => {
             if !is_tail {
                 instructions.push(Instruction::PushReturnAddress);
