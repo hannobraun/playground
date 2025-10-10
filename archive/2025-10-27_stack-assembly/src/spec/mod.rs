@@ -2,6 +2,7 @@ use crate::{Effect, Program};
 
 mod control_flow;
 mod empty_program;
+mod memory;
 mod operands;
 mod yield_;
 

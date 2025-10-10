@@ -42,7 +42,7 @@ fn call_functions_unconditionally() {
 fn call_should_trigger_effect_on_invalid_address() {
     let mut program = Program::compile_and_run("-1 call 3");
     assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::InvalidInstructionAddress));
+    assert_eq!(program.effect(), Some(&Effect::InvalidAddress));
 }
 
 #[test]

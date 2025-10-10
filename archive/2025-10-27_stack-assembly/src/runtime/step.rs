@@ -5,12 +5,14 @@ use crate::{
         Operands,
         call_stack::{CallStack, CallStackUnderflow},
     },
+    value::Value,
 };
 
 pub fn step(
     instructions: &Instructions,
     labels: &Labels,
     operands: &mut Operands,
+    memory: &mut [i32],
     current_instruction: &mut usize,
     call_stack: &mut CallStack,
 ) -> Result<StepOutcome, Effect> {
@@ -89,6 +91,16 @@ pub fn step(
         Instruction::PushValue { value } => {
             operands.push(*value);
         }
+        Instruction::Read => {
+            let address = operands.pop()?;
+
+            let address = address.into_address()?;
+            let Some(value) = memory.get(address).copied() else {
+                return Err(Effect::OutOfBoundsAddress);
+            };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Reference { name } => {
             if let Some(&address) = labels.get(name) {
                 operands.push(address);
@@ -124,6 +136,17 @@ pub fn step(
         }
         Instruction::Trigger { effect } => {
             return Err(*effect);
+        }
+        Instruction::Write => {
+            let address = operands.pop()?;
+            let value = operands.pop()?;
+
+            let address = address.into_address()?;
+            let Some(slot) = memory.get_mut(address) else {
+                return Err(Effect::OutOfBoundsAddress);
+            };
+
+            *slot = value.inner;
         }
     }
 

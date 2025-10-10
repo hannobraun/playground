@@ -118,8 +118,14 @@ fn translate_operator(
         Operator::Pick { index } => {
             instructions.push(Instruction::Pick { index });
         }
+        Operator::Read => {
+            instructions.push(Instruction::Read);
+        }
         Operator::Roll { num_operands } => {
             instructions.push(Instruction::Roll { num_operands });
+        }
+        Operator::Write => {
+            instructions.push(Instruction::Write);
         }
         Operator::Yield => {
             instructions.push(Instruction::Trigger {

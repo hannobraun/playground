@@ -12,20 +12,25 @@ pub enum Instruction {
     Pick { index: usize },
     PushReturnAddress,
     PushValue { value: Value },
+    Read,
     Reference { name: String },
     Return,
     Roll { num_operands: usize },
     Trigger { effect: Effect },
+    Write,
 }
 
 /// An effect that may be triggered by a program
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Effect {
-    /// # Tried to call a function based on an invalid address
-    InvalidInstructionAddress,
+    /// # Tried to use a negative value as a code or memory address
+    InvalidAddress,
 
     /// # Tried to evaluate an invalid reference
     InvalidReference,
+
+    /// # Tried to use address that is out of bounds
+    OutOfBoundsAddress,
 
     /// # Tried popping a value from empty operand stack
     StackUnderflow,
