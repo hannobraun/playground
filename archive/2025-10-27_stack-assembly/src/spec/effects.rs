@@ -8,14 +8,14 @@ fn trigger_effect_on_abort() {
 }
 
 #[test]
-fn unknown_operator_should_trigger_effect() {
+fn trigger_effect_on_unknown_operator() {
     let mut program = Program::compile_and_run("3 unknown_operator 5");
     assert_eq!(program.operands(), &vec![3]);
     assert_eq!(program.effect(), Some(&Effect::UnknownOperator));
 }
 
 #[test]
-fn yield_triggers_effect() {
+fn trigger_effect_on_yield() {
     let mut program = Program::compile_and_run("3 yield 5");
 
     assert_eq!(program.operands(), &vec![3]);
