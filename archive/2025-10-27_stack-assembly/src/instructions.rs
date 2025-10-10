@@ -6,13 +6,15 @@ pub type Instructions = Vec<Instruction>;
 
 #[derive(Debug)]
 pub enum Instruction {
-    Drop0,
+    Drop { index: usize },
     Jump,
     JumpIf,
+    Pick { index: usize },
     PushReturnAddress,
     PushValue { value: Value },
     Reference { name: String },
     Return,
+    Roll { num_operands: usize },
     Trigger { effect: Effect },
 }
 

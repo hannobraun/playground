@@ -19,8 +19,28 @@ pub fn step(
     };
 
     match instruction {
-        Instruction::Drop0 => {
+        Instruction::Drop { index } => {
+            // This implementation is more complicated than what we could do, if
+            // we added a `drop` method to `Operands`, based on the capabilities
+            // of the underlying `Vec`.
+            //
+            // However, this new method would also need to handle stack
+            // underflow correctly, leading to more complexity and more testing
+            // effort, compared to just writing some stupid code here that uses
+            // a limited set of primitives.
+
+            let mut side_stack = Vec::new();
+
+            for _ in 0..*index {
+                let value = operands.pop()?;
+                side_stack.push(value);
+            }
+
             operands.pop()?;
+
+            for value in side_stack.into_iter().rev() {
+                operands.push(value);
+            }
         }
         Instruction::Jump => {
             let address = operands.pop()?;
@@ -40,6 +60,26 @@ pub fn step(
 
                 return Ok(StepOutcome::Ready);
             }
+        }
+        Instruction::Pick { index } => {
+            // The comment from the `Drop` implementation applies here too.
+
+            let index = *index;
+
+            let mut side_stack = Vec::new();
+
+            for _ in 0..=index {
+                let value = operands.pop()?;
+                side_stack.push(value);
+            }
+
+            let value = side_stack[index];
+
+            for value in side_stack.into_iter().rev() {
+                operands.push(value);
+            }
+
+            operands.push(value);
         }
         Instruction::PushReturnAddress => {
             *current_instruction += 1;
@@ -64,6 +104,24 @@ pub fn step(
                 return Ok(StepOutcome::Finished);
             }
         },
+        Instruction::Roll { num_operands } => {
+            // The comment from the `Drop` implementation applies here too.
+
+            let mut side_stack = Vec::new();
+
+            for _ in 1..*num_operands {
+                let value = operands.pop()?;
+                side_stack.push(value);
+            }
+
+            let value = operands.pop()?;
+
+            for value in side_stack.into_iter().rev() {
+                operands.push(value);
+            }
+
+            operands.push(value);
+        }
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }

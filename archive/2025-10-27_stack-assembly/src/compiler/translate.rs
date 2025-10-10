@@ -112,8 +112,14 @@ fn translate_operator(
             }
             instructions.push(Instruction::JumpIf);
         }
-        Operator::Drop0 => {
-            instructions.push(Instruction::Drop0);
+        Operator::Drop { index } => {
+            instructions.push(Instruction::Drop { index });
+        }
+        Operator::Pick { index } => {
+            instructions.push(Instruction::Pick { index });
+        }
+        Operator::Roll { num_operands } => {
+            instructions.push(Instruction::Roll { num_operands });
         }
         Operator::Yield => {
             instructions.push(Instruction::Trigger {
