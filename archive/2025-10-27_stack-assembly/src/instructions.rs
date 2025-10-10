@@ -14,6 +14,7 @@ pub enum Instruction {
     PushValue { value: Value },
     Reference { name: String },
     Return,
+    Roll { num_operands: usize },
     Trigger { effect: Effect },
 }
 

@@ -43,6 +43,27 @@ fn pick2_picks_operand_at_index_2() {
 }
 
 #[test]
+fn roll2_should_rotate_the_top_2_operands() {
+    let program = Program::compile_and_run("2 3 5 8 roll2");
+    assert_eq!(program.operands(), &vec![2, 3, 8, 5,]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn roll3_should_rotate_the_top_3_operands() {
+    let program = Program::compile_and_run("2 3 5 8 roll3");
+    assert_eq!(program.operands(), &vec![2, 5, 8, 3]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn roll4_should_rotate_the_top_4_operands() {
+    let program = Program::compile_and_run("2 3 5 8 roll4");
+    assert_eq!(program.operands(), &vec![3, 5, 8, 2]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
 fn popping_from_empty_stack_triggers_effect() {
     let program = Program::compile_and_run("drop0");
     assert_eq!(program.operands(), &vec![]);

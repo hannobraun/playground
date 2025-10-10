@@ -104,6 +104,24 @@ pub fn step(
                 return Ok(StepOutcome::Finished);
             }
         },
+        Instruction::Roll { num_operands } => {
+            // The comment from the `Drop` implementation applies here too.
+
+            let mut side_stack = Vec::new();
+
+            for _ in 1..*num_operands {
+                let value = operands.pop()?;
+                side_stack.push(value);
+            }
+
+            let value = operands.pop()?;
+
+            for value in side_stack.into_iter().rev() {
+                operands.push(value);
+            }
+
+            operands.push(value);
+        }
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }
