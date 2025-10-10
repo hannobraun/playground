@@ -101,6 +101,11 @@ fn translate_operator(
             instructions.push(Instruction::PushValue { value });
         }
 
+        Operator::Abort => {
+            instructions.push(Instruction::Trigger {
+                effect: Effect::Abort,
+            });
+        }
         Operator::Call => {
             if !is_tail {
                 instructions.push(Instruction::PushReturnAddress);

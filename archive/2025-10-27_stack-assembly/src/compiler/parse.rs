@@ -60,7 +60,9 @@ pub enum Expression<'r> {
 
 impl Expression<'_> {
     fn parse_operator(token: &str) -> Self {
-        let operator = if token == "call" {
+        let operator = if token == "abort" {
+            Some(Operator::Abort)
+        } else if token == "call" {
             Some(Operator::Call)
         } else if token == "call_if" {
             Some(Operator::CallIf)
@@ -104,6 +106,7 @@ impl Expression<'_> {
 pub enum Operator {
     Integer { value: Value },
 
+    Abort,
     Call,
     CallIf,
     Drop { index: usize },
