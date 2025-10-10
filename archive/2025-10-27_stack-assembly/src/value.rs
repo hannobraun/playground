@@ -6,19 +6,19 @@ pub struct Value {
 }
 
 impl Value {
-    pub fn into_address(self) -> Result<usize, InvalidInstructionAddress> {
+    pub fn into_address(self) -> Result<usize, InvalidAddress> {
         let Ok(address) = self.inner.try_into() else {
-            return Err(InvalidInstructionAddress);
+            return Err(InvalidAddress);
         };
 
         Ok(address)
     }
 }
 
-pub struct InvalidInstructionAddress;
+pub struct InvalidAddress;
 
-impl From<InvalidInstructionAddress> for Effect {
-    fn from(InvalidInstructionAddress: InvalidInstructionAddress) -> Self {
+impl From<InvalidAddress> for Effect {
+    fn from(InvalidAddress: InvalidAddress) -> Self {
         Self::InvalidAddress
     }
 }
