@@ -62,6 +62,8 @@ impl Expression<'_> {
     fn parse_operator(token: &str) -> Self {
         let operator = if token == "+" {
             Some(Operator::Add)
+        } else if token == "-" {
+            Some(Operator::Subtract)
         } else if token == "abort" {
             Some(Operator::Abort)
         } else if token == "call" {
@@ -116,6 +118,7 @@ pub enum Operator {
     Pick { index: usize },
     Read,
     Roll { num_operands: usize },
+    Subtract,
     Write,
     Yield,
 }

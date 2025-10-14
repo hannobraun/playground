@@ -133,6 +133,9 @@ fn translate_operator(
         Operator::Roll { num_operands } => {
             instructions.push(Instruction::Roll { num_operands });
         }
+        Operator::Subtract => {
+            instructions.push(Instruction::Subtract);
+        }
         Operator::Write => {
             instructions.push(Instruction::Write);
         }

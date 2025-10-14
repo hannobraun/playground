@@ -144,6 +144,16 @@ pub fn step(
 
             operands.push(value);
         }
+        Instruction::Subtract => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let Some(value) = i32::checked_sub(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }
