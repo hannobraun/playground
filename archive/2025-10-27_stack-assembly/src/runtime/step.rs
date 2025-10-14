@@ -25,7 +25,9 @@ pub fn step(
             let b = operands.pop()?;
             let a = operands.pop()?;
 
-            let value = a.inner + b.inner;
+            let Some(value) = i32::checked_add(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
 
             operands.push(Value { inner: value });
         }

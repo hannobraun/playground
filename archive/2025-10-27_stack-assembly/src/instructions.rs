@@ -27,6 +27,9 @@ pub enum Effect {
     /// # The program has aborted its run
     Abort,
 
+    /// # Result of operation can't be represented as an integer value
+    IntegerOverflow,
+
     /// # Tried to use a negative value as a code or memory address
     InvalidAddress,
 
