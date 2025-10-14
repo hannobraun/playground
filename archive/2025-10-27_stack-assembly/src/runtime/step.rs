@@ -119,6 +119,15 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::LeadingZeros => {
+            let input = operands.pop()?;
+
+            let Ok(output) = input.inner.leading_zeros().try_into() else {
+                unreachable!("`i32` can represent number of leading zeros.");
+            };
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Multiply => {
             let b = operands.pop()?;
             let a = operands.pop()?;

@@ -139,6 +139,9 @@ fn translate_operator(
         Operator::LargerOrEqual => {
             instructions.push(Instruction::LargerOrEqual);
         }
+        Operator::LeadingZeros => {
+            instructions.push(Instruction::LeadingZeros);
+        }
         Operator::Multiply => {
             instructions.push(Instruction::Multiply);
         }

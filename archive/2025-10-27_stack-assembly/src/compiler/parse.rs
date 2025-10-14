@@ -94,6 +94,8 @@ impl Expression<'_> {
             Some(Operator::Drop { index: 1 })
         } else if token == "drop2" {
             Some(Operator::Drop { index: 2 })
+        } else if token == "leading_zeros" {
+            Some(Operator::LeadingZeros)
         } else if token == "not" {
             Some(Operator::Not)
         } else if token == "or" {
@@ -144,6 +146,7 @@ pub enum Operator {
     Equal,
     Larger,
     LargerOrEqual,
+    LeadingZeros,
     Multiply,
     Not,
     Or,

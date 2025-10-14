@@ -15,6 +15,7 @@ pub enum Instruction {
     JumpIf,
     Larger,
     LargerOrEqual,
+    LeadingZeros,
     Multiply,
     Not,
     Or,
