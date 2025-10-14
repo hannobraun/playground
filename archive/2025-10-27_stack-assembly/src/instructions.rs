@@ -6,16 +6,21 @@ pub type Instructions = Vec<Instruction>;
 
 #[derive(Debug)]
 pub enum Instruction {
+    Add,
+    Divide,
     Drop { index: usize },
     Jump,
     JumpIf,
+    Multiply,
     Pick { index: usize },
     PushReturnAddress,
     PushValue { value: Value },
     Read,
     Reference { name: String },
+    Remainder,
     Return,
     Roll { num_operands: usize },
+    Subtract,
     Trigger { effect: Effect },
     Write,
 }
@@ -25,6 +30,12 @@ pub enum Instruction {
 pub enum Effect {
     /// # The program has aborted its run
     Abort,
+
+    /// # Tried to divide by zero
+    DivisionByZero,
+
+    /// # Result of operation can't be represented as an integer value
+    IntegerOverflow,
 
     /// # Tried to use a negative value as a code or memory address
     InvalidAddress,

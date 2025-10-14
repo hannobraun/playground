@@ -21,6 +21,30 @@ pub fn step(
     };
 
     match instruction {
+        Instruction::Add => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let Some(value) = i32::checked_add(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
+        }
+        Instruction::Divide => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            if b.inner == 0 {
+                return Err(Effect::DivisionByZero);
+            }
+
+            let Some(value) = i32::checked_div(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Drop { index } => {
             // This implementation is more complicated than what we could do, if
             // we added a `drop` method to `Operands`, based on the capabilities
@@ -62,6 +86,16 @@ pub fn step(
 
                 return Ok(StepOutcome::Ready);
             }
+        }
+        Instruction::Multiply => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let Some(value) = i32::checked_mul(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
         }
         Instruction::Pick { index } => {
             // The comment from the `Drop` implementation applies here too.
@@ -108,6 +142,20 @@ pub fn step(
                 return Err(Effect::InvalidReference);
             }
         }
+        Instruction::Remainder => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            if b.inner == 0 {
+                return Err(Effect::DivisionByZero);
+            }
+
+            let Some(value) = i32::checked_rem(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Return => match call_stack.pop() {
             Ok(address) => {
                 *current_instruction = address;
@@ -133,6 +181,16 @@ pub fn step(
             }
 
             operands.push(value);
+        }
+        Instruction::Subtract => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let Some(value) = i32::checked_sub(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
         }
         Instruction::Trigger { effect } => {
             return Err(*effect);

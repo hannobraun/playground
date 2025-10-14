@@ -60,7 +60,17 @@ pub enum Expression<'r> {
 
 impl Expression<'_> {
     fn parse_operator(token: &str) -> Self {
-        let operator = if token == "abort" {
+        let operator = if token == "%" {
+            Some(Operator::Remainder)
+        } else if token == "*" {
+            Some(Operator::Multiply)
+        } else if token == "+" {
+            Some(Operator::Add)
+        } else if token == "-" {
+            Some(Operator::Subtract)
+        } else if token == "/" {
+            Some(Operator::Divide)
+        } else if token == "abort" {
             Some(Operator::Abort)
         } else if token == "call" {
             Some(Operator::Call)
@@ -107,12 +117,17 @@ pub enum Operator {
     Integer { value: Value },
 
     Abort,
+    Add,
     Call,
     CallIf,
+    Divide,
     Drop { index: usize },
+    Multiply,
     Pick { index: usize },
     Read,
+    Remainder,
     Roll { num_operands: usize },
+    Subtract,
     Write,
     Yield,
 }

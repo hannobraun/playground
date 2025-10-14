@@ -106,6 +106,9 @@ fn translate_operator(
                 effect: Effect::Abort,
             });
         }
+        Operator::Add => {
+            instructions.push(Instruction::Add);
+        }
         Operator::Call => {
             if !is_tail {
                 instructions.push(Instruction::PushReturnAddress);
@@ -118,8 +121,14 @@ fn translate_operator(
             }
             instructions.push(Instruction::JumpIf);
         }
+        Operator::Divide => {
+            instructions.push(Instruction::Divide);
+        }
         Operator::Drop { index } => {
             instructions.push(Instruction::Drop { index });
+        }
+        Operator::Multiply => {
+            instructions.push(Instruction::Multiply);
         }
         Operator::Pick { index } => {
             instructions.push(Instruction::Pick { index });
@@ -127,8 +136,14 @@ fn translate_operator(
         Operator::Read => {
             instructions.push(Instruction::Read);
         }
+        Operator::Remainder => {
+            instructions.push(Instruction::Remainder);
+        }
         Operator::Roll { num_operands } => {
             instructions.push(Instruction::Roll { num_operands });
+        }
+        Operator::Subtract => {
+            instructions.push(Instruction::Subtract);
         }
         Operator::Write => {
             instructions.push(Instruction::Write);
