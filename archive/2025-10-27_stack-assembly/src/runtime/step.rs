@@ -21,6 +21,14 @@ pub fn step(
     };
 
     match instruction {
+        Instruction::Add => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let value = a.inner + b.inner;
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Drop { index } => {
             // This implementation is more complicated than what we could do, if
             // we added a `drop` method to `Operands`, based on the capabilities

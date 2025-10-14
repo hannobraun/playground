@@ -106,6 +106,9 @@ fn translate_operator(
                 effect: Effect::Abort,
             });
         }
+        Operator::Add => {
+            instructions.push(Instruction::Add);
+        }
         Operator::Call => {
             if !is_tail {
                 instructions.push(Instruction::PushReturnAddress);
