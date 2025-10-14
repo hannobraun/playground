@@ -172,6 +172,9 @@ fn translate_operator(
         Operator::Write => {
             instructions.push(Instruction::Write);
         }
+        Operator::Xor => {
+            instructions.push(Instruction::Xor);
+        }
         Operator::Yield => {
             instructions.push(Instruction::Trigger {
                 effect: Effect::Yield,

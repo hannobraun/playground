@@ -114,6 +114,8 @@ impl Expression<'_> {
             Some(Operator::Roll { num_operands: 4 })
         } else if token == "write" {
             Some(Operator::Write)
+        } else if token == "xor" {
+            Some(Operator::Xor)
         } else if token == "yield" {
             Some(Operator::Yield)
         } else if let Ok(value) = token.parse() {
@@ -153,5 +155,6 @@ pub enum Operator {
     SmallerOrEqual,
     Subtract,
     Write,
+    Xor,
     Yield,
 }

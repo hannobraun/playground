@@ -275,6 +275,14 @@ pub fn step(
 
             *slot = value.inner;
         }
+        Instruction::Xor => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let output = a.inner ^ b.inner;
+
+            operands.push(Value { inner: output });
+        }
     }
 
     *current_instruction += 1;

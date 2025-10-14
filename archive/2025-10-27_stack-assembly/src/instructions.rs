@@ -31,6 +31,7 @@ pub enum Instruction {
     Subtract,
     Trigger { effect: Effect },
     Write,
+    Xor,
 }
 
 /// An effect that may be triggered by a program
