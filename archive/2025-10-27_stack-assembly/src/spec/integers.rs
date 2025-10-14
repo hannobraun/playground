@@ -1,7 +1,7 @@
 use crate::{Effect, Program};
 
 #[test]
-fn evaluate_integers() {
+fn literals() {
     let mut program = Program::compile("3 5");
     assert_eq!(program.operands(), &vec![]);
 
