@@ -136,6 +136,9 @@ fn translate_operator(
         Operator::Read => {
             instructions.push(Instruction::Read);
         }
+        Operator::Remainder => {
+            instructions.push(Instruction::Remainder);
+        }
         Operator::Roll { num_operands } => {
             instructions.push(Instruction::Roll { num_operands });
         }

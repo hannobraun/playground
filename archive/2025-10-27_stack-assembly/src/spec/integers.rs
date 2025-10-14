@@ -59,6 +59,27 @@ fn multiplication_triggers_integer_overflow() {
 }
 
 #[test]
+fn remainder() {
+    let mut program = Program::compile_and_run("11 4 %");
+    assert_eq!(program.operands(), &vec![3]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn remainder_triggers_division_by_zero() {
+    let mut program = Program::compile_and_run("1 0 %");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::DivisionByZero));
+}
+
+#[test]
+fn remainder_triggers_integer_overflow() {
+    let mut program = Program::compile_and_run("-2147483648 -1 %");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::IntegerOverflow));
+}
+
+#[test]
 fn subtraction() {
     let mut program = Program::compile_and_run("3 5 -");
     assert_eq!(program.operands(), &vec![-2]);

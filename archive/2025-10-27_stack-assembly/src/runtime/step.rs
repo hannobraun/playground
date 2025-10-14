@@ -142,6 +142,20 @@ pub fn step(
                 return Err(Effect::InvalidReference);
             }
         }
+        Instruction::Remainder => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            if b.inner == 0 {
+                return Err(Effect::DivisionByZero);
+            }
+
+            let Some(value) = i32::checked_rem(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Return => match call_stack.pop() {
             Ok(address) => {
                 *current_instruction = address;

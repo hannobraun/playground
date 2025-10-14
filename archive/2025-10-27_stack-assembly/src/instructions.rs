@@ -17,6 +17,7 @@ pub enum Instruction {
     PushValue { value: Value },
     Read,
     Reference { name: String },
+    Remainder,
     Return,
     Roll { num_operands: usize },
     Subtract,
