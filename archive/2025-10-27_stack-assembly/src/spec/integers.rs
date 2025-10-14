@@ -9,6 +9,8 @@ fn evaluate_integers() {
     assert_eq!(program.operands(), &vec![3, 5]);
 }
 
+// arithmetic operations
+
 #[test]
 fn addition() {
     let mut program = Program::compile_and_run("3 5 +");
