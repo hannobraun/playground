@@ -1,4 +1,4 @@
-use crate::Program;
+use crate::{Effect, Program};
 
 // bit logic
 
@@ -53,4 +53,11 @@ fn shift_left() {
     let mut program = Program::compile_and_run("5 2 shift_left");
     assert_eq!(program.operands(), &vec![20]);
     assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn shift_left_trigger_invalid_operand() {
+    let mut program = Program::compile_and_run("0 -2 shift_left");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
 }

@@ -1,3 +1,5 @@
+use std::ops::Shl;
+
 use crate::{
     Effect,
     instructions::{Instruction, Instructions, Labels},
@@ -257,7 +259,11 @@ pub fn step(
             let num_positions = operands.pop()?;
             let input = operands.pop()?;
 
-            let output = input.inner << num_positions.inner;
+            let Ok(num_positions) = num_positions.inner.try_into() else {
+                return Err(Effect::InvalidOperand);
+            };
+            let num_positions: u32 = num_positions;
+            let output = input.inner.shl(num_positions);
 
             operands.push(Value { inner: output });
         }
