@@ -133,6 +133,9 @@ fn translate_operator(
         Operator::Larger => {
             instructions.push(Instruction::Larger);
         }
+        Operator::LargerOrEqual => {
+            instructions.push(Instruction::LargerOrEqual);
+        }
         Operator::Multiply => {
             instructions.push(Instruction::Multiply);
         }

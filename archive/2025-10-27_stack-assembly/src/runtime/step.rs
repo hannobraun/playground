@@ -103,6 +103,14 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::LargerOrEqual => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let value = if a.inner >= b.inner { 1 } else { 0 };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Multiply => {
             let b = operands.pop()?;
             let a = operands.pop()?;

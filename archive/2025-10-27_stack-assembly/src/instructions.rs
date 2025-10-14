@@ -13,6 +13,7 @@ pub enum Instruction {
     Jump,
     JumpIf,
     Larger,
+    LargerOrEqual,
     Multiply,
     Pick { index: usize },
     PushReturnAddress,
