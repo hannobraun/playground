@@ -139,6 +139,9 @@ fn translate_operator(
         Operator::Multiply => {
             instructions.push(Instruction::Multiply);
         }
+        Operator::Not => {
+            instructions.push(Instruction::Not);
+        }
         Operator::Pick { index } => {
             instructions.push(Instruction::Pick { index });
         }

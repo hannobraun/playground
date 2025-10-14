@@ -15,6 +15,7 @@ pub enum Instruction {
     Larger,
     LargerOrEqual,
     Multiply,
+    Not,
     Pick { index: usize },
     PushReturnAddress,
     PushValue { value: Value },

@@ -121,6 +121,13 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::Not => {
+            let input = operands.pop()?;
+
+            let output = if input.inner == 0 { 1 } else { 0 };
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Pick { index } => {
             // The comment from the `Drop` implementation applies here too.
 
