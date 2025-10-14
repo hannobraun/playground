@@ -148,6 +148,9 @@ fn translate_operator(
         Operator::Smaller => {
             instructions.push(Instruction::Smaller);
         }
+        Operator::SmallerOrEqual => {
+            instructions.push(Instruction::SmallerOrEqual);
+        }
         Operator::Subtract => {
             instructions.push(Instruction::Subtract);
         }

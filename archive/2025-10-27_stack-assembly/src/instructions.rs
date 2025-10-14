@@ -22,6 +22,7 @@ pub enum Instruction {
     Return,
     Roll { num_operands: usize },
     Smaller,
+    SmallerOrEqual,
     Subtract,
     Trigger { effect: Effect },
     Write,
