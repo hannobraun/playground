@@ -21,6 +21,7 @@ pub enum Instruction {
     Remainder,
     Return,
     Roll { num_operands: usize },
+    Smaller,
     Subtract,
     Trigger { effect: Effect },
     Write,

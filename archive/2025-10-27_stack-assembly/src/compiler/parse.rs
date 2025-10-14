@@ -70,6 +70,8 @@ impl Expression<'_> {
             Some(Operator::Subtract)
         } else if token == "/" {
             Some(Operator::Divide)
+        } else if token == "<" {
+            Some(Operator::Smaller)
         } else if token == "=" {
             Some(Operator::Equal)
         } else if token == "abort" {
@@ -130,6 +132,7 @@ pub enum Operator {
     Read,
     Remainder,
     Roll { num_operands: usize },
+    Smaller,
     Subtract,
     Write,
     Yield,
