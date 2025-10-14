@@ -73,6 +73,16 @@ pub fn step(
                 return Ok(StepOutcome::Ready);
             }
         }
+        Instruction::Multiply => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let Some(value) = i32::checked_mul(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Pick { index } => {
             // The comment from the `Drop` implementation applies here too.
 

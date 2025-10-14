@@ -124,6 +124,9 @@ fn translate_operator(
         Operator::Drop { index } => {
             instructions.push(Instruction::Drop { index });
         }
+        Operator::Multiply => {
+            instructions.push(Instruction::Multiply);
+        }
         Operator::Pick { index } => {
             instructions.push(Instruction::Pick { index });
         }
