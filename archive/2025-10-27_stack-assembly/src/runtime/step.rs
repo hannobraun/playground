@@ -264,6 +264,17 @@ pub fn step(
 
             operands.push(Value { inner: output });
         }
+        Instruction::RotateRight => {
+            let num_positions = operands.pop()?;
+            let input = operands.pop()?;
+
+            let Ok(num_positions) = num_positions.inner.try_into() else {
+                return Err(Effect::InvalidOperand);
+            };
+            let output = input.inner.rotate_right(num_positions);
+
+            operands.push(Value { inner: output });
+        }
         Instruction::ShiftLeft => {
             let num_positions = operands.pop()?;
             let input = operands.pop()?;

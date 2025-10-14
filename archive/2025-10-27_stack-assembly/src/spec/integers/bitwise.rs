@@ -63,6 +63,20 @@ fn rotate_left_trigger_invalid_operand() {
 }
 
 #[test]
+fn rotate_right() {
+    let mut program = Program::compile_and_run("10 2 rotate_right");
+    assert_eq!(program.operands(), &vec![-2147483646]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn rotate_right_trigger_invalid_operand() {
+    let mut program = Program::compile_and_run("0 -2 rotate_right");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
+}
+
+#[test]
 fn shift_left() {
     let mut program = Program::compile_and_run("5 2 shift_left");
     assert_eq!(program.operands(), &vec![20]);

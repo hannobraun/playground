@@ -169,6 +169,9 @@ fn translate_operator(
         Operator::RotateLeft => {
             instructions.push(Instruction::RotateLeft);
         }
+        Operator::RotateRight => {
+            instructions.push(Instruction::RotateRight);
+        }
         Operator::ShiftLeft => {
             instructions.push(Instruction::ShiftLeft);
         }
