@@ -30,6 +30,7 @@ pub enum Instruction {
     Smaller,
     SmallerOrEqual,
     Subtract,
+    TrailingZeros,
     Trigger { effect: Effect },
     Write,
     Xor,

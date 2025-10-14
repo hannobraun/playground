@@ -31,3 +31,10 @@ fn leading_zeros() {
     assert_eq!(program.operands(), &vec![31]);
     assert_eq!(program.effect(), None);
 }
+
+#[test]
+fn trailing_zeros() {
+    let mut program = Program::compile_and_run("-2147483648 trailing_zeros");
+    assert_eq!(program.operands(), &vec![31]);
+    assert_eq!(program.effect(), None);
+}

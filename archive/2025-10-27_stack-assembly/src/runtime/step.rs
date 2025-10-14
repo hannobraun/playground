@@ -270,6 +270,15 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::TrailingZeros => {
+            let input = operands.pop()?;
+
+            let Ok(output) = input.inner.trailing_zeros().try_into() else {
+                unreachable!("`i32` can represent number of trailing zeros.");
+            };
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }

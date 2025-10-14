@@ -172,6 +172,9 @@ fn translate_operator(
         Operator::Subtract => {
             instructions.push(Instruction::Subtract);
         }
+        Operator::TrailingZeros => {
+            instructions.push(Instruction::TrailingZeros);
+        }
         Operator::Write => {
             instructions.push(Instruction::Write);
         }

@@ -114,6 +114,8 @@ impl Expression<'_> {
             Some(Operator::Roll { num_operands: 3 })
         } else if token == "roll4" {
             Some(Operator::Roll { num_operands: 4 })
+        } else if token == "trailing_zeros" {
+            Some(Operator::TrailingZeros)
         } else if token == "write" {
             Some(Operator::Write)
         } else if token == "xor" {
@@ -157,6 +159,7 @@ pub enum Operator {
     Smaller,
     SmallerOrEqual,
     Subtract,
+    TrailingZeros,
     Write,
     Xor,
     Yield,
