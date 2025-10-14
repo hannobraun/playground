@@ -82,6 +82,8 @@ impl Expression<'_> {
             Some(Operator::LargerOrEqual)
         } else if token == "abort" {
             Some(Operator::Abort)
+        } else if token == "and" {
+            Some(Operator::And)
         } else if token == "call" {
             Some(Operator::Call)
         } else if token == "call_if" {
@@ -130,6 +132,7 @@ pub enum Operator {
 
     Abort,
     Add,
+    And,
     Call,
     CallIf,
     Divide,

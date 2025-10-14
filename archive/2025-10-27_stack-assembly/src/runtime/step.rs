@@ -31,6 +31,14 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::And => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let output = a.inner & b.inner;
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Divide => {
             let b = operands.pop()?;
             let a = operands.pop()?;

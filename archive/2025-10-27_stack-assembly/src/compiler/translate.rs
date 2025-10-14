@@ -109,6 +109,9 @@ fn translate_operator(
         Operator::Add => {
             instructions.push(Instruction::Add);
         }
+        Operator::And => {
+            instructions.push(Instruction::And);
+        }
         Operator::Call => {
             if !is_tail {
                 instructions.push(Instruction::PushReturnAddress);
