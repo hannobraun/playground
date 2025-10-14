@@ -30,6 +30,9 @@ pub enum Effect {
     /// # The program has aborted its run
     Abort,
 
+    /// # Tried to divide by zero
+    DivisionByZero,
+
     /// # Result of operation can't be represented as an integer value
     IntegerOverflow,
 

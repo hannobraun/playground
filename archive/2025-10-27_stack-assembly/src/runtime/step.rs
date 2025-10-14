@@ -35,6 +35,10 @@ pub fn step(
             let b = operands.pop()?;
             let a = operands.pop()?;
 
+            if b.inner == 0 {
+                return Err(Effect::DivisionByZero);
+            }
+
             let Some(value) = i32::checked_div(a.inner, b.inner) else {
                 return Err(Effect::IntegerOverflow);
             };

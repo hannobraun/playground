@@ -31,6 +31,13 @@ fn division() {
 }
 
 #[test]
+fn division_triggers_division_by_zero() {
+    let mut program = Program::compile_and_run("1 0 /");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::DivisionByZero));
+}
+
+#[test]
 fn division_triggers_integer_overflow() {
     let mut program = Program::compile_and_run("-2147483648 -1 /");
     assert_eq!(program.operands(), &vec![]);
