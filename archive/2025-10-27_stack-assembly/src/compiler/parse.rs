@@ -66,6 +66,8 @@ impl Expression<'_> {
             Some(Operator::Add)
         } else if token == "-" {
             Some(Operator::Subtract)
+        } else if token == "/" {
+            Some(Operator::Divide)
         } else if token == "abort" {
             Some(Operator::Abort)
         } else if token == "call" {
@@ -116,6 +118,7 @@ pub enum Operator {
     Add,
     Call,
     CallIf,
+    Divide,
     Drop { index: usize },
     Multiply,
     Pick { index: usize },

@@ -31,6 +31,16 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::Divide => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let Some(value) = i32::checked_div(a.inner, b.inner) else {
+                return Err(Effect::IntegerOverflow);
+            };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Drop { index } => {
             // This implementation is more complicated than what we could do, if
             // we added a `drop` method to `Operands`, based on the capabilities

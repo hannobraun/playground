@@ -7,6 +7,7 @@ pub type Instructions = Vec<Instruction>;
 #[derive(Debug)]
 pub enum Instruction {
     Add,
+    Divide,
     Drop { index: usize },
     Jump,
     JumpIf,

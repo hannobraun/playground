@@ -121,6 +121,9 @@ fn translate_operator(
             }
             instructions.push(Instruction::JumpIf);
         }
+        Operator::Divide => {
+            instructions.push(Instruction::Divide);
+        }
         Operator::Drop { index } => {
             instructions.push(Instruction::Drop { index });
         }
