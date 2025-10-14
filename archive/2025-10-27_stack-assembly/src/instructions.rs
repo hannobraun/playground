@@ -29,6 +29,7 @@ pub enum Instruction {
     Return,
     Roll { num_operands: usize },
     ShiftLeft,
+    ShiftRight,
     Smaller,
     SmallerOrEqual,
     Subtract,

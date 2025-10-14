@@ -68,3 +68,24 @@ fn shift_left_trigger_invalid_operand() {
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
 }
+
+#[test]
+fn shift_right() {
+    let mut program = Program::compile_and_run("20 2 shift_right");
+    assert_eq!(program.operands(), &vec![5]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn shift_right_overflow() {
+    let mut program = Program::compile_and_run("10 2 shift_right");
+    assert_eq!(program.operands(), &vec![2]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn shift_right_trigger_invalid_operand() {
+    let mut program = Program::compile_and_run("0 -2 shift_right");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
+}

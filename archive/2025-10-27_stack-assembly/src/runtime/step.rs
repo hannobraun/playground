@@ -264,6 +264,17 @@ pub fn step(
 
             operands.push(Value { inner: output });
         }
+        Instruction::ShiftRight => {
+            let num_positions = operands.pop()?;
+            let input = operands.pop()?;
+
+            let Ok(num_positions) = num_positions.inner.try_into() else {
+                return Err(Effect::InvalidOperand);
+            };
+            let (output, _) = input.inner.overflowing_shr(num_positions);
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Smaller => {
             let b = operands.pop()?;
             let a = operands.pop()?;

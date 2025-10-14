@@ -118,6 +118,8 @@ impl Expression<'_> {
             Some(Operator::Roll { num_operands: 4 })
         } else if token == "shift_left" {
             Some(Operator::ShiftLeft)
+        } else if token == "shift_right" {
+            Some(Operator::ShiftRight)
         } else if token == "trailing_zeros" {
             Some(Operator::TrailingZeros)
         } else if token == "write" {
@@ -162,6 +164,7 @@ pub enum Operator {
     Remainder,
     Roll { num_operands: usize },
     ShiftLeft,
+    ShiftRight,
     Smaller,
     SmallerOrEqual,
     Subtract,
