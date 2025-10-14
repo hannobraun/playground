@@ -166,6 +166,9 @@ fn translate_operator(
         Operator::Roll { num_operands } => {
             instructions.push(Instruction::Roll { num_operands });
         }
+        Operator::RotateLeft => {
+            instructions.push(Instruction::RotateLeft);
+        }
         Operator::ShiftLeft => {
             instructions.push(Instruction::ShiftLeft);
         }

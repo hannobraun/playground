@@ -28,6 +28,7 @@ pub enum Instruction {
     Remainder,
     Return,
     Roll { num_operands: usize },
+    RotateLeft,
     ShiftLeft,
     ShiftRight,
     Smaller,

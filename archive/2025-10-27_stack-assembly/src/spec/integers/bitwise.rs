@@ -49,6 +49,20 @@ fn trailing_zeros() {
 // rotating and shifting
 
 #[test]
+fn rotate_left() {
+    let mut program = Program::compile_and_run("-2147483646 2 rotate_left");
+    assert_eq!(program.operands(), &vec![10]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn rotate_left_trigger_invalid_operand() {
+    let mut program = Program::compile_and_run("0 -2 rotate_left");
+    assert_eq!(program.operands(), &vec![]);
+    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
+}
+
+#[test]
 fn shift_left() {
     let mut program = Program::compile_and_run("5 2 shift_left");
     assert_eq!(program.operands(), &vec![20]);
