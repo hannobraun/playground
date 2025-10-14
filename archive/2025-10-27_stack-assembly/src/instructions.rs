@@ -42,8 +42,8 @@ pub enum Effect {
     /// # Result of operation can't be represented as an integer value
     IntegerOverflow,
 
-    /// # Tried to use a negative value as a code or memory address
-    InvalidAddress,
+    /// # Operand has an invalid value
+    InvalidOperand,
 
     /// # Tried to evaluate an invalid reference
     InvalidReference,

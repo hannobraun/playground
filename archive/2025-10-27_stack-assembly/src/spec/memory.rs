@@ -39,7 +39,7 @@ fn trigger_effect_on_read_from_out_of_bounds_address() {
 fn trigger_effect_on_read_from_invalid_address() {
     let mut program = Program::compile_and_run("-1 read");
     assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::InvalidAddress));
+    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
 }
 
 #[test]
@@ -65,5 +65,5 @@ fn trigger_effect_on_write_to_out_of_bounds_address() {
 fn trigger_effect_on_write_to_invalid_address() {
     let mut program = Program::compile_and_run("3 -1 write");
     assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::InvalidAddress));
+    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
 }
