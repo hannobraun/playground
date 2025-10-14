@@ -124,7 +124,13 @@ pub fn step(
         Instruction::Not => {
             let input = operands.pop()?;
 
-            let output = if input.inner == 0 { 1 } else { 0 };
+            let output = if input.inner == 0 {
+                1
+            } else if input.inner == 1 {
+                0
+            } else {
+                return Err(Effect::InvalidOperand);
+            };
 
             operands.push(Value { inner: output });
         }
