@@ -76,6 +76,8 @@ impl Expression<'_> {
             Some(Operator::SmallerOrEqual)
         } else if token == "=" {
             Some(Operator::Equal)
+        } else if token == ">" {
+            Some(Operator::Larger)
         } else if token == "abort" {
             Some(Operator::Abort)
         } else if token == "call" {
@@ -129,6 +131,7 @@ pub enum Operator {
     Divide,
     Drop { index: usize },
     Equal,
+    Larger,
     Multiply,
     Pick { index: usize },
     Read,

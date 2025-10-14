@@ -95,6 +95,14 @@ pub fn step(
                 return Ok(StepOutcome::Ready);
             }
         }
+        Instruction::Larger => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let value = if a.inner > b.inner { 1 } else { 0 };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Multiply => {
             let b = operands.pop()?;
             let a = operands.pop()?;

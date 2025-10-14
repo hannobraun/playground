@@ -112,6 +112,27 @@ fn equal_is_true() {
 }
 
 #[test]
+fn larger_is_equal() {
+    let mut program = Program::compile_and_run("3 3 >");
+    assert_eq!(program.operands(), &vec![0]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn larger_is_larger() {
+    let mut program = Program::compile_and_run("5 3 >");
+    assert_eq!(program.operands(), &vec![1]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn larger_is_smaller() {
+    let mut program = Program::compile_and_run("3 5 >");
+    assert_eq!(program.operands(), &vec![0]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
 fn smaller_is_equal() {
     let mut program = Program::compile_and_run("3 3 <");
     assert_eq!(program.operands(), &vec![0]);
