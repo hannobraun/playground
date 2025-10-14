@@ -9,6 +9,7 @@ pub enum Instruction {
     Add,
     Divide,
     Drop { index: usize },
+    Equal,
     Jump,
     JumpIf,
     Multiply,

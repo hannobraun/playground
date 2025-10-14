@@ -94,3 +94,19 @@ fn subtraction_triggers_integer_overflow() {
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::IntegerOverflow));
 }
+
+// comparisons
+
+#[test]
+fn equal_is_false() {
+    let mut program = Program::compile_and_run("3 5 =");
+    assert_eq!(program.operands(), &vec![0]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
+fn equal_is_true() {
+    let mut program = Program::compile_and_run("3 3 =");
+    assert_eq!(program.operands(), &vec![1]);
+    assert_eq!(program.effect(), None);
+}

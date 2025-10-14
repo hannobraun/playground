@@ -68,6 +68,14 @@ pub fn step(
                 operands.push(value);
             }
         }
+        Instruction::Equal => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let value = if a.inner == b.inner { 1 } else { 0 };
+
+            operands.push(Value { inner: value });
+        }
         Instruction::Jump => {
             let address = operands.pop()?;
 
