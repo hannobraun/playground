@@ -70,6 +70,16 @@ impl Expression<'_> {
             Some(Operator::Subtract)
         } else if token == "/" {
             Some(Operator::Divide)
+        } else if token == "<" {
+            Some(Operator::Smaller)
+        } else if token == "<=" {
+            Some(Operator::SmallerOrEqual)
+        } else if token == "=" {
+            Some(Operator::Equal)
+        } else if token == ">" {
+            Some(Operator::Larger)
+        } else if token == ">=" {
+            Some(Operator::LargerOrEqual)
         } else if token == "abort" {
             Some(Operator::Abort)
         } else if token == "call" {
@@ -122,11 +132,16 @@ pub enum Operator {
     CallIf,
     Divide,
     Drop { index: usize },
+    Equal,
+    Larger,
+    LargerOrEqual,
     Multiply,
     Pick { index: usize },
     Read,
     Remainder,
     Roll { num_operands: usize },
+    Smaller,
+    SmallerOrEqual,
     Subtract,
     Write,
     Yield,

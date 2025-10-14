@@ -127,6 +127,15 @@ fn translate_operator(
         Operator::Drop { index } => {
             instructions.push(Instruction::Drop { index });
         }
+        Operator::Equal => {
+            instructions.push(Instruction::Equal);
+        }
+        Operator::Larger => {
+            instructions.push(Instruction::Larger);
+        }
+        Operator::LargerOrEqual => {
+            instructions.push(Instruction::LargerOrEqual);
+        }
         Operator::Multiply => {
             instructions.push(Instruction::Multiply);
         }
@@ -141,6 +150,12 @@ fn translate_operator(
         }
         Operator::Roll { num_operands } => {
             instructions.push(Instruction::Roll { num_operands });
+        }
+        Operator::Smaller => {
+            instructions.push(Instruction::Smaller);
+        }
+        Operator::SmallerOrEqual => {
+            instructions.push(Instruction::SmallerOrEqual);
         }
         Operator::Subtract => {
             instructions.push(Instruction::Subtract);
