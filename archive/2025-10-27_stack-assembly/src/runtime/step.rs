@@ -253,6 +253,14 @@ pub fn step(
 
             operands.push(value);
         }
+        Instruction::ShiftLeft => {
+            let num_positions = operands.pop()?;
+            let input = operands.pop()?;
+
+            let output = input.inner << num_positions.inner;
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Smaller => {
             let b = operands.pop()?;
             let a = operands.pop()?;

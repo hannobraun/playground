@@ -45,3 +45,12 @@ fn trailing_zeros() {
     assert_eq!(program.operands(), &vec![31]);
     assert_eq!(program.effect(), None);
 }
+
+// rotating and shifting
+
+#[test]
+fn shift_left() {
+    let mut program = Program::compile_and_run("5 2 shift_left");
+    assert_eq!(program.operands(), &vec![20]);
+    assert_eq!(program.effect(), None);
+}
