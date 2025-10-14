@@ -8,6 +8,7 @@ pub type Instructions = Vec<Instruction>;
 pub enum Instruction {
     Add,
     And,
+    CountOnes,
     Divide,
     Drop { index: usize },
     Equal,

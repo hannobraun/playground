@@ -39,6 +39,15 @@ pub fn step(
 
             operands.push(Value { inner: output });
         }
+        Instruction::CountOnes => {
+            let input = operands.pop()?;
+
+            let Ok(output) = input.inner.count_ones().try_into() else {
+                unreachable!("`i32` can represent number of bits.");
+            };
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Divide => {
             let b = operands.pop()?;
             let a = operands.pop()?;

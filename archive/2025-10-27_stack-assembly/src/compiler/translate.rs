@@ -124,6 +124,9 @@ fn translate_operator(
             }
             instructions.push(Instruction::JumpIf);
         }
+        Operator::CountOnes => {
+            instructions.push(Instruction::CountOnes);
+        }
         Operator::Divide => {
             instructions.push(Instruction::Divide);
         }

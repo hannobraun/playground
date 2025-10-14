@@ -88,6 +88,8 @@ impl Expression<'_> {
             Some(Operator::Call)
         } else if token == "call_if" {
             Some(Operator::CallIf)
+        } else if token == "count_ones" {
+            Some(Operator::CountOnes)
         } else if token == "drop0" {
             Some(Operator::Drop { index: 0 })
         } else if token == "drop1" {
@@ -143,6 +145,7 @@ pub enum Operator {
     And,
     Call,
     CallIf,
+    CountOnes,
     Divide,
     Drop { index: usize },
     Equal,

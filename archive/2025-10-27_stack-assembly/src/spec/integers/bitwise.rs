@@ -26,6 +26,13 @@ fn xor() {
 // bit counting
 
 #[test]
+fn count_ones() {
+    let mut program = Program::compile_and_run("10 count_ones");
+    assert_eq!(program.operands(), &vec![2]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
 fn leading_zeros() {
     let mut program = Program::compile_and_run("1 leading_zeros");
     assert_eq!(program.operands(), &vec![31]);
