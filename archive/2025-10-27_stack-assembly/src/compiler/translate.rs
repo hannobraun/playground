@@ -145,6 +145,9 @@ fn translate_operator(
         Operator::Not => {
             instructions.push(Instruction::Not);
         }
+        Operator::Or => {
+            instructions.push(Instruction::Or);
+        }
         Operator::Pick { index } => {
             instructions.push(Instruction::Pick { index });
         }

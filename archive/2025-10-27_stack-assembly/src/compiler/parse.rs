@@ -96,6 +96,8 @@ impl Expression<'_> {
             Some(Operator::Drop { index: 2 })
         } else if token == "not" {
             Some(Operator::Not)
+        } else if token == "or" {
+            Some(Operator::Or)
         } else if token == "pick0" {
             Some(Operator::Pick { index: 0 })
         } else if token == "pick1" {
@@ -142,6 +144,7 @@ pub enum Operator {
     LargerOrEqual,
     Multiply,
     Not,
+    Or,
     Pick { index: usize },
     Read,
     Remainder,

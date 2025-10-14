@@ -142,6 +142,14 @@ pub fn step(
 
             operands.push(Value { inner: output });
         }
+        Instruction::Or => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let output = a.inner | b.inner;
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Pick { index } => {
             // The comment from the `Drop` implementation applies here too.
 
