@@ -43,10 +43,10 @@ fn multiplication() {
 }
 
 #[test]
-fn multiplication_triggers_integer_overflow() {
+fn multiplication_wraps() {
     let mut program = Program::compile_and_run("1073741824 2 *");
-    assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::IntegerOverflow));
+    assert_eq!(program.operands(), &vec![-2147483648]);
+    assert_eq!(program.effect(), None);
 }
 
 #[test]
