@@ -5,10 +5,10 @@
 #[cfg(test)]
 mod spec;
 
+mod application;
 mod compiler;
 mod instructions;
-mod program;
 mod runtime;
 mod value;
 
-pub use self::{instructions::Effect, program::Application};
+pub use self::{application::Application, instructions::Effect};
