@@ -3,7 +3,7 @@
 #![deny(missing_docs)]
 
 #[cfg(test)]
-mod spec;
+mod tests;
 
 mod application;
 mod compiler;
