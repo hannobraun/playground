@@ -56,6 +56,13 @@ fn shift_left() {
 }
 
 #[test]
+fn shift_left_overflow() {
+    let mut program = Program::compile_and_run("-1610612736 2 shift_left");
+    assert_eq!(program.operands(), &vec![-2147483648]);
+    assert_eq!(program.effect(), None);
+}
+
+#[test]
 fn shift_left_trigger_invalid_operand() {
     let mut program = Program::compile_and_run("0 -2 shift_left");
     assert_eq!(program.operands(), &vec![]);
