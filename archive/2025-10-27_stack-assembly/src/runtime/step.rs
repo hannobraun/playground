@@ -25,11 +25,9 @@ pub fn step(
             let b = operands.pop()?;
             let a = operands.pop()?;
 
-            let Some(value) = i32::checked_add(a.inner, b.inner) else {
-                return Err(Effect::IntegerOverflow);
-            };
+            let output = i32::wrapping_add(a.inner, b.inner);
 
-            operands.push(Value { inner: value });
+            operands.push(Value { inner: output });
         }
         Instruction::And => {
             let b = operands.pop()?;
@@ -141,11 +139,9 @@ pub fn step(
             let b = operands.pop()?;
             let a = operands.pop()?;
 
-            let Some(value) = i32::checked_mul(a.inner, b.inner) else {
-                return Err(Effect::IntegerOverflow);
-            };
+            let output = i32::wrapping_mul(a.inner, b.inner);
 
-            operands.push(Value { inner: value });
+            operands.push(Value { inner: output });
         }
         Instruction::Not => {
             let input = operands.pop()?;
@@ -317,11 +313,9 @@ pub fn step(
             let b = operands.pop()?;
             let a = operands.pop()?;
 
-            let Some(value) = i32::checked_sub(a.inner, b.inner) else {
-                return Err(Effect::IntegerOverflow);
-            };
+            let output = i32::wrapping_sub(a.inner, b.inner);
 
-            operands.push(Value { inner: value });
+            operands.push(Value { inner: output });
         }
         Instruction::TrailingZeros => {
             let input = operands.pop()?;
