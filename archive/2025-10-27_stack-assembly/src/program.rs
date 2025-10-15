@@ -34,10 +34,10 @@ impl Application {
 
     /// # Call [`Application::compile`], then [`Application::continue_`]
     pub fn compile_and_run(input: &str) -> Self {
-        let mut program = Self::compile(input);
-        program.continue_();
+        let mut app = Self::compile(input);
+        app.continue_();
 
-        program
+        app
     }
 
     /// # Access the operand stack
