@@ -313,9 +313,9 @@ pub fn step(
             let b = operands.pop()?;
             let a = operands.pop()?;
 
-            let value = i32::wrapping_sub(a.inner, b.inner);
+            let output = i32::wrapping_sub(a.inner, b.inner);
 
-            operands.push(Value { inner: value });
+            operands.push(Value { inner: output });
         }
         Instruction::TrailingZeros => {
             let input = operands.pop()?;
