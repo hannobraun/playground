@@ -5,8 +5,8 @@ use crate::{
     runtime::{CallStack, Operands, StepOutcome, step},
 };
 
-/// # A StackAssembly program
-pub struct Program {
+/// # An instance of a StackAssembly application
+pub struct Application {
     instructions: Instructions,
     labels: Labels,
     operands: Operands,
@@ -16,8 +16,8 @@ pub struct Program {
     effect: Option<Effect>,
 }
 
-impl Program {
-    /// # Create a `Program` instance by compiling the provided code
+impl Application {
+    /// # Create an `Application` instance by compiling the provided code
     pub fn compile(input: &str) -> Self {
         let (instructions, labels) = compile(input);
 
@@ -32,12 +32,12 @@ impl Program {
         }
     }
 
-    /// # Call [`Program::compile`], then [`Program::continue_`]
+    /// # Call [`Application::compile`], then [`Application::continue_`]
     pub fn compile_and_run(input: &str) -> Self {
-        let mut program = Self::compile(input);
-        program.continue_();
+        let mut app = Self::compile(input);
+        app.continue_();
 
-        program
+        app
     }
 
     /// # Access the operand stack
@@ -60,10 +60,10 @@ impl Program {
         self.effect.as_ref()
     }
 
-    /// # Continue the program until it finishes or triggers an effect
+    /// # Continue the application until it finishes or triggers an effect
     pub fn continue_(&mut self) {
-        // If an effect had been triggered before, continuing the program clears
-        // it.
+        // If an effect has been triggered before, continuing the application
+        // clears it.
         if self.effect.take().is_some() {
             // To continue, we need to advance beyond the instruction that
             // triggered the effect.

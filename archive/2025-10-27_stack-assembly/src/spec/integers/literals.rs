@@ -1,10 +1,10 @@
-use crate::Program;
+use crate::Application;
 
 #[test]
 fn literals() {
-    let mut program = Program::compile("3 5");
-    assert_eq!(program.operands(), &vec![]);
+    let mut app = Application::compile("3 5");
+    assert_eq!(app.operands(), &vec![]);
 
-    program.continue_();
-    assert_eq!(program.operands(), &vec![3, 5]);
+    app.continue_();
+    assert_eq!(app.operands(), &vec![3, 5]);
 }

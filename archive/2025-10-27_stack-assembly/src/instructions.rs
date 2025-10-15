@@ -41,10 +41,10 @@ pub enum Instruction {
     Xor,
 }
 
-/// An effect that may be triggered by a program
+/// An effect that may be triggered by an application
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Effect {
-    /// # The program has aborted its run
+    /// # The application has aborted its run
     Abort,
 
     /// # Tried to divide by zero
@@ -68,7 +68,7 @@ pub enum Effect {
     /// # Tried to evaluate an unknown operator
     UnknownOperator,
 
-    /// # The program has yielded control to the host
+    /// # The application has yielded control to the host
     Yield,
 }
 
