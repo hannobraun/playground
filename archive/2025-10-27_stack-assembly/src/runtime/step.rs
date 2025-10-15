@@ -1,5 +1,3 @@
-use std::ops::Shl;
-
 use crate::{
     Effect,
     instructions::{Instruction, Instructions, Labels},
@@ -262,8 +260,7 @@ pub fn step(
             let Ok(num_positions) = num_positions.inner.try_into() else {
                 return Err(Effect::InvalidOperand);
             };
-            let num_positions: u32 = num_positions;
-            let output = input.inner.shl(num_positions);
+            let (output, _) = input.inner.overflowing_shl(num_positions);
 
             operands.push(Value { inner: output });
         }
