@@ -8,10 +8,10 @@ fn addition() {
 }
 
 #[test]
-fn addition_triggers_integer_overflow() {
+fn addition_wraps() {
     let mut program = Program::compile_and_run("2147483647 1 +");
-    assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::IntegerOverflow));
+    assert_eq!(program.operands(), &vec![-2147483648]);
+    assert_eq!(program.effect(), None);
 }
 
 #[test]
