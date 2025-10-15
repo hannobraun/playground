@@ -5,7 +5,7 @@ use crate::{
     runtime::{CallStack, Operands, StepOutcome, step},
 };
 
-/// # A StackAssembly program
+/// # An instance of a StackAssembly application
 pub struct Application {
     instructions: Instructions,
     labels: Labels,
@@ -17,7 +17,7 @@ pub struct Application {
 }
 
 impl Application {
-    /// # Create a `Program` instance by compiling the provided code
+    /// # Create an `Application` instance by compiling the provided code
     pub fn compile(input: &str) -> Self {
         let (instructions, labels) = compile(input);
 
@@ -60,7 +60,7 @@ impl Application {
         self.effect.as_ref()
     }
 
-    /// # Continue the program until it finishes or triggers an effect
+    /// # Continue the application until it finishes or triggers an effect
     pub fn continue_(&mut self) {
         // If an effect had been triggered before, continuing the program clears
         // it.
