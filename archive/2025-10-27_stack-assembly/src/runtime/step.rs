@@ -139,9 +139,9 @@ pub fn step(
             let b = operands.pop()?;
             let a = operands.pop()?;
 
-            let value = i32::wrapping_mul(a.inner, b.inner);
+            let output = i32::wrapping_mul(a.inner, b.inner);
 
-            operands.push(Value { inner: value });
+            operands.push(Value { inner: output });
         }
         Instruction::Not => {
             let input = operands.pop()?;
