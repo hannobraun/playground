@@ -109,6 +109,9 @@ fn translate_operator(
         Operator::Add => {
             instructions.push(Instruction::Add);
         }
+        Operator::And => {
+            instructions.push(Instruction::And);
+        }
         Operator::Call => {
             if !is_tail {
                 instructions.push(Instruction::PushReturnAddress);
@@ -120,6 +123,9 @@ fn translate_operator(
                 instructions.push(Instruction::PushReturnAddress);
             }
             instructions.push(Instruction::JumpIf);
+        }
+        Operator::CountOnes => {
+            instructions.push(Instruction::CountOnes);
         }
         Operator::Divide => {
             instructions.push(Instruction::Divide);
@@ -136,11 +142,17 @@ fn translate_operator(
         Operator::LargerOrEqual => {
             instructions.push(Instruction::LargerOrEqual);
         }
+        Operator::LeadingZeros => {
+            instructions.push(Instruction::LeadingZeros);
+        }
         Operator::Multiply => {
             instructions.push(Instruction::Multiply);
         }
         Operator::Not => {
             instructions.push(Instruction::Not);
+        }
+        Operator::Or => {
+            instructions.push(Instruction::Or);
         }
         Operator::Pick { index } => {
             instructions.push(Instruction::Pick { index });
@@ -154,6 +166,18 @@ fn translate_operator(
         Operator::Roll { num_operands } => {
             instructions.push(Instruction::Roll { num_operands });
         }
+        Operator::RotateLeft => {
+            instructions.push(Instruction::RotateLeft);
+        }
+        Operator::RotateRight => {
+            instructions.push(Instruction::RotateRight);
+        }
+        Operator::ShiftLeft => {
+            instructions.push(Instruction::ShiftLeft);
+        }
+        Operator::ShiftRight => {
+            instructions.push(Instruction::ShiftRight);
+        }
         Operator::Smaller => {
             instructions.push(Instruction::Smaller);
         }
@@ -163,8 +187,14 @@ fn translate_operator(
         Operator::Subtract => {
             instructions.push(Instruction::Subtract);
         }
+        Operator::TrailingZeros => {
+            instructions.push(Instruction::TrailingZeros);
+        }
         Operator::Write => {
             instructions.push(Instruction::Write);
+        }
+        Operator::Xor => {
+            instructions.push(Instruction::Xor);
         }
         Operator::Yield => {
             instructions.push(Instruction::Trigger {

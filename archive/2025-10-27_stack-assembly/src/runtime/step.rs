@@ -31,6 +31,23 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::And => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let output = a.inner & b.inner;
+
+            operands.push(Value { inner: output });
+        }
+        Instruction::CountOnes => {
+            let input = operands.pop()?;
+
+            let Ok(output) = input.inner.count_ones().try_into() else {
+                unreachable!("`i32` can represent number of bits.");
+            };
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Divide => {
             let b = operands.pop()?;
             let a = operands.pop()?;
@@ -111,6 +128,15 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::LeadingZeros => {
+            let input = operands.pop()?;
+
+            let Ok(output) = input.inner.leading_zeros().try_into() else {
+                unreachable!("`i32` can represent number of leading zeros.");
+            };
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Multiply => {
             let b = operands.pop()?;
             let a = operands.pop()?;
@@ -131,6 +157,14 @@ pub fn step(
             } else {
                 return Err(Effect::InvalidOperand);
             };
+
+            operands.push(Value { inner: output });
+        }
+        Instruction::Or => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let output = a.inner | b.inner;
 
             operands.push(Value { inner: output });
         }
@@ -219,6 +253,50 @@ pub fn step(
 
             operands.push(value);
         }
+        Instruction::RotateLeft => {
+            let num_positions = operands.pop()?;
+            let input = operands.pop()?;
+
+            let Ok(num_positions) = num_positions.inner.try_into() else {
+                return Err(Effect::InvalidOperand);
+            };
+            let output = input.inner.rotate_left(num_positions);
+
+            operands.push(Value { inner: output });
+        }
+        Instruction::RotateRight => {
+            let num_positions = operands.pop()?;
+            let input = operands.pop()?;
+
+            let Ok(num_positions) = num_positions.inner.try_into() else {
+                return Err(Effect::InvalidOperand);
+            };
+            let output = input.inner.rotate_right(num_positions);
+
+            operands.push(Value { inner: output });
+        }
+        Instruction::ShiftLeft => {
+            let num_positions = operands.pop()?;
+            let input = operands.pop()?;
+
+            let Ok(num_positions) = num_positions.inner.try_into() else {
+                return Err(Effect::InvalidOperand);
+            };
+            let (output, _) = input.inner.overflowing_shl(num_positions);
+
+            operands.push(Value { inner: output });
+        }
+        Instruction::ShiftRight => {
+            let num_positions = operands.pop()?;
+            let input = operands.pop()?;
+
+            let Ok(num_positions) = num_positions.inner.try_into() else {
+                return Err(Effect::InvalidOperand);
+            };
+            let (output, _) = input.inner.overflowing_shr(num_positions);
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Smaller => {
             let b = operands.pop()?;
             let a = operands.pop()?;
@@ -245,6 +323,15 @@ pub fn step(
 
             operands.push(Value { inner: value });
         }
+        Instruction::TrailingZeros => {
+            let input = operands.pop()?;
+
+            let Ok(output) = input.inner.trailing_zeros().try_into() else {
+                unreachable!("`i32` can represent number of trailing zeros.");
+            };
+
+            operands.push(Value { inner: output });
+        }
         Instruction::Trigger { effect } => {
             return Err(*effect);
         }
@@ -258,6 +345,14 @@ pub fn step(
             };
 
             *slot = value.inner;
+        }
+        Instruction::Xor => {
+            let b = operands.pop()?;
+            let a = operands.pop()?;
+
+            let output = a.inner ^ b.inner;
+
+            operands.push(Value { inner: output });
         }
     }
 

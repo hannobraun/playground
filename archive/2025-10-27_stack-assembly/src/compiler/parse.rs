@@ -82,18 +82,26 @@ impl Expression<'_> {
             Some(Operator::LargerOrEqual)
         } else if token == "abort" {
             Some(Operator::Abort)
+        } else if token == "and" {
+            Some(Operator::And)
         } else if token == "call" {
             Some(Operator::Call)
         } else if token == "call_if" {
             Some(Operator::CallIf)
+        } else if token == "count_ones" {
+            Some(Operator::CountOnes)
         } else if token == "drop0" {
             Some(Operator::Drop { index: 0 })
         } else if token == "drop1" {
             Some(Operator::Drop { index: 1 })
         } else if token == "drop2" {
             Some(Operator::Drop { index: 2 })
+        } else if token == "leading_zeros" {
+            Some(Operator::LeadingZeros)
         } else if token == "not" {
             Some(Operator::Not)
+        } else if token == "or" {
+            Some(Operator::Or)
         } else if token == "pick0" {
             Some(Operator::Pick { index: 0 })
         } else if token == "pick1" {
@@ -108,8 +116,20 @@ impl Expression<'_> {
             Some(Operator::Roll { num_operands: 3 })
         } else if token == "roll4" {
             Some(Operator::Roll { num_operands: 4 })
+        } else if token == "rotate_left" {
+            Some(Operator::RotateLeft)
+        } else if token == "rotate_right" {
+            Some(Operator::RotateRight)
+        } else if token == "shift_left" {
+            Some(Operator::ShiftLeft)
+        } else if token == "shift_right" {
+            Some(Operator::ShiftRight)
+        } else if token == "trailing_zeros" {
+            Some(Operator::TrailingZeros)
         } else if token == "write" {
             Some(Operator::Write)
+        } else if token == "xor" {
+            Some(Operator::Xor)
         } else if token == "yield" {
             Some(Operator::Yield)
         } else if let Ok(value) = token.parse() {
@@ -130,22 +150,32 @@ pub enum Operator {
 
     Abort,
     Add,
+    And,
     Call,
     CallIf,
+    CountOnes,
     Divide,
     Drop { index: usize },
     Equal,
     Larger,
     LargerOrEqual,
+    LeadingZeros,
     Multiply,
     Not,
+    Or,
     Pick { index: usize },
     Read,
     Remainder,
     Roll { num_operands: usize },
+    RotateLeft,
+    RotateRight,
+    ShiftLeft,
+    ShiftRight,
     Smaller,
     SmallerOrEqual,
     Subtract,
+    TrailingZeros,
     Write,
+    Xor,
     Yield,
 }

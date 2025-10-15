@@ -7,6 +7,8 @@ pub type Instructions = Vec<Instruction>;
 #[derive(Debug)]
 pub enum Instruction {
     Add,
+    And,
+    CountOnes,
     Divide,
     Drop { index: usize },
     Equal,
@@ -14,8 +16,10 @@ pub enum Instruction {
     JumpIf,
     Larger,
     LargerOrEqual,
+    LeadingZeros,
     Multiply,
     Not,
+    Or,
     Pick { index: usize },
     PushReturnAddress,
     PushValue { value: Value },
@@ -24,11 +28,17 @@ pub enum Instruction {
     Remainder,
     Return,
     Roll { num_operands: usize },
+    RotateLeft,
+    RotateRight,
+    ShiftLeft,
+    ShiftRight,
     Smaller,
     SmallerOrEqual,
     Subtract,
+    TrailingZeros,
     Trigger { effect: Effect },
     Write,
+    Xor,
 }
 
 /// An effect that may be triggered by a program
