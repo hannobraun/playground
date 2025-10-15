@@ -2,68 +2,68 @@ use crate::{Application, Effect};
 
 #[test]
 fn memory_should_be_zero_initialized() {
-    let mut program = Application::compile("");
+    let mut app = Application::compile("");
 
-    assert_ne!(program.memory().len(), 0);
+    assert_ne!(app.memory().len(), 0);
 
-    for word in program.memory() {
+    for word in app.memory() {
         assert_eq!(*word, 0);
     }
 }
 
 #[test]
 fn read_from_memory() {
-    let mut program = Application::compile("0 read 1 read");
+    let mut app = Application::compile("0 read 1 read");
 
-    program.memory()[0] = 3;
-    program.memory()[1] = 5;
+    app.memory()[0] = 3;
+    app.memory()[1] = 5;
 
-    program.continue_();
+    app.continue_();
 
-    assert_eq!(program.operands(), &vec![3, 5]);
-    assert_eq!(program.effect(), None);
+    assert_eq!(app.operands(), &vec![3, 5]);
+    assert_eq!(app.effect(), None);
 }
 
 #[test]
 fn trigger_effect_on_read_from_out_of_bounds_address() {
-    let mut program = Application::compile("1024 read");
+    let mut app = Application::compile("1024 read");
 
-    assert!(program.memory().len() >= 1024);
-    program.continue_();
+    assert!(app.memory().len() >= 1024);
+    app.continue_();
 
-    assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::OutOfBoundsAddress));
+    assert_eq!(app.operands(), &vec![]);
+    assert_eq!(app.effect(), Some(&Effect::OutOfBoundsAddress));
 }
 
 #[test]
 fn trigger_effect_on_read_from_invalid_address() {
-    let mut program = Application::compile_and_run("-1 read");
-    assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
+    let mut app = Application::compile_and_run("-1 read");
+    assert_eq!(app.operands(), &vec![]);
+    assert_eq!(app.effect(), Some(&Effect::InvalidOperand));
 }
 
 #[test]
 fn write_to_memory() {
-    let mut program = Application::compile_and_run("3 0 write 5 1 write");
-    assert_eq!(program.operands(), &vec![]);
-    assert!(matches!(program.memory(), &mut [3, 5, ..]));
-    assert_eq!(program.effect(), None);
+    let mut app = Application::compile_and_run("3 0 write 5 1 write");
+    assert_eq!(app.operands(), &vec![]);
+    assert!(matches!(app.memory(), &mut [3, 5, ..]));
+    assert_eq!(app.effect(), None);
 }
 
 #[test]
 fn trigger_effect_on_write_to_out_of_bounds_address() {
-    let mut program = Application::compile("3 1024 write");
+    let mut app = Application::compile("3 1024 write");
 
-    assert!(program.memory().len() >= 1024);
-    program.continue_();
+    assert!(app.memory().len() >= 1024);
+    app.continue_();
 
-    assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::OutOfBoundsAddress));
+    assert_eq!(app.operands(), &vec![]);
+    assert_eq!(app.effect(), Some(&Effect::OutOfBoundsAddress));
 }
 
 #[test]
 fn trigger_effect_on_write_to_invalid_address() {
-    let mut program = Application::compile_and_run("3 -1 write");
-    assert_eq!(program.operands(), &vec![]);
-    assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
+    let mut app = Application::compile_and_run("3 -1 write");
+    assert_eq!(app.operands(), &vec![]);
+    assert_eq!(app.effect(), Some(&Effect::InvalidOperand));
 }
