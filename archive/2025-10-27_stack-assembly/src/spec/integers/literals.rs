@@ -1,8 +1,8 @@
-use crate::Program;
+use crate::Application;
 
 #[test]
 fn literals() {
-    let mut program = Program::compile("3 5");
+    let mut program = Application::compile("3 5");
     assert_eq!(program.operands(), &vec![]);
 
     program.continue_();

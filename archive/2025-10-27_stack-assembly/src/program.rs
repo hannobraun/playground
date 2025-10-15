@@ -6,7 +6,7 @@ use crate::{
 };
 
 /// # A StackAssembly program
-pub struct Program {
+pub struct Application {
     instructions: Instructions,
     labels: Labels,
     operands: Operands,
@@ -16,7 +16,7 @@ pub struct Program {
     effect: Option<Effect>,
 }
 
-impl Program {
+impl Application {
     /// # Create a `Program` instance by compiling the provided code
     pub fn compile(input: &str) -> Self {
         let (instructions, labels) = compile(input);
@@ -32,7 +32,7 @@ impl Program {
         }
     }
 
-    /// # Call [`Program::compile`], then [`Program::continue_`]
+    /// # Call [`Application::compile`], then [`Application::continue_`]
     pub fn compile_and_run(input: &str) -> Self {
         let mut program = Self::compile(input);
         program.continue_();

@@ -1,8 +1,8 @@
-use crate::{Effect, Program};
+use crate::{Application, Effect};
 
 #[test]
 fn memory_should_be_zero_initialized() {
-    let mut program = Program::compile("");
+    let mut program = Application::compile("");
 
     assert_ne!(program.memory().len(), 0);
 
@@ -13,7 +13,7 @@ fn memory_should_be_zero_initialized() {
 
 #[test]
 fn read_from_memory() {
-    let mut program = Program::compile("0 read 1 read");
+    let mut program = Application::compile("0 read 1 read");
 
     program.memory()[0] = 3;
     program.memory()[1] = 5;
@@ -26,7 +26,7 @@ fn read_from_memory() {
 
 #[test]
 fn trigger_effect_on_read_from_out_of_bounds_address() {
-    let mut program = Program::compile("1024 read");
+    let mut program = Application::compile("1024 read");
 
     assert!(program.memory().len() >= 1024);
     program.continue_();
@@ -37,14 +37,14 @@ fn trigger_effect_on_read_from_out_of_bounds_address() {
 
 #[test]
 fn trigger_effect_on_read_from_invalid_address() {
-    let mut program = Program::compile_and_run("-1 read");
+    let mut program = Application::compile_and_run("-1 read");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
 }
 
 #[test]
 fn write_to_memory() {
-    let mut program = Program::compile_and_run("3 0 write 5 1 write");
+    let mut program = Application::compile_and_run("3 0 write 5 1 write");
     assert_eq!(program.operands(), &vec![]);
     assert!(matches!(program.memory(), &mut [3, 5, ..]));
     assert_eq!(program.effect(), None);
@@ -52,7 +52,7 @@ fn write_to_memory() {
 
 #[test]
 fn trigger_effect_on_write_to_out_of_bounds_address() {
-    let mut program = Program::compile("3 1024 write");
+    let mut program = Application::compile("3 1024 write");
 
     assert!(program.memory().len() >= 1024);
     program.continue_();
@@ -63,7 +63,7 @@ fn trigger_effect_on_write_to_out_of_bounds_address() {
 
 #[test]
 fn trigger_effect_on_write_to_invalid_address() {
-    let mut program = Program::compile_and_run("3 -1 write");
+    let mut program = Application::compile_and_run("3 -1 write");
     assert_eq!(program.operands(), &vec![]);
     assert_eq!(program.effect(), Some(&Effect::InvalidOperand));
 }

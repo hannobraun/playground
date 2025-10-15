@@ -11,4 +11,4 @@ mod program;
 mod runtime;
 mod value;
 
-pub use self::{instructions::Effect, program::Program};
+pub use self::{instructions::Effect, program::Application};
