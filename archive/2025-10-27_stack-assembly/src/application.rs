@@ -1,0 +1,95 @@
+use crate::{
+    Effect,
+    compiler::compile,
+    instructions::{Instructions, Labels},
+    runtime::{CallStack, Operands, StepOutcome, step},
+};
+
+/// # An instance of a StackAssembly application
+pub struct Application {
+    instructions: Instructions,
+    labels: Labels,
+    operands: Operands,
+    memory: [i32; 1024],
+    current_instruction: usize,
+    call_stack: CallStack,
+    effect: Option<Effect>,
+}
+
+impl Application {
+    /// # Create an `Application` instance by compiling the provided code
+    pub fn compile(input: &str) -> Self {
+        let (instructions, labels) = compile(input);
+
+        Self {
+            instructions,
+            labels,
+            operands: Operands::new(),
+            memory: [0; 1024],
+            current_instruction: 0,
+            call_stack: CallStack::new(),
+            effect: None,
+        }
+    }
+
+    /// # Call [`Application::compile`], then [`Application::continue_`]
+    pub fn compile_and_run(input: &str) -> Self {
+        let mut app = Self::compile(input);
+        app.continue_();
+
+        app
+    }
+
+    /// # Access the operand stack
+    pub fn operands(&mut self) -> &mut Vec<i32> {
+        self.operands.inner()
+    }
+
+    /// # Access the memory
+    pub fn memory(&mut self) -> &mut [i32] {
+        &mut self.memory
+    }
+
+    /// # Access the call stack
+    pub fn call_stack(&self) -> &Vec<usize> {
+        self.call_stack.inner()
+    }
+
+    /// # Access the currently triggered effect
+    pub fn effect(&self) -> Option<&Effect> {
+        self.effect.as_ref()
+    }
+
+    /// # Continue the application until it finishes or triggers an effect
+    pub fn continue_(&mut self) {
+        // If an effect has been triggered before, continuing the application
+        // clears it.
+        if self.effect.take().is_some() {
+            // To continue, we need to advance beyond the instruction that
+            // triggered the effect.
+            self.current_instruction += 1;
+        }
+
+        loop {
+            match step(
+                &self.instructions,
+                &self.labels,
+                &mut self.operands,
+                &mut self.memory,
+                &mut self.current_instruction,
+                &mut self.call_stack,
+            ) {
+                Ok(StepOutcome::Ready) => {
+                    continue;
+                }
+                Ok(StepOutcome::Finished) => {
+                    break;
+                }
+                Err(effect) => {
+                    self.effect = Some(effect);
+                    break;
+                }
+            }
+        }
+    }
+}
