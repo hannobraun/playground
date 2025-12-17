@@ -1,0 +1,4 @@
+[package]
+name = "ergot-demo"
+edition = "2024"
+publish = false
