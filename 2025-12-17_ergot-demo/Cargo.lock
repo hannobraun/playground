@@ -494,6 +494,7 @@ dependencies = [
  "embassy-executor",
  "embassy-rp",
  "panic-halt",
+ "smart-leds",
 ]
 
 [[package]]
