@@ -15,7 +15,7 @@ features = ["arch-cortex-m", "executor-thread"]
 
 [dependencies.embassy-rp]
 version = "0.9.0"
-features = ["critical-section-impl", "rp2040"]
+features = ["critical-section-impl", "rp2040", "time-driver"]
 
 [build-dependencies]
 anyhow = "1.0.100"

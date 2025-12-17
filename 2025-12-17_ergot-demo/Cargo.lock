@@ -336,6 +336,8 @@ dependencies = [
  "embassy-hal-internal",
  "embassy-sync",
  "embassy-time",
+ "embassy-time-driver",
+ "embassy-time-queue-utils",
  "embassy-usb-driver",
  "embedded-hal 0.2.7",
  "embedded-hal 1.0.0",
@@ -393,6 +395,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a0a244c7dc22c8d0289379c8d8830cae06bb93d8f990194d0de5efb3b5ae7ba6"
 dependencies = [
  "document-features",
+]
+
+[[package]]
+name = "embassy-time-queue-utils"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80e2ee86063bd028a420a5fb5898c18c87a8898026da1d4c852af2c443d0a454"
+dependencies = [
+ "embassy-executor-timer-queue",
+ "heapless",
 ]
 
 [[package]]
