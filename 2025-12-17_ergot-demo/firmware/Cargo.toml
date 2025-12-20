@@ -1,5 +1,5 @@
 [package]
-name = "ergot-demo"
+name = "firmware"
 edition = "2024"
 publish = false
 
