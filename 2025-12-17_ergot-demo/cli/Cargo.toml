@@ -8,4 +8,4 @@ anyhow = "1.0.100"
 
 [dependencies.ergot]
 version = "0.12.0"
-features = ["nusb-v0_1", "std"]
+features = ["nusb-v0_1", "tokio-std"]
