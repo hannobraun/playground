@@ -3,6 +3,9 @@ name = "cli"
 edition = "2024"
 publish = false
 
+[dependencies]
+anyhow = "1.0.100"
+
 [dependencies.ergot]
 version = "0.12.0"
 features = ["nusb-v0_1", "std"]
