@@ -671,6 +671,7 @@ dependencies = [
  "critical-section",
  "embassy-executor",
  "embassy-rp",
+ "embassy-usb",
  "ergot",
  "mutex",
  "panic-halt",
