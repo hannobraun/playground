@@ -713,6 +713,7 @@ dependencies = [
  "embassy-executor",
  "embassy-rp",
  "ergot",
+ "mutex",
  "panic-halt",
  "portable-atomic",
  "smart-leds",
