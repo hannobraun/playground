@@ -5,14 +5,14 @@ use embassy_executor::Spawner;
 use embassy_rp::{
     bind_interrupts,
     peripherals::PIO0,
-    pio::{InterruptHandler, Pio},
+    pio::{self, Pio},
     pio_programs::ws2812::{PioWs2812, PioWs2812Program},
 };
 use panic_halt as _;
 use smart_leds::RGB8;
 
 bind_interrupts!(struct Irqs {
-    PIO0_IRQ_0 => InterruptHandler<PIO0>;
+    PIO0_IRQ_0 => pio::InterruptHandler<PIO0>;
 });
 
 #[embassy_executor::main]
