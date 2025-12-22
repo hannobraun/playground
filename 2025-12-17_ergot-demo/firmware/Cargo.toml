@@ -18,8 +18,10 @@ features = ["arch-cortex-m", "executor-thread"]
 version = "0.9.0"
 features = ["critical-section-impl", "rp2040", "time-driver"]
 
+# Depending on the Git version to get this commit:
+# https://github.com/jamesmunns/ergot/commit/25392ff92eae43b3307d1f0ea2a5a8759265b11a
 [dependencies.ergot]
-version = "0.12.0"
+git = "https://github.com/jamesmunns/ergot.git"
 features = ["embassy-usb-v0_5"]
 
 [dependencies.portable-atomic]
