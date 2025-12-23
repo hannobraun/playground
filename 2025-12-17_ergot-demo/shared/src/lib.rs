@@ -1,3 +1,5 @@
+#![no_std]
+
 use ergot::endpoint;
 
 endpoint! {
