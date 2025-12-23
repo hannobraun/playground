@@ -10,6 +10,9 @@ anyhow = "1.0.100"
 version = "0.12.0"
 features = ["nusb-v0_1", "tokio-std"]
 
+[dependencies.shared]
+path = "../shared"
+
 [dependencies.tokio]
 version = "1.48.0"
 features = ["full"]

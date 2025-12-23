@@ -1,0 +1,7 @@
+[package]
+name = "shared"
+edition = "2024"
+publish = false
+
+[dependencies]
+ergot = "0.12.0"

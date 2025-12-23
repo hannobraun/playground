@@ -1,12 +1,7 @@
 use anyhow::anyhow;
-use ergot::{Address, endpoint, toolkits::nusb_v0_1::RouterStack};
+use ergot::{Address, toolkits::nusb_v0_1::RouterStack};
 
-endpoint! {
-    LedEndpoint,
-    [[u8; 3]; 2], // request: two colors
-    (),           // response
-    "led"
-}
+use shared::LedEndpoint;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
