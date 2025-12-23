@@ -15,7 +15,7 @@ async fn main() -> anyhow::Result<()> {
             None,
         )
         .await
-        .map_err(|err| anyhow!("{err:?}"))?;
+        .map_err(|err| anyhow!("Failed to set LED color: {err:?}"))?;
 
     Ok(())
 }
