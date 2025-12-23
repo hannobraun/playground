@@ -32,5 +32,8 @@ features = ["embassy-usb-v0_5"]
 version = "1.12.0"
 features = ["critical-section"]
 
+[dependencies.shared]
+path = "../shared"
+
 [build-dependencies]
 anyhow = "1.0.100"
