@@ -25,6 +25,7 @@ features = ["critical-section-impl", "rp2040", "time-driver"]
 # https://github.com/jamesmunns/ergot/commit/25392ff92eae43b3307d1f0ea2a5a8759265b11a
 [dependencies.ergot]
 git = "https://github.com/jamesmunns/ergot.git"
+rev = "87982f0"
 features = ["embassy-usb-v0_5"]
 
 [dependencies.portable-atomic]
