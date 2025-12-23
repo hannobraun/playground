@@ -679,6 +679,7 @@ dependencies = [
  "panic-halt",
  "portable-atomic",
  "smart-leds",
+ "static_cell",
 ]
 
 [[package]]
