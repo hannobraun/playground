@@ -107,8 +107,7 @@ dependencies = [
 [[package]]
 name = "cobs-acc"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "017b8ca8377075aa73b0ded82f67867742f0b3906a05b6849a3f10b302dadfd3"
+source = "git+https://github.com/jamesmunns/ergot.git?rev=87982f0#87982f0b1aa0b56cc8a58faeefd049c651c5fee8"
 dependencies = [
  "cobs 0.4.0",
 ]
@@ -254,8 +253,7 @@ checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
 [[package]]
 name = "ergot"
 version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a3951eeb1e91388d664966220d92d8e5d4546de5aabe577c0498bd247075c0b"
+source = "git+https://github.com/jamesmunns/ergot.git?rev=87982f0#87982f0b1aa0b56cc8a58faeefd049c651c5fee8"
 dependencies = [
  "bbq2",
  "cobs 0.3.0",

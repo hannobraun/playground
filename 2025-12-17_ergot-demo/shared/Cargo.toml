@@ -3,5 +3,6 @@ name = "shared"
 edition = "2024"
 publish = false
 
-[dependencies]
-ergot = "0.12.0"
+[dependencies.ergot]
+git = "https://github.com/jamesmunns/ergot.git"
+rev = "87982f0"
