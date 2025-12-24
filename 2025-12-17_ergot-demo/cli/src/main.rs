@@ -37,10 +37,20 @@ async fn main() -> anyhow::Result<()> {
             eprintln!("Found new device (ident: `{ident}`).");
         }
 
+        let networks = net_stack.manage_profile(|profile| profile.get_nets());
+        let Some(network_id) = networks.into_iter().next() else {
+            eprintln!("No network found.");
+            continue;
+        };
+
         let result = net_stack
             .endpoints()
             .request::<LedEndpoint>(
-                Address::unknown(),
+                Address {
+                    network_id,
+                    node_id: 0,
+                    port_id: 0,
+                },
                 &[[255, 0, 0], [0, 255, 0]],
                 None,
             )
