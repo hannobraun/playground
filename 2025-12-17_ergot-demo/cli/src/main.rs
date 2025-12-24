@@ -50,7 +50,7 @@ async fn main() -> anyhow::Result<()> {
             }
             Err(err) => {
                 eprintln!("{err:?}");
-                sleep(Duration::from_millis(500)).await;
+                sleep(Duration::from_millis(2000)).await;
                 continue;
             }
         }
