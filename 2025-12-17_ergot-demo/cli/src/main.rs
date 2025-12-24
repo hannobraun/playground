@@ -16,7 +16,10 @@ const OUTGOING_BUFFER_SIZE: usize = 4096;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    env_logger::Builder::from_env("debug,nusb=info").init();
+    env_logger::Builder::from_env(
+        env_logger::Env::default().default_filter_or("trace"),
+    )
+    .init();
 
     let net_stack = RouterStack::new();
 
