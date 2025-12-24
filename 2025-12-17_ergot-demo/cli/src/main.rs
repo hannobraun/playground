@@ -1,6 +1,7 @@
 use std::{collections::HashSet, time::Duration};
 
 use anyhow::anyhow;
+use clap::Parser;
 use ergot::{
     Address,
     toolkits::nusb_v0_1::{
@@ -20,6 +21,35 @@ async fn main() -> anyhow::Result<()> {
         env_logger::Env::default().default_filter_or("error"),
     )
     .init();
+
+    #[derive(clap::Parser)]
+    struct Args {
+        #[arg(long)]
+        r1: Option<u8>,
+
+        #[arg(long)]
+        g1: Option<u8>,
+
+        #[arg(long)]
+        b1: Option<u8>,
+
+        #[arg(long)]
+        r2: Option<u8>,
+
+        #[arg(long)]
+        g2: Option<u8>,
+
+        #[arg(long)]
+        b2: Option<u8>,
+    }
+    let args = Args::parse();
+
+    let r1 = args.r1.unwrap_or_default();
+    let g1 = args.g1.unwrap_or_default();
+    let b1 = args.b1.unwrap_or_default();
+    let r2 = args.r2.unwrap_or_default();
+    let g2 = args.g2.unwrap_or_default();
+    let b2 = args.b2.unwrap_or_default();
 
     let net_stack = RouterStack::new();
 
@@ -51,7 +81,7 @@ async fn main() -> anyhow::Result<()> {
                     node_id: 0,
                     port_id: 0,
                 },
-                &[[255, 0, 0], [0, 255, 0]],
+                &[[r1, g1, b1], [r2, g2, b2]],
                 None,
             )
             .await
