@@ -5,6 +5,7 @@ publish = false
 
 [dependencies]
 anyhow = "1.0.100"
+env_logger = "0.11.8"
 
 [dependencies.ergot]
 git = "https://github.com/jamesmunns/ergot.git"
