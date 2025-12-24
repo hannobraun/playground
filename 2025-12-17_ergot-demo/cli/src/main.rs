@@ -22,9 +22,7 @@ async fn main() -> anyhow::Result<()> {
 
     loop {
         for device in find_new_devices(&HashSet::new()).await {
-            eprintln!("Found new device.");
-
-            register_router_interface(
+            let ident = register_router_interface(
                 &net_stack,
                 device,
                 MAX_ERGOT_BUFFER_SIZE,
@@ -32,6 +30,8 @@ async fn main() -> anyhow::Result<()> {
             )
             .await
             .map_err(|err| anyhow!("{err:?}"))?;
+
+            eprintln!("Found new device (ident: `{ident}`).");
         }
 
         let result = net_stack
