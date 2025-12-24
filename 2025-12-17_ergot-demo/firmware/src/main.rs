@@ -68,14 +68,19 @@ async fn main(spawner: Spawner) {
     let server = pin!(server);
     let mut handle = server.attach();
 
-    handle
-        .serve(async |&[[r1, g1, b1], [r2, g2, b2]]| {
-            ws2812
-                .write(&[RGB8::new(r1, g1, b1), RGB8::new(r2, g2, b2)])
-                .await;
-        })
-        .await
-        .unwrap();
+    loop {
+        // This can return a send error, presumably because the response to the
+        // request can fail. But we can't do anything about the client not
+        // receiving the response, so let's just restart the server if that
+        // happens.
+        let _ = handle
+            .serve(async |&[[r1, g1, b1], [r2, g2, b2]]| {
+                ws2812
+                    .write(&[RGB8::new(r1, g1, b1), RGB8::new(r2, g2, b2)])
+                    .await;
+            })
+            .await;
+    }
 }
 
 #[embassy_executor::task]
