@@ -1,0 +1,4 @@
+[package]
+name = "stack-snake"
+edition = "2024"
+publish = false
