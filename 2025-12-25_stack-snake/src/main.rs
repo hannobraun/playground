@@ -1,10 +1,32 @@
-use std::{fs::File, io::Read, panic, path::Path, sync::mpsc, thread};
+use std::{
+    fs::File,
+    io::Read,
+    panic,
+    path::Path,
+    sync::{Arc, mpsc},
+    thread,
+};
 
 use notify::{RecursiveMode, Watcher};
+use pixels::{Pixels, SurfaceTexture};
 use stack_assembly::Eval;
+use winit::{
+    application::ApplicationHandler,
+    event::WindowEvent,
+    event_loop::{ActiveEventLoop, EventLoop},
+    window::{Window, WindowAttributes, WindowId},
+};
 
 fn main() -> anyhow::Result<()> {
     let handle = thread::spawn(run_script);
+
+    let event_loop = EventLoop::new()?;
+
+    let mut app = WindowApp {
+        window: None,
+        pixels: None,
+    };
+    event_loop.run_app(&mut app)?;
 
     match handle.join() {
         Ok(result) => result?,
@@ -45,6 +67,62 @@ fn run_script() -> anyhow::Result<()> {
                     continue 'inner;
                 }
             }
+        }
+    }
+}
+
+struct WindowApp {
+    window: Option<Arc<Window>>,
+    pixels: Option<Pixels<'static>>,
+}
+
+impl WindowApp {
+    pub fn init(&mut self, event_loop: &ActiveEventLoop) -> anyhow::Result<()> {
+        let window = {
+            let window = event_loop.create_window(
+                WindowAttributes::default().with_title("Snake / StackAssembly"),
+            )?;
+
+            Arc::new(window)
+        };
+
+        let pixels = {
+            let size = window.inner_size();
+            let surface_texture =
+                SurfaceTexture::new(size.width, size.height, window.clone());
+            Pixels::new(size.width, size.height, surface_texture)?
+        };
+
+        self.window = Some(window);
+        self.pixels = Some(pixels);
+
+        Ok(())
+    }
+}
+
+impl ApplicationHandler for WindowApp {
+    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
+        if let Err(err) = self.init(event_loop) {
+            eprintln!("Error creating window: {err:?}");
+            event_loop.exit();
+        }
+    }
+
+    fn window_event(
+        &mut self,
+        event_loop: &ActiveEventLoop,
+        _: WindowId,
+        event: WindowEvent,
+    ) {
+        let Some(pixels) = &self.pixels else {
+            return;
+        };
+
+        if let WindowEvent::RedrawRequested = event
+            && let Err(err) = pixels.render()
+        {
+            eprintln!("Failed to draw pixels: {err:?}");
+            event_loop.exit();
         }
     }
 }
