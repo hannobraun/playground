@@ -4,6 +4,11 @@ use notify::{RecursiveMode, Watcher};
 use stack_assembly::Eval;
 
 fn main() -> anyhow::Result<()> {
+    run_script()?;
+    Ok(())
+}
+
+fn run_script() -> anyhow::Result<()> {
     let (notify_tx, notify_rx) = mpsc::channel();
 
     let mut watcher = notify::recommended_watcher(notify_tx)?;
