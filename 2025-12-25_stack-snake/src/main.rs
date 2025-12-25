@@ -4,7 +4,9 @@ use notify::{RecursiveMode, Watcher};
 use stack_assembly::Eval;
 
 fn main() -> anyhow::Result<()> {
-    match thread::spawn(run_script).join() {
+    let handle = thread::spawn(run_script);
+
+    match handle.join() {
         Ok(result) => result?,
         Err(err) => {
             panic::resume_unwind(err);
