@@ -7,4 +7,4 @@ publish = false
 anyhow = "*"
 
 [dependencies.stack-assembly]
-version = "*"
+git = "https://github.com/hannobraun/stack-assembly.git"

@@ -49,8 +49,7 @@ dependencies = [
 [[package]]
 name = "stack-assembly"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d5304cb998601257b7aa2cac9dd39aa766a265e1bfa343b0e372bc6a3c850fab"
+source = "git+https://github.com/hannobraun/stack-assembly.git#2166937be487b70efedeaa41e8dcd34e18a80dcb"
 dependencies = [
  "bytemuck",
 ]
