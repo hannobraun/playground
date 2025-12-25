@@ -1,10 +1,16 @@
-use std::{fs::File, io::Read, path::Path, sync::mpsc};
+use std::{fs::File, io::Read, panic, path::Path, sync::mpsc, thread};
 
 use notify::{RecursiveMode, Watcher};
 use stack_assembly::Eval;
 
 fn main() -> anyhow::Result<()> {
-    run_script()?;
+    match thread::spawn(run_script).join() {
+        Ok(result) => result?,
+        Err(err) => {
+            panic::resume_unwind(err);
+        }
+    }
+
     Ok(())
 }
 
