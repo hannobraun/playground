@@ -4,4 +4,5 @@ edition = "2024"
 publish = false
 
 [dependencies]
+anyhow = "*"
 stack-assembly = "*"
