@@ -5,6 +5,7 @@ publish = false
 
 [dependencies]
 anyhow = "*"
+notify = "*"
 
 [dependencies.stack-assembly]
 git = "https://github.com/hannobraun/stack-assembly.git"
