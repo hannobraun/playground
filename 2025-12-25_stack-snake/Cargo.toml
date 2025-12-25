@@ -2,3 +2,6 @@
 name = "stack-snake"
 edition = "2024"
 publish = false
+
+[dependencies]
+stack-assembly = "*"
