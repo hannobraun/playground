@@ -80,7 +80,7 @@ impl WindowApp {
     pub fn init(&mut self, event_loop: &ActiveEventLoop) -> anyhow::Result<()> {
         let window = {
             let window = event_loop.create_window(
-                WindowAttributes::default().with_title("Snake / StackAssembly"),
+                WindowAttributes::default().with_title("Snake | StackAssembly"),
             )?;
 
             Arc::new(window)
