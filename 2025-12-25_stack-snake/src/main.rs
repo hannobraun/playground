@@ -145,7 +145,7 @@ impl ApplicationHandler for WindowApp {
         _: WindowId,
         event: WindowEvent,
     ) {
-        let Some(pixels) = &self.pixels else {
+        let Some(pixels) = &mut self.pixels else {
             return;
         };
 
