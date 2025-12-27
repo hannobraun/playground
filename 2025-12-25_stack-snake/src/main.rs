@@ -1,12 +1,6 @@
-use std::{
-    fs::File,
-    io::Read,
-    panic,
-    path::Path,
-    sync::{Arc, mpsc},
-    thread,
-};
+use std::{fs::File, io::Read, panic, path::Path, sync::Arc, thread};
 
+use crossbeam_channel::unbounded;
 use notify::{RecursiveMode, Watcher};
 use pixels::{Pixels, SurfaceTexture};
 use stack_assembly::Eval;
@@ -39,7 +33,7 @@ fn main() -> anyhow::Result<()> {
 }
 
 fn run_script() -> anyhow::Result<()> {
-    let (notify_tx, notify_rx) = mpsc::channel();
+    let (notify_tx, notify_rx) = unbounded();
 
     let mut watcher = notify::recommended_watcher(notify_tx)?;
     watcher.watch(Path::new("snake.stack"), RecursiveMode::NonRecursive)?;
