@@ -12,6 +12,8 @@ use winit::{
     window::{Window, WindowAttributes, WindowId},
 };
 
+const GRID_SIZE: usize = 32;
+
 fn main() -> anyhow::Result<()> {
     let (lifeline_tx, lifeline_rx) = unbounded();
 
@@ -107,7 +109,12 @@ impl WindowApp {
                 window.clone(),
             );
 
-            let grid_size = 32;
+            let Ok(grid_size) = GRID_SIZE.try_into() else {
+                unreachable!(
+                    "Can represent `GRID_SIZE` (`{GRID_SIZE}`) as `u32`."
+                );
+            };
+
             Pixels::new(grid_size, grid_size, surface_texture)?
         };
 
