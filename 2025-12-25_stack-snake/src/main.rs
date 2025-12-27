@@ -1,6 +1,6 @@
 use std::{fs::File, io::Read, panic, path::Path, sync::Arc, thread};
 
-use crossbeam_channel::unbounded;
+use crossbeam_channel::{select, unbounded};
 use notify::{RecursiveMode, Watcher};
 use pixels::{Pixels, SurfaceTexture};
 use stack_assembly::Eval;
@@ -50,7 +50,11 @@ fn run_script() -> anyhow::Result<()> {
         eprintln!("{run}: Script triggered effect: {effect:?}");
 
         'inner: loop {
-            let event = notify_rx.recv()??;
+            let event = select! {
+                recv(notify_rx) -> event => {
+                    event??
+                }
+            };
 
             match event.kind {
                 notify::EventKind::Modify(_) => {
