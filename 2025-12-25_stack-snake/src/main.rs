@@ -1,6 +1,8 @@
 use std::{fs::File, io::Read, panic, path::Path, sync::Arc, thread};
 
-use crossbeam_channel::{Receiver, RecvError, select, unbounded};
+use crossbeam_channel::{
+    Receiver, RecvError, Sender, TryRecvError, select, unbounded,
+};
 use notify::{RecursiveMode, Watcher};
 use pixels::{Pixels, SurfaceTexture};
 use stack_assembly::{Effect, Eval};
@@ -13,17 +15,22 @@ use winit::{
 };
 
 const GRID_SIZE: usize = 32;
+const PIXELS_SIZE: usize = GRID_SIZE * GRID_SIZE;
+const BYTES_PER_PIXEL: usize = 4;
+const PIXELS_SIZE_BYTES: usize = PIXELS_SIZE * BYTES_PER_PIXEL;
 
 fn main() -> anyhow::Result<()> {
     let (lifeline_tx, lifeline_rx) = unbounded();
+    let (pixels_tx, pixels_rx) = unbounded();
 
-    let handle = thread::spawn(|| run_script(lifeline_rx));
+    let handle = thread::spawn(|| run_script(lifeline_rx, pixels_tx));
 
     let event_loop = EventLoop::new()?;
 
     let mut app = WindowApp {
         window: None,
         pixels: None,
+        pixels_rx,
     };
     event_loop.run_app(&mut app)?;
 
@@ -39,7 +46,10 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run_script(lifeline_rx: Receiver<()>) -> anyhow::Result<()> {
+fn run_script(
+    lifeline_rx: Receiver<()>,
+    pixels_tx: Sender<[u8; PIXELS_SIZE_BYTES]>,
+) -> anyhow::Result<()> {
     let (notify_tx, notify_rx) = unbounded();
 
     let mut watcher = notify::recommended_watcher(notify_tx)?;
@@ -55,7 +65,15 @@ fn run_script(lifeline_rx: Receiver<()>) -> anyhow::Result<()> {
 
         match eval.run() {
             Effect::Yield => {
-                // will use this to render the pixels later on
+                let mut pixels = [0; PIXELS_SIZE_BYTES];
+                for i in 0..PIXELS_SIZE {
+                    let pixel = eval.memory.values[i].to_u32().to_be_bytes();
+                    pixels[i * BYTES_PER_PIXEL
+                        ..i * BYTES_PER_PIXEL + BYTES_PER_PIXEL]
+                        .copy_from_slice(&pixel);
+                }
+
+                pixels_tx.send(pixels)?;
             }
             effect => {
                 eprintln!("{run}: Script triggered effect: {effect:?}");
@@ -95,6 +113,7 @@ fn run_script(lifeline_rx: Receiver<()>) -> anyhow::Result<()> {
 struct WindowApp {
     window: Option<Arc<Window>>,
     pixels: Option<Pixels<'static>>,
+    pixels_rx: Receiver<[u8; PIXELS_SIZE_BYTES]>,
 }
 
 impl WindowApp {
@@ -164,6 +183,26 @@ impl ApplicationHandler for WindowApp {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
+                let mut pixels_data = None;
+
+                loop {
+                    match self.pixels_rx.try_recv() {
+                        Ok(pixels) => {
+                            pixels_data = Some(pixels);
+                        }
+                        Err(TryRecvError::Empty) => {
+                            break;
+                        }
+                        Err(TryRecvError::Disconnected) => {
+                            event_loop.exit();
+                        }
+                    }
+                }
+
+                if let Some(pixels_data) = pixels_data {
+                    pixels.frame_mut().copy_from_slice(&pixels_data);
+                }
+
                 if let Err(err) = pixels.render() {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
