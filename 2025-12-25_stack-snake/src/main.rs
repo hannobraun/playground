@@ -100,10 +100,13 @@ impl WindowApp {
         };
 
         let pixels = {
-            let size = window.inner_size();
-            let surface_texture =
-                SurfaceTexture::new(size.width, size.height, window.clone());
-            Pixels::new(size.width, size.height, surface_texture)?
+            let window_size = window.inner_size();
+            let surface_texture = SurfaceTexture::new(
+                window_size.width,
+                window_size.height,
+                window.clone(),
+            );
+            Pixels::new(window_size.width, window_size.height, surface_texture)?
         };
 
         self.window = Some(window);
