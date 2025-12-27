@@ -3,7 +3,7 @@ use std::{fs::File, io::Read, panic, path::Path, sync::Arc, thread};
 use crossbeam_channel::{Receiver, RecvError, select, unbounded};
 use notify::{RecursiveMode, Watcher};
 use pixels::{Pixels, SurfaceTexture};
-use stack_assembly::Eval;
+use stack_assembly::{Effect, Eval};
 use winit::{
     application::ApplicationHandler,
     event::{KeyEvent, WindowEvent},
@@ -53,8 +53,14 @@ fn run_script(lifeline: Receiver<()>) -> anyhow::Result<()> {
 
         let mut eval = Eval::start(&script);
 
-        let effect = eval.run();
-        eprintln!("{run}: Script triggered effect: {effect:?}");
+        match eval.run() {
+            Effect::Yield => {
+                // will use this to render the pixels later on
+            }
+            effect => {
+                eprintln!("{run}: Script triggered effect: {effect:?}");
+            }
+        }
 
         'inner: loop {
             let event = select! {
