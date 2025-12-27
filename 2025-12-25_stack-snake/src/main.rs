@@ -106,7 +106,9 @@ impl WindowApp {
                 window_size.height,
                 window.clone(),
             );
-            Pixels::new(window_size.width, window_size.height, surface_texture)?
+
+            let grid_size = 32;
+            Pixels::new(grid_size, grid_size, surface_texture)?
         };
 
         self.window = Some(window);
