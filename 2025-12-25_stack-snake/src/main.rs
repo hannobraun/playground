@@ -1,6 +1,6 @@
 use std::{fs::File, io::Read, panic, path::Path, sync::Arc, thread};
 
-use crossbeam_channel::{select, unbounded};
+use crossbeam_channel::{Receiver, RecvError, select, unbounded};
 use notify::{RecursiveMode, Watcher};
 use pixels::{Pixels, SurfaceTexture};
 use stack_assembly::Eval;
@@ -12,7 +12,9 @@ use winit::{
 };
 
 fn main() -> anyhow::Result<()> {
-    let handle = thread::spawn(run_script);
+    let (lifeline_tx, lifeline_rx) = unbounded();
+
+    let handle = thread::spawn(|| run_script(lifeline_rx));
 
     let event_loop = EventLoop::new()?;
 
@@ -21,6 +23,8 @@ fn main() -> anyhow::Result<()> {
         pixels: None,
     };
     event_loop.run_app(&mut app)?;
+
+    drop(lifeline_tx);
 
     match handle.join() {
         Ok(result) => result?,
@@ -32,7 +36,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run_script() -> anyhow::Result<()> {
+fn run_script(lifeline: Receiver<()>) -> anyhow::Result<()> {
     let (notify_tx, notify_rx) = unbounded();
 
     let mut watcher = notify::recommended_watcher(notify_tx)?;
@@ -53,6 +57,16 @@ fn run_script() -> anyhow::Result<()> {
             let event = select! {
                 recv(notify_rx) -> event => {
                     event??
+                }
+                recv(lifeline) -> message => {
+                    let Err(RecvError) = message else {
+                        unreachable!(
+                            "Lifeline channel only exists to get dropped."
+                        );
+                    };
+
+                    // Channel has been dropped. We're done.
+                    return Ok(());
                 }
             };
 
