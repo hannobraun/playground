@@ -6,9 +6,12 @@ publish = false
 [dependencies]
 anyhow = "*"
 crossbeam-channel = "*"
-notify = "*"
 pixels = "*"
 winit = "*"
+
+[dependencies.notify]
+version = "*"
+features = ["crossbeam-channel"]
 
 [dependencies.stack-assembly]
 git = "https://github.com/hannobraun/stack-assembly.git"
