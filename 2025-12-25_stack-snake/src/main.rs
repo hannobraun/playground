@@ -130,11 +130,18 @@ impl ApplicationHandler for WindowApp {
             return;
         };
 
-        if let WindowEvent::RedrawRequested = event
-            && let Err(err) = pixels.render()
-        {
-            eprintln!("Failed to draw pixels: {err:?}");
-            event_loop.exit();
+        match event {
+            WindowEvent::CloseRequested => {
+                event_loop.exit();
+            }
+            WindowEvent::RedrawRequested => {
+                if let Err(err) = pixels.render() {
+                    eprintln!("Failed to draw pixels: {err:?}");
+                    event_loop.exit();
+                }
+            }
+
+            _ => {}
         }
     }
 }
