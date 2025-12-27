@@ -39,7 +39,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run_script(lifeline: Receiver<()>) -> anyhow::Result<()> {
+fn run_script(lifeline_rx: Receiver<()>) -> anyhow::Result<()> {
     let (notify_tx, notify_rx) = unbounded();
 
     let mut watcher = notify::recommended_watcher(notify_tx)?;
@@ -67,7 +67,7 @@ fn run_script(lifeline: Receiver<()>) -> anyhow::Result<()> {
                 recv(notify_rx) -> event => {
                     event??
                 }
-                recv(lifeline) -> message => {
+                recv(lifeline_rx) -> message => {
                     let Err(RecvError) = message else {
                         unreachable!(
                             "Lifeline channel only exists to get dropped."
