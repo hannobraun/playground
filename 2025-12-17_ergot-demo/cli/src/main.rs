@@ -69,7 +69,8 @@ async fn main() -> anyhow::Result<()> {
 
         let networks = net_stack.manage_profile(|profile| profile.get_nets());
         let Some(network_id) = networks.into_iter().next() else {
-            eprintln!("No network found.");
+            eprintln!("No network found. Retrying in 2 seconds...");
+            sleep(Duration::from_millis(2000)).await;
             continue;
         };
 
