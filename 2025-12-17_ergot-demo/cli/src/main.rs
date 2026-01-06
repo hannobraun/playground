@@ -24,21 +24,27 @@ async fn main() -> anyhow::Result<()> {
 
     #[derive(clap::Parser)]
     struct Args {
+        /// Red channel of LED 1 (0-255)
         #[arg(long)]
         r1: Option<u8>,
 
+        /// Green channel of LED 1 (0-255)
         #[arg(long)]
         g1: Option<u8>,
 
+        /// Blue channel of LED 1 (0-255)
         #[arg(long)]
         b1: Option<u8>,
 
+        /// Red channel of LED 2 (0-255)
         #[arg(long)]
         r2: Option<u8>,
 
+        /// Green channel of LED 2 (0-255)
         #[arg(long)]
         g2: Option<u8>,
 
+        /// Blue channel of LED 2 (0-255)
         #[arg(long)]
         b2: Option<u8>,
     }
