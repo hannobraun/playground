@@ -12,7 +12,7 @@ use winit::{
 
 use crate::{GRID_SIZE, PIXELS_SIZE_BYTES};
 
-pub fn run(
+pub fn start_and_wait(
     lifeline_tx: Sender<()>,
     pixels_rx: Receiver<[u8; 4096]>,
 ) -> anyhow::Result<()> {
