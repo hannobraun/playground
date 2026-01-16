@@ -14,7 +14,7 @@ const BYTES_PER_PIXEL: usize = 4;
 const PIXELS_SIZE_BYTES: usize = PIXELS_SIZE * BYTES_PER_PIXEL;
 
 fn main() -> anyhow::Result<()> {
-    let (lifeline_tx, lifeline_rx) = unbounded();
+    let (lifeline_tx, lifeline_rx) = bounded(0);
     let (pixels_tx, pixels_rx) = bounded(0);
 
     let handle = thread::spawn(|| run_script(lifeline_rx, pixels_tx));
