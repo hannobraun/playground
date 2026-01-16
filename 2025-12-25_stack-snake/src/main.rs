@@ -32,16 +32,18 @@ fn run_script(
     lifeline_rx: Receiver<()>,
     pixels_tx: Sender<[u8; PIXELS_SIZE_BYTES]>,
 ) -> anyhow::Result<()> {
+    let path = "snake.stack";
+
     let (notify_tx, notify_rx) = unbounded();
 
     let mut watcher = notify::recommended_watcher(notify_tx)?;
-    watcher.watch(Path::new("snake.stack"), RecursiveMode::NonRecursive)?;
+    watcher.watch(Path::new(path), RecursiveMode::NonRecursive)?;
 
     let mut run = 0;
 
     'outer: loop {
         let mut script = String::new();
-        File::open("snake.stack")?.read_to_string(&mut script)?;
+        File::open(path)?.read_to_string(&mut script)?;
 
         let mut eval = Eval::start(&script);
 
