@@ -43,10 +43,7 @@ fn run_script(
 
     let mut run = 0;
 
-    let mut script = String::new();
-    File::open(path)?.read_to_string(&mut script)?;
-
-    let mut eval = Eval::start(&script);
+    let mut eval = load_script(path)?;
 
     loop {
         match eval.run() {
@@ -84,6 +81,15 @@ fn run_script(
             }
         }
     }
+}
+
+fn load_script(path: &Path) -> anyhow::Result<Eval> {
+    let mut script = String::new();
+    File::open(path)?.read_to_string(&mut script)?;
+
+    let eval = Eval::start(&script);
+
+    Ok(eval)
 }
 
 fn wait_for_change(
