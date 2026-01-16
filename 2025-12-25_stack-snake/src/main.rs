@@ -66,6 +66,9 @@ fn run_script(
                     // Other end has hung up, which means we need to quit too.
                     return Ok(());
                 }
+
+                eval.effect = None;
+                continue;
             }
             effect => {
                 eprintln!("{run}: Script triggered effect: {effect:?}");
