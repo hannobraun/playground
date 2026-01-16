@@ -59,6 +59,9 @@ fn run_script(
                         .copy_from_slice(&pixel);
                 }
 
+                // `pixels_tx` is bounded with capacity zero, so this will block
+                // until the pixels are being drawn, tying the frame rate of the
+                // script to the frame rate of the I/O.
                 pixels_tx.send(pixels)?;
             }
             effect => {
