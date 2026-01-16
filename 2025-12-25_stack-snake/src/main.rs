@@ -25,6 +25,22 @@ fn main() -> anyhow::Result<()> {
 
     let handle = thread::spawn(|| run_script(lifeline_rx, pixels_tx));
 
+    run(lifeline_tx, pixels_rx)?;
+
+    match handle.join() {
+        Ok(result) => result?,
+        Err(err) => {
+            panic::resume_unwind(err);
+        }
+    }
+
+    Ok(())
+}
+
+pub fn run(
+    lifeline_tx: Sender<()>,
+    pixels_rx: Receiver<[u8; 4096]>,
+) -> anyhow::Result<()> {
     let event_loop = EventLoop::new()?;
 
     let mut app = WindowApp {
@@ -35,13 +51,6 @@ fn main() -> anyhow::Result<()> {
     event_loop.run_app(&mut app)?;
 
     drop(lifeline_tx);
-
-    match handle.join() {
-        Ok(result) => result?,
-        Err(err) => {
-            panic::resume_unwind(err);
-        }
-    }
 
     Ok(())
 }
