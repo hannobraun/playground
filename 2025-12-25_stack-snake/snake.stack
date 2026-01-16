@@ -1,7 +1,10 @@
-16 32 * 16 + 0xffffffff write
+16 16 @set_pixel call
 @submit call
 
 return
+
+set_pixel:
+    32 * + 0xffffffff write
 
 submit:
     yield
