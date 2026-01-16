@@ -1,4 +1,4 @@
-528 0xffffffff write
+16 32 * 16 + 0xffffffff write
 @submit call
 
 return
