@@ -75,7 +75,7 @@ fn run_script(
             }
         }
 
-        let outcome = 'inner: loop {
+        let outcome = loop {
             let event = select! {
                 recv(notify_rx) -> event => {
                     event??
@@ -98,7 +98,7 @@ fn run_script(
                     break WaitForChangeOutcome::ScriptHasChanged;
                 }
                 _ => {
-                    continue 'inner;
+                    continue;
                 }
             }
         };
