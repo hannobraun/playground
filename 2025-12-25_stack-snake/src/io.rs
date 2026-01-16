@@ -132,4 +132,14 @@ impl ApplicationHandler for WindowApp {
             _ => {}
         }
     }
+
+    fn about_to_wait(&mut self, _: &ActiveEventLoop) {
+        let Some(window) = &self.window else {
+            return;
+        };
+
+        // We want to redraw on every frame. Otherwise, the window will only
+        // redraw in response to some events, like losing or gaining focus.
+        window.request_redraw();
+    }
 }
