@@ -1,7 +1,7 @@
 use std::{fs::File, io::Read, panic, path::Path, thread};
 
 use crossbeam_channel::{
-    Receiver, RecvError, Sender, bounded, select, unbounded,
+    Receiver, RecvError, SendError, Sender, bounded, select, unbounded,
 };
 use notify::{RecursiveMode, Watcher};
 use stack_assembly::{Effect, Eval};
@@ -62,7 +62,10 @@ fn run_script(
                 // `pixels_tx` is bounded with capacity zero, so this will block
                 // until the pixels are being drawn, tying the frame rate of the
                 // script to the frame rate of the I/O.
-                pixels_tx.send(pixels)?;
+                if let Err(SendError(_)) = pixels_tx.send(pixels) {
+                    // Other end has hung up, which means we need to quit too.
+                    return Ok(());
+                }
             }
             effect => {
                 eprintln!("{run}: Script triggered effect: {effect:?}");
