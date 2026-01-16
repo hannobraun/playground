@@ -42,7 +42,6 @@ fn run_script(
     watcher.watch(path, RecursiveMode::NonRecursive)?;
 
     let mut run = 0;
-
     let mut eval = load_script(path)?;
 
     loop {
