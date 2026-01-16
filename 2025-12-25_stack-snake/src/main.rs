@@ -43,7 +43,7 @@ fn run_script(
 
     let mut run = 0;
 
-    'outer: loop {
+    loop {
         let mut script = String::new();
         File::open(path)?.read_to_string(&mut script)?;
 
@@ -75,7 +75,7 @@ fn run_script(
             }
         }
 
-        'inner: loop {
+        let outcome = 'inner: loop {
             let event = select! {
                 recv(notify_rx) -> event => {
                     event??
@@ -88,19 +88,33 @@ fn run_script(
                     };
 
                     // Channel has been dropped. We're done.
-                    return Ok(());
+                    break WaitForChangeOutcome::MustQuit;
                 }
             };
 
             match event.kind {
                 notify::EventKind::Modify(_) => {
                     run += 1;
-                    continue 'outer;
+                    break WaitForChangeOutcome::ScriptHasChanged;
                 }
                 _ => {
                     continue 'inner;
                 }
             }
+        };
+
+        match outcome {
+            WaitForChangeOutcome::ScriptHasChanged => {
+                continue;
+            }
+            WaitForChangeOutcome::MustQuit => {
+                return Ok(());
+            }
         }
     }
+}
+
+enum WaitForChangeOutcome {
+    ScriptHasChanged,
+    MustQuit,
 }
