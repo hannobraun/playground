@@ -16,7 +16,6 @@ fn main() -> anyhow::Result<()> {
     let (pixels_tx, pixels_rx) = unbounded();
 
     let handle = thread::spawn(|| run_script(lifeline_rx, pixels_tx));
-
     io::start_and_wait(lifeline_tx, pixels_rx)?;
 
     match handle.join() {
