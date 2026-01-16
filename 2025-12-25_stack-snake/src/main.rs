@@ -1,6 +1,8 @@
 use std::{fs::File, io::Read, panic, path::Path, thread};
 
-use crossbeam_channel::{Receiver, RecvError, Sender, select, unbounded};
+use crossbeam_channel::{
+    Receiver, RecvError, Sender, bounded, select, unbounded,
+};
 use notify::{RecursiveMode, Watcher};
 use stack_assembly::{Effect, Eval};
 
@@ -13,7 +15,7 @@ const PIXELS_SIZE_BYTES: usize = PIXELS_SIZE * BYTES_PER_PIXEL;
 
 fn main() -> anyhow::Result<()> {
     let (lifeline_tx, lifeline_rx) = unbounded();
-    let (pixels_tx, pixels_rx) = unbounded();
+    let (pixels_tx, pixels_rx) = bounded(0);
 
     let handle = thread::spawn(|| run_script(lifeline_rx, pixels_tx));
     io::start_and_wait(lifeline_tx, pixels_rx)?;
