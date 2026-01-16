@@ -75,9 +75,7 @@ fn run_script(
             }
         }
 
-        let outcome = wait_for_change(&mut run, &notify_rx, &lifeline_rx)?;
-
-        match outcome {
+        match wait_for_change(&mut run, &notify_rx, &lifeline_rx)? {
             WaitForChangeOutcome::ScriptHasChanged => {
                 continue;
             }
