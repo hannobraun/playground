@@ -1,4 +1,7 @@
 0 0xffffffff write
-yield
+@submit call
 
 return
+
+submit:
+    yield
