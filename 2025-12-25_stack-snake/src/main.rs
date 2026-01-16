@@ -43,12 +43,12 @@ fn run_script(
 
     let mut run = 0;
 
+    let mut script = String::new();
+    File::open(path)?.read_to_string(&mut script)?;
+
+    let mut eval = Eval::start(&script);
+
     loop {
-        let mut script = String::new();
-        File::open(path)?.read_to_string(&mut script)?;
-
-        let mut eval = Eval::start(&script);
-
         match eval.run() {
             Effect::Yield => {
                 let mut pixels = [0; PIXELS_SIZE_BYTES];
