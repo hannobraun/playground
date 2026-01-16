@@ -72,15 +72,15 @@ fn run_script(
             }
             effect => {
                 eprintln!("{run}: Script triggered effect: {effect:?}");
-            }
-        }
 
-        match wait_for_change(&mut run, &notify_rx, &lifeline_rx)? {
-            WaitForChangeOutcome::ScriptHasChanged => {
-                continue;
-            }
-            WaitForChangeOutcome::MustQuit => {
-                return Ok(());
+                match wait_for_change(&mut run, &notify_rx, &lifeline_rx)? {
+                    WaitForChangeOutcome::ScriptHasChanged => {
+                        continue;
+                    }
+                    WaitForChangeOutcome::MustQuit => {
+                        return Ok(());
+                    }
+                }
             }
         }
     }
