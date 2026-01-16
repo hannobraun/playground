@@ -71,6 +71,7 @@ fn run_script(
 
                 match wait_for_change(&mut run, &notify_rx, &lifeline_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
+                        eval = load_script(path)?;
                         continue;
                     }
                     WaitForChangeOutcome::MustQuit => {
