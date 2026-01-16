@@ -91,7 +91,7 @@ fn wait_for_change(
     notify_rx: &Receiver<notify::Result<notify::Event>>,
     lifeline_rx: &Receiver<()>,
 ) -> anyhow::Result<WaitForChangeOutcome> {
-    let outcome = loop {
+    loop {
         let event = select! {
             recv(notify_rx) -> event => {
                 event??
@@ -104,22 +104,20 @@ fn wait_for_change(
                 };
 
                 // Channel has been dropped. We're done.
-                break WaitForChangeOutcome::MustQuit;
+                return Ok(WaitForChangeOutcome::MustQuit);
             }
         };
 
         match event.kind {
             notify::EventKind::Modify(_) => {
                 *run += 1;
-                break WaitForChangeOutcome::ScriptHasChanged;
+                return Ok(WaitForChangeOutcome::ScriptHasChanged);
             }
             _ => {
                 continue;
             }
         }
-    };
-
-    Ok(outcome)
+    }
 }
 
 enum WaitForChangeOutcome {
