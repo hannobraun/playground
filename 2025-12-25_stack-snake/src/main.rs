@@ -32,12 +32,12 @@ fn run_script(
     lifeline_rx: Receiver<()>,
     pixels_tx: Sender<[u8; PIXELS_SIZE_BYTES]>,
 ) -> anyhow::Result<()> {
-    let path = "snake.stack";
+    let path = Path::new("snake.stack");
 
     let (notify_tx, notify_rx) = unbounded();
 
     let mut watcher = notify::recommended_watcher(notify_tx)?;
-    watcher.watch(Path::new(path), RecursiveMode::NonRecursive)?;
+    watcher.watch(path, RecursiveMode::NonRecursive)?;
 
     let mut run = 0;
 
