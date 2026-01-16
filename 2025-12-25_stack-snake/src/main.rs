@@ -75,33 +75,7 @@ fn run_script(
             }
         }
 
-        let outcome = loop {
-            let event = select! {
-                recv(notify_rx) -> event => {
-                    event??
-                }
-                recv(lifeline_rx) -> message => {
-                    let Err(RecvError) = message else {
-                        unreachable!(
-                            "Lifeline channel only exists to get dropped."
-                        );
-                    };
-
-                    // Channel has been dropped. We're done.
-                    break WaitForChangeOutcome::MustQuit;
-                }
-            };
-
-            match event.kind {
-                notify::EventKind::Modify(_) => {
-                    run += 1;
-                    break WaitForChangeOutcome::ScriptHasChanged;
-                }
-                _ => {
-                    continue;
-                }
-            }
-        };
+        let outcome = wait_for_change(&mut run, &notify_rx, &lifeline_rx)?;
 
         match outcome {
             WaitForChangeOutcome::ScriptHasChanged => {
@@ -112,6 +86,42 @@ fn run_script(
             }
         }
     }
+}
+
+fn wait_for_change(
+    run: &mut u64,
+    notify_rx: &Receiver<notify::Result<notify::Event>>,
+    lifeline_rx: &Receiver<()>,
+) -> anyhow::Result<WaitForChangeOutcome> {
+    let outcome = loop {
+        let event = select! {
+            recv(notify_rx) -> event => {
+                event??
+            }
+            recv(lifeline_rx) -> message => {
+                let Err(RecvError) = message else {
+                    unreachable!(
+                        "Lifeline channel only exists to get dropped."
+                    );
+                };
+
+                // Channel has been dropped. We're done.
+                break WaitForChangeOutcome::MustQuit;
+            }
+        };
+
+        match event.kind {
+            notify::EventKind::Modify(_) => {
+                *run += 1;
+                break WaitForChangeOutcome::ScriptHasChanged;
+            }
+            _ => {
+                continue;
+            }
+        }
+    };
+
+    Ok(outcome)
 }
 
 enum WaitForChangeOutcome {
