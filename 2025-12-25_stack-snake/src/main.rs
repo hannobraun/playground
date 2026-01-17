@@ -99,8 +99,8 @@ fn wait_for_change(
 ) -> anyhow::Result<WaitForChangeOutcome> {
     loop {
         let event = select! {
-            recv(notify_rx) -> event => {
-                event??
+            recv(notify_rx) -> ev => {
+                ev??
             }
             recv(lifeline_rx) -> message => {
                 let Err(RecvError) = message else {
