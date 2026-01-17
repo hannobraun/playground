@@ -119,9 +119,9 @@ fn wait_for_change(
                     continue;
                 }
 
-                let ev = event??;
+                let event = event??;
 
-                let notify::EventKind::Modify(_) = ev.kind else {
+                let notify::EventKind::Modify(_) = event.kind else {
                     // We are only interested in changes to the script. Ignore.
                     continue;
                 };
