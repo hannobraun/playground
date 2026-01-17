@@ -143,10 +143,6 @@ fn wait_for_change(
                 return Ok(WaitForChangeOutcome::MustQuit);
             }
             recv(timeout_rx) -> _ => {
-                let Some(_) = event.take() else {
-                    unreachable!("Timeout is only set after receiving an event.");
-                };
-
                 *run += 1;
                 return Ok(WaitForChangeOutcome::ScriptHasChanged);
             }
