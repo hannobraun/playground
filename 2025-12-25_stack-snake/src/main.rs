@@ -1,7 +1,14 @@
-use std::{fs::File, io::Read, panic, path::Path, thread};
+use std::{
+    fs::File,
+    io::Read,
+    panic,
+    path::Path,
+    thread,
+    time::{Duration, Instant},
+};
 
 use crossbeam_channel::{
-    Receiver, RecvError, SendError, Sender, bounded, select, unbounded,
+    Receiver, RecvError, SendError, Sender, after, bounded, select, unbounded,
 };
 use notify::{RecursiveMode, Watcher};
 use stack_assembly::{Effect, Eval};
@@ -97,10 +104,33 @@ fn wait_for_change(
     notify_rx: &Receiver<notify::Result<notify::Event>>,
     lifeline_rx: &Receiver<()>,
 ) -> anyhow::Result<WaitForChangeOutcome> {
+    // We don't intend to ever trigger a timeout using this channel. We might
+    // overwrite the receiver later though.
+    let (_timeout_tx, mut timeout_rx) = bounded::<Instant>(0);
+
+    let mut event = None;
+
     loop {
-        let event = select! {
+        select! {
             recv(notify_rx) -> ev => {
-                ev??
+                if event.is_some() {
+                    // We have already received an event and are currently
+                    // debouncing it.
+                    continue;
+                }
+
+                let ev = ev??;
+
+                let notify::EventKind::Modify(_) = ev.kind else {
+                    // We are only interested in changes to the script. Ignore.
+                    continue;
+                };
+
+                // This is a change to the script, which we are interested in.
+                // Set off the timer, so we can debounce the event before
+                // returning.
+                event = Some(ev);
+                timeout_rx = after(Duration::from_millis(20));
             }
             recv(lifeline_rx) -> message => {
                 let Err(RecvError) = message else {
@@ -112,15 +142,13 @@ fn wait_for_change(
                 // Channel has been dropped. We're done.
                 return Ok(WaitForChangeOutcome::MustQuit);
             }
-        };
+            recv(timeout_rx) -> _ => {
+                let Some(_) = event.take() else {
+                    unreachable!("Timeout is only set after receiving an event.");
+                };
 
-        match event.kind {
-            notify::EventKind::Modify(_) => {
                 *run += 1;
                 return Ok(WaitForChangeOutcome::ScriptHasChanged);
-            }
-            _ => {
-                continue;
             }
         }
     }
