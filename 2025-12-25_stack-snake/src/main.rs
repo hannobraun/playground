@@ -108,12 +108,12 @@ fn wait_for_change(
     // overwrite the receiver later though.
     let (_timeout_tx, mut timeout_rx) = bounded::<Instant>(0);
 
-    let mut event = None;
+    let mut event_received = false;
 
     loop {
         select! {
             recv(notify_rx) -> ev => {
-                if event.is_some() {
+                if event_received {
                     // We have already received an event and are currently
                     // debouncing it.
                     continue;
@@ -129,7 +129,7 @@ fn wait_for_change(
                 // This is a change to the script, which we are interested in.
                 // Set off the timer, so we can debounce the event before
                 // returning.
-                event = Some(ev);
+                event_received = true;
                 timeout_rx = after(Duration::from_millis(20));
             }
             recv(lifeline_rx) -> message => {
