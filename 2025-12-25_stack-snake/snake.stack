@@ -5,6 +5,8 @@ return
 
 set_pixel:
     32 * + 0xffffffff write
+    return
 
 submit:
     yield
+    return
