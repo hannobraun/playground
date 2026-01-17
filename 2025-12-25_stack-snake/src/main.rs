@@ -139,7 +139,7 @@ fn wait_for_change(
                     );
                 };
 
-                // Channel has been dropped. We're done.
+                // Sender has been dropped. We're done.
                 return Ok(WaitForChangeOutcome::MustQuit);
             }
             recv(timeout_rx) -> _ => {
