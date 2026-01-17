@@ -135,7 +135,7 @@ fn wait_for_change(
             recv(lifeline_rx) -> message => {
                 let Err(RecvError) = message else {
                     unreachable!(
-                        "Lifeline channel only exists to get dropped."
+                        "Lifeline channel only exists to get disconnected."
                     );
                 };
 
