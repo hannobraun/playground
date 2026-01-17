@@ -112,14 +112,14 @@ fn wait_for_change(
 
     loop {
         select! {
-            recv(notify_rx) -> ev => {
+            recv(notify_rx) -> event => {
                 if event_received {
                     // We have already received an event and are currently
                     // debouncing it.
                     continue;
                 }
 
-                let ev = ev??;
+                let ev = event??;
 
                 let notify::EventKind::Modify(_) = ev.kind else {
                     // We are only interested in changes to the script. Ignore.
