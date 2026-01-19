@@ -126,8 +126,8 @@ impl ApplicationHandler for WindowApp {
 
                 let buffer = pixels.frame_mut();
 
-                for (i, pixel) in pixels_data.into_iter().enumerate() {
-                    buffer[i] = pixel;
+                for (i, pixel) in pixels_data.windows(4).enumerate() {
+                    buffer[i..i + 4].copy_from_slice(pixel);
                 }
 
                 if let Err(err) = pixels.render() {
