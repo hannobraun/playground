@@ -121,12 +121,12 @@ impl ApplicationHandler for WindowApp {
                     }
                 }
 
-                let Some(pixels_data) = pixels else {
+                let Some(pixels) = pixels else {
                     // Nothing to render.
                     return;
                 };
 
-                if let Err(err) = renderer.draw(pixels_data) {
+                if let Err(err) = renderer.draw(pixels) {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
                 }
