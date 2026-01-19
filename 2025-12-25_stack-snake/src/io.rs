@@ -104,10 +104,10 @@ impl ApplicationHandler for WindowApp {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
-                let mut pixels_data = None;
+                let mut pixels = None;
 
                 loop {
-                    pixels_data = match self.pixels_rx.try_recv() {
+                    pixels = match self.pixels_rx.try_recv() {
                         Ok(pixels) => Some(pixels),
                         Err(TryRecvError::Empty) => {
                             break;
@@ -119,7 +119,7 @@ impl ApplicationHandler for WindowApp {
                     }
                 }
 
-                let Some(pixels_data) = pixels_data else {
+                let Some(pixels_data) = pixels else {
                     // Nothing to render.
                     return;
                 };
