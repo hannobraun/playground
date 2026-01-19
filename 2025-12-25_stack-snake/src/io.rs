@@ -119,11 +119,13 @@ impl ApplicationHandler for WindowApp {
                     }
                 }
 
-                let buffer = pixels.frame_mut();
+                let Some(pixels_data) = pixels_data else {
+                    // Nothing to render.
+                    return;
+                };
 
-                if let Some(pixels_data) = pixels_data {
-                    buffer.copy_from_slice(&pixels_data);
-                }
+                let buffer = pixels.frame_mut();
+                buffer.copy_from_slice(&pixels_data);
 
                 if let Err(err) = pixels.render() {
                     eprintln!("Failed to draw pixels: {err:?}");
