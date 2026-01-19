@@ -84,7 +84,8 @@ impl ApplicationHandler for WindowApp {
         _: WindowId,
         event: WindowEvent,
     ) {
-        let (Some(_), Some(pixels)) = (&self.window, &mut self.renderer) else {
+        let (Some(_), Some(renderer)) = (&self.window, &mut self.renderer)
+        else {
             return;
         };
 
@@ -124,13 +125,13 @@ impl ApplicationHandler for WindowApp {
                     return;
                 };
 
-                let buffer = pixels.pixels.frame_mut();
+                let buffer = renderer.pixels.frame_mut();
 
                 for (i, pixel) in pixels_data.windows(4).enumerate() {
                     buffer[i..i + 4].copy_from_slice(pixel);
                 }
 
-                if let Err(err) = pixels.pixels.render() {
+                if let Err(err) = renderer.pixels.render() {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
                 }
