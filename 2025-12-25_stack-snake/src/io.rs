@@ -20,7 +20,7 @@ pub fn start_and_wait(
 
     let mut app = WindowApp {
         window: None,
-        pixels: None,
+        renderer: None,
         pixels_rx,
     };
     event_loop.run_app(&mut app)?;
@@ -32,7 +32,7 @@ pub fn start_and_wait(
 
 struct WindowApp {
     window: Option<Arc<Window>>,
-    pixels: Option<Renderer>,
+    renderer: Option<Renderer>,
     pixels_rx: Receiver<[u8; PIXELS_SIZE_BYTES]>,
 }
 
@@ -64,7 +64,7 @@ impl WindowApp {
         };
 
         self.window = Some(window);
-        self.pixels = Some(Renderer { pixels });
+        self.renderer = Some(Renderer { pixels });
 
         Ok(())
     }
@@ -84,7 +84,7 @@ impl ApplicationHandler for WindowApp {
         _: WindowId,
         event: WindowEvent,
     ) {
-        let (Some(_), Some(pixels)) = (&self.window, &mut self.pixels) else {
+        let (Some(_), Some(pixels)) = (&self.window, &mut self.renderer) else {
             return;
         };
 
