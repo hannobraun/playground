@@ -122,7 +122,6 @@ impl ApplicationHandler for WindowApp {
                 }
 
                 let Some(pixels) = pixels else {
-                    // Nothing to render.
                     return;
                 };
 
