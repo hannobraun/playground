@@ -32,7 +32,7 @@ pub fn start_and_wait(
 
 struct WindowApp {
     window: Option<Arc<Window>>,
-    pixels: Option<Pixels<'static>>,
+    pixels: Option<Renderer>,
     pixels_rx: Receiver<[u8; PIXELS_SIZE_BYTES]>,
 }
 
@@ -64,7 +64,7 @@ impl WindowApp {
         };
 
         self.window = Some(window);
-        self.pixels = Some(pixels);
+        self.pixels = Some(Renderer { pixels });
 
         Ok(())
     }
@@ -124,13 +124,13 @@ impl ApplicationHandler for WindowApp {
                     return;
                 };
 
-                let buffer = pixels.frame_mut();
+                let buffer = pixels.pixels.frame_mut();
 
                 for (i, pixel) in pixels_data.windows(4).enumerate() {
                     buffer[i..i + 4].copy_from_slice(pixel);
                 }
 
-                if let Err(err) = pixels.render() {
+                if let Err(err) = pixels.pixels.render() {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
                 }
@@ -149,4 +149,8 @@ impl ApplicationHandler for WindowApp {
         // redraw in response to some events, like losing or gaining focus.
         window.request_redraw();
     }
+}
+
+struct Renderer {
+    pixels: Pixels<'static>,
 }
