@@ -125,7 +125,10 @@ impl ApplicationHandler for WindowApp {
                 };
 
                 let buffer = pixels.frame_mut();
-                buffer.copy_from_slice(&pixels_data);
+
+                for (i, pixel) in pixels_data.into_iter().enumerate() {
+                    buffer[i] = pixel;
+                }
 
                 if let Err(err) = pixels.render() {
                     eprintln!("Failed to draw pixels: {err:?}");
