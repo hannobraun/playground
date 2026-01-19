@@ -119,8 +119,10 @@ impl ApplicationHandler for WindowApp {
                     }
                 }
 
+                let buffer = pixels.frame_mut();
+
                 if let Some(pixels_data) = pixels_data {
-                    pixels.frame_mut().copy_from_slice(&pixels_data);
+                    buffer.copy_from_slice(&pixels_data);
                 }
 
                 if let Err(err) = pixels.render() {
