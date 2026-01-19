@@ -116,6 +116,7 @@ impl ApplicationHandler for WindowApp {
                         }
                         Err(TryRecvError::Disconnected) => {
                             event_loop.exit();
+                            return;
                         }
                     }
                 }
