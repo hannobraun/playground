@@ -107,8 +107,10 @@ impl ApplicationHandler for WindowApp {
                 let mut pixels = None;
 
                 loop {
-                    pixels = match self.pixels_rx.try_recv() {
-                        Ok(pxs) => Some(pxs),
+                    match self.pixels_rx.try_recv() {
+                        Ok(pxs) => {
+                            pixels = Some(pxs);
+                        }
                         Err(TryRecvError::Empty) => {
                             break;
                         }
