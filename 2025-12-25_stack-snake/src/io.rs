@@ -84,7 +84,7 @@ impl ApplicationHandler for WindowApp {
         _: WindowId,
         event: WindowEvent,
     ) {
-        let (Some(_), Some(renderer)) = (&self.window, &mut self.renderer)
+        let (Some(window), Some(renderer)) = (&self.window, &mut self.renderer)
         else {
             return;
         };
@@ -125,7 +125,7 @@ impl ApplicationHandler for WindowApp {
                     return;
                 };
 
-                if let Err(err) = renderer.draw(pixels) {
+                if let Err(err) = renderer.draw(window, pixels) {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
                 }
@@ -151,7 +151,11 @@ struct Renderer {
 }
 
 impl Renderer {
-    pub fn draw(&mut self, pixels: [u8; 4096]) -> anyhow::Result<()> {
+    pub fn draw(
+        &mut self,
+        _: &Window,
+        pixels: [u8; 4096],
+    ) -> anyhow::Result<()> {
         let buffer = self.pixels.frame_mut();
 
         for (i, pixel) in pixels.windows(4).enumerate() {
