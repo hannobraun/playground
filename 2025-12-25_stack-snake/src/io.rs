@@ -125,13 +125,7 @@ impl ApplicationHandler for WindowApp {
                     return;
                 };
 
-                let buffer = renderer.pixels.frame_mut();
-
-                for (i, pixel) in pixels_data.windows(4).enumerate() {
-                    buffer[i..i + 4].copy_from_slice(pixel);
-                }
-
-                if let Err(err) = renderer.pixels.render() {
+                if let Err(err) = renderer.draw(pixels_data) {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
                 }
@@ -154,4 +148,18 @@ impl ApplicationHandler for WindowApp {
 
 struct Renderer {
     pixels: Pixels<'static>,
+}
+
+impl Renderer {
+    pub fn draw(&mut self, pixels_data: [u8; 4096]) -> anyhow::Result<()> {
+        let buffer = self.pixels.frame_mut();
+
+        for (i, pixel) in pixels_data.windows(4).enumerate() {
+            buffer[i..i + 4].copy_from_slice(pixel);
+        }
+
+        self.pixels.render()?;
+
+        Ok(())
+    }
 }
