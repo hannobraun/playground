@@ -151,10 +151,10 @@ struct Renderer {
 }
 
 impl Renderer {
-    pub fn draw(&mut self, pixels_data: [u8; 4096]) -> anyhow::Result<()> {
+    pub fn draw(&mut self, pixels: [u8; 4096]) -> anyhow::Result<()> {
         let buffer = self.pixels.frame_mut();
 
-        for (i, pixel) in pixels_data.windows(4).enumerate() {
+        for (i, pixel) in pixels.windows(4).enumerate() {
             buffer[i..i + 4].copy_from_slice(pixel);
         }
 
