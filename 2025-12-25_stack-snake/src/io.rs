@@ -108,7 +108,7 @@ impl ApplicationHandler for WindowApp {
 
                 loop {
                     pixels = match self.pixels_rx.try_recv() {
-                        Ok(pixels) => Some(pixels),
+                        Ok(pxs) => Some(pxs),
                         Err(TryRecvError::Empty) => {
                             break;
                         }
