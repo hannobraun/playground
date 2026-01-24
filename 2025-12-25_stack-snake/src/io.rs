@@ -1,16 +1,17 @@
-use std::sync::Arc;
+use std::{num::NonZeroU32, sync::Arc};
 
+use anyhow::anyhow;
 use crossbeam_channel::{Receiver, Sender, TryRecvError};
-use pixels::{Pixels, SurfaceTexture};
+use softbuffer::{SoftBufferError, Surface};
 use winit::{
     application::ApplicationHandler,
     event::{KeyEvent, WindowEvent},
-    event_loop::{ActiveEventLoop, EventLoop},
+    event_loop::{ActiveEventLoop, EventLoop, OwnedDisplayHandle},
     keyboard::{Key, NamedKey},
     window::{Window, WindowAttributes, WindowId},
 };
 
-use crate::{GRID_SIZE, PIXELS_SIZE_BYTES};
+use crate::{BYTES_PER_PIXEL, GRID_SIZE, PIXELS_SIZE_BYTES};
 
 pub fn start_and_wait(
     lifeline_tx: Sender<()>,
@@ -47,20 +48,14 @@ impl WindowApp {
         };
 
         let pixels = {
-            let window_size = window.inner_size();
-            let surface_texture = SurfaceTexture::new(
-                window_size.width,
-                window_size.height,
-                window.clone(),
-            );
+            let context =
+                softbuffer::Context::new(event_loop.owned_display_handle())
+                    .map_err(|err| {
+                        anyhow!("Failed to create context: {err:?}")
+                    })?;
 
-            let Ok(grid_size) = GRID_SIZE.try_into() else {
-                unreachable!(
-                    "Can represent `GRID_SIZE` (`{GRID_SIZE}`) as `u32`."
-                );
-            };
-
-            Pixels::new(grid_size, grid_size, surface_texture)?
+            Surface::new(&context, window.clone())
+                .map_err(|err| anyhow!("Failed to create surface: {err:?}"))?
         };
 
         self.window = Some(window);
@@ -147,23 +142,53 @@ impl ApplicationHandler for WindowApp {
 }
 
 struct Renderer {
-    pixels: Pixels<'static>,
+    pixels: Surface<OwnedDisplayHandle, Arc<Window>>,
 }
 
 impl Renderer {
     pub fn draw(
         &mut self,
-        _: &Window,
+        window: &Window,
         pixels: [u8; 4096],
-    ) -> anyhow::Result<()> {
-        let buffer = self.pixels.frame_mut();
+    ) -> Result<(), SoftBufferError> {
+        let size = window.inner_size();
+        let [Some(width), Some(height)] =
+            [size.width, size.height].map(NonZeroU32::new)
+        else {
+            return Ok(());
+        };
+        self.pixels.resize(width, height)?;
+
+        let [Ok(width_usize), Ok(height_usize)]: [Result<usize, _>; 2] =
+            [width, height].map(NonZeroU32::get).map(TryInto::try_into)
+        else {
+            unreachable!("Surface dimensions can be represented as `usize`.");
+        };
+
+        let mut buffer = self.pixels.buffer_mut()?;
 
         for (target_index, target) in buffer.iter_mut().enumerate() {
-            let source_index = target_index;
-            *target = pixels[source_index];
+            let target_x = target_index % width_usize;
+            let target_y = target_index / width_usize;
+
+            let source_x = target_x * GRID_SIZE / width_usize;
+            let source_y = target_y * GRID_SIZE / height_usize;
+
+            let source_i = (source_y * GRID_SIZE + source_x) * BYTES_PER_PIXEL;
+
+            let [r, g, b, a] = pixels[source_i..source_i + BYTES_PER_PIXEL]
+            else {
+                unreachable!(
+                    "Four-element slice destructures into 4 elements."
+                );
+            };
+
+            let source = u32::from_le_bytes([r, g, b, a]);
+
+            *target = source;
         }
 
-        self.pixels.render()?;
+        buffer.present()?;
 
         Ok(())
     }
