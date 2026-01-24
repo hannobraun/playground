@@ -22,6 +22,7 @@ pub fn start_and_wait(
     let mut app = WindowApp {
         window: None,
         renderer: None,
+        pixels: None,
         pixels_rx,
     };
     event_loop.run_app(&mut app)?;
@@ -34,6 +35,7 @@ pub fn start_and_wait(
 struct WindowApp {
     window: Option<Arc<Window>>,
     renderer: Option<Renderer>,
+    pixels: Option<[u8; PIXELS_SIZE_BYTES]>,
     pixels_rx: Receiver<[u8; PIXELS_SIZE_BYTES]>,
 }
 
@@ -84,6 +86,25 @@ impl ApplicationHandler for WindowApp {
             return;
         };
 
+        loop {
+            match self.pixels_rx.try_recv() {
+                Ok(pxs) => {
+                    self.pixels = Some(pxs);
+                }
+                Err(TryRecvError::Empty) => {
+                    break;
+                }
+                Err(TryRecvError::Disconnected) => {
+                    event_loop.exit();
+                    return;
+                }
+            }
+        }
+
+        let Some(pixels) = self.pixels else {
+            return;
+        };
+
         match event {
             WindowEvent::CloseRequested => {
                 event_loop.exit();
@@ -99,27 +120,6 @@ impl ApplicationHandler for WindowApp {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
-                let mut pixels = None;
-
-                loop {
-                    match self.pixels_rx.try_recv() {
-                        Ok(pxs) => {
-                            pixels = Some(pxs);
-                        }
-                        Err(TryRecvError::Empty) => {
-                            break;
-                        }
-                        Err(TryRecvError::Disconnected) => {
-                            event_loop.exit();
-                            return;
-                        }
-                    }
-                }
-
-                let Some(pixels) = pixels else {
-                    return;
-                };
-
                 if let Err(err) = renderer.draw(window, pixels) {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
