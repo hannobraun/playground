@@ -159,7 +159,8 @@ impl Renderer {
         let buffer = self.pixels.frame_mut();
 
         for (target_index, target) in buffer.iter_mut().enumerate() {
-            *target = pixels[target_index];
+            let source_index = target_index;
+            *target = pixels[source_index];
         }
 
         self.pixels.render()?;
