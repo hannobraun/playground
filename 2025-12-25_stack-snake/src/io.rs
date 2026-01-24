@@ -47,7 +47,7 @@ impl WindowApp {
             Arc::new(window)
         };
 
-        let pixels = {
+        let surface = {
             let context =
                 softbuffer::Context::new(event_loop.owned_display_handle())
                     .map_err(|err| {
@@ -59,7 +59,7 @@ impl WindowApp {
         };
 
         self.window = Some(window);
-        self.renderer = Some(Renderer { pixels });
+        self.renderer = Some(Renderer { pixels: surface });
 
         Ok(())
     }
