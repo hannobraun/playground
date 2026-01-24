@@ -59,7 +59,7 @@ impl WindowApp {
         };
 
         self.window = Some(window);
-        self.renderer = Some(Renderer { pixels: surface });
+        self.renderer = Some(Renderer { surface });
 
         Ok(())
     }
@@ -142,7 +142,7 @@ impl ApplicationHandler for WindowApp {
 }
 
 struct Renderer {
-    pixels: Surface<OwnedDisplayHandle, Arc<Window>>,
+    surface: Surface<OwnedDisplayHandle, Arc<Window>>,
 }
 
 impl Renderer {
@@ -157,7 +157,7 @@ impl Renderer {
         else {
             return Ok(());
         };
-        self.pixels.resize(width, height)?;
+        self.surface.resize(width, height)?;
 
         let [Ok(width_usize), Ok(height_usize)]: [Result<usize, _>; 2] =
             [width, height].map(NonZeroU32::get).map(TryInto::try_into)
@@ -165,7 +165,7 @@ impl Renderer {
             unreachable!("Surface dimensions can be represented as `usize`.");
         };
 
-        let mut buffer = self.pixels.buffer_mut()?;
+        let mut buffer = self.surface.buffer_mut()?;
 
         for (target_index, target) in buffer.iter_mut().enumerate() {
             let target_x = target_index % width_usize;
