@@ -158,8 +158,8 @@ impl Renderer {
     ) -> anyhow::Result<()> {
         let buffer = self.pixels.frame_mut();
 
-        for (i, pixel) in pixels.windows(4).enumerate() {
-            buffer[i..i + 4].copy_from_slice(pixel);
+        for (i, b) in buffer.iter_mut().enumerate() {
+            *b = pixels[i];
         }
 
         self.pixels.render()?;
