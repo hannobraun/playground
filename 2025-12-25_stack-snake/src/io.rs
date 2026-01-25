@@ -11,7 +11,7 @@ use winit::{
     window::{Window, WindowAttributes, WindowId},
 };
 
-use crate::{BYTES_PER_PIXEL, GRID_SIZE, PIXELS_SIZE_BYTES};
+use crate::{BYTES_PER_PIXEL, GRID_SIZE, PIXELS_SIZE_BYTES, Pixels};
 
 pub fn start_and_wait(
     lifeline_tx: Sender<()>,
@@ -35,7 +35,7 @@ pub fn start_and_wait(
 struct WindowApp {
     window: Option<Arc<Window>>,
     renderer: Option<Renderer>,
-    pixels_rx: Receiver<[u8; PIXELS_SIZE_BYTES]>,
+    pixels_rx: Receiver<Pixels>,
 
     /// # A copy of the pixels to render
     ///
@@ -47,7 +47,7 @@ struct WindowApp {
     /// to draw, even if nothing changed about the pixels, to react to the
     /// window being resized. When that happens, we can redraw using the pixels
     /// stored in this field.
-    pixels: [u8; PIXELS_SIZE_BYTES],
+    pixels: Pixels,
 }
 
 impl WindowApp {

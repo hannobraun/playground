@@ -20,6 +20,8 @@ const PIXELS_SIZE: usize = GRID_SIZE * GRID_SIZE;
 const BYTES_PER_PIXEL: usize = 4;
 const PIXELS_SIZE_BYTES: usize = PIXELS_SIZE * BYTES_PER_PIXEL;
 
+type Pixels = [u8; PIXELS_SIZE_BYTES];
+
 fn main() -> anyhow::Result<()> {
     let (lifeline_tx, lifeline_rx) = bounded(0);
     let (pixels_tx, pixels_rx) = bounded(0);
@@ -39,7 +41,7 @@ fn main() -> anyhow::Result<()> {
 
 fn run_script(
     lifeline_rx: Receiver<()>,
-    pixels_tx: Sender<[u8; PIXELS_SIZE_BYTES]>,
+    pixels_tx: Sender<Pixels>,
 ) -> anyhow::Result<()> {
     let path = Path::new("snake.stack");
 
