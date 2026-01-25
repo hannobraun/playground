@@ -112,6 +112,17 @@ impl ApplicationHandler for WindowApp {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
+                // We must check the channel for updated pixels exactly here. We
+                // could also do it elsewhere, like the top of this function,
+                // where it would happen on any event, but that would be wrong.
+                //
+                // Only this location is correct, because the channel is
+                // bounded, meaning the sender blocks until we receive. This is
+                // deliberate, to sync the sender to the redraw rate of the
+                // display.
+                //
+                // If we received from the channel elsewhere, we would not be
+                // syncing the sender to the redraw rate.
                 loop {
                     match self.pixels_rx.try_recv() {
                         Ok(pxs) => {
