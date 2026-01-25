@@ -21,6 +21,12 @@ mod memory {
         pub size: usize,
     }
 
+    impl Region {
+        pub fn iter(&self) -> impl Iterator<Item = usize> {
+            self.start..self.start + self.size
+        }
+    }
+
     pub const PIXELS: Region = Region {
         start: 0,
         size: PIXELS_SIZE,
@@ -45,9 +51,7 @@ pub fn run(
         match eval.run() {
             Effect::Yield => {
                 let mut pixels = [0; PIXELS_SIZE_BYTES];
-                for i in memory::PIXELS.start
-                    ..memory::PIXELS.start + memory::PIXELS.size
-                {
+                for i in memory::PIXELS.iter() {
                     let pixel = eval.memory.values[i].to_u32().to_be_bytes();
                     pixels[i * BYTES_PER_PIXEL
                         ..i * BYTES_PER_PIXEL + BYTES_PER_PIXEL]
