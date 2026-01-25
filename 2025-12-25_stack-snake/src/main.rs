@@ -39,7 +39,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run_script(
+pub fn run_script(
     lifeline_rx: Receiver<()>,
     pixels_tx: Sender<Pixels>,
 ) -> anyhow::Result<()> {
