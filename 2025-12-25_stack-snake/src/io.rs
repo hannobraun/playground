@@ -23,7 +23,7 @@ pub fn start_and_wait(
         window: None,
         renderer: None,
         pixels_rx,
-        pixels: None,
+        pixels: [0; PIXELS_SIZE_BYTES],
     };
     event_loop.run_app(&mut app)?;
 
@@ -36,7 +36,7 @@ struct WindowApp {
     window: Option<Arc<Window>>,
     renderer: Option<Renderer>,
     pixels_rx: Receiver<[u8; PIXELS_SIZE_BYTES]>,
-    pixels: Option<[u8; PIXELS_SIZE_BYTES]>,
+    pixels: [u8; PIXELS_SIZE_BYTES],
 }
 
 impl WindowApp {
@@ -89,7 +89,7 @@ impl ApplicationHandler for WindowApp {
         loop {
             match self.pixels_rx.try_recv() {
                 Ok(pxs) => {
-                    self.pixels = Some(pxs);
+                    self.pixels = pxs;
                 }
                 Err(TryRecvError::Empty) => {
                     break;
@@ -101,9 +101,7 @@ impl ApplicationHandler for WindowApp {
             }
         }
 
-        let Some(pixels) = self.pixels else {
-            return;
-        };
+        let pixels = self.pixels;
 
         match event {
             WindowEvent::CloseRequested => {
