@@ -36,6 +36,17 @@ struct WindowApp {
     window: Option<Arc<Window>>,
     renderer: Option<Renderer>,
     pixels_rx: Receiver<[u8; PIXELS_SIZE_BYTES]>,
+
+    /// # A copy of the pixels to render
+    ///
+    /// It seems sensible to assume that we only need to draw when the pixels
+    /// have changed. If that were the case, we wouldn't need this field and
+    /// could always just react to new pixels arriving through the channel.
+    ///
+    /// This would be an incorrect assumption though. We always need to be able
+    /// to draw, even if nothing changed about the pixels, to react to the
+    /// window being resized. When that happens, we can redraw using the pixels
+    /// stored in this field.
     pixels: [u8; PIXELS_SIZE_BYTES],
 }
 
