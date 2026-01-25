@@ -101,8 +101,6 @@ impl ApplicationHandler for WindowApp {
             }
         }
 
-        let pixels = self.pixels;
-
         match event {
             WindowEvent::CloseRequested => {
                 event_loop.exit();
@@ -118,7 +116,7 @@ impl ApplicationHandler for WindowApp {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
-                if let Err(err) = renderer.draw(window, pixels) {
+                if let Err(err) = renderer.draw(window, self.pixels) {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
                 }
