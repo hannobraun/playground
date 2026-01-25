@@ -22,8 +22,12 @@ mod memory {
     }
 
     impl Region {
+        pub fn end(&self) -> usize {
+            self.start + self.size
+        }
+
         pub fn iter(&self) -> impl Iterator<Item = usize> {
-            self.start..self.start + self.size
+            self.start..self.end()
         }
     }
 
