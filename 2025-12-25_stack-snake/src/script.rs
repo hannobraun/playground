@@ -9,7 +9,7 @@ use crossbeam_channel::{
     Receiver, RecvError, SendError, Sender, after, bounded, select, unbounded,
 };
 use notify::{RecursiveMode, Watcher};
-use stack_assembly::{Effect, Eval};
+use stack_assembly::{Effect, Eval, Value};
 
 use crate::{BYTES_PER_PIXEL, PIXELS_SIZE_BYTES, Pixels};
 
@@ -50,6 +50,10 @@ pub fn run(
 
     let mut run = 0;
     let mut eval = load(path)?;
+
+    // Give the script twice as much memory as the memory regions we use for I/O
+    // take up.
+    eval.memory.values = vec![Value::from(0); memory::PIXELS.end() * 2];
 
     loop {
         match eval.run() {
