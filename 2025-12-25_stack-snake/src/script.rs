@@ -35,6 +35,10 @@ mod memory {
         start: 0,
         size: PIXELS_SIZE,
     };
+    pub const INPUT: Region = Region {
+        start: PIXELS.end(),
+        size: 8,
+    };
 }
 
 pub fn run(
@@ -53,7 +57,7 @@ pub fn run(
 
     // Give the script twice as much memory as the memory regions we use for I/O
     // take up.
-    eval.memory.values = vec![Value::from(0); memory::PIXELS.end() * 2];
+    eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 2];
 
     loop {
         match eval.run() {
