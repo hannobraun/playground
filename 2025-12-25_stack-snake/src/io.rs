@@ -15,7 +15,7 @@ use crate::{BYTES_PER_PIXEL, GRID_SIZE, PIXELS_SIZE_BYTES, Pixels};
 
 pub fn start_and_wait(
     lifeline_tx: Sender<()>,
-    pixels_rx: Receiver<[u8; 4096]>,
+    pixels_rx: Receiver<Pixels>,
 ) -> anyhow::Result<()> {
     let event_loop = EventLoop::new()?;
 
