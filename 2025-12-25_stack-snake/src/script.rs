@@ -25,7 +25,7 @@ pub fn run(
     watcher.watch(path, RecursiveMode::NonRecursive)?;
 
     let mut run = 0;
-    let mut eval = load_script(path)?;
+    let mut eval = load(path)?;
 
     loop {
         match eval.run() {
@@ -54,7 +54,7 @@ pub fn run(
 
                 match wait_for_change(&mut run, &notify_rx, &lifeline_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
-                        eval = load_script(path)?;
+                        eval = load(path)?;
                         continue;
                     }
                     WaitForChangeOutcome::MustQuit => {
@@ -66,7 +66,7 @@ pub fn run(
     }
 }
 
-fn load_script(path: &Path) -> anyhow::Result<Eval> {
+fn load(path: &Path) -> anyhow::Result<Eval> {
     let mut script = String::new();
     File::open(path)?.read_to_string(&mut script)?;
 
