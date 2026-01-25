@@ -22,7 +22,7 @@ mod memory {
     }
 
     impl Region {
-        pub fn end(&self) -> usize {
+        pub const fn end(&self) -> usize {
             self.start + self.size
         }
 
