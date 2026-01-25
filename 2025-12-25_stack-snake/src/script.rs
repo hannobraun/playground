@@ -13,7 +13,7 @@ use stack_assembly::{Effect, Eval};
 
 use crate::{BYTES_PER_PIXEL, PIXELS_SIZE, PIXELS_SIZE_BYTES, Pixels};
 
-pub fn run_script(
+pub fn run(
     lifeline_rx: Receiver<()>,
     pixels_tx: Sender<Pixels>,
 ) -> anyhow::Result<()> {

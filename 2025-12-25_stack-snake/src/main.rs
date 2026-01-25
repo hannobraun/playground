@@ -16,7 +16,7 @@ fn main() -> anyhow::Result<()> {
     let (lifeline_tx, lifeline_rx) = bounded(0);
     let (pixels_tx, pixels_rx) = bounded(0);
 
-    let handle = thread::spawn(|| script::run_script(lifeline_rx, pixels_tx));
+    let handle = thread::spawn(|| script::run(lifeline_rx, pixels_tx));
     io::start_and_wait(lifeline_tx, pixels_rx)?;
 
     match handle.join() {
