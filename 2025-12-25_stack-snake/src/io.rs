@@ -97,21 +97,6 @@ impl ApplicationHandler for WindowApp {
             return;
         };
 
-        loop {
-            match self.pixels_rx.try_recv() {
-                Ok(pxs) => {
-                    self.pixels = pxs;
-                }
-                Err(TryRecvError::Empty) => {
-                    break;
-                }
-                Err(TryRecvError::Disconnected) => {
-                    event_loop.exit();
-                    return;
-                }
-            }
-        }
-
         match event {
             WindowEvent::CloseRequested => {
                 event_loop.exit();
@@ -127,6 +112,21 @@ impl ApplicationHandler for WindowApp {
                 event_loop.exit();
             }
             WindowEvent::RedrawRequested => {
+                loop {
+                    match self.pixels_rx.try_recv() {
+                        Ok(pxs) => {
+                            self.pixels = pxs;
+                        }
+                        Err(TryRecvError::Empty) => {
+                            break;
+                        }
+                        Err(TryRecvError::Disconnected) => {
+                            event_loop.exit();
+                            return;
+                        }
+                    }
+                }
+
                 if let Err(err) = renderer.draw(window, self.pixels) {
                     eprintln!("Failed to draw pixels: {err:?}");
                     event_loop.exit();
