@@ -59,6 +59,10 @@ pub fn run(
     // take up.
     eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 2];
 
+    for i in memory::INPUT.iter() {
+        eval.memory.values[i] = Value::from(1);
+    }
+
     loop {
         match eval.run() {
             Effect::Yield => {
