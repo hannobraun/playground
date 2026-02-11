@@ -64,7 +64,9 @@ pub fn run(
     }
 
     loop {
-        match eval.run() {
+        let effect = eval.run();
+
+        match effect {
             Effect::Yield => {
                 let mut pixels = [0; PIXELS_SIZE_BYTES];
                 for i in memory::PIXELS.iter() {
