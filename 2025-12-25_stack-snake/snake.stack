@@ -2,8 +2,9 @@
 # the script. The label itself is actually redundant. But I find that
 # structuring it like this makes it easier to visually parse the code.
 main:
-    @position call 0 + read # x
-    @position call 1 + read # y
+    @position call
+        0 copy read # x
+        1 copy 2 drop read # y
         @set_pixel call
 
     @submit call
