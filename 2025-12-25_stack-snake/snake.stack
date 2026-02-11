@@ -2,7 +2,10 @@
 # the script. The label itself is actually redundant. But I find that
 # structuring it like this makes it easier to visually parse the code.
 main:
-    16 16 @set_pixel call
+    16 # x
+    16 # y
+        @set_pixel call
+
     @submit call
 
     return
