@@ -39,6 +39,10 @@ mod memory {
         start: PIXELS.end(),
         size: 8,
     };
+    pub const GAME_STATE: Region = Region {
+        start: INPUT.end(),
+        size: 2,
+    };
 }
 
 pub fn run(
@@ -61,6 +65,10 @@ pub fn run(
 
     for i in memory::INPUT.iter() {
         eval.memory.values[i] = Value::from(1);
+    }
+
+    for (address, value) in memory::GAME_STATE.iter().zip([16, 16]) {
+        eval.memory.values[address] = value.into();
     }
 
     loop {
