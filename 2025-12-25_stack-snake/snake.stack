@@ -14,10 +14,10 @@ set_pixel:
 
     return
 
-submit:
-    yield
-    return
-
 x_y_to_index:
     32 * +
+    return
+
+submit:
+    yield
     return
