@@ -7,7 +7,7 @@ main:
 
     @submit call
 
-    return
+    @main jump
 
 
 # Display
