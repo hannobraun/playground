@@ -4,9 +4,16 @@
 return
 
 set_pixel:
-    32 * + 0xffffffff write
+    @x_y_to_index call
+    0xffffffff
+        write
+
     return
 
 submit:
     yield
+    return
+
+x_y_to_index:
+    32 * +
     return
