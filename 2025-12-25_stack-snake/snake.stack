@@ -1,7 +1,8 @@
-16 16 @set_pixel call
-@submit call
+main:
+    16 16 @set_pixel call
+    @submit call
 
-return
+    return
 
 set_pixel:
     @x_y_to_index call
