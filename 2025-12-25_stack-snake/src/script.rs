@@ -59,18 +59,6 @@ pub fn run(
     let mut run = 0;
     let (mut script, mut eval) = load(path)?;
 
-    // Give the script twice as much memory as the memory regions we use for I/O
-    // take up.
-    eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 2];
-
-    for i in memory::INPUT.iter() {
-        eval.memory.values[i] = Value::from(1);
-    }
-
-    for (address, value) in memory::GAME_STATE.iter().zip([16, 16]) {
-        eval.memory.values[address] = value.into();
-    }
-
     loop {
         let (effect, _) = eval.run(&script);
 
@@ -117,7 +105,19 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
     File::open(path)?.read_to_string(&mut script)?;
 
     let script = Script::compile(&script);
-    let eval = Eval::new();
+    let mut eval = Eval::new();
+
+    // Give the script twice as much memory as the memory regions we use for I/O
+    // take up.
+    eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 2];
+
+    for i in memory::INPUT.iter() {
+        eval.memory.values[i] = Value::from(1);
+    }
+
+    for (address, value) in memory::GAME_STATE.iter().zip([16, 16]) {
+        eval.memory.values[address] = value.into();
+    }
 
     Ok((script, eval))
 }
