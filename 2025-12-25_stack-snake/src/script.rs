@@ -9,7 +9,7 @@ use crossbeam_channel::{
     Receiver, RecvError, SendError, Sender, after, bounded, select, unbounded,
 };
 use notify::{RecursiveMode, Watcher};
-use stack_assembly::{Effect, Eval, Value};
+use stack_assembly::{Effect, Eval, Script, Value};
 
 use crate::{BYTES_PER_PIXEL, PIXELS_SIZE_BYTES, Pixels};
 
@@ -53,7 +53,7 @@ pub fn run(
     watcher.watch(path, RecursiveMode::NonRecursive)?;
 
     let mut run = 0;
-    let mut eval = load(path)?;
+    let (mut script, mut eval) = load(path)?;
 
     // Give the script twice as much memory as the memory regions we use for I/O
     // take up.
@@ -64,7 +64,7 @@ pub fn run(
     }
 
     loop {
-        let effect = eval.run();
+        let (effect, _) = eval.run(&script);
 
         match effect {
             Effect::Yield => {
@@ -84,7 +84,7 @@ pub fn run(
                     return Ok(());
                 }
 
-                eval.effect = None;
+                eval.clear_effect();
                 continue;
             }
             effect => {
@@ -92,7 +92,7 @@ pub fn run(
 
                 match wait_for_change(&mut run, &notify_rx, &lifeline_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
-                        eval = load(path)?;
+                        (script, eval) = load(path)?;
                         continue;
                     }
                     WaitForChangeOutcome::MustQuit => {
@@ -104,13 +104,14 @@ pub fn run(
     }
 }
 
-fn load(path: &Path) -> anyhow::Result<Eval> {
+fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
     let mut script = String::new();
     File::open(path)?.read_to_string(&mut script)?;
 
-    let eval = Eval::start(&script);
+    let script = Script::compile(&script);
+    let eval = Eval::new();
 
-    Ok(eval)
+    Ok((script, eval))
 }
 
 fn wait_for_change(
