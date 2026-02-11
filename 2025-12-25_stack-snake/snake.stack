@@ -2,13 +2,16 @@
 # the script. The label itself is actually redundant. But I find that
 # structuring it like this makes it easier to visually parse the code.
 main:
-    1032 read # x
-    1033 read # y
+    @position call 0 + read # x
+    @position call 1 + read # y
         @set_pixel call
 
     @submit call
 
     return
+
+
+# Display
 
 set_pixel:
     @x_y_to_index call
@@ -23,4 +26,11 @@ x_y_to_index:
 
 submit:
     yield
+    return
+
+
+# Game State
+
+position:
+    1032
     return
