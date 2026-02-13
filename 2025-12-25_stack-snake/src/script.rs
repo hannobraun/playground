@@ -125,7 +125,7 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
 fn wait_for_change(
     run: &mut u64,
     notify_rx: &Receiver<notify::Result<notify::Event>>,
-    lifeline_rx: &Receiver<()>,
+    input_rx: &Receiver<()>,
 ) -> anyhow::Result<WaitForChangeOutcome> {
     // We don't intend to ever trigger a timeout using this channel. We might
     // overwrite the receiver later though.
@@ -155,7 +155,7 @@ fn wait_for_change(
                 event_received = true;
                 timeout_rx = after(Duration::from_millis(20));
             }
-            recv(lifeline_rx) -> message => {
+            recv(input_rx) -> message => {
                 let Err(RecvError) = message else {
                     unreachable!(
                         "Lifeline channel only exists to get disconnected."
