@@ -22,12 +22,11 @@ pub fn start_and_wait(
     let mut app = WindowApp {
         window: None,
         renderer: None,
+        input_tx,
         pixels_rx,
         pixels: [0; PIXELS_SIZE_BYTES],
     };
     event_loop.run_app(&mut app)?;
-
-    drop(input_tx);
 
     Ok(())
 }
@@ -35,6 +34,7 @@ pub fn start_and_wait(
 struct WindowApp {
     window: Option<Arc<Window>>,
     renderer: Option<Renderer>,
+    input_tx: Sender<()>,
     pixels_rx: Receiver<Pixels>,
 
     /// # A copy of the pixels to render
@@ -96,6 +96,8 @@ impl ApplicationHandler for WindowApp {
         else {
             return;
         };
+
+        let _ = self.input_tx;
 
         match event {
             WindowEvent::CloseRequested => {
