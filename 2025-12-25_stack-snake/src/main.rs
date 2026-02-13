@@ -1,6 +1,6 @@
 use std::{panic, thread};
 
-use crossbeam_channel::bounded;
+use crossbeam_channel::{bounded, unbounded};
 
 mod io;
 mod script;
@@ -13,7 +13,7 @@ const PIXELS_SIZE_BYTES: usize = PIXELS_SIZE * BYTES_PER_PIXEL;
 type Pixels = [u8; PIXELS_SIZE_BYTES];
 
 fn main() -> anyhow::Result<()> {
-    let (lifeline_tx, lifeline_rx) = bounded(0);
+    let (lifeline_tx, lifeline_rx) = unbounded();
     let (pixels_tx, pixels_rx) = bounded(0);
 
     let handle = thread::spawn(|| script::run(lifeline_rx, pixels_tx));
