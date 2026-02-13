@@ -93,7 +93,6 @@ pub fn run(
                     }
                     WaitForChangeOutcome::InputReceived { input } => {
                         let _ = input;
-                        unreachable!("I/O system does not send input yet.");
                     }
                     WaitForChangeOutcome::MustQuit => {
                         return Ok(());
