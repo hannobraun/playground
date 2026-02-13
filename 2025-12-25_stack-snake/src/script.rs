@@ -91,6 +91,9 @@ pub fn run(
                         (script, eval) = load(path)?;
                         continue;
                     }
+                    WaitForChangeOutcome::InputReceived => {
+                        unreachable!("I/O system does not send input yet.");
+                    }
                     WaitForChangeOutcome::MustQuit => {
                         return Ok(());
                     }
@@ -156,14 +159,17 @@ fn wait_for_change(
                 timeout_rx = after(Duration::from_millis(20));
             }
             recv(input_rx) -> message => {
-                let Err(RecvError) = message else {
-                    unreachable!(
-                        "Lifeline channel only exists to get disconnected."
-                    );
+                let outcome = match message {
+                    Ok(()) => {
+                        WaitForChangeOutcome::InputReceived
+                    }
+                    Err(RecvError) => {
+                        // Sender has been dropped. We're done.
+                        WaitForChangeOutcome::MustQuit
+                    }
                 };
 
-                // Sender has been dropped. We're done.
-                return Ok(WaitForChangeOutcome::MustQuit);
+                return Ok(outcome);
             }
             recv(timeout_rx) -> _ => {
                 *run += 1;
@@ -175,5 +181,6 @@ fn wait_for_change(
 
 enum WaitForChangeOutcome {
     ScriptHasChanged,
+    InputReceived,
     MustQuit,
 }
