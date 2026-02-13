@@ -11,7 +11,7 @@ use crossbeam_channel::{
 use notify::{RecursiveMode, Watcher};
 use stack_assembly::{Effect, Eval, Script, Value};
 
-use crate::{BYTES_PER_PIXEL, PIXELS_SIZE_BYTES, Pixels};
+use crate::{BYTES_PER_PIXEL, Input, PIXELS_SIZE_BYTES, Pixels};
 
 mod memory {
     use crate::PIXELS_SIZE;
@@ -46,7 +46,7 @@ mod memory {
 }
 
 pub fn run(
-    input_rx: Receiver<()>,
+    input_rx: Receiver<Input>,
     pixels_tx: Sender<Pixels>,
 ) -> anyhow::Result<()> {
     let path = Path::new("snake.stack");
@@ -128,7 +128,7 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
 fn wait_for_change(
     run: &mut u64,
     notify_rx: &Receiver<notify::Result<notify::Event>>,
-    input_rx: &Receiver<()>,
+    input_rx: &Receiver<Input>,
 ) -> anyhow::Result<WaitForChangeOutcome> {
     // We don't intend to ever trigger a timeout using this channel. We might
     // overwrite the receiver later though.
@@ -160,7 +160,7 @@ fn wait_for_change(
             }
             recv(input_rx) -> message => {
                 let outcome = match message {
-                    Ok(()) => {
+                    Ok(_) => {
                         WaitForChangeOutcome::InputReceived
                     }
                     Err(RecvError) => {

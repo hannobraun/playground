@@ -11,10 +11,10 @@ use winit::{
     window::{Window, WindowAttributes, WindowId},
 };
 
-use crate::{BYTES_PER_PIXEL, GRID_SIZE, PIXELS_SIZE_BYTES, Pixels};
+use crate::{BYTES_PER_PIXEL, GRID_SIZE, Input, PIXELS_SIZE_BYTES, Pixels};
 
 pub fn start_and_wait(
-    input_tx: Sender<()>,
+    input_tx: Sender<Input>,
     pixels_rx: Receiver<Pixels>,
 ) -> anyhow::Result<()> {
     let event_loop = EventLoop::new()?;
@@ -34,7 +34,7 @@ pub fn start_and_wait(
 struct WindowApp {
     window: Option<Arc<Window>>,
     renderer: Option<Renderer>,
-    input_tx: Sender<()>,
+    input_tx: Sender<Input>,
     pixels_rx: Receiver<Pixels>,
 
     /// # A copy of the pixels to render

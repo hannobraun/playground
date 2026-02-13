@@ -5,6 +5,8 @@ use crossbeam_channel::{bounded, unbounded};
 mod io;
 mod script;
 
+enum Input {}
+
 const GRID_SIZE: usize = 32;
 const PIXELS_SIZE: usize = GRID_SIZE * GRID_SIZE;
 const BYTES_PER_PIXEL: usize = 4;
