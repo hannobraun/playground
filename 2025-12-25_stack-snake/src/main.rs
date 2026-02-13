@@ -5,6 +5,7 @@ use crossbeam_channel::{bounded, unbounded};
 mod io;
 mod script;
 
+#[derive(Debug)]
 enum Input {}
 
 const GRID_SIZE: usize = 32;
