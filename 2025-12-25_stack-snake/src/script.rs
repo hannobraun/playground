@@ -92,7 +92,7 @@ pub fn run(
                         continue;
                     }
                     WaitForChangeOutcome::InputReceived { input } => {
-                        let _ = input;
+                        dbg!(input);
                     }
                     WaitForChangeOutcome::MustQuit => {
                         return Ok(());
