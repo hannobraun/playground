@@ -81,10 +81,10 @@ impl WindowApp {
         &mut self,
         event_loop: &ActiveEventLoop,
         event: WindowEvent,
-    ) {
+    ) -> anyhow::Result<()> {
         let (Some(window), Some(renderer)) = (&self.window, &mut self.renderer)
         else {
-            return;
+            return Ok(());
         };
 
         let _ = self.input_tx;
@@ -125,19 +125,20 @@ impl WindowApp {
                         }
                         Err(TryRecvError::Disconnected) => {
                             event_loop.exit();
-                            return;
+                            return Ok(());
                         }
                     }
                 }
 
-                if let Err(err) = renderer.draw(window, self.pixels) {
-                    eprintln!("Failed to draw pixels: {err:?}");
-                    event_loop.exit();
-                }
+                renderer
+                    .draw(window, self.pixels)
+                    .map_err(|err| anyhow!("Failed to draw pixels: {err:?}"))?;
             }
 
             _ => {}
         }
+
+        Ok(())
     }
 }
 
@@ -155,7 +156,10 @@ impl ApplicationHandler for WindowApp {
         _: WindowId,
         event: WindowEvent,
     ) {
-        self.handle_event(event_loop, event);
+        if let Err(err) = self.handle_event(event_loop, event) {
+            eprintln!("Error handling event: {err:?}");
+            event_loop.exit();
+        }
     }
 
     fn about_to_wait(&mut self, _: &ActiveEventLoop) {
