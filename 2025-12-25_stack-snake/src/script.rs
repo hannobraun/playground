@@ -91,7 +91,8 @@ pub fn run(
                         (script, eval) = load(path)?;
                         continue;
                     }
-                    WaitForChangeOutcome::InputReceived => {
+                    WaitForChangeOutcome::InputReceived { input } => {
+                        let _ = input;
                         unreachable!("I/O system does not send input yet.");
                     }
                     WaitForChangeOutcome::MustQuit => {
@@ -160,8 +161,8 @@ fn wait_for_change(
             }
             recv(input_rx) -> message => {
                 let outcome = match message {
-                    Ok(_) => {
-                        WaitForChangeOutcome::InputReceived
+                    Ok(input) => {
+                        WaitForChangeOutcome::InputReceived { input }
                     }
                     Err(RecvError) => {
                         // Sender has been dropped. We're done.
@@ -181,6 +182,6 @@ fn wait_for_change(
 
 enum WaitForChangeOutcome {
     ScriptHasChanged,
-    InputReceived,
+    InputReceived { input: Input },
     MustQuit,
 }
