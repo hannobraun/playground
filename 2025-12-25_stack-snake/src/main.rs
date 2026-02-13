@@ -13,10 +13,10 @@ const PIXELS_SIZE_BYTES: usize = PIXELS_SIZE * BYTES_PER_PIXEL;
 type Pixels = [u8; PIXELS_SIZE_BYTES];
 
 fn main() -> anyhow::Result<()> {
-    let (input_tx, lifeline_rx) = unbounded();
+    let (input_tx, input_rx) = unbounded();
     let (pixels_tx, pixels_rx) = bounded(0);
 
-    let handle = thread::spawn(|| script::run(lifeline_rx, pixels_tx));
+    let handle = thread::spawn(|| script::run(input_rx, pixels_tx));
     io::start_and_wait(input_tx, pixels_rx)?;
 
     match handle.join() {
