@@ -76,20 +76,10 @@ impl WindowApp {
 
         Ok(())
     }
-}
 
-impl ApplicationHandler for WindowApp {
-    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        if let Err(err) = self.init(event_loop) {
-            eprintln!("Error creating window: {err:?}");
-            event_loop.exit();
-        }
-    }
-
-    fn window_event(
+    fn handle_event(
         &mut self,
         event_loop: &ActiveEventLoop,
-        _: WindowId,
         event: WindowEvent,
     ) {
         let (Some(window), Some(renderer)) = (&self.window, &mut self.renderer)
@@ -148,6 +138,24 @@ impl ApplicationHandler for WindowApp {
 
             _ => {}
         }
+    }
+}
+
+impl ApplicationHandler for WindowApp {
+    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
+        if let Err(err) = self.init(event_loop) {
+            eprintln!("Error creating window: {err:?}");
+            event_loop.exit();
+        }
+    }
+
+    fn window_event(
+        &mut self,
+        event_loop: &ActiveEventLoop,
+        _: WindowId,
+        event: WindowEvent,
+    ) {
+        self.handle_event(event_loop, event);
     }
 
     fn about_to_wait(&mut self, _: &ActiveEventLoop) {
