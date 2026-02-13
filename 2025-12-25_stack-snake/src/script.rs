@@ -46,7 +46,7 @@ mod memory {
 }
 
 pub fn run(
-    lifeline_rx: Receiver<()>,
+    input_rx: Receiver<()>,
     pixels_tx: Sender<Pixels>,
 ) -> anyhow::Result<()> {
     let path = Path::new("snake.stack");
@@ -86,7 +86,7 @@ pub fn run(
             effect => {
                 eprintln!("{run}: Script triggered effect: {effect:?}");
 
-                match wait_for_change(&mut run, &notify_rx, &lifeline_rx)? {
+                match wait_for_change(&mut run, &notify_rx, &input_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
                         (script, eval) = load(path)?;
                         continue;
