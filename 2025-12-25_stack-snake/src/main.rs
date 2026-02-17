@@ -6,6 +6,7 @@ mod io;
 mod script;
 
 #[derive(Debug)]
+#[repr(u8)]
 enum Input {
     Up = 0,
     Left = 1,
