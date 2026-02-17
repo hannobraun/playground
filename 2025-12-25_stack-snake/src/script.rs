@@ -67,7 +67,22 @@ pub fn run(
         let (effect, _) = eval.run(&script);
 
         for input in input_rx.try_iter() {
-            dbg!(input);
+            let read_index = memory::INPUT_INDICES.start;
+            let write_index = read_index + 1;
+
+            let [read, write] = [read_index, write_index]
+                .map(|i| eval.memory.values[i].to_u32() as usize);
+
+            if write - read >= memory::INPUT.size {
+                // Ring buffer is full. Throw away the input event.
+                continue;
+            }
+
+            eval.memory.values
+                [memory::INPUT.start + (write & (memory::INPUT.size - 1))] =
+                Value::from(input as u32);
+            eval.memory.values[write_index] =
+                Value::from((write as u32).wrapping_add(1));
         }
 
         match effect {
