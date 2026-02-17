@@ -127,8 +127,8 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
     // take up.
     eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 2];
 
-    for i in memory::INPUT.iter() {
-        eval.memory.values[i] = Value::from(1);
+    for i in memory::INPUT_INDICES.iter() {
+        eval.memory.values[i] = Value::from(0);
     }
 
     for (address, value) in memory::GAME_STATE.iter().zip([16, 16]) {
