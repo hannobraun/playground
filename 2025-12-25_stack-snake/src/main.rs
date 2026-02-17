@@ -7,10 +7,10 @@ mod script;
 
 #[derive(Debug)]
 enum Input {
-    Up,
-    Left,
-    Down,
-    Right,
+    Up = 0,
+    Left = 1,
+    Down = 2,
+    Right = 3,
 }
 
 const GRID_SIZE: usize = 32;
