@@ -92,7 +92,7 @@ pub fn run(
                         continue;
                     }
                     WaitForChangeOutcome::InputReceived { input } => {
-                        dbg!(input);
+                        let _ = input;
 
                         // Right now, the only way to recover from an unhandled
                         // effect is to restart the evaluation. The new
