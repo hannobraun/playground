@@ -87,8 +87,6 @@ impl WindowApp {
             return Ok(());
         };
 
-        let _ = self.input_tx;
-
         match event {
             WindowEvent::CloseRequested => {
                 event_loop.exit();
