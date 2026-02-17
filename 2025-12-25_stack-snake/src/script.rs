@@ -62,6 +62,10 @@ pub fn run(
     loop {
         let (effect, _) = eval.run(&script);
 
+        for input in input_rx.try_iter() {
+            dbg!(input);
+        }
+
         match effect {
             Effect::Yield => {
                 let mut pixels = [0; PIXELS_SIZE_BYTES];
