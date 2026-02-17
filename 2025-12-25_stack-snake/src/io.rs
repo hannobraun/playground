@@ -1,11 +1,11 @@
 use std::{num::NonZeroU32, sync::Arc};
 
 use anyhow::anyhow;
-use crossbeam_channel::{Receiver, Sender, TryRecvError};
+use crossbeam_channel::{Receiver, SendError, Sender, TryRecvError};
 use softbuffer::{SoftBufferError, Surface};
 use winit::{
     application::ApplicationHandler,
-    event::{KeyEvent, WindowEvent},
+    event::{ElementState, KeyEvent, WindowEvent},
     event_loop::{ActiveEventLoop, EventLoop, OwnedDisplayHandle},
     keyboard::{Key, NamedKey},
     window::{Window, WindowAttributes, WindowId},
@@ -102,6 +102,32 @@ impl WindowApp {
                 ..
             } => {
                 event_loop.exit();
+            }
+            WindowEvent::KeyboardInput {
+                event:
+                    KeyEvent {
+                        logical_key: Key::Named(key),
+                        state: ElementState::Pressed,
+                        ..
+                    },
+                ..
+            } => {
+                let input = match key {
+                    NamedKey::ArrowUp => Input::Up,
+                    NamedKey::ArrowLeft => Input::Left,
+                    NamedKey::ArrowDown => Input::Down,
+                    NamedKey::ArrowRight => Input::Right,
+
+                    _ => {
+                        return Ok(());
+                    }
+                };
+
+                if let Err(SendError(_)) = self.input_tx.send(input) {
+                    // The other end has hung up, but we don't have to do
+                    // anything about it. We already handle this case when
+                    // receiving pixels.
+                }
             }
             WindowEvent::RedrawRequested => {
                 // We must check the channel for updated pixels exactly here. We

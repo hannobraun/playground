@@ -6,7 +6,12 @@ mod io;
 mod script;
 
 #[derive(Debug)]
-enum Input {}
+enum Input {
+    Up,
+    Left,
+    Down,
+    Right,
+}
 
 const GRID_SIZE: usize = 32;
 const PIXELS_SIZE: usize = GRID_SIZE * GRID_SIZE;
