@@ -115,12 +115,11 @@ pub fn run(
                         continue;
                     }
                     WaitForChangeOutcome::InputReceived { input } => {
-                        let _ = input;
-
                         // Right now, the only way to recover from an unhandled
                         // effect is to restart the evaluation. The new
                         // evaluation has no use for input from the old one, so
                         // we can just throw it away.
+                        let _ = input;
                     }
                     WaitForChangeOutcome::MustQuit => {
                         return Ok(());
