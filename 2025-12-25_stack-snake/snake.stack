@@ -1,13 +1,18 @@
 main:
-    @position call @vec2_read call
-        @set_pixel call
-
-    @submit call
+    @draw_position call
 
     @main jump
 
 
 # Display
+
+draw_position:
+    @position call @vec2_read call
+        @set_pixel call
+
+    @submit call
+
+    return
 
 set_pixel:
     @x_y_to_index call
