@@ -37,7 +37,7 @@ mod memory {
     };
     pub const INPUT: Region = Region {
         start: PIXELS.end(),
-        size: 8,
+        size: 10,
     };
     pub const GAME_STATE: Region = Region {
         start: INPUT.end(),
