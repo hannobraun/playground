@@ -131,10 +131,10 @@ pub fn run(
 }
 
 fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
-    let mut script = String::new();
-    File::open(path)?.read_to_string(&mut script)?;
+    let mut source = String::new();
+    File::open(path)?.read_to_string(&mut source)?;
 
-    let script = Script::compile(&script);
+    let script = Script::compile(&source);
     let mut eval = Eval::new();
 
     // Give the script twice as much memory as the memory regions we use for I/O
