@@ -61,10 +61,10 @@ pub fn run(
     watcher.watch(path, RecursiveMode::NonRecursive)?;
 
     let mut run = 0;
-    let (mut script, mut eval, _) = load(path)?;
+    let (mut script, mut eval, mut source) = load(path)?;
 
     loop {
-        let (effect, _) = eval.run(&script);
+        let (effect, operator) = eval.run(&script);
 
         for input in input_rx.try_iter() {
             let read_index = memory::INPUT_INDICES.start;
@@ -107,11 +107,20 @@ pub fn run(
                 continue;
             }
             effect => {
+                let Ok(operator) = script.map_operator_to_source(&operator)
+                else {
+                    unreachable!(
+                        "This operator index was returned from `run`, which \
+                        means it must point to an operator."
+                    );
+                };
+
                 eprintln!("{run}: Script triggered effect: {effect:?}");
+                eprintln!("\tat {}", &source[operator]);
 
                 match wait_for_change(&mut run, &notify_rx, &input_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
-                        (script, eval, _) = load(path)?;
+                        (script, eval, source) = load(path)?;
                         continue;
                     }
                     WaitForChangeOutcome::InputReceived { input } => {
