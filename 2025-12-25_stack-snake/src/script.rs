@@ -61,7 +61,7 @@ pub fn run(
     watcher.watch(path, RecursiveMode::NonRecursive)?;
 
     let mut run = 0;
-    let (mut script, mut eval) = load(path)?;
+    let (mut script, mut eval, _) = load(path)?;
 
     loop {
         let (effect, _) = eval.run(&script);
@@ -111,7 +111,7 @@ pub fn run(
 
                 match wait_for_change(&mut run, &notify_rx, &input_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
-                        (script, eval) = load(path)?;
+                        (script, eval, _) = load(path)?;
                         continue;
                     }
                     WaitForChangeOutcome::InputReceived { input } => {
@@ -130,7 +130,7 @@ pub fn run(
     }
 }
 
-fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
+fn load(path: &Path) -> anyhow::Result<(Script, Eval, String)> {
     let mut source = String::new();
     File::open(path)?.read_to_string(&mut source)?;
 
@@ -149,7 +149,7 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval)> {
         eval.memory.values[address] = value.into();
     }
 
-    Ok((script, eval))
+    Ok((script, eval, source))
 }
 
 fn wait_for_change(
