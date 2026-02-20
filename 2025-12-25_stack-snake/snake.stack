@@ -40,6 +40,6 @@ position:
 # Utilities
 
 vec2_read:
-    0 copy read        # x
-    1 copy 2 drop read # y
+    0 copy read            # x
+    1 copy 1 + 2 drop read # y
     return
