@@ -16,11 +16,18 @@ apply_input:
     # Skip the next part, if the buffer is empty.
     @apply_input_end jump_if
 
+    @read_from_input_buffer call
+
+    apply_input_end:
+    return
+
+read_from_input_buffer:
+    # Missing here: read the data at the read index.
+
     @input_buffer_read call          # address of read index, for `write` below
     @input_buffer_read call read 1 + # increment read index
         write                        # update read index in memory
 
-    apply_input_end:
     return
 
 input_buffer_read:
