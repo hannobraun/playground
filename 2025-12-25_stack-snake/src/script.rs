@@ -95,9 +95,9 @@ pub fn run(
                         .copy_from_slice(&pixel);
                 }
 
-                // `pixels_tx` is bounded with capacity zero, so this will block
-                // until the pixels are being drawn, tying the frame rate of the
-                // script to the frame rate of the I/O.
+                // `pixels_tx` is bounded, with capacity zero, so this will
+                // block until the pixels are being drawn, tying the frame rate
+                // of the script to the frame rate of the I/O.
                 if let Err(SendError(_)) = pixels_tx.send(pixels) {
                     // Other end has hung up, which means we need to quit too.
                     return Ok(());
