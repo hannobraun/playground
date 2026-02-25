@@ -18,17 +18,37 @@ apply_input:
 
     @read_from_input_buffer call
 
-    1 0
-    @position call @vec2_read call
-        @vec2_add call
+    0 copy 0 = @apply_input_up jump_if
+    0 copy 1 = @apply_input_left jump_if
+    0 copy 2 = @apply_input_down jump_if
+    3 = @apply_input_right jump_if
 
-    @position call @vec2_write call
+    apply_input_up:
+        0 -1
+        @apply_input_update_position jump
+    apply_input_left:
+        -1 0
+        @apply_input_update_position jump
+    apply_input_down:
+        0 1
+        @apply_input_update_position jump
+    apply_input_right:
+        1 0
+        @apply_input_update_position jump
+
+    apply_input_update_position:
+        @position call @vec2_read call
+            @vec2_add call
+
+        @position call @vec2_write call
 
     apply_input_return:
         return
 
 read_from_input_buffer:
-    # Missing here: read the data at the read index.
+    @input_buffer_data call
+    @input_buffer_read call read @input_buffer_mask call
+        + read
 
     @input_buffer_read call          # address of read index, for `write` below
     @input_buffer_read call read 1 + # increment read index
