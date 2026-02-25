@@ -63,12 +63,27 @@ input_buffer_mask:
 # Display
 
 draw_position:
+    @clear_pixels call
+
     @position call @vec2_read call
         @set_pixel call
 
     @submit call
 
     return
+
+clear_pixels:
+    0
+
+    clear_pixels_loop:
+        0 copy 1024 >= @clear_pixels_return jump_if
+        0 copy 0x00000000 write
+        1 +
+        @clear_pixels_loop jump
+
+    clear_pixels_return:
+        0 drop
+        return
 
 set_pixel:
     @x_y_to_index call
