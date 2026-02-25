@@ -18,8 +18,8 @@ apply_input:
 
     @read_from_input_buffer call
 
-    @position call @vec2_read call
     1 0
+    @position call @vec2_read call
         @vec2_add call
 
     @position call @vec2_write call
