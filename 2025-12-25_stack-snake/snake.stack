@@ -68,6 +68,10 @@ apply_input:
         @apply_input_update_position jump
 
     apply_input_update_position:
+        @vec2_copy call
+        @mem_velocity call
+            @vec2_write call
+
         @mem_position call @vec2_read call
             @vec2_add call
 
@@ -162,6 +166,10 @@ mem_position:
     1035
     return
 
+mem_velocity:
+    @mem_position call 2 +
+    return
+
 
 # Utilities
 
@@ -180,6 +188,11 @@ vec2_write:
     1 copy 2 drop # move x coordinate
         write     # write x coordinate
 
+    return
+
+vec2_copy:
+    1 copy
+    1 copy
     return
 
 vec2_add:
