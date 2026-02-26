@@ -46,7 +46,7 @@ apply_input:
         return
 
 read_from_input_buffer:
-    @input_buffer_data call
+    @mem_input_data call
     @mem_input_read call read @input_buffer_mask call
         + read
 
@@ -119,7 +119,7 @@ mem_input_write:
     1026
     return
 
-input_buffer_data:
+mem_input_data:
     1027
     return
 
