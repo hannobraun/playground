@@ -3,6 +3,7 @@ main:
     @main_after_tick_handling jump_if
 
     @apply_input call
+    @update_position call
 
     main_after_tick_handling:
         @draw_position call
@@ -68,14 +69,8 @@ apply_input:
         @apply_input_update_position jump
 
     apply_input_update_position:
-        @vec2_copy call
         @mem_velocity call
             @vec2_write call
-
-        @mem_position call @vec2_read call
-            @vec2_add call
-
-        @mem_position call @vec2_write call
 
     apply_input_return:
         return
@@ -99,6 +94,18 @@ input_buffer_mask:
     @input_buffer_len call
         1 -
         and
+
+    return
+
+
+# Game Logic
+
+update_position:
+    @mem_position call @vec2_read call
+    @mem_velocity call @vec2_read call
+        @vec2_add call
+
+    @mem_position call @vec2_write call
 
     return
 
