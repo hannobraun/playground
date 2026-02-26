@@ -35,8 +35,12 @@ mod memory {
         start: 0,
         size: PIXELS_SIZE,
     };
-    pub const INPUT_INDICES: Region = Region {
+    pub const TIMER: Region = Region {
         start: PIXELS.end(),
+        size: 1,
+    };
+    pub const INPUT_INDICES: Region = Region {
+        start: TIMER.end(),
         size: 2,
     };
     pub const INPUT: Region = Region {

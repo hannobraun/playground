@@ -57,15 +57,15 @@ read_from_input_buffer:
     return
 
 input_buffer_read:
-    1024
-    return
-
-input_buffer_write:
     1025
     return
 
-input_buffer_data:
+input_buffer_write:
     1026
+    return
+
+input_buffer_data:
+    1027
     return
 
 input_buffer_len:
@@ -124,7 +124,7 @@ submit:
 # Game State
 
 position:
-    1034
+    1035
     return
 
 
