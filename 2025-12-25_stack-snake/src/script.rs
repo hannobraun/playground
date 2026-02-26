@@ -49,7 +49,7 @@ mod memory {
     };
     pub const GAME_STATE: Region = Region {
         start: INPUT.end(),
-        size: 2,
+        size: 4,
     };
 }
 
