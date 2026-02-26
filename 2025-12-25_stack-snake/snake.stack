@@ -1,8 +1,35 @@
 main:
+    @update_timer call
     @apply_input call
     @draw_position call
 
     @main jump
+
+
+# Timer
+
+update_timer:
+    # Check if it's time for the next tick.
+    @mem_timer call read
+    @timer_tick_ms call
+        <=
+
+    # If it's not time yet, skip the next part.
+    @update_timer_return jump_if
+
+    # Update the timer.
+    @mem_timer call           # for the `write` below
+    @mem_timer call read
+    @timer_tick_ms call
+        -
+        write
+
+    update_timer_return:
+        return
+
+timer_tick_ms:
+    200
+    return
 
 
 # Input
@@ -110,6 +137,10 @@ submit:
 
 
 # Memory
+
+mem_timer:
+    1024
+    return
 
 mem_input_read:
     1025
