@@ -67,7 +67,16 @@ pub fn run(
     let mut run = 0;
     let (mut script, mut eval, mut source) = load(path)?;
 
+    let mut now = Instant::now();
+
     loop {
+        let time_passed_ms = now.elapsed().as_millis() as u32;
+        now = Instant::now();
+
+        eval.memory.values[memory::TIMER.start] = Value::from(
+            eval.memory.values[memory::TIMER.start].to_u32() + time_passed_ms,
+        );
+
         for input in input_rx.try_iter() {
             let read_index = memory::INPUT_INDICES.start;
             let write_index = read_index + 1;
