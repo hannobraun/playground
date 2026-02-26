@@ -40,7 +40,7 @@ update_timer:
         return
 
 timer_tick_ms:
-    200
+    100
     return
 
 
