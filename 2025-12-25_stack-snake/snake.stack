@@ -37,10 +37,10 @@ apply_input:
         @apply_input_update_position jump
 
     apply_input_update_position:
-        @position call @vec2_read call
+        @mem_position call @vec2_read call
             @vec2_add call
 
-        @position call @vec2_write call
+        @mem_position call @vec2_write call
 
     apply_input_return:
         return
@@ -73,7 +73,7 @@ input_buffer_mask:
 draw_position:
     @clear_pixels call
 
-    @position call @vec2_read call
+    @mem_position call @vec2_read call
         @set_pixel call
 
     @submit call
@@ -123,7 +123,7 @@ mem_input_data:
     1027
     return
 
-position:
+mem_position:
     1035
     return
 
