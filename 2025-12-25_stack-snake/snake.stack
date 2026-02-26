@@ -9,9 +9,9 @@ main:
 
 apply_input:
     # Determine if input buffer contains data.
-    @input_buffer_write call read # write index
-    @mem_input_read call read     # read index
-        =                         # buffer is empty
+    @mem_input_write call read # write index
+    @mem_input_read call read  # read index
+        =                      # buffer is empty
 
     # Skip the next part, if the buffer is empty.
     @apply_input_return jump_if
@@ -115,7 +115,7 @@ mem_input_read:
     1025
     return
 
-input_buffer_write:
+mem_input_write:
     1026
     return
 
