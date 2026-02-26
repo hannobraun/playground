@@ -1,4 +1,8 @@
 main:
+    1 0
+    @mem_velocity call
+        @vec2_write call
+
     @loop jump
 
 loop:
