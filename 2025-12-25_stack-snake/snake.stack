@@ -1,7 +1,11 @@
 main:
     @update_timer call
+    @main_after_tick_handling jump_if
+
     @apply_input call
-    @draw_position call
+
+    main_after_tick_handling:
+        @draw_position call
 
     @main jump
 
@@ -15,7 +19,7 @@ update_timer:
         <=
 
     # If it's not time yet, skip the next part.
-    @update_timer_return jump_if
+    0 copy @update_timer_return jump_if
 
     # Update the timer.
     @mem_timer call           # for the `write` below
