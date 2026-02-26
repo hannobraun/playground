@@ -68,8 +68,6 @@ pub fn run(
     let (mut script, mut eval, mut source) = load(path)?;
 
     loop {
-        let (effect, operator) = eval.run(&script);
-
         for input in input_rx.try_iter() {
             let read_index = memory::INPUT_INDICES.start;
             let write_index = read_index + 1;
@@ -88,6 +86,8 @@ pub fn run(
             eval.memory.values[write_index] =
                 Value::from((write as u32).wrapping_add(1));
         }
+
+        let (effect, operator) = eval.run(&script);
 
         match effect {
             Effect::Yield => {
