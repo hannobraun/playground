@@ -48,9 +48,9 @@ timer_tick_ms:
 
 apply_input:
     # Determine if input buffer contains data.
-    @mem_input @buf_index_read call # read index
-    @mem_input_write call read      # write index
-        =                           # buffer is empty
+    @mem_input @buf_index_read call            # read index
+    @mem_input @buf_index_addr_write call read # write index
+        =                                      # buffer is empty
 
     # Skip the next part, if the buffer is empty.
     @apply_input_return jump_if
@@ -204,10 +204,6 @@ mem_input:
     @mem_timer call 1 +
     return
 
-mem_input_write:
-    @mem_input call 1 +
-    return
-
 mem_input_data:
     @mem_input call 2 +
     return
@@ -228,6 +224,10 @@ mem_velocity:
 
 buf_index_addr_read:
     call 0 +
+    return
+
+buf_index_addr_write:
+    call 1 +
     return
 
 buf_index_read:
