@@ -48,9 +48,7 @@ timer_tick_ms:
 
 apply_input:
     # Determine if input buffer contains data.
-    @mem_input @buf_index_read call  # read index
-    @mem_input @buf_index_write call # write index
-        =                            # buffer is empty
+    @mem_input @buf_is_empty call
 
     # Skip the next part, if the buffer is empty.
     @apply_input_return jump_if
@@ -236,6 +234,13 @@ buf_index_read:
 
 buf_index_write:
     @buf_index_addr_write call read
+    return
+
+buf_is_empty:
+    0 copy @buf_index_read call
+    1 copy 2 drop @buf_index_write call
+        =
+
     return
 
 buf_mask:
