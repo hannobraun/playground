@@ -86,17 +86,13 @@ apply_input:
 read_from_input_buffer:
     @mem_input @buf_addr_data call
 
-    @mem_input @buf_index_read call @input_buffer_len call @buf_mask call
+    @mem_input @buf_index_read call @mem_input @buf_addr_len call read @buf_mask call
         + read
 
     @mem_input @buf_addr_index_read call # address of read index, for `write` below
     @mem_input @buf_index_read call 1 +  # increment read index
         write                            # update read index in memory
 
-    return
-
-input_buffer_len:
-    8
     return
 
 
@@ -207,7 +203,7 @@ mem_input:
 
 mem_position:
     @mem_input call 3 +
-    @input_buffer_len call
+    @mem_input @buf_addr_len call read
         +
 
     return
@@ -218,6 +214,10 @@ mem_velocity:
 
 
 # Utilities - buf
+
+buf_addr_len:
+    call 0 +
+    return
 
 buf_addr_index_read:
     call 1 +
