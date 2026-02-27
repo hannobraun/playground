@@ -202,7 +202,7 @@ mem_input:
     return
 
 mem_position:
-    @mem_input call 2 +
+    @mem_input call 3 +
     @input_buffer_len call
         +
 
@@ -216,15 +216,15 @@ mem_velocity:
 # Utilities - buf
 
 buf_addr_index_read:
-    call 0 +
-    return
-
-buf_addr_index_write:
     call 1 +
     return
 
-buf_addr_data:
+buf_addr_index_write:
     call 2 +
+    return
+
+buf_addr_data:
+    call 3 +
     return
 
 buf_index_read:

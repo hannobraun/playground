@@ -41,7 +41,7 @@ mod memory {
     };
     pub const INPUT_METADATA: Region = Region {
         start: TIMER.end(),
-        size: 2,
+        size: 3,
     };
     pub const INPUT: Region = Region {
         start: INPUT_METADATA.end(),
@@ -78,7 +78,7 @@ pub fn run(
         );
 
         for input in input_rx.try_iter() {
-            let read_index = memory::INPUT_METADATA.start;
+            let read_index = memory::INPUT_METADATA.start + 1;
             let write_index = read_index + 1;
 
             let [read, write] = [read_index, write_index]
