@@ -39,12 +39,12 @@ mod memory {
         start: PIXELS.end(),
         size: 1,
     };
-    pub const INPUT_INDICES: Region = Region {
+    pub const INPUT_METADATA: Region = Region {
         start: TIMER.end(),
         size: 2,
     };
     pub const INPUT: Region = Region {
-        start: INPUT_INDICES.end(),
+        start: INPUT_METADATA.end(),
         size: 8,
     };
     pub const GAME_STATE: Region = Region {
@@ -78,7 +78,7 @@ pub fn run(
         );
 
         for input in input_rx.try_iter() {
-            let read_index = memory::INPUT_INDICES.start;
+            let read_index = memory::INPUT_METADATA.start;
             let write_index = read_index + 1;
 
             let [read, write] = [read_index, write_index]
@@ -163,7 +163,7 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval, String)> {
     // take up.
     eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 2];
 
-    for i in memory::INPUT_INDICES.iter() {
+    for i in memory::INPUT_METADATA.iter() {
         eval.memory.values[i] = Value::from(0);
     }
 
