@@ -112,9 +112,47 @@ update_position:
     @mem_velocity call @vec2_read call
         @vec2_add call
 
+    @wrap_position call
+
     @mem_position call @vec2_write call
 
     return
+
+wrap_position:
+    # on stack: x y
+
+    # Wrap y
+    @wrap_coordinate call
+
+    # on stack: x y'
+
+    # Wrap x
+    1 copy 2 drop
+    @wrap_coordinate call
+
+    # on stack: y' x'
+
+    1 copy 2 drop
+
+    return
+
+wrap_coordinate:
+    wrap_coordinate_handle_small:
+        0 copy 0 >=
+        @wrap_coordinate_handle_large
+            jump_if
+
+        @display_size call +
+
+    wrap_coordinate_handle_large:
+        0 copy @display_size call <
+        @wrap_coordinate_return
+            jump_if
+
+        @display_size call -
+
+    wrap_coordinate_return:
+        return
 
 
 # Display
