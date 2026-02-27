@@ -48,8 +48,8 @@ timer_tick_ms:
 
 apply_input:
     # Determine if input buffer contains data.
-    @mem_input_write call read      # write index
     @mem_input @buf_index_read call # read index
+    @mem_input_write call read      # write index
         =                           # buffer is empty
 
     # Skip the next part, if the buffer is empty.
