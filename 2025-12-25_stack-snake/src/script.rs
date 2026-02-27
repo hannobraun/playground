@@ -47,10 +47,6 @@ mod memory {
         start: INPUT_METADATA.end(),
         size: 8,
     };
-    pub const GAME_STATE: Region = Region {
-        start: INPUT.end(),
-        size: 4,
-    };
 }
 
 pub fn run(
@@ -165,10 +161,6 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval, String)> {
 
     for i in memory::INPUT_METADATA.iter() {
         eval.memory.values[i] = Value::from(0);
-    }
-
-    for (address, value) in memory::GAME_STATE.iter().zip([16, 16]) {
-        eval.memory.values[address] = value.into();
     }
 
     Ok((script, eval, source))
