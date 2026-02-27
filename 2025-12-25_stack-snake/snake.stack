@@ -86,7 +86,7 @@ apply_input:
 read_from_input_buffer:
     @mem_input @buf_addr_data call
 
-    @mem_input @buf_index_read call @mem_input @buf_addr_len call read @buf_mask call
+    @mem_input @buf_index_read call @mem_input @buf_len call @buf_mask call
         + read
 
     @mem_input @buf_addr_index_read call # address of read index, for `write` below
@@ -203,7 +203,7 @@ mem_input:
 
 mem_position:
     @mem_input call 3 +
-    @mem_input @buf_addr_len call read
+    @mem_input @buf_len call
         +
 
     return
@@ -229,6 +229,10 @@ buf_addr_index_write:
 
 buf_addr_data:
     call 3 +
+    return
+
+buf_len:
+    @buf_addr_len call read
     return
 
 buf_index_read:
