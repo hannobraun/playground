@@ -64,18 +64,18 @@ apply_input:
 
     apply_input_up:
         0 -1
-        @apply_input_update_position jump
+        @apply_input_update_velocity jump
     apply_input_left:
         -1 0
-        @apply_input_update_position jump
+        @apply_input_update_velocity jump
     apply_input_down:
         0 1
-        @apply_input_update_position jump
+        @apply_input_update_velocity jump
     apply_input_right:
         1 0
-        @apply_input_update_position jump
+        @apply_input_update_velocity jump
 
-    apply_input_update_position:
+    apply_input_update_velocity:
         @mem_velocity call
             @vec2_write call
 
