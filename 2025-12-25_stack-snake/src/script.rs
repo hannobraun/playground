@@ -159,12 +159,6 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval, String)> {
     // take up.
     eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 2];
 
-    for i in memory::INPUT_METADATA.iter() {
-        eval.memory.values[i] = Value::from(0);
-    }
-    eval.memory.values[memory::INPUT_METADATA.start] =
-        Value::from(memory::INPUT.size as u32);
-
     Ok((script, eval, source))
 }
 
