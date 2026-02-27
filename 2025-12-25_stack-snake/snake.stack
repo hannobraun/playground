@@ -84,7 +84,7 @@ apply_input:
 
 read_from_input_buffer:
     @mem_input_data call
-    @mem_input_read call read @input_buffer_len call @input_buffer_mask call
+    @mem_input_read call read @input_buffer_len call @buf_mask call
         + read
 
     @mem_input_read call          # address of read index, for `write` below
@@ -95,10 +95,6 @@ read_from_input_buffer:
 
 input_buffer_len:
     8
-    return
-
-input_buffer_mask:
-    1 - and
     return
 
 
@@ -221,6 +217,13 @@ mem_position:
 
 mem_velocity:
     @mem_position call 2 +
+    return
+
+
+# Utilities - buf
+
+buf_mask:
+    1 - and
     return
 
 
