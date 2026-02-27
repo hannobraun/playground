@@ -200,7 +200,7 @@ mem_timer:
     return
 
 mem_input_read:
-    1025
+    @mem_timer call 1 +
     return
 
 mem_input_write:
