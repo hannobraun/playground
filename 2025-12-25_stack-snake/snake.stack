@@ -88,7 +88,7 @@ read_from_input_buffer:
     @mem_input @buf_index_read call @input_buffer_len call @buf_mask call
         + read
 
-    @mem_input @buf_index_read_addr call # address of read index, for `write` below
+    @mem_input @buf_index_addr_read call # address of read index, for `write` below
     @mem_input @buf_index_read call 1 +  # increment read index
         write                            # update read index in memory
 
@@ -226,12 +226,12 @@ mem_velocity:
 
 # Utilities - buf
 
-buf_index_read_addr:
+buf_index_addr_read:
     call 0 +
     return
 
 buf_index_read:
-    @buf_index_read_addr call read
+    @buf_index_addr_read call read
     return
 
 buf_mask:
