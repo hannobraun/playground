@@ -150,11 +150,15 @@ set_pixel:
     return
 
 x_y_to_index:
-    32 * +
+    @display_size call * +
     return
 
 submit:
     yield
+    return
+
+display_size:
+    32
     return
 
 
