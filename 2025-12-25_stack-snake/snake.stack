@@ -199,12 +199,16 @@ mem_timer:
     1024
     return
 
+mem_input:
+    @mem_timer call 1 +
+    return
+
 mem_input_read:
     @mem_timer call 1 +
     return
 
 mem_input_write:
-    @mem_input_read call 1 +
+    @mem_input call 1 +
     return
 
 mem_input_data:
