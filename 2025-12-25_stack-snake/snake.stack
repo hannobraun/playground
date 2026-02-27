@@ -204,10 +204,7 @@ mem_input:
     return
 
 mem_position:
-    @mem_input call 3 +
-    @mem_input @buf_len call
-        +
-
+    @mem_input @buf_size_of call
     return
 
 mem_velocity:
@@ -249,6 +246,13 @@ buf_init:
 
 buf_len:
     @buf_addr_len call read
+    return
+
+buf_size_of:
+    0 copy call 3 +
+    1 copy 2 drop @buf_len call
+        +
+
     return
 
 buf_index_read:
