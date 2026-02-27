@@ -206,7 +206,7 @@ mem_input_data:
     return
 
 mem_position:
-    @mem_input_data call
+    @mem_input call 2 +
     @input_buffer_len call
         +
 
