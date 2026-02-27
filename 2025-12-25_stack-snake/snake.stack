@@ -204,7 +204,7 @@ mem_input_read:
     return
 
 mem_input_write:
-    1026
+    @mem_input_read call 1 +
     return
 
 mem_input_data:
