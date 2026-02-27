@@ -209,7 +209,7 @@ mem_input_write:
     return
 
 mem_input_data:
-    @mem_input_write call 1 +
+    @mem_input call 2 +
     return
 
 mem_position:
