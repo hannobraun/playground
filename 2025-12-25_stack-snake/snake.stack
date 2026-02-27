@@ -212,7 +212,10 @@ mem_input_data:
     return
 
 mem_position:
-    1035
+    @mem_input_data call
+    @input_buffer_len call
+        +
+
     return
 
 mem_velocity:
