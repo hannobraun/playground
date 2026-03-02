@@ -258,13 +258,13 @@ _buf_index_read:
     @_buf_addr_index_read call read
     return
 
-buf_index_write:
+_buf_index_write:
     @_buf_addr_index_write call read
     return
 
 buf_is_empty:
     0 copy @_buf_index_read call
-    1 copy 2 drop @buf_index_write call
+    1 copy 2 drop @_buf_index_write call
         =
 
     return
