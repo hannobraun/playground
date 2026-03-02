@@ -86,7 +86,7 @@ apply_input:
         return
 
 read_from_input_buffer:
-    @mem_input @buf_addr_data call
+    @mem_input @_buf_addr_data call
     @mem_input @buf_index_read call @mem_input @buf_mask call
         + read
 
@@ -250,7 +250,7 @@ _buf_addr_index_write:
     call 2 +
     return
 
-buf_addr_data:
+_buf_addr_data:
     call 3 +
     return
 
