@@ -214,10 +214,10 @@ mem_velocity:
 # Utilities - buf
 
 buf_init:
-    # on stack: buf len
+    # on stack: buf capacity
     1 copy @_buf_addr_capacity call
 
-    # on stack: buf len addr_len
+    # on stack: buf capacity addr_capacity
     1 copy 2 drop write
 
     # on stack: buf
