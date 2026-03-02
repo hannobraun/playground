@@ -155,8 +155,6 @@ fn load(path: &Path) -> anyhow::Result<(Script, Eval, String)> {
     let script = Script::compile(&source);
     let mut eval = Eval::new();
 
-    // Give the script twice as much memory as the memory regions we use for I/O
-    // take up.
     eval.memory.values = vec![Value::from(0); memory::INPUT.end() * 4];
 
     Ok((script, eval, source))
