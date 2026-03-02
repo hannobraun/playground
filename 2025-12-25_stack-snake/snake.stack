@@ -238,6 +238,13 @@ buf_size_of:
 
     return
 
+buf_is_empty:
+    0 copy @_buf_index_read call
+    1 copy 2 drop @_buf_index_write call
+        =
+
+    return
+
 _buf_addr_len:
     call 0 +
     return
@@ -260,13 +267,6 @@ _buf_index_read:
 
 _buf_index_write:
     @_buf_addr_index_write call read
-    return
-
-buf_is_empty:
-    0 copy @_buf_index_read call
-    1 copy 2 drop @_buf_index_write call
-        =
-
     return
 
 buf_mask:
