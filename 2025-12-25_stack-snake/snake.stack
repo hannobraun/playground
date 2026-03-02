@@ -213,6 +213,20 @@ mem_velocity:
 
 # Utilities - buf
 
+buf_init:
+    # on stack: buf len
+    1 copy @buf_addr_len call
+
+    # on stack: buf len addr_len
+    1 copy 2 drop write
+
+    # on stack: buf
+
+    0 copy @buf_addr_index_read call 0 write
+    @buf_addr_index_write call 0 write
+
+    return
+
 buf_addr_len:
     call 0 +
     return
@@ -227,20 +241,6 @@ buf_addr_index_write:
 
 buf_addr_data:
     call 3 +
-    return
-
-buf_init:
-    # on stack: buf len
-    1 copy @buf_addr_len call
-
-    # on stack: buf len addr_len
-    1 copy 2 drop write
-
-    # on stack: buf
-
-    0 copy @buf_addr_index_read call 0 write
-    @buf_addr_index_write call 0 write
-
     return
 
 buf_len:
