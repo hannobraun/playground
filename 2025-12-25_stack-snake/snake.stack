@@ -227,6 +227,17 @@ buf_init:
 
     return
 
+buf_len:
+    @buf_addr_len call read
+    return
+
+buf_size_of:
+    0 copy call 3 +
+    1 copy 2 drop @buf_len call
+        +
+
+    return
+
 buf_addr_len:
     call 0 +
     return
@@ -241,17 +252,6 @@ buf_addr_index_write:
 
 buf_addr_data:
     call 3 +
-    return
-
-buf_len:
-    @buf_addr_len call read
-    return
-
-buf_size_of:
-    0 copy call 3 +
-    1 copy 2 drop @buf_len call
-        +
-
     return
 
 buf_index_read:
