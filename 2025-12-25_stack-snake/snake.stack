@@ -90,7 +90,7 @@ read_from_input_buffer:
     @mem_input @buf_index_read call @mem_input @buf_mask call
         + read
 
-    @mem_input @buf_addr_index_read call # address of read index, for `write` below
+    @mem_input @_buf_addr_index_read call # address of read index, for `write` below
     @mem_input @buf_index_read call 1 +  # increment read index
         write                            # update read index in memory
 
@@ -222,7 +222,7 @@ buf_init:
 
     # on stack: buf
 
-    0 copy @buf_addr_index_read call 0 write
+    0 copy @_buf_addr_index_read call 0 write
     @buf_addr_index_write call 0 write
 
     return
@@ -242,7 +242,7 @@ _buf_addr_len:
     call 0 +
     return
 
-buf_addr_index_read:
+_buf_addr_index_read:
     call 1 +
     return
 
@@ -255,7 +255,7 @@ buf_addr_data:
     return
 
 buf_index_read:
-    @buf_addr_index_read call read
+    @_buf_addr_index_read call read
     return
 
 buf_index_write:
