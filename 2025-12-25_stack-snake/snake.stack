@@ -215,7 +215,7 @@ mem_velocity:
 
 buf_init:
     # on stack: buf len
-    1 copy @buf_addr_len call
+    1 copy @_buf_addr_len call
 
     # on stack: buf len addr_len
     1 copy 2 drop write
@@ -228,7 +228,7 @@ buf_init:
     return
 
 buf_len:
-    @buf_addr_len call read
+    @_buf_addr_len call read
     return
 
 buf_size_of:
@@ -238,7 +238,7 @@ buf_size_of:
 
     return
 
-buf_addr_len:
+_buf_addr_len:
     call 0 +
     return
 
