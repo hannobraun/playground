@@ -87,7 +87,6 @@ apply_input:
 
 read_from_input_buffer:
     @mem_input @buf_addr_data call
-
     @mem_input @buf_index_read call @mem_input @buf_len call @buf_mask call
         + read
 
