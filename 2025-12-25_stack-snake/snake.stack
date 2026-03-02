@@ -223,7 +223,7 @@ buf_init:
     # on stack: buf
 
     0 copy @_buf_addr_index_read call 0 write
-    @buf_addr_index_write call 0 write
+    @_buf_addr_index_write call 0 write
 
     return
 
@@ -246,7 +246,7 @@ _buf_addr_index_read:
     call 1 +
     return
 
-buf_addr_index_write:
+_buf_addr_index_write:
     call 2 +
     return
 
@@ -259,7 +259,7 @@ buf_index_read:
     return
 
 buf_index_write:
-    @buf_addr_index_write call read
+    @_buf_addr_index_write call read
     return
 
 buf_is_empty:
