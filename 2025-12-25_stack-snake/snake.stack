@@ -87,10 +87,7 @@ apply_input:
 
 read_from_input_buffer:
     @mem_input @_buf_read_read_index call
-
-    @mem_input @_buf_addr_index_read call # address of read index, for `write` below
-    @mem_input @_buf_index_read call 1 +  # increment read index
-        write                            # update read index in memory
+    @mem_input @_buf_inc_read_index call
 
     return
 
@@ -279,6 +276,16 @@ _buf_read_read_index:
     2 copy 3 drop @_buf_mask call
 
     + read
+
+    return
+
+_buf_inc_read_index:
+    0 copy @_buf_addr_index_read call
+
+    1 copy 2 drop @_buf_index_read call
+        1 +
+
+    write
 
     return
 
