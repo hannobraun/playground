@@ -227,13 +227,13 @@ buf_init:
 
     return
 
-buf_len:
+buf_capacity:
     @_buf_addr_len call read
     return
 
 buf_size_of:
     0 copy call 3 +
-    1 copy 2 drop @buf_len call
+    1 copy 2 drop @buf_capacity call
         +
 
     return
@@ -270,7 +270,7 @@ _buf_index_write:
     return
 
 buf_mask:
-    @buf_len call
+    @buf_capacity call
     1 - and
     return
 
