@@ -127,6 +127,22 @@ pub fn run(
                 eprintln!("{run}: Script triggered effect: {effect:?}");
                 eprintln!("\tat {}: {}", operator, &source[op_range]);
 
+                for operator in eval.call_stack() {
+                    let Ok(op_range) = script.map_operator_to_source(&operator)
+                    else {
+                        unreachable!(
+                            "This operator index was returned from \
+                            `call_stack`, which means it must point to an \
+                            operator."
+                        );
+                    };
+
+                    eprintln!(
+                        "\tcalled from: {}: {}",
+                        operator, &source[op_range],
+                    );
+                }
+
                 match wait_for_change(&mut run, &notify_rx, &input_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
                         (script, eval, source) = load(path)?;
