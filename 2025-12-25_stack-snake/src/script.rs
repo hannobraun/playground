@@ -116,7 +116,7 @@ pub fn run(
                 continue;
             }
             effect => {
-                let Ok(operator) = script.map_operator_to_source(&operator)
+                let Ok(op_range) = script.map_operator_to_source(&operator)
                 else {
                     unreachable!(
                         "This operator index was returned from `run`, which \
@@ -125,7 +125,7 @@ pub fn run(
                 };
 
                 eprintln!("{run}: Script triggered effect: {effect:?}");
-                eprintln!("\tat {}", &source[operator]);
+                eprintln!("\tat {}", &source[op_range]);
 
                 match wait_for_change(&mut run, &notify_rx, &input_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
