@@ -57,6 +57,7 @@ apply_input:
         jump_if
 
     @mem_input @buf_read call
+    @mem_input @buf_drop call
 
     0 copy 0 = @apply_input_up jump_if
     0 copy 1 = @apply_input_left jump_if
@@ -247,8 +248,7 @@ buf_is_empty:
     return
 
 buf_read:
-    0 copy @_buf_read_value_at_index call
-    1 copy 2 drop @buf_drop call
+    @_buf_read_value_at_index call
     return
 
 buf_drop:
