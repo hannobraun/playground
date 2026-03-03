@@ -1,12 +1,12 @@
 main:
     @mem_input 8 @buf_init call
 
-    16 16
-    @mem_position call
-        @vec2_write call
-
     1 0
     @mem_velocity call
+        @vec2_write call
+
+    16 16
+    @mem_position call
         @vec2_write call
 
     @loop jump
