@@ -258,7 +258,13 @@ buf_read:
     return
 
 buf_drop:
-    @_buf_inc_read_index call
+    0 copy @_buf_addr_index_read call
+
+    1 copy 2 drop @_buf_index_read call
+        1 +
+
+    write
+
     return
 
 _buf_addr_capacity:
@@ -290,15 +296,6 @@ _buf_mask:
     1 - and
     return
 
-_buf_inc_read_index:
-    0 copy @_buf_addr_index_read call
-
-    1 copy 2 drop @_buf_index_read call
-        1 +
-
-    write
-
-    return
 
 # Utilities - vec2
 
