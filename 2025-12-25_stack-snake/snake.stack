@@ -134,7 +134,7 @@ wrap_coordinate:
         return
 
 
-# Game State
+# Game State - Position
 
 pos_write:
     @mem_position call
