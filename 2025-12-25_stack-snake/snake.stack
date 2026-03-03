@@ -248,7 +248,13 @@ buf_is_empty:
     return
 
 buf_read:
-    @_buf_read_value_at_index call
+    0 copy @_buf_addr_data call
+
+    1 copy @_buf_index_read call
+    2 copy 3 drop @_buf_mask call
+
+    + read
+
     return
 
 buf_drop:
@@ -282,16 +288,6 @@ _buf_index_write:
 _buf_mask:
     @buf_capacity call
     1 - and
-    return
-
-_buf_read_value_at_index:
-    0 copy @_buf_addr_data call
-
-    1 copy @_buf_index_read call
-    2 copy 3 drop @_buf_mask call
-
-    + read
-
     return
 
 _buf_inc_read_index:
