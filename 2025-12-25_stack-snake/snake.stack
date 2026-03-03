@@ -88,7 +88,7 @@ apply_input:
 # Game Logic
 
 update_position:
-    @pos_read call
+    @body_read_front call
     @mem_velocity call @vec2_read call
         @vec2_add call
 
@@ -145,7 +145,7 @@ body_push_front:
     @mem_position call @vec2_write call
     return
 
-pos_read:
+body_read_front:
     @mem_position call @vec2_read call
     return
 
@@ -154,7 +154,7 @@ pos_read:
 draw_position:
     @clear_pixels call
 
-    @pos_read call
+    @body_read_front call
         @set_pixel call
 
     @submit call
