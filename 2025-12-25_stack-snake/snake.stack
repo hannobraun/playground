@@ -5,9 +5,7 @@ main:
     @mem_velocity call
         @vec2_write call
 
-    16 16
-    @mem_position call
-        @vec2_write call
+    16 16 @pos_write call
 
     @loop jump
 
@@ -95,7 +93,7 @@ update_position:
 
     @wrap_position call
 
-    @mem_position call @vec2_write call
+    @pos_write call
 
     return
 
@@ -134,6 +132,15 @@ wrap_coordinate:
 
     wrap_coordinate_return:
         return
+
+
+# Game State
+
+pos_write:
+    @mem_position call
+        @vec2_write call
+
+    return
 
 
 # Display
