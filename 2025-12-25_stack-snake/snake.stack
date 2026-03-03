@@ -191,12 +191,12 @@ mem_input:
     @mem_timer call 1 +
     return
 
-mem_position:
+mem_velocity:
     @mem_input @buf_size_of call
     return
 
-mem_velocity:
-    @mem_position call 2 +
+mem_position:
+    @mem_velocity call 2 +
     return
 
 
