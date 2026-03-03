@@ -248,7 +248,11 @@ buf_is_empty:
 
 buf_read:
     0 copy @_buf_read_value_at_index call
-    1 copy 2 drop @_buf_inc_read_index call
+    1 copy 2 drop @buf_drop call
+    return
+
+buf_drop:
+    @_buf_inc_read_index call
     return
 
 _buf_addr_capacity:
