@@ -94,7 +94,7 @@ update_position:
 
     @wrap_position call
 
-    @pos_write call
+    @body_push_front call
 
     return
 
@@ -138,10 +138,10 @@ wrap_coordinate:
 # Game State - Position
 
 body_init:
-    16 16 @pos_write call
+    16 16 @body_push_front call
     return
 
-pos_write:
+body_push_front:
     @mem_position call @vec2_write call
     return
 
