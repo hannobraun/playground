@@ -1338,7 +1338,7 @@ dependencies = [
 [[package]]
 name = "stack-assembly"
 version = "0.1.0"
-source = "git+https://github.com/hannobraun/stack-assembly.git#0f8e2af366dddc2bfaf454bda68176e813d6349a"
+source = "git+https://github.com/hannobraun/stack-assembly.git#1fed57183ffdf757dec60af10815b83cb198d963"
 dependencies = [
  "bytemuck",
 ]
