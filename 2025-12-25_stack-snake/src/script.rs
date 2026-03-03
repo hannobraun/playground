@@ -125,7 +125,7 @@ pub fn run(
                 };
 
                 eprintln!("{run}: Script triggered effect: {effect:?}");
-                eprintln!("\tat {}", &source[op_range]);
+                eprintln!("\tat {}: {}", operator, &source[op_range]);
 
                 match wait_for_change(&mut run, &notify_rx, &input_rx)? {
                     WaitForChangeOutcome::ScriptHasChanged => {
