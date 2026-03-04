@@ -251,7 +251,7 @@ buf_read:
     0 copy @_buf_addr_data call
 
     1 copy @_buf_index_read call
-    2 copy 3 drop @_buf_mask call
+    2 copy 3 drop @_buf_mask_index call
 
     + read
 
@@ -291,7 +291,7 @@ _buf_index_write:
     @_buf_addr_index_write call read
     return
 
-_buf_mask:
+_buf_mask_index:
     @buf_capacity call
     1 - and
     return
