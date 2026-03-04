@@ -303,8 +303,16 @@ _buf_index_write:
     return
 
 _buf_mask_index:
+    # on stack: index buf
     @buf_capacity call
-    1 - and
+
+    # on stack: index capacity
+    1 -
+
+    # on stack: index mask
+    and
+
+    # on stack: masked_index
     return
 
 
