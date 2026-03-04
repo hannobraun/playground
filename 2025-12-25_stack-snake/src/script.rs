@@ -119,8 +119,8 @@ pub fn run(
                 let Ok(op_range) = script.map_operator_to_source(&operator)
                 else {
                     unreachable!(
-                        "This operator index was returned from `run`, which \
-                        means it must point to an operator."
+                        "This operator index (`{operator}`) was returned from \
+                        `run`, which means it must point to an operator."
                     );
                 };
 
