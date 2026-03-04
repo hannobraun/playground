@@ -266,6 +266,7 @@ buf_read:
     # on stack: cell_addr
     read
 
+    # on stack: value
     return
 
 buf_drop:
