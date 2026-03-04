@@ -248,12 +248,23 @@ buf_is_empty:
     return
 
 buf_read:
+    # on stack: buf
     0 copy @_buf_addr_data call
 
+    # on stack: buf data_addr
     1 copy @_buf_index_read call
-    2 copy 3 drop @_buf_mask_index call
 
-    + read
+    # on stack: buf data_addr read_index
+    2 copy 3 drop
+
+    # on stack: data_addr read_index buf
+    @_buf_mask_index call
+
+    # on stack: data_addr read_index_masked
+    +
+
+    # on stack: cell_addr
+    read
 
     return
 
