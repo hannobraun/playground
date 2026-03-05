@@ -258,21 +258,7 @@ buf_read:
     return
 
 buf_drop:
-    # on stack: buf
-    0 copy @_buf_addr_index_read call
-
-    # on stack: buf read_index_addr
-    1 copy 2 drop
-
-    # on stack: read_index_addr buf
-    @_buf_index_read call
-
-    # on stack: read_index_addr read_index
-    1 +
-
-    # on stack: read_index_addr read_index_inc
-    write
-
+    @_buf_addr_index_read @_buf_inc_index call
     return
 
 _buf_addr_capacity:
@@ -339,6 +325,20 @@ _buf_mask_index:
     # on stack: masked_index
     return
 
+_buf_inc_index:
+    # on stack: buf index_addr_fn
+    call
+
+    # on stack: index_addr
+    0 copy read
+
+    # on stack: index_addr index
+    1 +
+
+    # on stack index_addr index_inc
+    write
+
+    return
 
 # Utilities - vec2
 
