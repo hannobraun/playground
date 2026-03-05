@@ -1,6 +1,7 @@
 use std::{
     fs::File,
     io::Read,
+    ops::Range,
     path::Path,
     time::{Duration, Instant},
 };
@@ -124,8 +125,10 @@ pub fn run(
                     );
                 };
 
+                let line = op_range_to_line(&source, &op_range);
+
                 eprintln!("{run}: Script triggered effect: {effect:?}");
-                eprintln!("\tat {}: {}", operator, &source[op_range]);
+                eprintln!("\tat {}: {}", line, &source[op_range]);
 
                 for operator in eval.call_stack() {
                     let Ok(op_range) = script.map_operator_to_source(&operator)
@@ -137,10 +140,9 @@ pub fn run(
                         );
                     };
 
-                    eprintln!(
-                        "\tcalled from: {}: {}",
-                        operator, &source[op_range],
-                    );
+                    let line = op_range_to_line(&source, &op_range);
+
+                    eprintln!("\tcalled from: {}: {}", line, &source[op_range]);
                 }
 
                 match wait_for_change(&mut run, &notify_rx, &input_rx)? {
@@ -234,4 +236,18 @@ enum WaitForChangeOutcome {
     ScriptHasChanged,
     InputReceived { input: Input },
     MustQuit,
+}
+
+fn op_range_to_line(source: &str, op_range: &Range<usize>) -> usize {
+    let num_line_breaks = source.chars().filter(|&ch| ch == '\n').count();
+
+    let line_from_0 = source
+        .char_indices()
+        .filter_map(|(index, ch)| (ch == '\n').then_some(index))
+        .enumerate()
+        .find_map(|(line_from_0, index)| {
+            (op_range.start < index).then_some(line_from_0)
+        });
+
+    line_from_0.unwrap_or(num_line_breaks) + 1
 }
