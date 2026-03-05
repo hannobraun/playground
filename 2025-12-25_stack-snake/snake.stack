@@ -301,10 +301,10 @@ _buf_index_write:
     return
 
 _buf_mask_index:
-    # on stack: buf read_index_fn
+    # on stack: buf index_fn
     call
 
-    # on stack: buf read_index
+    # on stack: buf index
     1 copy 2 drop
 
     # on stack: index buf
