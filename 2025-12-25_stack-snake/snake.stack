@@ -249,15 +249,12 @@ buf_is_empty:
 
 buf_read:
     # on stack: buf
-    0 copy @_buf_addr_data call
+    0 copy 0 copy @_buf_index_read @_buf_mask_index call
 
-    # on stack: buf data_addr
-    1 copy 2 drop
+    # on stack: buf read_index_masked
+    1 copy @_buf_addr_data call
 
-    # data_addr buf
-    0 copy @_buf_index_read @_buf_mask_index call
-
-    # on stack: data_addr read_index_masked
+    # on stack: read_index_masked data_addr
     +
 
     # on stack: cell_addr
