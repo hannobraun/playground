@@ -299,7 +299,10 @@ _buf_index_write:
 
 _buf_mask_index:
     # on stack: buf data_addr
-    1 copy @_buf_index_read call
+    1 copy @_buf_index_read
+
+    # on stack: buf data_addr read_index_fn
+    call
 
     # on stack: buf data_addr read_index
     2 copy 3 drop
