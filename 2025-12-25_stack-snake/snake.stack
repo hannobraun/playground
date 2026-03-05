@@ -258,11 +258,19 @@ buf_read:
     return
 
 buf_drop:
+    # on stack: buf
     0 copy @_buf_addr_index_read call
 
-    1 copy 2 drop @_buf_index_read call
-        1 +
+    # on stack: buf read_index_addr
+    1 copy 2 drop
 
+    # on stack: read_index_addr buf
+    @_buf_index_read call
+
+    # on stack: read_index_addr read_index
+    1 +
+
+    # on stack: read_index_addr read_index_inc
     write
 
     return
