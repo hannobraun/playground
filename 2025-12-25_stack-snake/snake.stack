@@ -95,6 +95,7 @@ update_position:
     @wrap_position call
 
     @body_front_push call
+    @body_back_drop call
 
     return
 
@@ -147,6 +148,9 @@ body_front_push:
 
 body_front_peek:
     @mem_position call @vec2_read call
+    return
+
+body_back_drop:
     return
 
 # Display
