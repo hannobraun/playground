@@ -249,7 +249,7 @@ buf_is_empty:
 
 buf_read:
     # on stack: buf
-    0 copy 0 copy @_buf_index_read @_buf_mask_index call
+    0 copy @_buf_index_read @_buf_mask_index call
 
     # on stack: buf read_index_masked
     1 copy @_buf_addr_data call
@@ -299,6 +299,10 @@ _buf_index_write:
 
 _buf_mask_index:
     # on stack: buf index_fn
+    1 copy
+    1 copy 2 drop
+
+    # on stack: buf buf index_fn
     call
 
     # on stack: buf index
