@@ -120,9 +120,6 @@ pub fn run(
                             // Other end has hung up, which means we need to quit too.
                             return Ok(());
                         }
-
-                        eval.clear_effect();
-                        continue;
                     }
                     1 => {
                         eprintln!("{stack:?}", stack = eval.operand_stack);
@@ -131,6 +128,9 @@ pub fn run(
                         panic!("Unknown `yield` parameter: {parameter}");
                     }
                 }
+
+                eval.clear_effect();
+                continue;
             }
             effect => {
                 let Ok(op_range) = script.map_operator_to_source(&operator)
