@@ -190,7 +190,7 @@ x_y_to_index:
     return
 
 submit:
-    yield
+    0 yield
     return
 
 display_size:

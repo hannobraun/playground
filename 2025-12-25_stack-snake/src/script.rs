@@ -97,24 +97,37 @@ pub fn run(
 
         match effect {
             Effect::Yield => {
-                let mut pixels = [0; PIXELS_SIZE_BYTES];
-                for i in memory::PIXELS.iter() {
-                    let pixel = eval.memory.values[i].to_u32().to_be_bytes();
-                    pixels[i * BYTES_PER_PIXEL
-                        ..i * BYTES_PER_PIXEL + BYTES_PER_PIXEL]
-                        .copy_from_slice(&pixel);
-                }
+                let Ok(parameter) = eval.operand_stack.pop() else {
+                    panic!("Expected `yield` to have a parameter.");
+                };
 
-                // `pixels_tx` is bounded, with capacity zero, so this will
-                // block until the pixels are being drawn, tying the frame rate
-                // of the script to the frame rate of the I/O.
-                if let Err(SendError(_)) = pixels_tx.send(pixels) {
-                    // Other end has hung up, which means we need to quit too.
-                    return Ok(());
-                }
+                match parameter.to_u32() {
+                    0 => {
+                        let mut pixels = [0; PIXELS_SIZE_BYTES];
+                        for i in memory::PIXELS.iter() {
+                            let pixel =
+                                eval.memory.values[i].to_u32().to_be_bytes();
+                            pixels[i * BYTES_PER_PIXEL
+                                ..i * BYTES_PER_PIXEL + BYTES_PER_PIXEL]
+                                .copy_from_slice(&pixel);
+                        }
 
-                eval.clear_effect();
-                continue;
+                        // `pixels_tx` is bounded, with capacity zero, so this
+                        // will block until the pixels are being drawn, tying
+                        // the frame rate of the script to the frame rate of the
+                        // I/O.
+                        if let Err(SendError(_)) = pixels_tx.send(pixels) {
+                            // Other end has hung up, which means we need to quit too.
+                            return Ok(());
+                        }
+
+                        eval.clear_effect();
+                        continue;
+                    }
+                    parameter => {
+                        panic!("Unknown `yield` parameter: {parameter}");
+                    }
+                }
             }
             effect => {
                 let Ok(op_range) = script.map_operator_to_source(&operator)
