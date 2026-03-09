@@ -124,6 +124,9 @@ pub fn run(
                         eval.clear_effect();
                         continue;
                     }
+                    1 => {
+                        eprintln!("{stack:?}", stack = eval.operand_stack);
+                    }
                     parameter => {
                         panic!("Unknown `yield` parameter: {parameter}");
                     }
