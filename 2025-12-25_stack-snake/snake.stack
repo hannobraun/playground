@@ -19,7 +19,7 @@ loop:
     loop_after_tick_handling:
         @draw_position call
 
-    @loop jump
+        @loop jump
 
 
 # Timer
