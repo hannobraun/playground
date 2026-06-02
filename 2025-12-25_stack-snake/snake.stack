@@ -136,7 +136,7 @@ wrap_coordinate:
         return
 
 
-# Game State - Position
+# Game State - Body
 
 body_init:
     @mem_body 1024 @buf_init call
