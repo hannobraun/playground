@@ -277,7 +277,7 @@ buf_is_empty:
     return
 
 buf_read:
-    # on stack: buf index
+    # on stack: buf offset
     0 drop
 
     # on stack: buf
