@@ -139,18 +139,33 @@ wrap_coordinate:
 # Game State - Position
 
 body_init:
+    @mem_position 1024 @buf_init call
     16 16 @body_front_push call
     return
 
 body_front_push:
-    @mem_position call @vec2_write call
+    # on stack: pos_x pos_y
+    16 shift_left or
+
+    # on stack: pos_yx
+    @mem_position @buf_write call
+
     return
 
 body_front_peek:
-    @mem_position call @vec2_read call
+    @mem_position @buf_read call
+
+    # on stack: pos_yx
+    0 copy 0x0000ffff and
+
+    # on stack: pos_yx x
+    1 copy 2 drop 0xffff0000 and 16 shift_right
+
+    # on stack: x y
     return
 
 body_back_drop:
+    @mem_position @buf_drop call
     return
 
 # Display
@@ -267,6 +282,21 @@ buf_read:
 
 buf_drop:
     @_buf_addr_index_read @_buf_inc_index call
+    return
+
+buf_write:
+    # on stack: value buf
+    0 copy @_buf_index_write @_buf_cell_addr call
+
+    # on stack: value buf cell_addr
+    2 copy 3 drop
+
+    # on stack: buf cell_addr value
+    write
+
+    # on stack: buf
+    @_buf_addr_index_write @_buf_inc_index call
+
     return
 
 _buf_addr_capacity:
