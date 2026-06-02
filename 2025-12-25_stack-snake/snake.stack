@@ -209,7 +209,10 @@ mem_input:
     return
 
 mem_velocity:
+    @mem_input call
     @mem_input @buf_size_of call
+        +
+
     return
 
 mem_position:
@@ -237,9 +240,11 @@ buf_capacity:
     return
 
 buf_size_of:
-    0 copy call 3 +
-    1 copy 2 drop @buf_capacity call
-        +
+    # on stack: buf
+    @buf_capacity call
+
+    # on stack: capacity
+    3 + # capacity, read index, write index
 
     return
 
