@@ -14,7 +14,7 @@ loop:
     @loop_after_tick_handling jump_if
 
     @apply_input call
-    @update_position call
+    @update_body call
 
     loop_after_tick_handling:
         @draw_position call
@@ -87,7 +87,7 @@ apply_input:
 
 # Game Logic
 
-update_position:
+update_body:
     @body_front_peek call
     @mem_velocity call @vec2_read call
         @vec2_add call
