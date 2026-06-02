@@ -99,7 +99,8 @@ update_body:
     @body_front_push call
     @body_back_drop call
 
-    return
+    update_body_return:
+        return
 
 wrap_position:
     # on stack: x y
