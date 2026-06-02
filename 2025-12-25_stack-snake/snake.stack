@@ -227,7 +227,6 @@ buf_init:
     1 copy 2 drop write
 
     # on stack: buf
-
     0 copy @_buf_addr_index_read call 0 write
     @_buf_addr_index_write call 0 write
 
