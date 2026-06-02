@@ -155,7 +155,7 @@ body_front_push:
     return
 
 body_front_peek:
-    @mem_body @buf_read call
+    @mem_body 0 @buf_read call
 
     # on stack: pos_yx
     0 copy 0x0000ffff and
@@ -277,6 +277,9 @@ buf_is_empty:
     return
 
 buf_read:
+    # on stack: buf index
+    0 drop
+
     # on stack: buf
     @_buf_index_read @_buf_cell_addr call
 
@@ -292,7 +295,7 @@ buf_drop:
 
 buf_consume:
     # on stack: buf
-    0 copy @buf_read call
+    0 copy 0 @buf_read call
     1 copy 2 drop @buf_drop call
 
     return
