@@ -124,6 +124,9 @@ pub fn run(
                     1 => {
                         eprintln!("{stack:?}", stack = eval.operand_stack);
                     }
+                    2 => {
+                        eprintln!("{memory:?}", memory = eval.memory);
+                    }
                     parameter => {
                         panic!("Unknown `yield` parameter: {parameter}");
                     }
