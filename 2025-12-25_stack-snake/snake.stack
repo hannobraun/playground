@@ -278,10 +278,7 @@ buf_is_empty:
 
 buf_read:
     # on stack: buf offset
-    0 drop
-
-    # on stack: buf
-    @_buf_index_read @_buf_cell_addr call
+    @_buf_index_read 1 copy 2 drop @_buf_cell_addr call
 
     # on stack: cell_addr
     read
@@ -302,7 +299,7 @@ buf_consume:
 
 buf_write:
     # on stack: value buf
-    0 copy @_buf_index_write @_buf_cell_addr call
+    0 copy @_buf_index_write 0 @_buf_cell_addr call
 
     # on stack: value buf cell_addr
     2 copy 3 drop
@@ -340,7 +337,10 @@ _buf_index_write:
     return
 
 _buf_cell_addr:
-    # on stack: buf index_fn
+    # on stack: buf index_fn offset
+    0 drop
+
+    # on stack buf index_fn
     1 copy
     1 copy 2 drop
 
