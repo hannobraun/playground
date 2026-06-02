@@ -58,8 +58,7 @@ apply_input:
     @apply_input_return
         jump_if
 
-    @mem_input @buf_read call
-    @mem_input @buf_drop call
+    @mem_input @buf_consume call
 
     0 copy 0 = @apply_input_up jump_if
     0 copy 1 = @apply_input_left jump_if
@@ -289,6 +288,13 @@ buf_read:
 
 buf_drop:
     @_buf_addr_index_read @_buf_inc_index call
+    return
+
+buf_consume:
+    # on stack: buf
+    0 copy @buf_read call
+    1 copy 2 drop @buf_drop call
+
     return
 
 buf_write:
