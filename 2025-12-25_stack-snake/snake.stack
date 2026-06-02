@@ -326,7 +326,7 @@ _buf_mask_index:
     # on stack: index mask
     and
 
-    # on stack: masked_index
+    # on stack: index_masked
     return
 
 _buf_inc_index:
