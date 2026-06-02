@@ -223,11 +223,15 @@ mem_input:
     @mem_timer call 1 +
     return
 
-mem_velocity:
+mem_length:
     @mem_input call
     @mem_input @buf_size_of call
         +
 
+    return
+
+mem_velocity:
+    @mem_length call 1 +
     return
 
 mem_body:
