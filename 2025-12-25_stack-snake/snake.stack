@@ -302,7 +302,7 @@ _buf_cell_addr:
     @_buf_mask_index call
 
     # on stack: buf index_masked
-    1 copy @_buf_addr_data call
+    1 copy 2 drop @_buf_addr_data call
 
     # on stack: index_masked data_addr
     +
