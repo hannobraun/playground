@@ -139,7 +139,7 @@ wrap_coordinate:
 # Game State - Position
 
 body_init:
-    @mem_position 1024 @buf_init call
+    @mem_body 1024 @buf_init call
     16 16 @body_front_push call
     return
 
@@ -148,12 +148,12 @@ body_front_push:
     16 shift_left or
 
     # on stack: pos_yx
-    @mem_position @buf_write call
+    @mem_body @buf_write call
 
     return
 
 body_front_peek:
-    @mem_position @buf_read call
+    @mem_body @buf_read call
 
     # on stack: pos_yx
     0 copy 0x0000ffff and
@@ -165,7 +165,7 @@ body_front_peek:
     return
 
 body_back_drop:
-    @mem_position @buf_drop call
+    @mem_body @buf_drop call
     return
 
 # Display
@@ -230,7 +230,7 @@ mem_velocity:
 
     return
 
-mem_position:
+mem_body:
     @mem_velocity call 2 +
     return
 
