@@ -338,14 +338,11 @@ _buf_index_write:
 
 _buf_cell_addr:
     # on stack: buf index_fn offset
-    0 drop
+    2 copy
+    2 copy 3 drop
 
-    # on stack buf index_fn
-    1 copy
-    1 copy 2 drop
-
-    # on stack: buf buf index_fn
-    call
+    # on stack: buf offset buf index_fn
+    call +
 
     # on stack: buf index
     1 copy
