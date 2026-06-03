@@ -117,7 +117,8 @@ pub fn run(
                         // the frame rate of the script to the frame rate of the
                         // I/O.
                         if let Err(SendError(_)) = pixels_tx.send(pixels) {
-                            // Other end has hung up, which means we need to quit too.
+                            // Other end has hung up, which means we need to
+                            // quit too.
                             return Ok(());
                         }
                     }
