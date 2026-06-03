@@ -19,7 +19,7 @@ loop:
     @update_body call
 
     loop_after_tick_handling:
-        @draw_position call
+        @draw_body call
 
         @loop jump
 
@@ -175,7 +175,7 @@ body_back_drop:
 
 # Display
 
-draw_position:
+draw_body:
     @clear_pixels call
     @draw_pixels call
     @submit call
