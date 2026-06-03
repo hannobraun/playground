@@ -153,15 +153,7 @@ update_fruit:
     @body_head_read call
 
     # on stack: fruit_x fruit_y head_x head_y
-    2 copy 3 drop =
-
-    # on stack: fruit_x head_x y_is_equal
-    2 copy 3 drop
-    2 copy 3 drop
-        =
-
-    # on stack: y_is_equal x_is_equal
-    and
+    @vec2_equals call
 
     # on stack: is_equal
     1 xor
@@ -543,6 +535,19 @@ vec2_add:
 
     return
 
+vec2_equals:
+    # on stack: x1 y1 x2 y2
+    2 copy 3 drop =
+
+    # on stack: x1 x2 y_is_equal
+    2 copy 3 drop
+    2 copy 3 drop
+        =
+
+    # on stack: y_is_equal x_is_equal
+    and
+
+    return
 
 # Other utilities
 
