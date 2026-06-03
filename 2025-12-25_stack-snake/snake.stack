@@ -190,6 +190,7 @@ body_tail_drop:
 draw:
     @clear_pixels call
     @draw_body call
+    @draw_fruit call
     @submit call
     return
 
@@ -227,6 +228,13 @@ draw_body:
     draw_body_return:
         0 drop
         return
+
+draw_fruit:
+    16 16
+    0xff0000ff
+        @set_pixel call
+
+    return
 
 set_pixel:
     # on stack: x y color
