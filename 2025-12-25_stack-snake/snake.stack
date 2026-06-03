@@ -95,7 +95,7 @@ update_body:
 
     @wrap_position call
 
-    @body_front_push call
+    @body_head_push call
 
     @mem_length call read
     @mem_body @buf_length call
@@ -148,10 +148,10 @@ wrap_coordinate:
 
 body_init:
     @mem_body 1024 @buf_init call
-    16 16 @body_front_push call
+    16 16 @body_head_push call
     return
 
-body_front_push:
+body_head_push:
     # on stack: pos_x pos_y
     16 shift_left or
 
