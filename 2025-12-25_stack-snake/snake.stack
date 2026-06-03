@@ -89,7 +89,8 @@ apply_input:
 # Game Logic
 
 update_body:
-    0 @body_read_segment call
+    @mem_body @buf_length call 1 -
+        @body_read_segment call
     @mem_velocity call @vec2_read call
         @vec2_add call
 
