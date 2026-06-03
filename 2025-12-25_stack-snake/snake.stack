@@ -198,6 +198,11 @@ draw_pixels:
     0
 
     draw_pixels_loop:
+        0 copy
+        @mem_body @buf_length call
+            >=
+            @draw_pixels_return jump_if
+
         @body_read_segment call
             @set_pixel call
 
@@ -267,6 +272,13 @@ buf_init:
 
 buf_capacity:
     @_buf_addr_capacity call read
+    return
+
+buf_length:
+    0 copy @_buf_index_write call
+    1 copy 2 drop @_buf_index_read call
+        -
+
     return
 
 buf_size_of:
