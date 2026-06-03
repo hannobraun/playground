@@ -18,6 +18,7 @@ loop:
 
     @apply_input call
     @update_body call
+    @update_fruit call
 
     loop_after_tick_handling:
         @draw call
@@ -142,6 +143,35 @@ wrap_coordinate:
         @display_size call -
 
     wrap_coordinate_return:
+        return
+
+update_fruit:
+    @mem_fruit call
+        @vec2_read call
+
+    # on stack: fruit_x fruit_y
+    @body_head_read call
+
+    # on stack: fruit_x fruit_y head_x head_y
+    2 copy 3 drop =
+
+    # on stack: fruit_x head_x y_is_equal
+    2 copy 3 drop
+    2 copy 3 drop
+        =
+
+    # on stack: y_is_equal x_is_equal
+    and
+
+    # on stack: is_equal
+    1 xor
+
+    # on_stack: is_not_equal
+    @update_fruit_return jump_if
+
+    @fruit_init call
+
+    update_fruit_return:
         return
 
 
