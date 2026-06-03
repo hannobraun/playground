@@ -97,6 +97,12 @@ update_body:
     @wrap_position call
 
     @body_front_push call
+
+    @mem_length call read
+    @mem_body @buf_length call
+        >=
+        @update_body_return jump_if
+
     @body_back_drop call
 
     update_body_return:
