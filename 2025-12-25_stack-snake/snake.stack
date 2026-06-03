@@ -190,7 +190,10 @@ body_tail_drop:
 # Game State - Fruit
 
 fruit_init:
-    16 16
+    @random_coordinate call
+    @random_coordinate call
+
+    # on stack: x y
     @mem_fruit call
         @vec2_write call
 
@@ -499,3 +502,21 @@ vec2_add:
         +
 
     return
+
+
+# Other utilities
+
+random_coordinate:
+    1 yield
+    @display_size call
+        /
+        1 drop
+
+    0 copy 0 >=
+    @random_coordinate_return
+        jump_if
+
+    -1 *
+
+    random_coordinate_return:
+        return
