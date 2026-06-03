@@ -217,7 +217,7 @@ draw_body:
 
 
         0 copy @body_read_segment call
-            0xffffffff
+            0x00ff00ff
             @set_pixel call
 
         1 +
