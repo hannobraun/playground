@@ -200,9 +200,11 @@ body_head_push:
     return
 
 body_head_read:
-    @mem_body @buf_length call 1 -
-        @body_read_segment call
+    @body_head_index call @body_read_segment call
+    return
 
+body_head_index:
+    @mem_body @buf_length call 1 -
     return
 
 body_read_segment:
