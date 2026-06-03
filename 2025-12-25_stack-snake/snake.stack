@@ -169,6 +169,14 @@ update_fruit:
     # on_stack: is_not_equal
     @update_fruit_return jump_if
 
+    @mem_length call read
+        3 +
+
+    # on stack: new_length
+    @mem_length call
+    1 copy 2 drop
+        write
+
     @fruit_init call
 
     update_fruit_return:
