@@ -232,14 +232,14 @@ impl Renderer {
 
             let source_i = (source_y * GRID_SIZE + source_x) * BYTES_PER_PIXEL;
 
-            let [r, g, b, a] = pixels[source_i..source_i + BYTES_PER_PIXEL]
+            let [r, g, b, _] = pixels[source_i..source_i + BYTES_PER_PIXEL]
             else {
                 unreachable!(
                     "Four-element slice destructures into 4 elements."
                 );
             };
 
-            let source = u32::from_le_bytes([r, g, b, a]);
+            let source = u32::from_be_bytes([0, r, g, b]);
 
             *target = source;
         }
