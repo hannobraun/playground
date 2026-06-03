@@ -102,7 +102,7 @@ update_body:
         >=
         @update_body_return jump_if
 
-    @body_back_drop call
+    @body_tail_drop call
 
     update_body_return:
         return
@@ -181,7 +181,7 @@ body_read_segment:
     # on stack: x y
     return
 
-body_back_drop:
+body_tail_drop:
     @mem_body @buf_drop call
     return
 
