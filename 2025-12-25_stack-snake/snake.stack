@@ -199,7 +199,8 @@ draw_pixels:
         0 @body_read_segment call
             @set_pixel call
 
-    return
+    draw_pixels_return:
+        return
 
 set_pixel:
     @x_y_to_index call
