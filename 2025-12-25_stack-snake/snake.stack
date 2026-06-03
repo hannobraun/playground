@@ -177,12 +177,8 @@ body_back_drop:
 
 draw_position:
     @clear_pixels call
-
-    0 @body_read_segment call
-        @set_pixel call
-
+    @draw_pixels call
     @submit call
-
     return
 
 clear_pixels:
@@ -197,6 +193,12 @@ clear_pixels:
     clear_pixels_return:
         0 drop
         return
+
+draw_pixels:
+    0 @body_read_segment call
+        @set_pixel call
+
+    return
 
 set_pixel:
     @x_y_to_index call
