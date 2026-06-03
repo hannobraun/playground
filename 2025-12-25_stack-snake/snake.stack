@@ -9,6 +9,10 @@ main:
 
     @body_init call
 
+    16 16
+    @mem_fruit call
+        @vec2_write call
+
     @loop jump
 
 loop:
@@ -230,7 +234,7 @@ draw_body:
         return
 
 draw_fruit:
-    16 16
+    @mem_fruit call @vec2_read call
     0xff0000ff
         @set_pixel call
 
@@ -286,6 +290,13 @@ mem_velocity:
 
 mem_body:
     @mem_velocity call 2 +
+    return
+
+mem_fruit:
+    @mem_body call
+    @mem_body @buf_size_of call
+        +
+
     return
 
 
