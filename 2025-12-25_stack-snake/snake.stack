@@ -203,10 +203,16 @@ draw_pixels:
             >=
             @draw_pixels_return jump_if
 
-        @body_read_segment call
+
+        0 copy @body_read_segment call
             @set_pixel call
 
+        1 +
+
+        @draw_pixels_loop jump
+
     draw_pixels_return:
+        0 drop
         return
 
 set_pixel:
