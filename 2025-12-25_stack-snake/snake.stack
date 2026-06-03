@@ -19,6 +19,7 @@ loop:
     @apply_input call
     @update_body call
     @update_fruit call
+    @collide_head_and_body call
 
     loop_after_tick_handling:
         @draw call
@@ -173,6 +174,38 @@ update_fruit:
 
     update_fruit_return:
         return
+
+collide_head_and_body:
+    @body_head_index call
+    0
+
+    collide_head_and_body_loop:
+        # on stack: head_index segment_index
+        1 copy
+        1 copy
+            <=
+            @collide_head_and_body_return jump_if
+
+        # on stack: head_index segment_index
+        0 copy @body_read_segment call
+        3 copy @body_read_segment call
+            @vec2_equals call
+
+        # on stack: head_index segment_index do_collide
+        @collide_head_and_body_handle_collision jump_if
+
+        1 +
+        @collide_head_and_body_loop jump
+
+    collide_head_and_body_return:
+        0 drop
+        0 drop
+        return
+
+    collide_head_and_body_handle_collision:
+        0 drop
+        0 drop
+        @main jump
 
 
 # Game State - Body
