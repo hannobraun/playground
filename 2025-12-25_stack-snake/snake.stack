@@ -156,9 +156,9 @@ body_front_push:
 
 body_front_peek:
     # on stack: index
-    0 drop
-
-    @mem_body 0 @buf_read call
+    @mem_body
+    1 copy 2 drop
+        @buf_read call
 
     # on stack: pos_yx
     0 copy 0x0000ffff and
