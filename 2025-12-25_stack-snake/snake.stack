@@ -217,6 +217,7 @@ draw_body:
 
 
         0 copy @body_read_segment call
+            0xffffffff
             @set_pixel call
 
         1 +
@@ -228,9 +229,16 @@ draw_body:
         return
 
 set_pixel:
-    @x_y_to_index call
-    0xffffffff
-        write
+    # on stack: x y color
+    2 copy 3 drop
+    2 copy 3 drop
+        @x_y_to_index call
+
+    # on stack: color xy_index
+    1 copy 2 drop
+
+    # on stack: xy_index color
+    write
 
     return
 
