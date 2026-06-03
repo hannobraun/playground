@@ -8,10 +8,7 @@ main:
         @vec2_write call
 
     @body_init call
-
-    16 16
-    @mem_fruit call
-        @vec2_write call
+    @fruit_init call
 
     @loop jump
 
@@ -188,6 +185,17 @@ body_read_segment:
 body_tail_drop:
     @mem_body @buf_drop call
     return
+
+
+# Game State - Fruit
+
+fruit_init:
+    16 16
+    @mem_fruit call
+        @vec2_write call
+
+    return
+
 
 # Display
 
