@@ -1418,6 +1418,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "crossbeam-channel",
+ "fastrand",
  "notify",
  "softbuffer",
  "stack-assembly",

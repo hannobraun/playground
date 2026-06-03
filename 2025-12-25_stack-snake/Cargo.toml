@@ -6,6 +6,7 @@ publish = false
 [dependencies]
 anyhow = "*"
 crossbeam-channel = "*"
+fastrand = "*"
 softbuffer = "*"
 winit = "*"
 
