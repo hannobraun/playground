@@ -123,9 +123,13 @@ pub fn run(
                         }
                     }
                     1 => {
-                        eprintln!("{stack:?}", stack = eval.operand_stack);
+                        let value = fastrand::u32(..);
+                        eval.operand_stack.push(value);
                     }
                     2 => {
+                        eprintln!("{stack:?}", stack = eval.operand_stack);
+                    }
+                    3 => {
                         eprintln!("{memory:?}", memory = eval.memory);
                     }
                     parameter => {
