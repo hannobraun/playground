@@ -89,7 +89,7 @@ apply_input:
 # Game Logic
 
 update_body:
-    @body_front_peek call
+    0 @body_front_peek call
     @mem_velocity call @vec2_read call
         @vec2_add call
 
@@ -155,6 +155,9 @@ body_front_push:
     return
 
 body_front_peek:
+    # on stack: index
+    0 drop
+
     @mem_body 0 @buf_read call
 
     # on stack: pos_yx
@@ -175,7 +178,7 @@ body_back_drop:
 draw_position:
     @clear_pixels call
 
-    @body_front_peek call
+    0 @body_front_peek call
         @set_pixel call
 
     @submit call
