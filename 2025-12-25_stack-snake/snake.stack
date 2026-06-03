@@ -189,7 +189,7 @@ body_tail_drop:
 
 draw:
     @clear_pixels call
-    @draw_pixels call
+    @draw_body call
     @submit call
     return
 
@@ -206,14 +206,14 @@ clear_pixels:
         0 drop
         return
 
-draw_pixels:
+draw_body:
     0
 
-    draw_pixels_loop:
+    draw_body_loop:
         0 copy
         @mem_body @buf_length call
             >=
-            @draw_pixels_return jump_if
+            @draw_body_return jump_if
 
 
         0 copy @body_read_segment call
@@ -221,9 +221,9 @@ draw_pixels:
 
         1 +
 
-        @draw_pixels_loop jump
+        @draw_body_loop jump
 
-    draw_pixels_return:
+    draw_body_return:
         0 drop
         return
 
