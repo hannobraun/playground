@@ -195,8 +195,9 @@ clear_pixels:
         return
 
 draw_pixels:
-    0 @body_read_segment call
-        @set_pixel call
+    draw_pixels_loop:
+        0 @body_read_segment call
+            @set_pixel call
 
     return
 
