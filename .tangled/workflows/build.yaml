@@ -1,0 +1,32 @@
+when:
+  - event: ["pull_request"]
+    branch: ["**"]
+
+engine: "microvm"
+image: "nixos"
+
+dependencies:
+  - clang # `cc` used by Rust as a linker
+  - rustup
+
+environment:
+  RUSTFLAGS: -D warnings
+  RUSTDOCFLAGS: -D warnings
+
+steps:
+  - name: "Set up Rust"
+    command: "rustup default stable"
+
+  - name: "Check formatting"
+    command: "cargo fmt --check"
+
+  - name: "Run Clippy"
+    # `--all-targets`, because we want Clippy to check both regular and
+    # test-only code.
+    command: "cargo clippy --all-targets"
+
+  - name: "Run test suite"
+    command: "cargo test"
+
+  - name: "Build documentation"
+    command: "cargo doc"
