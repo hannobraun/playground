@@ -1,0 +1,5 @@
+# Aside from being very traditional, this just turns out to be a nice width. Not
+# too long to make lines overwhelming, fits almost anywhere you might want to
+# view code, and only takes up half of a larger monitor (at a reasonable text
+# size), allowing for a side-by-side layout with whatever else you need.
+max_width = 80
