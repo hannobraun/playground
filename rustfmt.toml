@@ -3,3 +3,12 @@
 # view code, and only takes up half of a larger monitor (at a reasonable text
 # size), allowing for a side-by-side layout with whatever else you need.
 max_width = 80
+
+# Eases the work of authoring documentation and other large comments.
+#
+# This option is unstable. Tracking issue:
+# https://github.com/rust-lang/rustfmt/issues/3347
+#
+# Only results in a harmless warning by `cargo fmt` on stable and has no effect
+# otherwise.
+wrap_comments = true
