@@ -1,3 +1,5 @@
+use crate::Host;
+
 /// # A compiled Monobloc source code file
 ///
 /// You can create a script from source code by calling [`Script::compile`].
@@ -7,10 +9,16 @@ pub struct Script {}
 impl Script {
     /// # Compile the provided source code into a script
     ///
-    /// Compilation may produce a [`CompileError`].
-    pub fn compile(source: &str) -> Result<Self, CompileError> {
+    /// The provided host will be use to resolve host function. Compilation may
+    /// produce a [`CompileError`].
+    pub fn compile(
+        source: &str,
+        host: &dyn Host,
+    ) -> Result<Self, CompileError> {
         // Placeholder implementation, while the test suite doesn't cover any
         // runtime functionality yet.
+
+        let _ = host;
 
         if source.is_empty() {
             Err(CompileError::BlockIsMissingContinuation)
