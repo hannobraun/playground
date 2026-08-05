@@ -21,13 +21,23 @@ impl Script {
         let mut block = Vec::new();
         let mut block_is_missing_continuation = true;
 
-        for token in source.split_whitespace() {
+        let mut tokens = source.split_whitespace();
+
+        for token in tokens.by_ref() {
             let Some(host_fn) = host.resolve_fn(token) else {
                 return Err(CompileError::UnresolvedName);
             };
 
             block_is_missing_continuation = host.fn_returns(&host_fn);
             block.push(host_fn);
+
+            if !block_is_missing_continuation {
+                break;
+            }
+        }
+
+        if tokens.next().is_some() {
+            return Err(CompileError::UnreachableCode);
         }
 
         if block_is_missing_continuation {
@@ -60,6 +70,10 @@ pub enum CompileError {
     /// continue.
     #[error("block is missing a continuation")]
     BlockIsMissingContinuation,
+
+    /// # Code was found in a location that will not be evaluated
+    #[error("unreachable code")]
+    UnreachableCode,
 
     /// # A name in the source could not be resolved to a function or binding
     #[error("unresolved name")]

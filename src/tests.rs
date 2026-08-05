@@ -49,6 +49,19 @@ fn call_to_function_that_does_not_return() -> anyhow::Result<()> {
     Ok(())
 }
 
+#[test]
+fn unreachable_code() -> anyhow::Result<()> {
+    // Any code that follows a call to a function that does not return is
+    // invalid, which must result in an error.
+
+    let host = TestHost::default();
+
+    let result = Script::compile("exit signal", &host);
+    assert_eq!(result, Err(CompileError::UnreachableCode));
+
+    Ok(())
+}
+
 #[derive(Default)]
 struct TestHost {
     calls_to_exit: usize,
