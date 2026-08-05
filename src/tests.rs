@@ -38,15 +38,22 @@ fn call_to_function_that_does_not_return() -> anyhow::Result<()> {
     // Calling a function that does not return provides the block with the
     // continuation it must have.
 
-    let host = TestHost::default();
+    let mut host = TestHost::default();
 
-    Script::compile("exit", &host)?;
+    let script = Script::compile("exit", &host)?;
+    script.run(&mut host);
+
+    assert_eq!(host.calls_to_exit, 1);
+    assert_eq!(host.calls_to_signal, 0);
 
     Ok(())
 }
 
 #[derive(Default)]
-struct TestHost {}
+struct TestHost {
+    calls_to_exit: usize,
+    calls_to_signal: usize,
+}
 
 impl TestHost {
     const NAMESPACE: u16 = 256;
@@ -83,6 +90,28 @@ impl Host for TestHost {
         match host_fn.function {
             Self::FN_EXIT => false,
             Self::FN_SIGNAL => true,
+
+            function => {
+                panic!("Invalid function: `{function}`");
+            }
+        }
+    }
+
+    fn call_fn(&mut self, host_fn: &HostFn) {
+        let Self::NAMESPACE = host_fn.namespace else {
+            panic!(
+                "Invalid namespace: `{namespace}`",
+                namespace = host_fn.namespace,
+            );
+        };
+
+        match host_fn.function {
+            Self::FN_EXIT => {
+                self.calls_to_exit += 1;
+            }
+            Self::FN_SIGNAL => {
+                self.calls_to_signal += 1;
+            }
 
             function => {
                 panic!("Invalid function: `{function}`");

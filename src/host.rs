@@ -27,6 +27,9 @@ pub trait Host {
 
     /// # Indicate whether the provided function returns
     fn fn_returns(&self, host_fn: &HostFn) -> bool;
+
+    /// # Call the provided host function
+    fn call_fn(&mut self, host_fn: &HostFn);
 }
 
 /// # Represents a specific host function

@@ -1,10 +1,13 @@
-use crate::Host;
+use crate::{Host, HostFn};
 
 /// # A compiled Monobloc source code file
 ///
-/// You can create a script from source code by calling [`Script::compile`].
+/// You can create a script from source code by calling [`Script::compile`],
+/// then run it using [`Script::run`].
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct Script {}
+pub struct Script {
+    block: Vec<HostFn>,
+}
 
 impl Script {
     /// # Compile the provided source code into a script
@@ -15,6 +18,7 @@ impl Script {
         source: &str,
         host: &dyn Host,
     ) -> Result<Self, CompileError> {
+        let mut block = Vec::new();
         let mut block_is_missing_continuation = true;
 
         for token in source.split_whitespace() {
@@ -23,13 +27,23 @@ impl Script {
             };
 
             block_is_missing_continuation = host.fn_returns(&host_fn);
+            block.push(host_fn);
         }
 
         if block_is_missing_continuation {
             return Err(CompileError::BlockIsMissingContinuation);
         }
 
-        Ok(Self {})
+        Ok(Self { block })
+    }
+
+    /// # Run the script to completion
+    ///
+    /// Host function calls will be relayed to the provided host.
+    pub fn run(self, host: &mut dyn Host) {
+        for host_fn in self.block {
+            host.call_fn(&host_fn);
+        }
     }
 }
 
