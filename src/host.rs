@@ -24,6 +24,9 @@ pub trait Host {
     /// is an attribute of the implementation, but not observable from within
     /// the language.)
     fn resolve_fn(&self, name: &str) -> Option<HostFn>;
+
+    /// # Indicate whether the provided function returns
+    fn fn_returns(&self, host_fn: &HostFn) -> bool;
 }
 
 /// # Represents a specific host function

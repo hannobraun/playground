@@ -15,18 +15,21 @@ impl Script {
         source: &str,
         host: &dyn Host,
     ) -> Result<Self, CompileError> {
-        // Placeholder implementation, while the test suite doesn't cover any
-        // runtime functionality yet.
+        let mut block_is_missing_continuation = true;
 
         for token in source.split_whitespace() {
             let Some(host_fn) = host.resolve_fn(token) else {
                 return Err(CompileError::UnresolvedName);
             };
 
-            let _ = host_fn;
+            block_is_missing_continuation = host.fn_returns(&host_fn);
         }
 
-        Err(CompileError::BlockIsMissingContinuation)
+        if block_is_missing_continuation {
+            return Err(CompileError::BlockIsMissingContinuation);
+        }
+
+        Ok(Self {})
     }
 }
 
