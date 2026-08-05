@@ -18,13 +18,15 @@ impl Script {
         // Placeholder implementation, while the test suite doesn't cover any
         // runtime functionality yet.
 
-        let _ = host;
+        for token in source.split_whitespace() {
+            let Some(host_fn) = host.resolve_fn(token) else {
+                return Err(CompileError::UnresolvedName);
+            };
 
-        if source.is_empty() {
-            Err(CompileError::BlockIsMissingContinuation)
-        } else {
-            Err(CompileError::UnresolvedName)
+            let _ = host_fn;
         }
+
+        Err(CompileError::BlockIsMissingContinuation)
     }
 }
 

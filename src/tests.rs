@@ -22,12 +22,39 @@ fn unresolved_name() {
     assert_eq!(result, Err(CompileError::UnresolvedName));
 }
 
+#[test]
+fn call_to_function_that_returns() {
+    // Calling only a function that returns leaves the caller without a
+    // continuation, which must result in an error.
+
+    let host = TestHost::default();
+
+    let result = Script::compile("signal", &host);
+    assert_eq!(result, Err(CompileError::BlockIsMissingContinuation));
+}
+
 #[derive(Default)]
 struct TestHost {}
 
+impl TestHost {
+    const NAMESPACE: u16 = 256;
+
+    const FN_SIGNAL: u16 = 0;
+}
+
 impl Host for TestHost {
     fn resolve_fn(&self, name: &str) -> Option<HostFn> {
-        let _ = name;
-        None
+        let function = match name {
+            "signal" => Self::FN_SIGNAL,
+
+            _ => {
+                return None;
+            }
+        };
+
+        Some(HostFn {
+            namespace: Self::NAMESPACE,
+            function,
+        })
     }
 }
