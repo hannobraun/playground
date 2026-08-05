@@ -4,7 +4,7 @@ Monobloc is a programming language with the goal of making programming more fun 
 
 ## Status
 
-This repository is empty. I've just created it. There's a prototype in an internal repository, and I'm starting to clean up parts of it to publish them here.
+Development has just started; there's not much here yet. But there is a more advanced prototype in an internal repository, and I'm starting to clean up parts of it to publish here.
 
 ## License
 
