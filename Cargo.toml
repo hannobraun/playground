@@ -8,3 +8,6 @@ missing_docs = "warn"
 
 [dependencies]
 thiserror = "2.0.19"
+
+[dev-dependencies]
+anyhow = "1.0.104"
