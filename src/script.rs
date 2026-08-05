@@ -11,8 +11,12 @@ impl Script {
     pub fn compile(source: &str) -> Result<Self, CompileError> {
         // Placeholder implementation, while the test suite doesn't cover any
         // runtime functionality yet.
-        let _ = source;
-        Err(CompileError::BlockIsMissingContinuation)
+
+        if source.is_empty() {
+            Err(CompileError::BlockIsMissingContinuation)
+        } else {
+            Err(CompileError::UnresolvedName)
+        }
     }
 }
 
@@ -29,4 +33,8 @@ pub enum CompileError {
     /// continue.
     #[error("block is missing a continuation")]
     BlockIsMissingContinuation,
+
+    /// # A name in the source could not be resolved to a function or binding
+    #[error("unresolved name")]
+    UnresolvedName,
 }
