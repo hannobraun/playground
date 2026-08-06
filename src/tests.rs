@@ -149,9 +149,7 @@ impl Host for TestHost {
         };
 
         match TestHostFn::try_from(host_fn.function) {
-            Ok(TestHostFn::Exit) => false,
-            Ok(TestHostFn::Signal) => true,
-
+            Ok(test_host_fn) => test_host_fn.returns(),
             Err(function) => {
                 panic!("Invalid function: `{function}`");
             }
@@ -188,4 +186,13 @@ impl Host for TestHost {
 enum TestHostFn {
     Exit,
     Signal,
+}
+
+impl TestHostFn {
+    fn returns(&self) -> bool {
+        match self {
+            TestHostFn::Exit => false,
+            TestHostFn::Signal => true,
+        }
+    }
 }
