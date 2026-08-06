@@ -110,6 +110,47 @@ fn syntactically_correct_source_code() {
     });
 }
 
+#[test]
+fn semantically_correct_source_code() {
+    // Semantically correct source code should never trigger a crash.
+
+    arbtest(|u| {
+        let mut source = String::new();
+        let mut last_call_returns = true;
+
+        for _ in 0..u.arbitrary_len::<TestHostFn>()? {
+            if !source.is_empty() {
+                source.push(' ');
+            }
+
+            let test_host_fn = u.arbitrary::<TestHostFn>()?;
+
+            let fragment = match test_host_fn {
+                TestHostFn::Exit => "exit",
+                TestHostFn::Signal => "signal",
+            };
+            source.push_str(fragment);
+
+            last_call_returns = test_host_fn.returns();
+            if !last_call_returns {
+                break;
+            }
+        }
+
+        if last_call_returns {
+            source.push_str(" exit");
+        }
+
+        let mut host = TestHost::default();
+
+        if let Ok(script) = Script::compile(&source, &host) {
+            script.run(&mut host);
+        }
+
+        Ok(())
+    });
+}
+
 #[derive(Default)]
 struct TestHost {
     calls_to_exit: usize,
