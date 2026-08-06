@@ -1,3 +1,5 @@
+use arbtest::arbtest;
+
 use crate::{CompileError, Host, HostFn, Script};
 
 #[test]
@@ -60,6 +62,23 @@ fn unreachable_code() -> anyhow::Result<()> {
     assert_eq!(result, Err(CompileError::UnreachableCode));
 
     Ok(())
+}
+
+#[test]
+fn random_source_code() {
+    // Random source code should never trigger a crash.
+
+    arbtest(|u| {
+        let source = u.arbitrary::<String>()?;
+
+        let mut host = TestHost::default();
+
+        if let Ok(script) = Script::compile(&source, &host) {
+            script.run(&mut host);
+        }
+
+        Ok(())
+    });
 }
 
 #[derive(Default)]
