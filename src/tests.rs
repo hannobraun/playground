@@ -112,11 +112,15 @@ fn syntactically_correct_source_code() {
 
 #[test]
 fn semantically_correct_source_code() {
-    // Semantically correct source code should never trigger a crash and always
-    // compile.
+    // Semantically correct source code should never trigger a crash, always
+    // compile, and evaluate all host function calls.
 
     arbtest(|u| {
         let mut source = String::new();
+
+        let mut calls_to_exit = 0;
+        let mut calls_to_signal = 0;
+
         let mut last_call_returns = true;
 
         for _ in 0..u.arbitrary_len::<TestHostFn>()? {
@@ -127,8 +131,14 @@ fn semantically_correct_source_code() {
             let test_host_fn = u.arbitrary::<TestHostFn>()?;
 
             let fragment = match test_host_fn {
-                TestHostFn::Exit => "exit",
-                TestHostFn::Signal => "signal",
+                TestHostFn::Exit => {
+                    calls_to_exit += 1;
+                    "exit"
+                }
+                TestHostFn::Signal => {
+                    calls_to_signal += 1;
+                    "signal"
+                }
             };
             source.push_str(fragment);
 
@@ -139,6 +149,7 @@ fn semantically_correct_source_code() {
         }
 
         if last_call_returns {
+            calls_to_exit += 1;
             source.push_str(" exit");
         }
 
@@ -146,6 +157,9 @@ fn semantically_correct_source_code() {
 
         let script = Script::compile(&source, &host).unwrap();
         script.run(&mut host);
+
+        assert_eq!(host.calls_to_exit, calls_to_exit);
+        assert_eq!(host.calls_to_signal, calls_to_signal);
 
         Ok(())
     });
