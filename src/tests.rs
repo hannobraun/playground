@@ -97,8 +97,8 @@ impl TestHost {
 impl Host for TestHost {
     fn resolve_fn(&self, name: &str) -> Option<HostFn> {
         let function = match name {
-            "exit" => Self::FN_EXIT,
-            "signal" => Self::FN_SIGNAL,
+            "exit" => TestHostFn::Exit,
+            "signal" => TestHostFn::Signal,
 
             _ => {
                 return None;
@@ -107,7 +107,7 @@ impl Host for TestHost {
 
         Some(HostFn {
             namespace: Self::NAMESPACE,
-            function,
+            function: function.into(),
         })
     }
 
@@ -119,11 +119,11 @@ impl Host for TestHost {
             );
         };
 
-        match host_fn.function {
-            Self::FN_EXIT => false,
-            Self::FN_SIGNAL => true,
+        match TestHostFn::try_from(host_fn.function) {
+            Ok(TestHostFn::Exit) => false,
+            Ok(TestHostFn::Signal) => true,
 
-            function => {
+            Err(function) => {
                 panic!("Invalid function: `{function}`");
             }
         }
@@ -150,4 +150,11 @@ impl Host for TestHost {
             }
         }
     }
+}
+
+#[derive(num_enum::IntoPrimitive, num_enum::TryFromPrimitive)]
+#[repr(u16)]
+enum TestHostFn {
+    Exit,
+    Signal,
 }
