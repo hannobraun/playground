@@ -112,7 +112,8 @@ fn syntactically_correct_source_code() {
 
 #[test]
 fn semantically_correct_source_code() {
-    // Semantically correct source code should never trigger a crash.
+    // Semantically correct source code should never trigger a crash and always
+    // compile.
 
     arbtest(|u| {
         let mut source = String::new();
@@ -143,9 +144,8 @@ fn semantically_correct_source_code() {
 
         let mut host = TestHost::default();
 
-        if let Ok(script) = Script::compile(&source, &host) {
-            script.run(&mut host);
-        }
+        let script = Script::compile(&source, &host).unwrap();
+        script.run(&mut host);
 
         Ok(())
     });
