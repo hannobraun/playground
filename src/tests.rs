@@ -81,6 +81,35 @@ fn random_source_code() {
     });
 }
 
+#[test]
+fn syntactically_correct_source_code() {
+    // Syntactically correct source code should never trigger a crash.
+
+    arbtest(|u| {
+        let mut source = String::new();
+
+        for _ in 0..u.arbitrary_len::<TestHostFn>()? {
+            if !source.is_empty() {
+                source.push(' ');
+            }
+
+            let fragment = match u.arbitrary::<TestHostFn>()? {
+                TestHostFn::Exit => "exit",
+                TestHostFn::Signal => "signal",
+            };
+            source.push_str(fragment);
+        }
+
+        let mut host = TestHost::default();
+
+        if let Ok(script) = Script::compile(&source, &host) {
+            script.run(&mut host);
+        }
+
+        Ok(())
+    });
+}
+
 #[derive(Default)]
 struct TestHost {
     calls_to_exit: usize,
@@ -152,7 +181,9 @@ impl Host for TestHost {
     }
 }
 
-#[derive(num_enum::IntoPrimitive, num_enum::TryFromPrimitive)]
+#[derive(
+    arbitrary::Arbitrary, num_enum::IntoPrimitive, num_enum::TryFromPrimitive,
+)]
 #[repr(u16)]
 enum TestHostFn {
     Exit,
