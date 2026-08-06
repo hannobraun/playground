@@ -13,6 +13,9 @@ name = "arbitrary"
 version = "1.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3d036a3c4ab069c7b410a2ce876bd74808d2d0888a82667669f8e783a898bf1"
+dependencies = [
+ "derive_arbitrary",
+]
 
 [[package]]
 name = "arbtest"
@@ -21,6 +24,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2a3be567977128c0f71ad1462d9624ccda712193d124e944252f0c5789a06d46"
 dependencies = [
  "arbitrary",
+]
+
+[[package]]
+name = "derive_arbitrary"
+version = "1.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e567bd82dcff979e4b03460c307b3cdc9e96fde3d73bed1496d2bc75d9dd62a"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
 ]
 
 [[package]]
@@ -56,6 +70,7 @@ name = "monobloc"
 version = "0.0.0"
 dependencies = [
  "anyhow",
+ "arbitrary",
  "arbtest",
  "num_enum",
  "thiserror",
