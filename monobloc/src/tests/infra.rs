@@ -6,6 +6,7 @@ use crate::{Host, HostFn};
 
 pub struct TestHost {
     functions_by_name: BTreeMap<&'static str, u16>,
+    returns: BTreeMap<u16, bool>,
     calls: BTreeMap<u16, usize>,
 }
 
@@ -17,16 +18,20 @@ impl TestHost {
         Fn: TestHostFn,
     {
         let mut functions_by_name = BTreeMap::new();
+        let mut returns = BTreeMap::new();
+
         let mut current_id = 0;
 
         while let Some(function) = Fn::from_id(current_id) {
             functions_by_name.insert(function.name(), current_id);
+            returns.insert(current_id, function.returns());
 
             current_id += 1;
         }
 
         Self {
             functions_by_name,
+            returns,
             calls: BTreeMap::new(),
         }
     }
@@ -61,15 +66,7 @@ impl Host for TestHost {
             );
         };
 
-        match ContinuationHostFn::from_id(host_fn.function) {
-            Some(test_host_fn) => test_host_fn.returns(),
-            None => {
-                panic!(
-                    "Invalid function: `{function}`",
-                    function = host_fn.function,
-                );
-            }
-        }
+        self.returns[&host_fn.function]
     }
 
     fn call_fn(&mut self, host_fn: &HostFn) {
