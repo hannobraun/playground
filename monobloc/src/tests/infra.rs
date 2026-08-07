@@ -14,7 +14,7 @@ impl TestHost {
 
     pub fn new<Fn>() -> Self
     where
-        Fn: TryFrom<u16> + ToString,
+        Fn: TestHostFn,
     {
         let mut functions_by_name = BTreeMap::new();
         let mut current_id = 0;
@@ -78,7 +78,7 @@ impl Host for TestHost {
     }
 }
 
-pub trait TestHostFn {
+pub trait TestHostFn: TryFrom<u16> + ToString {
     fn returns(&self) -> bool;
 }
 
