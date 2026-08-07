@@ -2,7 +2,7 @@ use arbtest::arbtest;
 
 use crate::{
     CompileError, Script,
-    tests::infra::{ContinuationHostFn, TestHost},
+    tests::infra::{ContinuationHostFn, TestHost, TestHostFn},
 };
 
 #[test]

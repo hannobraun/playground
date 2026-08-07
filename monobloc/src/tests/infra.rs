@@ -78,6 +78,10 @@ impl Host for TestHost {
     }
 }
 
+pub trait TestHostFn {
+    fn returns(&self) -> bool;
+}
+
 #[derive(
     arbitrary::Arbitrary, num_enum::IntoPrimitive, num_enum::TryFromPrimitive,
 )]
@@ -87,8 +91,8 @@ pub enum ContinuationHostFn {
     Signal,
 }
 
-impl ContinuationHostFn {
-    pub fn returns(&self) -> bool {
+impl TestHostFn for ContinuationHostFn {
+    fn returns(&self) -> bool {
         match self {
             ContinuationHostFn::Exit => false,
             ContinuationHostFn::Signal => true,
