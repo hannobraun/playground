@@ -19,7 +19,7 @@ impl TestHost {
         let mut functions_by_name = BTreeMap::new();
         let mut current_id = 0;
 
-        while let Ok(function) = Fn::try_from(current_id) {
+        while let Some(function) = Fn::from_id(current_id) {
             functions_by_name.insert(function.to_string(), current_id);
 
             current_id += 1;
@@ -61,10 +61,13 @@ impl Host for TestHost {
             );
         };
 
-        match ContinuationHostFn::try_from(host_fn.function) {
-            Ok(test_host_fn) => test_host_fn.returns(),
-            Err(function) => {
-                panic!("Invalid function: `{function}`");
+        match ContinuationHostFn::from_id(host_fn.function) {
+            Some(test_host_fn) => test_host_fn.returns(),
+            None => {
+                panic!(
+                    "Invalid function: `{function}`",
+                    function = host_fn.function,
+                );
             }
         }
     }
@@ -83,6 +86,10 @@ impl Host for TestHost {
 
 pub trait TestHostFn: Into<u16> + TryFrom<u16> + ToString {
     fn returns(&self) -> bool;
+
+    fn from_id(id: u16) -> Option<Self> {
+        Self::try_from(id).ok()
+    }
 
     fn id(self) -> u16 {
         self.into()
