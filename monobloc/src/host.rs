@@ -25,8 +25,8 @@ pub trait Host {
     /// the language.)
     fn resolve_fn(&self, name: &str) -> Option<HostFn>;
 
-    /// # Indicate whether the provided function returns
-    fn fn_returns(&self, host_fn: &HostFn) -> bool;
+    /// # Return the attributes of the given host function
+    fn fn_attrs(&self, host_fn: &HostFn) -> &HostFnAttrs;
 
     /// # Call the provided host function
     fn call_fn(&mut self, host_fn: &HostFn);
@@ -68,4 +68,24 @@ pub struct HostFn {
 
     /// # A unique identifier for the host function within its namespace
     pub function: u16,
+}
+
+/// # The attributes of a specific host function
+///
+/// This struct is returned by [`Host::fn_attrs`].
+///
+/// ## Design Note
+///
+/// In principle, this struct could be merged into [`HostFn`], which would then
+/// be the single struct that both identifies a host function and provides
+/// information on all of its attributes.
+///
+/// However, `HostFn` has to be stored by the language implementation as part of
+/// any code representation. Adding more data to it would increase the code
+/// size. Separating the concerns of identity and attributes into two structs
+/// avoids this overhead.
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct HostFnAttrs {
+    /// # Indicates whether the host function returns
+    pub returns: bool,
 }

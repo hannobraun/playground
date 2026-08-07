@@ -2,11 +2,11 @@
 
 use std::collections::BTreeMap;
 
-use crate::{Host, HostFn};
+use crate::{Host, HostFn, host::HostFnAttrs};
 
 pub struct TestHost {
     functions_by_name: BTreeMap<&'static str, u16>,
-    returns: BTreeMap<u16, bool>,
+    attrs: BTreeMap<u16, HostFnAttrs>,
     calls: BTreeMap<u16, usize>,
 }
 
@@ -18,20 +18,20 @@ impl TestHost {
         Fn: TestHostFn,
     {
         let mut functions_by_name = BTreeMap::new();
-        let mut returns = BTreeMap::new();
+        let mut attrs = BTreeMap::new();
 
         let mut current_id = 0;
 
         while let Some(function) = Fn::from_id(current_id) {
             functions_by_name.insert(function.name(), current_id);
-            returns.insert(current_id, function.returns());
+            attrs.insert(current_id, *function.attrs());
 
             current_id += 1;
         }
 
         Self {
             functions_by_name,
-            returns,
+            attrs,
             calls: BTreeMap::new(),
         }
     }
@@ -58,7 +58,7 @@ impl Host for TestHost {
         })
     }
 
-    fn fn_returns(&self, host_fn: &HostFn) -> bool {
+    fn fn_attrs(&self, host_fn: &HostFn) -> &HostFnAttrs {
         let Self::NAMESPACE = host_fn.namespace else {
             panic!(
                 "Invalid namespace: `{namespace}`",
@@ -66,7 +66,7 @@ impl Host for TestHost {
             );
         };
 
-        self.returns[&host_fn.function]
+        &self.attrs[&host_fn.function]
     }
 
     fn call_fn(&mut self, host_fn: &HostFn) {
@@ -83,7 +83,7 @@ impl Host for TestHost {
 
 pub trait TestHostFn: Into<u16> + TryFrom<u16> {
     fn name(&self) -> &'static str;
-    fn returns(&self) -> bool;
+    fn attrs(&self) -> &HostFnAttrs;
 
     fn from_id(id: u16) -> Option<Self> {
         Self::try_from(id).ok()

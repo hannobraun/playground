@@ -28,7 +28,7 @@ impl Script {
                 return Err(CompileError::UnresolvedName);
             };
 
-            block_is_missing_continuation = host.fn_returns(&host_fn);
+            block_is_missing_continuation = host.fn_attrs(&host_fn).returns;
             block.push(host_fn);
 
             if !block_is_missing_continuation {

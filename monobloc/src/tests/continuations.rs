@@ -2,6 +2,7 @@ use arbtest::arbtest;
 
 use crate::{
     CompileError, Script,
+    host::HostFnAttrs,
     tests::infra::{TestHost, TestHostFn},
 };
 
@@ -88,7 +89,7 @@ fn semantically_correct_source_code() {
             };
             source.push_str(fragment);
 
-            last_call_returns = test_host_fn.returns();
+            last_call_returns = test_host_fn.attrs().returns;
             if !last_call_returns {
                 break;
             }
@@ -135,10 +136,10 @@ impl TestHostFn for ContinuationHostFn {
         }
     }
 
-    fn returns(&self) -> bool {
+    fn attrs(&self) -> &HostFnAttrs {
         match self {
-            ContinuationHostFn::Exit => false,
-            ContinuationHostFn::Signal => true,
+            ContinuationHostFn::Exit => &HostFnAttrs { returns: false },
+            ContinuationHostFn::Signal => &HostFnAttrs { returns: true },
         }
     }
 }
