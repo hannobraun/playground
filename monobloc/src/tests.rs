@@ -9,6 +9,11 @@ use crate::{
     tests::infra::{TestHost, TestHostFn},
 };
 
+// The following tests are either very general, or they are very insular and
+// don't fit into any of the larger groups of tests, for which there are modules
+// above. As the language grows and more tests are being added, some of them may
+// be grouped with new tests, into a new module.
+
 #[test]
 fn unresolved_name() {
     // A name in the source that can not be resolved to a function or binding
