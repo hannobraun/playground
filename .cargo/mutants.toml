@@ -1,0 +1,7 @@
+exclude_globs = [
+    # This is rather simple code that runs as part of the CI build and regularly
+    # during local development. This probably means that meaningful bugs in here
+    # should become obvious pretty quickly, and writing automated tests for it
+    # seems non-trivial.
+    "builder/**",
+]

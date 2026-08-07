@@ -8,5 +8,8 @@ pkgs.mkShell {
 
     # Rust uses `cc` as a linker, which this package provides.
     clang
+
+    # Used for mutation testing. https://mutants.rs/
+    cargo-mutants
   ];
 }

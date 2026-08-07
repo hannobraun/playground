@@ -3,3 +3,7 @@
 
 # direnv - https://direnv.net/
 /.direnv
+
+# cargo-mutants - https://mutants.rs/
+/mutants.out
+/mutants.out.old
