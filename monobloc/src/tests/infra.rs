@@ -1,18 +1,24 @@
 //! Infrastructure code used by test suites
 
+use std::collections::BTreeMap;
+
 use crate::{Host, HostFn};
 
 #[derive(Default)]
 pub struct TestHost {
-    pub calls_to_exit: usize,
-    pub calls_to_signal: usize,
+    calls: BTreeMap<u16, usize>,
 }
 
 impl TestHost {
     const NAMESPACE: u16 = 256;
 
-    const FN_EXIT: u16 = 0;
-    const FN_SIGNAL: u16 = 1;
+    pub fn take_num_calls_to(&mut self, test_host_fn: impl Into<u16>) -> usize {
+        self.calls.remove(&test_host_fn.into()).unwrap_or(0)
+    }
+
+    pub fn expect_no_other_calls(&self) {
+        assert!(self.calls.is_empty());
+    }
 }
 
 impl Host for TestHost {
@@ -56,18 +62,7 @@ impl Host for TestHost {
             );
         };
 
-        match host_fn.function {
-            Self::FN_EXIT => {
-                self.calls_to_exit += 1;
-            }
-            Self::FN_SIGNAL => {
-                self.calls_to_signal += 1;
-            }
-
-            function => {
-                panic!("Invalid function: `{function}`");
-            }
-        }
+        *self.calls.entry(host_fn.function).or_default() += 1;
     }
 }
 
