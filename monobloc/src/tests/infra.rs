@@ -58,7 +58,7 @@ impl Host for TestHost {
             );
         };
 
-        match TestHostFn::try_from(host_fn.function) {
+        match ContinuationHostFn::try_from(host_fn.function) {
             Ok(test_host_fn) => test_host_fn.returns(),
             Err(function) => {
                 panic!("Invalid function: `{function}`");
@@ -82,25 +82,25 @@ impl Host for TestHost {
     arbitrary::Arbitrary, num_enum::IntoPrimitive, num_enum::TryFromPrimitive,
 )]
 #[repr(u16)]
-pub enum TestHostFn {
+pub enum ContinuationHostFn {
     Exit,
     Signal,
 }
 
-impl TestHostFn {
+impl ContinuationHostFn {
     pub fn returns(&self) -> bool {
         match self {
-            TestHostFn::Exit => false,
-            TestHostFn::Signal => true,
+            ContinuationHostFn::Exit => false,
+            ContinuationHostFn::Signal => true,
         }
     }
 }
 
-impl fmt::Display for TestHostFn {
+impl fmt::Display for ContinuationHostFn {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let name = match self {
-            TestHostFn::Exit => "exit",
-            TestHostFn::Signal => "signal",
+            ContinuationHostFn::Exit => "exit",
+            ContinuationHostFn::Signal => "signal",
         };
 
         write!(f, "{name}")

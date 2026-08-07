@@ -6,7 +6,7 @@ use arbtest::arbtest;
 
 use crate::{
     CompileError, Script,
-    tests::infra::{TestHost, TestHostFn},
+    tests::infra::{ContinuationHostFn, TestHost},
 };
 
 // The following tests are either very general, or they are very insular and
@@ -19,7 +19,7 @@ fn unresolved_name() {
     // A name in the source that can not be resolved to a function or binding
     // must result in a compile error.
 
-    let host = TestHost::new::<TestHostFn>();
+    let host = TestHost::new::<ContinuationHostFn>();
 
     let result = Script::compile("unresolved", &host);
     assert_eq!(result, Err(CompileError::UnresolvedName));
@@ -32,7 +32,7 @@ fn random_source_code() {
     arbtest(|u| {
         let source = u.arbitrary::<String>()?;
 
-        let mut host = TestHost::new::<TestHostFn>();
+        let mut host = TestHost::new::<ContinuationHostFn>();
 
         if let Ok(script) = Script::compile(&source, &host) {
             script.run(&mut host);
@@ -49,19 +49,19 @@ fn syntactically_correct_source_code() {
     arbtest(|u| {
         let mut source = String::new();
 
-        for _ in 0..u.arbitrary_len::<TestHostFn>()? {
+        for _ in 0..u.arbitrary_len::<ContinuationHostFn>()? {
             if !source.is_empty() {
                 source.push(' ');
             }
 
-            let fragment = match u.arbitrary::<TestHostFn>()? {
-                TestHostFn::Exit => "exit",
-                TestHostFn::Signal => "signal",
+            let fragment = match u.arbitrary::<ContinuationHostFn>()? {
+                ContinuationHostFn::Exit => "exit",
+                ContinuationHostFn::Signal => "signal",
             };
             source.push_str(fragment);
         }
 
-        let mut host = TestHost::new::<TestHostFn>();
+        let mut host = TestHost::new::<ContinuationHostFn>();
 
         if let Ok(script) = Script::compile(&source, &host) {
             script.run(&mut host);
