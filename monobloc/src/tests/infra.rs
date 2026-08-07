@@ -1,16 +1,35 @@
 //! Infrastructure code used by test suites
 
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, fmt};
 
 use crate::{Host, HostFn};
 
-#[derive(Default)]
 pub struct TestHost {
+    functions_by_name: BTreeMap<String, u16>,
     calls: BTreeMap<u16, usize>,
 }
 
 impl TestHost {
     const NAMESPACE: u16 = 256;
+
+    pub fn new<Fn>() -> Self
+    where
+        Fn: TryFrom<u16> + ToString,
+    {
+        let mut functions_by_name = BTreeMap::new();
+        let mut current_id = 0;
+
+        while let Ok(function) = Fn::try_from(current_id) {
+            functions_by_name.insert(function.to_string(), current_id);
+
+            current_id += 1;
+        }
+
+        Self {
+            functions_by_name,
+            calls: BTreeMap::new(),
+        }
+    }
 
     pub fn take_num_calls_to(&mut self, test_host_fn: impl Into<u16>) -> usize {
         self.calls.remove(&test_host_fn.into()).unwrap_or(0)
@@ -23,18 +42,11 @@ impl TestHost {
 
 impl Host for TestHost {
     fn resolve_fn(&self, name: &str) -> Option<HostFn> {
-        let function = match name {
-            "exit" => TestHostFn::Exit,
-            "signal" => TestHostFn::Signal,
-
-            _ => {
-                return None;
-            }
-        };
+        let &function = self.functions_by_name.get(name)?;
 
         Some(HostFn {
             namespace: Self::NAMESPACE,
-            function: function.into(),
+            function,
         })
     }
 
@@ -81,5 +93,16 @@ impl TestHostFn {
             TestHostFn::Exit => false,
             TestHostFn::Signal => true,
         }
+    }
+}
+
+impl fmt::Display for TestHostFn {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let name = match self {
+            TestHostFn::Exit => "exit",
+            TestHostFn::Signal => "signal",
+        };
+
+        write!(f, "{name}")
     }
 }

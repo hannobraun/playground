@@ -12,7 +12,7 @@ fn empty_block() {
     // Every block must call a continuation. Therefore, empty blocks are
     // invalid and must result in a compile error.
 
-    let host = TestHost::default();
+    let host = TestHost::new::<TestHostFn>();
 
     let result = Script::compile("", &host);
     assert_eq!(result, Err(CompileError::BlockIsMissingContinuation));
@@ -23,7 +23,7 @@ fn unresolved_name() {
     // A name in the source that can not be resolved to a function or binding
     // must result in a compile error.
 
-    let host = TestHost::default();
+    let host = TestHost::new::<TestHostFn>();
 
     let result = Script::compile("unresolved", &host);
     assert_eq!(result, Err(CompileError::UnresolvedName));
@@ -34,7 +34,7 @@ fn call_to_function_that_returns() {
     // Calling only a function that returns leaves the caller without a
     // continuation, which must result in an error.
 
-    let host = TestHost::default();
+    let host = TestHost::new::<TestHostFn>();
 
     let result = Script::compile("signal", &host);
     assert_eq!(result, Err(CompileError::BlockIsMissingContinuation));
@@ -45,7 +45,7 @@ fn call_to_function_that_does_not_return() -> anyhow::Result<()> {
     // Calling a function that does not return provides the block with the
     // continuation it must have.
 
-    let mut host = TestHost::default();
+    let mut host = TestHost::new::<TestHostFn>();
 
     let script = Script::compile("exit", &host)?;
     script.run(&mut host);
@@ -61,7 +61,7 @@ fn unreachable_code() -> anyhow::Result<()> {
     // Any code that follows a call to a function that does not return is
     // invalid, which must result in an error.
 
-    let host = TestHost::default();
+    let host = TestHost::new::<TestHostFn>();
 
     let result = Script::compile("exit signal", &host);
     assert_eq!(result, Err(CompileError::UnreachableCode));
@@ -76,7 +76,7 @@ fn random_source_code() {
     arbtest(|u| {
         let source = u.arbitrary::<String>()?;
 
-        let mut host = TestHost::default();
+        let mut host = TestHost::new::<TestHostFn>();
 
         if let Ok(script) = Script::compile(&source, &host) {
             script.run(&mut host);
@@ -105,7 +105,7 @@ fn syntactically_correct_source_code() {
             source.push_str(fragment);
         }
 
-        let mut host = TestHost::default();
+        let mut host = TestHost::new::<TestHostFn>();
 
         if let Ok(script) = Script::compile(&source, &host) {
             script.run(&mut host);
@@ -158,7 +158,7 @@ fn semantically_correct_source_code() {
             source.push_str(" exit");
         }
 
-        let mut host = TestHost::default();
+        let mut host = TestHost::new::<TestHostFn>();
 
         let script = Script::compile(&source, &host).unwrap();
         script.run(&mut host);
