@@ -31,8 +31,11 @@ impl TestHost {
         }
     }
 
-    pub fn take_num_calls_to(&mut self, test_host_fn: impl Into<u16>) -> usize {
-        self.calls.remove(&test_host_fn.into()).unwrap_or(0)
+    pub fn take_num_calls_to(
+        &mut self,
+        test_host_fn: impl TestHostFn,
+    ) -> usize {
+        self.calls.remove(&test_host_fn.id()).unwrap_or(0)
     }
 
     pub fn expect_no_other_calls(&self) {
@@ -78,8 +81,12 @@ impl Host for TestHost {
     }
 }
 
-pub trait TestHostFn: TryFrom<u16> + ToString {
+pub trait TestHostFn: Into<u16> + TryFrom<u16> + ToString {
     fn returns(&self) -> bool;
+
+    fn id(self) -> u16 {
+        self.into()
+    }
 }
 
 #[derive(
