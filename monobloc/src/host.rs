@@ -89,6 +89,9 @@ pub struct HostFnAttrs {
     /// # The name that uniquely identifies the host function in code
     pub name: &'static str,
 
+    /// # The number of parameters this function consumes
+    pub num_parameters: u8,
+
     /// # Indicates whether the host function returns
     pub returns: bool,
 }

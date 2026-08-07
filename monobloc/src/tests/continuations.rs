@@ -131,10 +131,12 @@ impl TestHostFn for ContinuationHostFn {
         match self {
             ContinuationHostFn::Exit => &HostFnAttrs {
                 name: "exit",
+                num_parameters: 0,
                 returns: false,
             },
             ContinuationHostFn::Signal => &HostFnAttrs {
                 name: "signal",
+                num_parameters: 0,
                 returns: true,
             },
         }
