@@ -30,6 +30,10 @@ impl Script {
 
             let attrs = host.fn_attrs(&host_fn);
 
+            if attrs.num_parameters > 0 {
+                return Err(CompileError::MissingFunctionCallArguments);
+            }
+
             block_is_missing_continuation = attrs.returns;
             block.push(host_fn);
 
@@ -72,6 +76,10 @@ pub enum CompileError {
     /// continue.
     #[error("block is missing a continuation")]
     BlockIsMissingContinuation,
+
+    /// # A function call requires more parameters than arguments are available
+    #[error("missing function call arguments")]
+    MissingFunctionCallArguments,
 
     /// # Code was found in a location that will not be evaluated
     #[error("unreachable code")]
