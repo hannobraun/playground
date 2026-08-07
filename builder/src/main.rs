@@ -8,6 +8,7 @@ fn main() -> anyhow::Result<()> {
     // `#[cfg(test)]`.
     run("Run Clippy", "cargo clippy --all-targets")?;
     run("Run test suite", "cargo test")?;
+    run("Run mutation testing", "cargo mutants")?;
     run("Build documentation", "cargo doc")?;
 
     Ok(())
