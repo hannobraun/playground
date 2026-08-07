@@ -6,7 +6,7 @@ use arbtest::arbtest;
 
 use crate::{
     CompileError, Script,
-    tests::infra::{ContinuationHostFn, TestHost},
+    tests::{continuations::ContinuationHostFn, infra::TestHost},
 };
 
 // The following tests are either very general, or they are very insular and

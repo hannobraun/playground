@@ -93,28 +93,3 @@ pub trait TestHostFn: Into<u16> + TryFrom<u16> {
         self.into()
     }
 }
-
-#[derive(
-    arbitrary::Arbitrary, num_enum::IntoPrimitive, num_enum::TryFromPrimitive,
-)]
-#[repr(u16)]
-pub enum ContinuationHostFn {
-    Exit,
-    Signal,
-}
-
-impl TestHostFn for ContinuationHostFn {
-    fn name(&self) -> &'static str {
-        match self {
-            ContinuationHostFn::Exit => "exit",
-            ContinuationHostFn::Signal => "signal",
-        }
-    }
-
-    fn returns(&self) -> bool {
-        match self {
-            ContinuationHostFn::Exit => false,
-            ContinuationHostFn::Signal => true,
-        }
-    }
-}
