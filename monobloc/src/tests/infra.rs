@@ -1,11 +1,11 @@
 //! Infrastructure code used by test suites
 
-use std::{collections::BTreeMap, fmt};
+use std::collections::BTreeMap;
 
 use crate::{Host, HostFn};
 
 pub struct TestHost {
-    functions_by_name: BTreeMap<String, u16>,
+    functions_by_name: BTreeMap<&'static str, u16>,
     calls: BTreeMap<u16, usize>,
 }
 
@@ -20,7 +20,7 @@ impl TestHost {
         let mut current_id = 0;
 
         while let Some(function) = Fn::from_id(current_id) {
-            functions_by_name.insert(function.to_string(), current_id);
+            functions_by_name.insert(function.name(), current_id);
 
             current_id += 1;
         }
@@ -84,7 +84,8 @@ impl Host for TestHost {
     }
 }
 
-pub trait TestHostFn: Into<u16> + TryFrom<u16> + ToString {
+pub trait TestHostFn: Into<u16> + TryFrom<u16> {
+    fn name(&self) -> &'static str;
     fn returns(&self) -> bool;
 
     fn from_id(id: u16) -> Option<Self> {
@@ -106,21 +107,17 @@ pub enum ContinuationHostFn {
 }
 
 impl TestHostFn for ContinuationHostFn {
+    fn name(&self) -> &'static str {
+        match self {
+            ContinuationHostFn::Exit => "exit",
+            ContinuationHostFn::Signal => "signal",
+        }
+    }
+
     fn returns(&self) -> bool {
         match self {
             ContinuationHostFn::Exit => false,
             ContinuationHostFn::Signal => true,
         }
-    }
-}
-
-impl fmt::Display for ContinuationHostFn {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let name = match self {
-            ContinuationHostFn::Exit => "exit",
-            ContinuationHostFn::Signal => "signal",
-        };
-
-        write!(f, "{name}")
     }
 }
