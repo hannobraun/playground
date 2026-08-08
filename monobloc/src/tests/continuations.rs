@@ -77,17 +77,15 @@ fn semantically_correct_source_code() {
 
             let test_host_fn = u.arbitrary::<ContinuationHostFn>()?;
 
-            let fragment = match test_host_fn {
+            match test_host_fn {
                 ContinuationHostFn::Exit => {
                     calls_to_exit += 1;
-                    "exit"
                 }
                 ContinuationHostFn::Signal => {
                     calls_to_signal += 1;
-                    "signal"
                 }
             };
-            source.push_str(fragment);
+            source.push_str(test_host_fn.name());
 
             last_call_returns = test_host_fn.attrs().returns;
             if !last_call_returns {

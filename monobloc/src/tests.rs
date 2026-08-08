@@ -6,7 +6,10 @@ use arbtest::arbtest;
 
 use crate::{
     CompileError, Script,
-    tests::{continuations::ContinuationHostFn, infra::TestHost},
+    tests::{
+        continuations::ContinuationHostFn,
+        infra::{TestHost, TestHostFn},
+    },
 };
 
 // The following tests are either very general, or they are very insular and
@@ -54,10 +57,7 @@ fn syntactically_correct_source_code() {
                 source.push(' ');
             }
 
-            let fragment = match u.arbitrary::<ContinuationHostFn>()? {
-                ContinuationHostFn::Exit => "exit",
-                ContinuationHostFn::Signal => "signal",
-            };
+            let fragment = u.arbitrary::<ContinuationHostFn>()?.name();
             source.push_str(fragment);
         }
 
