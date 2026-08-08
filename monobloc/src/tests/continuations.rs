@@ -87,7 +87,7 @@ fn semantically_correct_source_code() {
             };
             source.push_str(test_host_fn.attrs().name);
 
-            last_call_returns = test_host_fn.attrs().returns;
+            last_call_returns = test_host_fn.attrs().return_.is_some();
             if !last_call_returns {
                 break;
             }
@@ -132,12 +132,12 @@ impl TestHostFn for ContinuationHostFn {
             ContinuationHostFn::Exit => &HostFnAttrs {
                 name: "exit",
                 num_parameters: 0,
-                returns: false,
+                return_: None,
             },
             ContinuationHostFn::Signal => &HostFnAttrs {
                 name: "signal",
                 num_parameters: 0,
-                returns: true,
+                return_: Some(0),
             },
         }
     }

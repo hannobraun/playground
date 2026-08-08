@@ -92,6 +92,15 @@ pub struct HostFnAttrs {
     /// # The number of parameters this function consumes
     pub num_parameters: u8,
 
-    /// # Indicates whether the host function returns
-    pub returns: bool,
+    /// # Return continuation and number of its parameters
+    ///
+    /// Indicates whether the host function accepts a return continuation,
+    /// meaning if once the host function is done, evaluation resumes after the
+    /// call to the host function.
+    ///
+    /// A value of `Some` indicates that the host function returns. The `u8`
+    /// value indicates the number of return parameters, which may be zero.
+    ///
+    /// A value of `None` indicates that the host function does not return.
+    pub return_: Option<u8>,
 }

@@ -34,7 +34,7 @@ impl Script {
                 return Err(CompileError::MissingFunctionCallArguments);
             }
 
-            block_is_missing_continuation = attrs.returns;
+            block_is_missing_continuation = attrs.return_.is_some();
             block.push(host_fn);
 
             if !block_is_missing_continuation {

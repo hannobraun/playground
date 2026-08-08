@@ -27,7 +27,7 @@ impl TestHostFn for ValueHostFn {
             ValueHostFn::Exit => &HostFnAttrs {
                 name: "exit",
                 num_parameters: 1,
-                returns: false,
+                return_: None,
             },
         }
     }
