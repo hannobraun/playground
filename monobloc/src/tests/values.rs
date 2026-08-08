@@ -27,6 +27,17 @@ fn produce_and_consume_value() -> anyhow::Result<()> {
     Ok(())
 }
 
+#[test]
+fn leave_value_on_the_stack() {
+    // Leaving values on the stack, i.e. producing more than will be consumed,
+    // is invalid and must result in an error.
+
+    let host = TestHost::new::<ValueHostFn>();
+
+    let result = Script::compile("produce produce exit", &host);
+    assert_eq!(result, Err(CompileError::ValuesLeftOnStack));
+}
+
 #[derive(num_enum::IntoPrimitive, num_enum::TryFromPrimitive)]
 #[repr(u16)]
 enum ValueHostFn {

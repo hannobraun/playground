@@ -21,7 +21,7 @@ impl Script {
         let mut block = Vec::new();
 
         let mut block_is_missing_continuation = true;
-        let mut num_values = 0;
+        let mut num_values: u8 = 0;
 
         let mut tokens = source.split_whitespace();
 
@@ -32,9 +32,12 @@ impl Script {
 
             let attrs = host.fn_attrs(&host_fn);
 
-            if attrs.num_parameters > num_values {
+            let Some(num_values_after_parameters) =
+                num_values.checked_sub(attrs.num_parameters)
+            else {
                 return Err(CompileError::MissingFunctionCallArguments);
-            }
+            };
+            num_values = num_values_after_parameters;
 
             if let Some(num_return_params) = attrs.return_ {
                 // This may panic on overflow. I'll clean that up in a later
@@ -48,6 +51,10 @@ impl Script {
             if !block_is_missing_continuation {
                 break;
             }
+        }
+
+        if num_values > 0 {
+            return Err(CompileError::ValuesLeftOnStack);
         }
 
         if tokens.next().is_some() {
@@ -96,4 +103,8 @@ pub enum CompileError {
     /// # A name in the source could not be resolved to a function or binding
     #[error("unresolved name")]
     UnresolvedName,
+
+    /// # Values are left on the stack at the end of a block
+    #[error("values left on stack")]
+    ValuesLeftOnStack,
 }
