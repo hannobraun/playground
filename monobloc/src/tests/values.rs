@@ -15,10 +15,23 @@ fn try_to_consume_missing_value() {
     assert_eq!(result, Err(CompileError::MissingFunctionCallArguments));
 }
 
+#[test]
+fn produce_and_consume_value() -> anyhow::Result<()> {
+    // Producing one value, then consuming it, is valid.
+
+    let mut host = TestHost::new::<ValueHostFn>();
+
+    let script = Script::compile("produce exit", &host)?;
+    script.run(&mut host);
+
+    Ok(())
+}
+
 #[derive(num_enum::IntoPrimitive, num_enum::TryFromPrimitive)]
 #[repr(u16)]
 enum ValueHostFn {
     Exit,
+    Produce,
 }
 
 impl TestHostFn for ValueHostFn {
@@ -28,6 +41,11 @@ impl TestHostFn for ValueHostFn {
                 name: "exit",
                 num_parameters: 1,
                 return_: None,
+            },
+            ValueHostFn::Produce => &HostFnAttrs {
+                name: "produce",
+                num_parameters: 0,
+                return_: Some(1),
             },
         }
     }

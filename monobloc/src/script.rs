@@ -19,7 +19,9 @@ impl Script {
         host: &dyn Host,
     ) -> Result<Self, CompileError> {
         let mut block = Vec::new();
+
         let mut block_is_missing_continuation = true;
+        let mut num_values = 0;
 
         let mut tokens = source.split_whitespace();
 
@@ -30,8 +32,14 @@ impl Script {
 
             let attrs = host.fn_attrs(&host_fn);
 
-            if attrs.num_parameters > 0 {
+            if attrs.num_parameters > num_values {
                 return Err(CompileError::MissingFunctionCallArguments);
+            }
+
+            if let Some(num_return_params) = attrs.return_ {
+                // This may panic on overflow. I'll clean that up in a later
+                // commit within the same pull request.
+                num_values += num_return_params;
             }
 
             block_is_missing_continuation = attrs.return_.is_some();
