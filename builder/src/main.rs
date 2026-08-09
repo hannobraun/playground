@@ -1,6 +1,7 @@
 use clap::Parser;
 
 mod build;
+mod upgrade;
 mod util;
 
 fn main() -> anyhow::Result<()> {
@@ -9,6 +10,9 @@ fn main() -> anyhow::Result<()> {
     match args.command {
         Some(Command::Build) | None => {
             build::build()?;
+        }
+        Some(Command::Upgrade) => {
+            upgrade::upgrade()?;
         }
     }
 
@@ -24,4 +28,5 @@ struct Args {
 #[derive(clap::Subcommand)]
 enum Command {
     Build,
+    Upgrade,
 }
