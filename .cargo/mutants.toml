@@ -3,5 +3,5 @@ exclude_globs = [
     # during local development. This probably means that meaningful bugs in here
     # should become obvious pretty quickly, and writing automated tests for it
     # seems non-trivial.
-    "builder/**",
+    "dev/**",
 ]

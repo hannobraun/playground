@@ -11,5 +11,4 @@ environment:
 
 steps:
   - name: "Set up Rust and run CI build"
-    command: |
-      nix-shell --run "rustup default stable && cargo run --package builder"
+    command: "nix-shell --run 'rustup default stable && cargo run --package dev -- build'"

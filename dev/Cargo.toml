@@ -1,5 +1,5 @@
 [package]
-name = "builder"
+name = "dev"
 edition = "2024"
 publish = false
 
