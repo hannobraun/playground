@@ -5,3 +5,7 @@ publish = false
 
 [dependencies]
 anyhow = "*"
+
+[dependencies.clap]
+version = "*"
+features = ["derive"]
