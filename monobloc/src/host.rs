@@ -86,6 +86,9 @@ pub struct HostFn {
 /// avoids this overhead.
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct HostFnAttrs {
+    /// # The name that uniquely identifies the host function in code
+    pub name: &'static str,
+
     /// # Indicates whether the host function returns
     pub returns: bool,
 }

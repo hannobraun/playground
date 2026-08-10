@@ -128,16 +128,19 @@ pub enum ContinuationHostFn {
 
 impl TestHostFn for ContinuationHostFn {
     fn name(&self) -> &'static str {
-        match self {
-            ContinuationHostFn::Exit => "exit",
-            ContinuationHostFn::Signal => "signal",
-        }
+        self.attrs().name
     }
 
     fn attrs(&self) -> &HostFnAttrs {
         match self {
-            ContinuationHostFn::Exit => &HostFnAttrs { returns: false },
-            ContinuationHostFn::Signal => &HostFnAttrs { returns: true },
+            ContinuationHostFn::Exit => &HostFnAttrs {
+                name: "exit",
+                returns: false,
+            },
+            ContinuationHostFn::Signal => &HostFnAttrs {
+                name: "signal",
+                returns: true,
+            },
         }
     }
 }
