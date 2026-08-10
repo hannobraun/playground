@@ -23,7 +23,7 @@ impl TestHost {
         let mut current_id = 0;
 
         while let Some(function) = Fn::from_id(current_id) {
-            functions_by_name.insert(function.name(), current_id);
+            functions_by_name.insert(function.attrs().name, current_id);
             attrs.insert(current_id, *function.attrs());
 
             current_id += 1;
@@ -82,7 +82,6 @@ impl Host for TestHost {
 }
 
 pub trait TestHostFn: Into<u16> + TryFrom<u16> {
-    fn name(&self) -> &'static str;
     fn attrs(&self) -> &HostFnAttrs;
 
     fn from_id(id: u16) -> Option<Self> {

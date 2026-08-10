@@ -57,7 +57,7 @@ fn syntactically_correct_source_code() {
                 source.push(' ');
             }
 
-            let fragment = u.arbitrary::<ContinuationHostFn>()?.name();
+            let fragment = u.arbitrary::<ContinuationHostFn>()?.attrs().name;
             source.push_str(fragment);
         }
 

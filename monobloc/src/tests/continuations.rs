@@ -85,7 +85,7 @@ fn semantically_correct_source_code() {
                     calls_to_signal += 1;
                 }
             };
-            source.push_str(test_host_fn.name());
+            source.push_str(test_host_fn.attrs().name);
 
             last_call_returns = test_host_fn.attrs().returns;
             if !last_call_returns {
@@ -127,10 +127,6 @@ pub enum ContinuationHostFn {
 }
 
 impl TestHostFn for ContinuationHostFn {
-    fn name(&self) -> &'static str {
-        self.attrs().name
-    }
-
     fn attrs(&self) -> &HostFnAttrs {
         match self {
             ContinuationHostFn::Exit => &HostFnAttrs {
