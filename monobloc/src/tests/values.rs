@@ -1,3 +1,5 @@
+use arbtest::arbtest;
+
 use crate::{
     CompileError, Script,
     host::HostFnAttrs,
@@ -57,9 +59,86 @@ fn produce_too_many_values() {
     assert_eq!(result, Err(CompileError::StackOverflow));
 }
 
-#[derive(num_enum::IntoPrimitive, num_enum::TryFromPrimitive)]
+#[test]
+fn various_value_related_scenarios() {
+    // Compiling the script should always trigger the correct error in regards
+    // to values, or compile and run successfully, if there are not too few or
+    // too many values.
+
+    arbtest(|u| {
+        let mut source = String::new();
+
+        let mut last_call_returns = true;
+        let mut num_values = 0;
+
+        for _ in 0..dbg!(u.arbitrary_len::<ValueHostFn>()?) {
+            if last_call_returns {
+                break;
+            }
+            if !source.is_empty() {
+                source.push(' ');
+            }
+
+            let value_host_fn = u.arbitrary::<ValueHostFn>()?;
+            source.push_str(value_host_fn.attrs().name);
+
+            last_call_returns = value_host_fn.attrs().return_.is_some();
+
+            match value_host_fn {
+                ValueHostFn::Consume => {
+                    num_values -= 1;
+
+                    if num_values < 0 {
+                        break;
+                    }
+                }
+                ValueHostFn::Produce => {
+                    num_values += 1;
+                }
+
+                ValueHostFn::Exit => {
+                    num_values -= 1;
+                    break;
+                }
+            }
+        }
+
+        if last_call_returns {
+            num_values -= 1;
+            source.push(' ');
+            source.push_str(ValueHostFn::Exit.attrs().name);
+        }
+
+        let mut host = TestHost::new::<ValueHostFn>();
+
+        let result = Script::compile(&source, &host);
+
+        match num_values {
+            i32::MIN..=-1 => {
+                assert_eq!(
+                    result,
+                    Err(CompileError::MissingFunctionCallArguments),
+                );
+            }
+            0 => {
+                let script = result.unwrap();
+                script.run(&mut host);
+            }
+            1..=i32::MAX => {
+                assert_eq!(result, Err(CompileError::ValuesLeftOnStack),);
+            }
+        }
+
+        Ok(())
+    });
+}
+
+#[derive(
+    arbitrary::Arbitrary, num_enum::IntoPrimitive, num_enum::TryFromPrimitive,
+)]
 #[repr(u16)]
 enum ValueHostFn {
+    Consume,
     Exit,
     Produce,
 }
@@ -67,6 +146,11 @@ enum ValueHostFn {
 impl TestHostFn for ValueHostFn {
     fn attrs(&self) -> &HostFnAttrs {
         match self {
+            ValueHostFn::Consume => &HostFnAttrs {
+                name: "consume",
+                num_parameters: 1,
+                return_: Some(0),
+            },
             ValueHostFn::Exit => &HostFnAttrs {
                 name: "exit",
                 num_parameters: 1,
