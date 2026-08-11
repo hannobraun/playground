@@ -38,6 +38,25 @@ fn leave_value_on_the_stack() {
     assert_eq!(result, Err(CompileError::ValuesLeftOnStack));
 }
 
+#[test]
+fn produce_too_many_values() {
+    // There's a maximum number of values that the stack can hold. Going over
+    // that should result in a compile error.
+
+    let mut source = String::new();
+
+    for _ in 0..256 {
+        source.push_str("produce ");
+    }
+
+    source.push_str("exit");
+
+    let host = TestHost::new::<ValueHostFn>();
+
+    let result = Script::compile(&source, &host);
+    assert_eq!(result, Err(CompileError::StackOverflow));
+}
+
 #[derive(num_enum::IntoPrimitive, num_enum::TryFromPrimitive)]
 #[repr(u16)]
 enum ValueHostFn {

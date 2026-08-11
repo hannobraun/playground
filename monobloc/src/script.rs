@@ -40,9 +40,13 @@ impl Script {
             num_values = num_values_after_parameters;
 
             if let Some(num_return_params) = attrs.return_ {
-                // This may panic on overflow. I'll clean that up in a later
-                // commit within the same pull request.
-                num_values += num_return_params;
+                let Some(num_values_after_return) =
+                    num_values.checked_add(num_return_params)
+                else {
+                    return Err(CompileError::StackOverflow);
+                };
+
+                num_values = num_values_after_return;
             }
 
             block_is_missing_continuation = attrs.return_.is_some();
@@ -95,6 +99,10 @@ pub enum CompileError {
     /// # A function call requires more parameters than arguments are available
     #[error("missing function call arguments")]
     MissingFunctionCallArguments,
+
+    /// # The number of values has exceeded the capacity of the stack
+    #[error("stack overflow")]
+    StackOverflow,
 
     /// # Code was found in a location that will not be evaluated
     #[error("unreachable code")]
