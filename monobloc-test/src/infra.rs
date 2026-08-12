@@ -2,7 +2,7 @@
 
 use std::collections::BTreeMap;
 
-use crate::{Host, HostFn, HostFnAttrs};
+use monobloc::{Host, HostFn, HostFnAttrs};
 
 pub struct TestHost {
     functions_by_name: BTreeMap<&'static str, u16>,

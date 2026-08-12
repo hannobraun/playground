@@ -5,3 +5,8 @@ exclude_globs = [
     # seems non-trivial.
     "dev/**",
 ]
+
+# End-to-end tests are located in a dedicated crate. Without this option,
+# `cargo mutants` will not run the tests from that dedicated crate against
+# mutants in the main `monobloc` crate.
+test_workspace = true

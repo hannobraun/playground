@@ -8,12 +8,3 @@ missing_docs = "warn"
 
 [dependencies]
 thiserror = "2.0.20"
-
-[dev-dependencies]
-anyhow = "1.0.104"
-arbtest = "0.3.2"
-num_enum = "0.7.6"
-
-[dev-dependencies.arbitrary]
-version = "1.4.2"
-features = ["derive"]

@@ -1,0 +1,16 @@
+[package]
+name = "monobloc-test"
+edition = "2024"
+publish = false
+
+[dependencies]
+anyhow = "1.0.104"
+arbtest = "0.3.2"
+num_enum = "0.7.6"
+
+[dependencies.arbitrary]
+version = "1.4.2"
+features = ["derive"]
+
+[dependencies.monobloc]
+path = "../monobloc"

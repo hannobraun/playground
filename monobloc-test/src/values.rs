@@ -1,9 +1,8 @@
 use arbtest::arbtest;
 
-use crate::{
-    CompileError, HostFnAttrs, Script,
-    tests::infra::{TestHost, TestHostFn},
-};
+use monobloc::{CompileError, HostFnAttrs, Script};
+
+use crate::infra::{TestHost, TestHostFn};
 
 #[test]
 fn try_to_consume_missing_value() {

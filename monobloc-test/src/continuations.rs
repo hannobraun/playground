@@ -1,10 +1,8 @@
 use arbtest::arbtest;
 
-use crate::{
-    CompileError, Script,
-    host::HostFnAttrs,
-    tests::infra::{TestHost, TestHostFn},
-};
+use monobloc::{CompileError, HostFnAttrs, Script};
+
+use crate::infra::{TestHost, TestHostFn};
 
 #[test]
 fn empty_block() {

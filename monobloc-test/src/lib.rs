@@ -1,16 +1,27 @@
+//! # End-to-end test for the main `monobloc` crate
+//!
+//! ## Design Note
+//!
+//! It is easy to add a type which is supposed to be part of the public API, but
+//! forget to make this type available in a location where users from outside of
+//! the crate can actually access it.
+//!
+//! Having the end-to-end crates in a dedicated crate ensures that such a
+//! mistake gets caught immediately.
+
+#![cfg(test)]
+
 mod continuations;
 mod values;
 
 pub mod infra;
 
 use arbtest::arbtest;
+use monobloc::{CompileError, Script};
 
-use crate::{
-    CompileError, Script,
-    tests::{
-        continuations::ContinuationHostFn,
-        infra::{TestHost, TestHostFn},
-    },
+use self::{
+    continuations::ContinuationHostFn,
+    infra::{TestHost, TestHostFn},
 };
 
 // The following tests are either very general, or they are very insular and
