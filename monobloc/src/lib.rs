@@ -7,6 +7,6 @@ mod script;
 mod tests;
 
 pub use self::{
-    host::{Host, HostFn},
+    host::{Host, HostFn, HostFnAttrs},
     script::{CompileError, Script},
 };

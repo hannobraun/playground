@@ -2,7 +2,7 @@
 
 use std::collections::BTreeMap;
 
-use crate::{Host, HostFn, host::HostFnAttrs};
+use crate::{Host, HostFn, HostFnAttrs};
 
 pub struct TestHost {
     functions_by_name: BTreeMap<&'static str, u16>,

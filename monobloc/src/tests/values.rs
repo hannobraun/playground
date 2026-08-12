@@ -1,8 +1,7 @@
 use arbtest::arbtest;
 
 use crate::{
-    CompileError, Script,
-    host::HostFnAttrs,
+    CompileError, HostFnAttrs, Script,
     tests::infra::{TestHost, TestHostFn},
 };
 
