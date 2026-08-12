@@ -1,3 +1,5 @@
+use crate::Value;
+
 /// # Abstract interface to the host
 ///
 /// Monobloc is an embeddable programming language. Its implementation must be
@@ -29,7 +31,7 @@ pub trait Host {
     fn fn_attrs(&self, host_fn: &HostFn) -> &HostFnAttrs;
 
     /// # Call the provided host function
-    fn call_fn(&mut self, host_fn: &HostFn);
+    fn call_fn(&mut self, host_fn: &HostFn, host_call: &mut dyn HostCall);
 }
 
 /// # Represents a specific host function
@@ -103,4 +105,60 @@ pub struct HostFnAttrs {
     ///
     /// A value of `None` indicates that the host function does not return.
     pub return_: Option<u8>,
+}
+
+/// # Abstract interface for handling a call to a host function
+///
+/// This trait is implemented by a part of the language implementation that is
+/// performing a host call at runtime. It is made available to implementations
+/// of [`Host`], via [`Host::call_fn`].
+///
+/// ## Design Note
+///
+/// The following (perhaps simpler) alternatives to making this a trait were
+/// considered and rejected:
+///
+/// 1. Substituting this with a struct that provides a similar interface would
+///    tie the [`Host`] trait to a specific implementation. With a trait, we can
+///    have multiple implementations, for example specific ones for testing or
+///    for user-specific needs.
+/// 2. Storing the inputs and outputs in a struct directly would either require
+///    a static allocation that is sized to the host function with the highest
+///    number of parameters, or dynamic allocation. Either would represent an
+///    undesirable overhead.
+/// 3. Passing inputs as a parameter to [`Host::call_fn`] and returning outputs
+///    from the method directly would impose similar allocation requirements as
+///    alternative 2.
+/// 4. Passing a struct with slices that reference inputs and outputs would
+///    either limit the implementation in terms of how it can store values, or
+///    require at least some kind of pre-allocated space in the language
+///    implementation, as well as copying to and from that.
+///
+/// This trait provides full flexibility and doesn't impose any allocation
+/// requirements, though at the cost of dynamic dispatch. The performance
+/// implications of this wasn't measured against alternatives, so perhaps
+/// something like alternative 4. may be more viable.
+pub trait HostCall {
+    /// # Access the i-th input to the host call
+    ///
+    /// `i` is a zero-based index of the parameter. This value must always be
+    /// less than the number of parameters that the host function specifies.
+    ///
+    /// Hosts must uphold this precondition. Implementations may panic, if the
+    /// condition has not been met or, for performance reasons, not check it at
+    /// all, which could lead to undefined behavior in the calling Monobloc
+    /// code.
+    fn input(&mut self, i: u8) -> Value;
+
+    /// # Access the i-th output of the host call
+    ///
+    /// `i` is a zero-based index of a parameter to the return continuation, if
+    /// one exists for the host function. This value must always be less than
+    /// the number of parameters to the return continuation.
+    ///
+    /// Hosts must uphold this precondition. Implementations may panic, if the
+    /// condition has not been met or, for performance reasons, not check it at
+    /// all, which could lead to undefined behavior in the calling Monobloc
+    /// code.
+    fn output(&mut self, i: u8, value: Value);
 }

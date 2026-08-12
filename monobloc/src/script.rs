@@ -1,4 +1,4 @@
-use crate::{Host, HostFn};
+use crate::{Host, HostCall, HostFn, Value};
 
 /// # A compiled Monobloc source code file
 ///
@@ -77,7 +77,7 @@ impl Script {
     /// Host function calls will be relayed to the provided host.
     pub fn run(self, host: &mut dyn Host) {
         for host_fn in self.block {
-            host.call_fn(&host_fn);
+            host.call_fn(&host_fn, &mut ScriptHostCall {});
         }
     }
 }
@@ -115,4 +115,14 @@ pub enum CompileError {
     /// # Values are left on the stack at the end of a block
     #[error("values left on stack")]
     ValuesLeftOnStack,
+}
+
+struct ScriptHostCall {}
+
+impl HostCall for ScriptHostCall {
+    fn input(&mut self, _: u8) -> Value {
+        Value { bits: 0 }
+    }
+
+    fn output(&mut self, _: u8, _: Value) {}
 }

@@ -2,7 +2,7 @@
 
 use std::collections::BTreeMap;
 
-use monobloc::{Host, HostFn, HostFnAttrs};
+use monobloc::{Host, HostCall, HostFn, HostFnAttrs};
 
 pub struct TestHost {
     functions_by_name: BTreeMap<&'static str, u16>,
@@ -69,7 +69,7 @@ impl Host for TestHost {
         &self.attrs[&host_fn.function]
     }
 
-    fn call_fn(&mut self, host_fn: &HostFn) {
+    fn call_fn(&mut self, host_fn: &HostFn, _: &mut dyn HostCall) {
         let Self::NAMESPACE = host_fn.namespace else {
             panic!(
                 "Invalid namespace: `{namespace}`",
