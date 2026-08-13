@@ -39,7 +39,7 @@ fn leave_value_on_the_stack() {
 }
 
 #[test]
-fn produce_too_many_values() {
+fn stack_overflow() {
     // There's a maximum number of values that the stack can hold. Going over
     // that should result in a compile error.
 
