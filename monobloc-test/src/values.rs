@@ -1,6 +1,6 @@
 use arbtest::arbtest;
 
-use monobloc::{CompileError, HostFnAttrs, Script};
+use monobloc::{CompileError, HostFnAttrs, Script, Value};
 
 use crate::infra::{TestHost, TestHostFn};
 
@@ -23,6 +23,13 @@ fn produce_and_consume_value() -> anyhow::Result<()> {
 
     let script = Script::compile("produce consume exit", &host)?;
     script.run(&mut host);
+
+    assert_eq!(host.take_calls_to(ValueHostFn::Produce), vec![vec![]]);
+    assert_eq!(
+        host.take_calls_to(ValueHostFn::Consume),
+        vec![vec![Value { bits: 0 }]],
+    );
+    assert_eq!(host.take_calls_to(ValueHostFn::Exit), vec![vec![]]);
 
     Ok(())
 }
@@ -145,6 +152,12 @@ fn balance_production_and_consumption_of_values() {
     arbtest(|u| {
         let mut source = ValueTestSource::new();
 
+        let mut expected_calls_to_produce = Vec::new();
+        let mut expected_calls_to_consume = Vec::new();
+
+        let mut expected_values = Vec::new();
+        let mut next_expected_value = 0;
+
         for _ in 0..u.arbitrary_len::<ValueHostFn>()? {
             let value_host_fn =
                 match (u.arbitrary::<ValueHostFn>()?, source.num_values) {
@@ -160,9 +173,27 @@ fn balance_production_and_consumption_of_values() {
             let true = source.push(value_host_fn) else {
                 break;
             };
+
+            match value_host_fn {
+                ValueHostFn::Consume => {
+                    let value = expected_values.pop().unwrap();
+                    expected_calls_to_consume.push(vec![value]);
+                }
+                ValueHostFn::Produce => {
+                    expected_values.push(Value {
+                        bits: next_expected_value,
+                    });
+                    next_expected_value += 1;
+
+                    expected_calls_to_produce.push(vec![]);
+                }
+
+                ValueHostFn::Exit => {}
+            }
         }
 
-        for _ in 0..source.num_values {
+        while let Some(value) = expected_values.pop() {
+            expected_calls_to_consume.push(vec![value]);
             source.push(ValueHostFn::Consume);
         }
 
@@ -173,12 +204,26 @@ fn balance_production_and_consumption_of_values() {
         let script = Script::compile(&source.inner, &host).unwrap();
         script.run(&mut host);
 
+        assert_eq!(
+            host.take_calls_to(ValueHostFn::Produce),
+            expected_calls_to_produce,
+        );
+        assert_eq!(
+            host.take_calls_to(ValueHostFn::Consume),
+            expected_calls_to_consume,
+        );
+        assert_eq!(host.take_calls_to(ValueHostFn::Exit), vec![vec![]]);
+
         Ok(())
     });
 }
 
 #[derive(
-    arbitrary::Arbitrary, num_enum::IntoPrimitive, num_enum::TryFromPrimitive,
+    Clone,
+    Copy,
+    arbitrary::Arbitrary,
+    num_enum::IntoPrimitive,
+    num_enum::TryFromPrimitive,
 )]
 #[repr(u16)]
 enum ValueHostFn {

@@ -1,3 +1,5 @@
+use std::iter;
+
 use crate::{Host, HostCall, HostFn, Value};
 
 /// # A compiled Monobloc source code file
@@ -7,6 +9,7 @@ use crate::{Host, HostCall, HostFn, Value};
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Script {
     block: Vec<HostFn>,
+    stack: Vec<Value>,
 }
 
 impl Script {
@@ -69,15 +72,44 @@ impl Script {
             return Err(CompileError::BlockIsMissingContinuation);
         }
 
-        Ok(Self { block })
+        Ok(Self {
+            block,
+            stack: Vec::new(),
+        })
     }
 
     /// # Run the script to completion
     ///
     /// Host function calls will be relayed to the provided host.
-    pub fn run(self, host: &mut dyn Host) {
+    pub fn run(mut self, host: &mut dyn Host) {
         for host_fn in self.block {
-            host.call_fn(&host_fn, &mut ScriptHostCall {});
+            let &attrs = host.fn_attrs(&host_fn);
+
+            let mut host_call = ScriptHostCall {
+                input: {
+                    let num_parameters: usize = attrs.num_parameters.into();
+
+                    self.stack
+                        .drain((self.stack.len() - num_parameters)..)
+                        .collect()
+                },
+                output: attrs
+                    .return_
+                    .into_iter()
+                    .flat_map(|num_return_parameters| {
+                        let num_return_parameters: usize =
+                            num_return_parameters.into();
+
+                        iter::repeat_n(Value { bits: 0 }, num_return_parameters)
+                    })
+                    .collect(),
+            };
+
+            host.call_fn(&host_fn, &mut host_call);
+
+            for value in host_call.output.drain(..) {
+                self.stack.push(value);
+            }
         }
     }
 }
@@ -117,12 +149,19 @@ pub enum CompileError {
     ValuesLeftOnStack,
 }
 
-struct ScriptHostCall {}
+struct ScriptHostCall {
+    input: Vec<Value>,
+    output: Vec<Value>,
+}
 
 impl HostCall for ScriptHostCall {
-    fn input(&mut self, _: u8) -> Value {
-        Value { bits: 0 }
+    fn input(&mut self, i: u8) -> Value {
+        let i: usize = i.into();
+        self.input[i]
     }
 
-    fn output(&mut self, _: u8, _: Value) {}
+    fn output(&mut self, i: u8, value: Value) {
+        let i: usize = i.into();
+        self.output[i] = value;
+    }
 }
