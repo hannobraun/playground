@@ -96,7 +96,6 @@ fn various_value_related_scenarios() {
 
                 ValueHostFn::Exit => {
                     num_values -= 1;
-                    break;
                 }
             }
         }
