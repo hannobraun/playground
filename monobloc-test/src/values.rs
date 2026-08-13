@@ -11,7 +11,7 @@ fn try_to_consume_missing_value() {
 
     let host = TestHost::new::<ValueHostFn>();
 
-    let result = Script::compile("exit", &host);
+    let result = Script::compile("consume exit", &host);
     assert_eq!(result, Err(CompileError::MissingFunctionCallArguments));
 }
 
@@ -21,7 +21,7 @@ fn produce_and_consume_value() -> anyhow::Result<()> {
 
     let mut host = TestHost::new::<ValueHostFn>();
 
-    let script = Script::compile("produce exit", &host)?;
+    let script = Script::compile("produce consume exit", &host)?;
     script.run(&mut host);
 
     Ok(())
@@ -94,14 +94,11 @@ fn various_value_related_scenarios() {
                     num_values += 1;
                 }
 
-                ValueHostFn::Exit => {
-                    num_values -= 1;
-                }
+                ValueHostFn::Exit => {}
             }
         }
 
         if last_call_returns {
-            num_values -= 1;
             source.push(' ');
             source.push_str(ValueHostFn::Exit.attrs().name);
         }
@@ -150,7 +147,7 @@ impl TestHostFn for ValueHostFn {
             },
             ValueHostFn::Exit => &HostFnAttrs {
                 name: "exit",
-                num_parameters: 1,
+                num_parameters: 0,
                 return_: None,
             },
             ValueHostFn::Produce => &HostFnAttrs {
