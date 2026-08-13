@@ -58,46 +58,120 @@ fn stack_overflow() {
 }
 
 #[test]
-fn various_value_related_scenarios() {
-    // Compiling the script should always trigger the correct error in regards
-    // to values, or compile and run successfully, if there are not too few or
-    // too many values.
+fn produce_too_many_values() {
+    // Producing more values than get consumed is invalid and must result in a
+    // compile error.
+
+    arbtest(|u| {
+        let mut source = ValueTestSource::new();
+
+        source.push(ValueHostFn::Produce);
+
+        for _ in 0..u.arbitrary_len::<ValueHostFn>()? {
+            let value_host_fn =
+                match (u.arbitrary::<ValueHostFn>()?, source.num_values) {
+                    (value_host_fn @ ValueHostFn::Consume, n) if n > 2 => {
+                        value_host_fn
+                    }
+                    (value_host_fn @ ValueHostFn::Exit, n) if n > 1 => {
+                        value_host_fn
+                    }
+                    (value_host_fn @ ValueHostFn::Produce, _) => value_host_fn,
+                    _ => {
+                        continue;
+                    }
+                };
+
+            let true = source.push(value_host_fn) else {
+                break;
+            };
+        }
+
+        source.finalize();
+        assert!(source.num_values > 0);
+
+        let host = TestHost::new::<ValueHostFn>();
+        let result = Script::compile(&source.inner, &host);
+
+        assert_eq!(result, Err(CompileError::ValuesLeftOnStack));
+
+        Ok(())
+    });
+}
+
+#[test]
+fn consume_too_many_values() {
+    // Consuming more values than get produced is invalid and must result in a
+    // compile error.
 
     arbtest(|u| {
         let mut source = ValueTestSource::new();
 
         for _ in 0..u.arbitrary_len::<ValueHostFn>()? {
-            let value_host_fn = u.arbitrary::<ValueHostFn>()?;
+            let value_host_fn =
+                match (u.arbitrary::<ValueHostFn>()?, source.num_values) {
+                    (ValueHostFn::Exit, n) if n >= 0 => {
+                        continue;
+                    }
+                    (value_host_fn, _) => value_host_fn,
+                };
+
             let true = source.push(value_host_fn) else {
                 break;
             };
+        }
 
-            if source.num_values < 0 {
+        // This is relevant if no calls have been generated. Then the call to
+        // `finalize` below will add an `exit`, which ends up as a valid script.
+        for _ in 0..source.num_values + 1 {
+            source.push(ValueHostFn::Consume);
+        }
+
+        source.finalize();
+
+        let host = TestHost::new::<ValueHostFn>();
+        let result = Script::compile(&source.inner, &host);
+
+        assert_eq!(result, Err(CompileError::MissingFunctionCallArguments));
+
+        Ok(())
+    });
+}
+
+#[test]
+fn balance_production_and_consumption_of_values() {
+    // Producing as many values as get consumed is valid.
+
+    arbtest(|u| {
+        let mut source = ValueTestSource::new();
+
+        for _ in 0..u.arbitrary_len::<ValueHostFn>()? {
+            let value_host_fn =
+                match (u.arbitrary::<ValueHostFn>()?, source.num_values) {
+                    (ValueHostFn::Consume, n) if n < 1 => {
+                        continue;
+                    }
+                    (ValueHostFn::Exit, n) if n != 0 => {
+                        continue;
+                    }
+                    (value_host_fn, _) => value_host_fn,
+                };
+
+            let true = source.push(value_host_fn) else {
                 break;
-            }
+            };
+        }
+
+        for _ in 0..source.num_values {
+            source.push(ValueHostFn::Consume);
         }
 
         source.finalize();
 
         let mut host = TestHost::new::<ValueHostFn>();
 
-        let result = Script::compile(&source.inner, &host);
-
-        match source.num_values {
-            i32::MIN..=-1 => {
-                assert_eq!(
-                    result,
-                    Err(CompileError::MissingFunctionCallArguments),
-                );
-            }
-            0 => {
-                let script = result.unwrap();
-                script.run(&mut host);
-            }
-            1..=i32::MAX => {
-                assert_eq!(result, Err(CompileError::ValuesLeftOnStack),);
-            }
-        }
+        let script = Script::compile(&source.inner, &host).unwrap();
+        script.run(&mut host);
 
         Ok(())
     });
