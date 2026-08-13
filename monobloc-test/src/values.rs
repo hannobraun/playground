@@ -69,7 +69,7 @@ fn various_value_related_scenarios() {
         let mut last_call_returns = true;
         let mut num_values = 0;
 
-        for _ in 0..dbg!(u.arbitrary_len::<ValueHostFn>()?) {
+        for _ in 0..u.arbitrary_len::<ValueHostFn>()? {
             if last_call_returns {
                 break;
             }
