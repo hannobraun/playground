@@ -36,7 +36,7 @@ fn call_to_function_that_does_not_return() -> anyhow::Result<()> {
     let script = Script::compile("exit", &host)?;
     script.run(&mut host);
 
-    assert_eq!(host.take_num_calls_to(ContinuationHostFn::Exit), 1);
+    assert_eq!(host.take_calls_to(ContinuationHostFn::Exit).len(), 1);
     host.expect_no_other_calls();
 
     Ok(())
@@ -102,11 +102,11 @@ fn semantically_correct_source_code() {
         script.run(&mut host);
 
         assert_eq!(
-            host.take_num_calls_to(ContinuationHostFn::Exit),
+            host.take_calls_to(ContinuationHostFn::Exit).len(),
             calls_to_exit,
         );
         assert_eq!(
-            host.take_num_calls_to(ContinuationHostFn::Signal),
+            host.take_calls_to(ContinuationHostFn::Signal).len(),
             calls_to_signal,
         );
         host.expect_no_other_calls();

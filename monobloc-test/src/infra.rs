@@ -2,12 +2,12 @@
 
 use std::collections::BTreeMap;
 
-use monobloc::{Host, HostCall, HostFn, HostFnAttrs};
+use monobloc::{Host, HostCall, HostFn, HostFnAttrs, Value};
 
 pub struct TestHost {
     functions_by_name: BTreeMap<&'static str, u16>,
     attrs: BTreeMap<u16, HostFnAttrs>,
-    calls: BTreeMap<u16, usize>,
+    calls: BTreeMap<u16, Vec<Vec<Value>>>,
 }
 
 impl TestHost {
@@ -36,11 +36,11 @@ impl TestHost {
         }
     }
 
-    pub fn take_num_calls_to(
+    pub fn take_calls_to(
         &mut self,
         test_host_fn: impl TestHostFn,
-    ) -> usize {
-        self.calls.remove(&test_host_fn.id()).unwrap_or(0)
+    ) -> Vec<Vec<Value>> {
+        self.calls.remove(&test_host_fn.id()).unwrap_or_default()
     }
 
     pub fn expect_no_other_calls(&self) {
@@ -69,7 +69,7 @@ impl Host for TestHost {
         &self.attrs[&host_fn.function]
     }
 
-    fn call_fn(&mut self, host_fn: &HostFn, _: &mut dyn HostCall) {
+    fn call_fn(&mut self, host_fn: &HostFn, host_call: &mut dyn HostCall) {
         let Self::NAMESPACE = host_fn.namespace else {
             panic!(
                 "Invalid namespace: `{namespace}`",
@@ -77,7 +77,19 @@ impl Host for TestHost {
             );
         };
 
-        *self.calls.entry(host_fn.function).or_default() += 1;
+        let &attrs = self.fn_attrs(host_fn);
+
+        let mut arguments = Vec::new();
+
+        for i in 0..attrs.num_parameters {
+            let value = host_call.input(i);
+            arguments.push(value)
+        }
+
+        self.calls
+            .entry(host_fn.function)
+            .or_default()
+            .push(arguments);
     }
 }
 
