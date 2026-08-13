@@ -8,6 +8,7 @@ pub struct TestHost {
     functions_by_name: BTreeMap<&'static str, u16>,
     attrs: BTreeMap<u16, HostFnAttrs>,
     calls: BTreeMap<u16, Vec<Vec<Value>>>,
+    next_value: u32,
 }
 
 impl TestHost {
@@ -33,6 +34,7 @@ impl TestHost {
             functions_by_name,
             attrs,
             calls: BTreeMap::new(),
+            next_value: 0,
         }
     }
 
@@ -90,6 +92,17 @@ impl Host for TestHost {
             .entry(host_fn.function)
             .or_default()
             .push(arguments);
+
+        if let Some(num_parameters) = attrs.return_ {
+            for i in 0..num_parameters {
+                let value = Value {
+                    bits: self.next_value,
+                };
+                self.next_value += 1;
+
+                host_call.output(i, value);
+            }
+        }
     }
 }
 
