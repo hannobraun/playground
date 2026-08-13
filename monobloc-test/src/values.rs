@@ -70,7 +70,7 @@ fn various_value_related_scenarios() {
         let mut num_values = 0;
 
         for _ in 0..u.arbitrary_len::<ValueHostFn>()? {
-            if last_call_returns {
+            if !last_call_returns {
                 break;
             }
             if !source.is_empty() {
