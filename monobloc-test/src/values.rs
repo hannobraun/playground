@@ -64,50 +64,26 @@ fn various_value_related_scenarios() {
     // too many values.
 
     arbtest(|u| {
-        let mut source = String::new();
-
-        let mut last_call_returns = true;
-        let mut num_values = 0;
+        let mut source = ValueTestSource::new();
 
         for _ in 0..u.arbitrary_len::<ValueHostFn>()? {
-            if !last_call_returns {
+            let value_host_fn = u.arbitrary::<ValueHostFn>()?;
+            let true = source.push(value_host_fn) else {
+                break;
+            };
+
+            if source.num_values < 0 {
                 break;
             }
-            if !source.is_empty() {
-                source.push(' ');
-            }
-
-            let value_host_fn = u.arbitrary::<ValueHostFn>()?;
-            source.push_str(value_host_fn.attrs().name);
-
-            last_call_returns = value_host_fn.attrs().return_.is_some();
-
-            match value_host_fn {
-                ValueHostFn::Consume => {
-                    num_values -= 1;
-
-                    if num_values < 0 {
-                        break;
-                    }
-                }
-                ValueHostFn::Produce => {
-                    num_values += 1;
-                }
-
-                ValueHostFn::Exit => {}
-            }
         }
 
-        if last_call_returns {
-            source.push(' ');
-            source.push_str(ValueHostFn::Exit.attrs().name);
-        }
+        source.finalize();
 
         let mut host = TestHost::new::<ValueHostFn>();
 
-        let result = Script::compile(&source, &host);
+        let result = Script::compile(&source.inner, &host);
 
-        match num_values {
+        match source.num_values {
             i32::MIN..=-1 => {
                 assert_eq!(
                     result,
@@ -155,6 +131,54 @@ impl TestHostFn for ValueHostFn {
                 num_parameters: 0,
                 return_: Some(1),
             },
+        }
+    }
+}
+
+struct ValueTestSource {
+    inner: String,
+    last_call_returns: bool,
+    num_values: i32,
+}
+
+impl ValueTestSource {
+    fn new() -> ValueTestSource {
+        Self {
+            inner: String::new(),
+            last_call_returns: true,
+            num_values: 0,
+        }
+    }
+
+    fn push(&mut self, value_host_fn: ValueHostFn) -> bool {
+        if !self.last_call_returns {
+            return false;
+        }
+
+        if !self.inner.is_empty() {
+            self.inner.push(' ');
+        }
+
+        match value_host_fn {
+            ValueHostFn::Consume => {
+                self.num_values -= 1;
+            }
+            ValueHostFn::Produce => {
+                self.num_values += 1;
+            }
+
+            ValueHostFn::Exit => {}
+        }
+
+        self.inner.push_str(value_host_fn.attrs().name);
+        self.last_call_returns = value_host_fn.attrs().return_.is_some();
+
+        true
+    }
+
+    fn finalize(&mut self) {
+        if self.last_call_returns {
+            self.push(ValueHostFn::Exit);
         }
     }
 }
