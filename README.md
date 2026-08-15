@@ -1,10 +1,16 @@
+**This repository has been retired. See _Status_ below for more information.**
+
 # Monobloc
 
 Monobloc is a programming language with the goal of making programming more fun and productive, by providing tighter feedback loops and better feedback than most languages usually do.
 
 ## Status
 
-Development has just started; there's not much here yet. But there is a more advanced prototype in an internal repository, and I'm starting to clean up parts of it to publish here.
+**This is an aborted attempt to clean up and rewrite parts of the Monobloc prototype from my private repository.** I initially planned to publish Monobloc incrementally, alongside my prototyping work, but found that this was putting undue pressure on the design process.
+
+**This repository is now retired.** I may decide to reuse it, once I'm ready for a public release again, or maybe I'll delete and replace it.
+
+[This Bluesky thread](https://bsky.app/profile/hannobraun.com/post/3mt4lbeoht22r) has some more context.
 
 ## Development
 
