@@ -4,7 +4,7 @@ A personal playground for various experiments. Here I work on whatever I happen 
 
 ## License
 
-Projects in this repository are licensed under the terms of the [Zero Clause BSD License] (0BSD, for short), unless noted otherwise. This basically means you can do anything with it, without any restrictions, but you can't hold the authors liable for problems.
+Projects in this repository are licensed under the terms of the [Zero Clause BSD License] (0BSD, for short), unless noted otherwise. This basically means you can do anything with them, without any restrictions, but you can't hold the authors liable for problems.
 
 See [LICENSE.md] for full details.
 
