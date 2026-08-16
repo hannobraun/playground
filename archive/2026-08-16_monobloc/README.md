@@ -1,4 +1,4 @@
-**This repository has been retired. See _Status_ below for more information.**
+**This is an archived version of [the original repository](https://tangled.org/hannobraun.com/monobloc), as I may delete that later.**
 
 # Monobloc
 
