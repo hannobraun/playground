@@ -1,0 +1,14 @@
+when:
+  - event: ["pull_request"]
+    branch: ["**"]
+
+engine: "microvm"
+image: "nixos"
+
+environment:
+  RUSTFLAGS: -D warnings
+  RUSTDOCFLAGS: -D warnings
+
+steps:
+  - name: "Set up Rust and run CI build"
+    command: "nix-shell --run 'rustup default stable && cargo run --package dev -- build'"

@@ -1,0 +1,10 @@
+[package]
+name = "monobloc"
+version = "0.0.0"
+edition = "2024"
+
+[lints.rust]
+missing_docs = "warn"
+
+[dependencies]
+thiserror = "2.0.20"

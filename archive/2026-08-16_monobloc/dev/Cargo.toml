@@ -1,0 +1,11 @@
+[package]
+name = "dev"
+edition = "2024"
+publish = false
+
+[dependencies]
+anyhow = "*"
+
+[dependencies.clap]
+version = "*"
+features = ["derive"]
